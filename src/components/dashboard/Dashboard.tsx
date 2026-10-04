@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Globe2,
   Flame,
@@ -37,6 +37,16 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const [stats, setStats] = useState<UserStats>(() => StorageService.loadStats());
   const [settings, setSettings] = useState<AppSettings>(() => StorageService.loadSettings());
   const [selectedAttributeFilter, setSelectedAttributeFilter] = useState<string[]>(['capital', 'location']);
+
+  // Subscribe to storage updates (e.g. disk rehydration on launch)
+  useEffect(() => {
+    const unsubscribe = StorageService.subscribe(() => {
+      setSrsItemsMap(StorageService.loadSRSItems());
+      setStats(StorageService.loadStats());
+      setSettings(StorageService.loadSettings());
+    });
+    return unsubscribe;
+  }, []);
 
   const mastery = computeMasteryStats(srsItemsMap);
 

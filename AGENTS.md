@@ -32,9 +32,18 @@ git push origin main
   * Any parent event callbacks passed to `<CountryPolygon>` must be backed by a stable proxy ref (e.g. `onSelectCountryRef`) to prevent stale closures while preserving zero-re-render click speed.
   * SVG paths must use `vectorEffect="non-scaling-stroke"` with thin hairline strokes (`0.6px`) so zooming into Western Europe never obscures microstates.
 
-### 4. Mathematical & HTML Formatting
-* Never output raw unrendered LaTeX syntax (`$...$`, `\frac`) inside HTML artifacts, generative UI widgets, or web views.
-* Use semantic HTML and Unicode symbols (`·`, `×`, `√`, `∑`, `<sup>`, `<sub>`).
+### 5. Absolute User Progress & Data Preservation Rule
+**User learning progress (SRS items, review counts, streaks, continent mastery, settings) is sacred and must NEVER be wiped, reset, or bypassed:**
+* **Dual-Layer Persistence**:
+  * User data is mirrored to disk at `app.getPath('userData')/geomastery_data.json` via atomic file writes (`load-storage-data` / `save-storage-data`).
+  * `localStorage` is used as a fast in-memory mirror and automatically rehydrated from disk on boot.
+* **Single-Instance Enforcement**:
+  * `app.requestSingleInstanceLock()` must ALWAYS be maintained in `electron/main.ts` so multiple Electron instances never lock Chromium LevelDB or start ghost sessions.
+* **Migration & Schema Safety**:
+  * Any schema changes or new attribute additions must preserve existing `(countryId, attributeId)` keys and stage ratings.
+  * Never run destructive scripts or clear `localStorage` / `geomastery_data.json`.
+* **Automatic Safeguard Backups**:
+  * Keep verified backup copies (`user_progress_backup.json`) in user data so progress can be recovered even in catastrophic OS or partition events.
 
 ---
 

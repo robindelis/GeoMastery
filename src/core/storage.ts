@@ -32,11 +32,93 @@ const DEFAULT_STATS: UserStats = {
 };
 
 export class StorageService {
+  private static subscribers: Set<() => void> = new Set();
+  private static syncTimeout: any = null;
+
+  public static subscribe(callback: () => void): () => void {
+    this.subscribers.add(callback);
+    return () => {
+      this.subscribers.delete(callback);
+    };
+  }
+
+  public static notifySubscribers(): void {
+    this.subscribers.forEach((cb) => {
+      try {
+        cb();
+      } catch (e) {
+        console.error('Error in storage subscriber:', e);
+      }
+    });
+  }
+
+  /**
+   * Initializes persistent sync between disk file and LocalStorage.
+   * Ensures user progress is never lost even if LocalStorage partition changes.
+   */
+  public static async initPersistentSync(): Promise<boolean> {
+    if (typeof window === 'undefined') return false;
+
+    if (window.electronAPI?.loadStorageData) {
+      try {
+        const res = await window.electronAPI.loadStorageData();
+        if (res.success && res.data) {
+          const diskData = res.data;
+          const localItems = this.loadSRSItems();
+          const diskItems = diskData.srsItems
+            ? new Map<string, SRSItem>(diskData.srsItems)
+            : new Map<string, SRSItem>();
+
+          // If disk has progress and local has less or equal, rehydrate from disk!
+          if (diskItems.size > 0 && diskItems.size >= localItems.size) {
+            this.saveSRSItems(diskItems);
+            if (diskData.stats) this.saveStats(diskData.stats);
+            if (diskData.settings) this.saveSettings(diskData.settings);
+            this.notifySubscribers();
+            return true;
+          } else if (localItems.size > diskItems.size) {
+            // Local is ahead, persist to disk
+            this.syncToDiskNow();
+          }
+        } else {
+          // If disk file doesn't exist yet, save current local state to disk
+          this.syncToDiskNow();
+        }
+      } catch (err) {
+        console.error('Failed to sync persistent disk storage:', err);
+      }
+    }
+    return false;
+  }
+
+  private static syncToDiskNow(): void {
+    if (typeof window !== 'undefined' && window.electronAPI?.saveStorageData) {
+      const payload = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        srsItems: Array.from(this.loadSRSItems().entries()),
+        stats: this.loadStats(),
+        settings: this.loadSettings()
+      };
+      window.electronAPI.saveStorageData(payload).catch((err) => {
+        console.error('Error writing to disk storage:', err);
+      });
+    }
+  }
+
+  private static scheduleDiskSync(): void {
+    if (this.syncTimeout) clearTimeout(this.syncTimeout);
+    this.syncTimeout = setTimeout(() => {
+      this.syncToDiskNow();
+    }, 200);
+  }
+
   /**
    * Loads all SRS items from persistent storage.
    */
   public static loadSRSItems(): Map<string, SRSItem> {
     try {
+      if (typeof localStorage === 'undefined') return new Map();
       const data = localStorage.getItem(STORAGE_KEYS.SRS_ITEMS);
       if (!data) return new Map();
       const parsed: [string, SRSItem][] = JSON.parse(data);
@@ -52,8 +134,11 @@ export class StorageService {
    */
   public static saveSRSItems(itemsMap: Map<string, SRSItem>): void {
     try {
-      const serialized = JSON.stringify(Array.from(itemsMap.entries()));
-      localStorage.setItem(STORAGE_KEYS.SRS_ITEMS, serialized);
+      if (typeof localStorage !== 'undefined') {
+        const serialized = JSON.stringify(Array.from(itemsMap.entries()));
+        localStorage.setItem(STORAGE_KEYS.SRS_ITEMS, serialized);
+      }
+      this.scheduleDiskSync();
     } catch (e) {
       console.error('Failed to save SRS items to storage:', e);
     }
@@ -77,7 +162,10 @@ export class StorageService {
    */
   public static saveStats(stats: UserStats): void {
     try {
-      localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(stats));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(stats));
+      }
+      this.scheduleDiskSync();
     } catch (e) {
       console.error('Failed to save stats:', e);
     }
@@ -88,6 +176,7 @@ export class StorageService {
    */
   public static loadSettings(): AppSettings {
     try {
+      if (typeof localStorage === 'undefined') return { ...DEFAULT_SETTINGS };
       const data = localStorage.getItem(STORAGE_KEYS.SETTINGS);
       if (!data) return { ...DEFAULT_SETTINGS };
       return { ...DEFAULT_SETTINGS, ...JSON.parse(data) };
@@ -101,7 +190,10 @@ export class StorageService {
    */
   public static saveSettings(settings: AppSettings): void {
     try {
-      localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+      }
+      this.scheduleDiskSync();
     } catch (e) {
       console.error('Failed to save settings:', e);
     }

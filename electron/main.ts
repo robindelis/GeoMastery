@@ -58,18 +58,64 @@ ipcMain.handle('save-backup-dialog', async (_event, content: string) => {
   return { success: false, canceled: true };
 });
 
-app.whenReady().then(() => {
-  createWindow();
+// IPC: Robust Atomic Disk Storage for User Progress
+ipcMain.handle('load-storage-data', async () => {
+  try {
+    const dataFilePath = path.join(app.getPath('userData'), 'geomastery_data.json');
+    if (fs.existsSync(dataFilePath)) {
+      const content = fs.readFileSync(dataFilePath, 'utf-8');
+      return { success: true, data: JSON.parse(content) };
+    }
+  } catch (err) {
+    console.error('Failed to load storage data from disk:', err);
+  }
+  return { success: false };
+});
 
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+ipcMain.handle('save-storage-data', async (_event, dataObj: any) => {
+  try {
+    const userData = app.getPath('userData');
+    if (!fs.existsSync(userData)) {
+      fs.mkdirSync(userData, { recursive: true });
+    }
+    const dataFilePath = path.join(userData, 'geomastery_data.json');
+    const tmpPath = `${dataFilePath}.tmp`;
+    fs.writeFileSync(tmpPath, JSON.stringify(dataObj, null, 2), 'utf-8');
+    fs.renameSync(tmpPath, dataFilePath);
+    return { success: true };
+  } catch (err) {
+    console.error('Failed to save storage data to disk:', err);
+    return { success: false, error: String(err) };
+  }
+});
+
+// Single-instance lock: Prevents LevelDB corruption or locked storage from multiple instances
+const gotSingleInstanceLock = app.requestSingleInstanceLock();
+
+if (!gotSingleInstanceLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
     }
   });
-});
+
+  app.whenReady().then(() => {
+    createWindow();
+
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+      }
+    });
+  });
+}
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
+

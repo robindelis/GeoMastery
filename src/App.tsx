@@ -23,6 +23,16 @@ export const App: React.FC = () => {
     soundFx.setEnabled(soundEnabled);
   }, [soundEnabled]);
 
+  // Initialize persistent disk sync on boot
+  useEffect(() => {
+    StorageService.initPersistentSync().then((restored) => {
+      if (restored) {
+        setMapMode(StorageService.loadSettings().mapMode);
+        setSoundEnabled(StorageService.loadSettings().audioEnabled);
+      }
+    });
+  }, []);
+
   const handleStartSession = (
     continent: 'All' | Continent,
     attributes: string[],
