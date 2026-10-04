@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-map-ocean: #0d172a;
+    --color-map-land: #1e293b;
+    --color-map-border: #475569;
+    --color-map-hover: #0284c7;
+    --color-map-active: #10b981;
+    --color-map-selected: #0284c7;
+    --color-map-incorrect: #f43f5e;
+  }
+
+  body {
+    background-color: #0f172a;
+    color: #f8fafc;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(30, 41, 59, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.6);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.85);
+}
+
+/* Pulsing highlight animations for map selection */
+@keyframes pulse-emerald {
+  0%, 100% {
+    filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.8));
+    fill: #10b981;
+  }
+  50% {
+    filter: drop-shadow(0 0 24px rgba(16, 185, 129, 1));
+    fill: #34d399;
+  }
+}
+
+@keyframes pulse-rose {
+  0%, 100% {
+    filter: drop-shadow(0 0 12px rgba(244, 63, 94, 0.8));
+    fill: #f43f5e;
+  }
+  50% {
+    filter: drop-shadow(0 0 24px rgba(244, 63, 94, 1));
+    fill: #fb7185;
+  }
+}
+
+.map-country-correct {
+  animation: pulse-emerald 1.2s ease-in-out infinite;
+}
+
+.map-country-incorrect {
+  animation: pulse-rose 1.2s ease-in-out infinite;
+}
+
+/* Instant CSS hover effect for vector map (zero JS overhead) */
+.country-vector-path {
+  transition: fill 0.12s ease, filter 0.12s ease;
+}
+.country-vector-path:hover {
+  fill: #0284c7 !important;
+  filter: brightness(1.28);
+}
+
+/* Elevated glass card styling in lighter slate palette */
+.glass-card {
+  background: rgba(30, 41, 59, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.35);
+}
+
+.glass-card-hover {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-card-hover:hover {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(148, 163, 184, 0.28);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.45);
+}
+
+/* Floating animation for subtle ambient elements */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+.animate-float-slow {
+  animation: float-slow 14s ease-in-out infinite;
+}

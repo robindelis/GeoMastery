@@ -1,0 +1,348 @@
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import * as d3 from 'd3';
+import { feature } from 'topojson-client';
+import worldData50m from '../../assets/geo/countries-50m.json';
+import { Country, SRSItem } from '../../core/types';
+import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
+
+interface Globe3DProps {
+  selectedCountryId?: string | null;
+  targetCountryId?: string | null;
+  feedbackState?: 'correct' | 'incorrect' | 'neutral' | null;
+  highlightedCountryIds?: string[];
+  srsItemsMap?: Map<string, SRSItem>;
+  showHeatmap?: boolean;
+  autoRotate?: boolean;
+  disableAutoSpin?: boolean;
+  onSelectCountry?: (country: Country) => void;
+  className?: string;
+}
+
+export const Globe3D: React.FC<Globe3DProps> = ({
+  selectedCountryId,
+  targetCountryId,
+  feedbackState,
+  highlightedCountryIds = [],
+  srsItemsMap,
+  showHeatmap = false,
+  autoRotate = false,
+  disableAutoSpin = false,
+  onSelectCountry,
+  className = ''
+}) => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
+  const [hoveredCountry, setHoveredCountry] = useState<{ country: Country; x: number; y: number } | null>(null);
+
+  // Rotation angles: [yaw, pitch, roll]
+  const rotationRef = useRef<[number, number, number]>([0, -20, 0]);
+  const isDraggingRef = useRef(false);
+  const lastMousePosRef = useRef<{ x: number; y: number } | null>(null);
+  const velocityRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const animFrameRef = useRef<number | null>(null);
+
+  // Convert TopoJSON to GeoJSON features
+  const geoFeatures = useMemo(() => {
+    try {
+      const geo = feature(worldData50m as any, (worldData50m as any).objects.countries) as any;
+      return geo.features as any[];
+    } catch (e) {
+      console.error('Failed to parse TopoJSON:', e);
+      return [];
+    }
+  }, []);
+
+  // Responsive sizing
+  useEffect(() => {
+    const handleResize = () => {
+      if (containerRef.current) {
+        const { clientWidth, clientHeight } = containerRef.current;
+        if (clientWidth > 0 && clientHeight > 0) {
+          setDimensions({ width: clientWidth, height: clientHeight });
+        }
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Setup D3 Orthographic Projection
+  const projection = useMemo(() => {
+    const radius = Math.min(dimensions.width, dimensions.height) / 2.3;
+    return d3
+      .geoOrthographic()
+      .scale(radius)
+      .translate([dimensions.width / 2, dimensions.height / 2])
+      .clipAngle(90);
+  }, [dimensions]);
+
+  // Determine country fill color
+  const getCountryFill = useCallback(
+    (country?: Country) => {
+      if (!country) return '#1e293b';
+
+      if (feedbackState === 'correct') {
+        if (country.id === targetCountryId || country.id === selectedCountryId) {
+          return '#10b981'; // Emerald
+        }
+      }
+      if (feedbackState === 'incorrect') {
+        if (country.id === targetCountryId) return '#10b981'; // Correct answer in Emerald
+        if (country.id === selectedCountryId) return '#f43f5e'; // Rose for wrong pick
+      }
+
+      if (country.id === selectedCountryId) return '#0284c7';
+      if (highlightedCountryIds.includes(country.id)) return '#38bdf8';
+
+      if (showHeatmap && srsItemsMap) {
+        const cap = srsItemsMap.get(`${country.id}:capital`);
+        const loc = srsItemsMap.get(`${country.id}:location`);
+        const score = (cap?.stage || 0) + (loc?.stage || 0);
+        if (score >= 3) return '#059669';
+        if (score === 2) return '#10b981';
+        if (score === 1) return '#d97706';
+        return '#334155';
+      }
+
+      return '#1e293b';
+    },
+    [feedbackState, targetCountryId, selectedCountryId, highlightedCountryIds, showHeatmap, srsItemsMap]
+  );
+
+  // Smooth spin to focus country coordinates
+  const spinToCountry = useCallback(
+    (countryId: string) => {
+      const c = COUNTRIES_BY_ID.get(countryId);
+      if (!c || !c.coordinates) return;
+
+      const [targetLng, targetLat] = c.coordinates;
+      const targetRotation: [number, number, number] = [-targetLng, -targetLat, 0];
+      const startRotation = [...rotationRef.current] as [number, number, number];
+
+      const interpolator = d3.interpolate(startRotation, targetRotation);
+      const startTime = performance.now();
+      const duration = 1000;
+
+      const animateSpin = (now: number) => {
+        const elapsed = now - startTime;
+        const t = Math.min(1, elapsed / duration);
+        const ease = d3.easeCubicOut(t);
+        rotationRef.current = interpolator(ease);
+
+        if (t < 1) {
+          requestAnimationFrame(animateSpin);
+        }
+      };
+
+      requestAnimationFrame(animateSpin);
+    },
+    []
+  );
+
+  // Auto-focus when target or selected country changes
+  useEffect(() => {
+    if (disableAutoSpin) return;
+    const cid = selectedCountryId || targetCountryId;
+    if (cid) {
+      spinToCountry(cid);
+    }
+  }, [selectedCountryId, targetCountryId, disableAutoSpin, spinToCountry]);
+
+  // Main Canvas Render Loop
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Handle high DPI displays
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = dimensions.width * dpr;
+    canvas.height = dimensions.height * dpr;
+    ctx.scale(dpr, dpr);
+
+    const path = d3.geoPath(projection, ctx);
+    const graticule = d3.geoGraticule10();
+
+    const render = () => {
+      // Auto-rotation or inertia deceleration
+      if (autoRotate && !isDraggingRef.current) {
+        rotationRef.current[0] += 0.2;
+      } else if (!isDraggingRef.current) {
+        rotationRef.current[0] += velocityRef.current.x;
+        rotationRef.current[1] = Math.max(-80, Math.min(80, rotationRef.current[1] + velocityRef.current.y));
+        velocityRef.current.x *= 0.94;
+        velocityRef.current.y *= 0.94;
+      }
+
+      projection.rotate(rotationRef.current);
+
+      ctx.clearRect(0, 0, dimensions.width, dimensions.height);
+
+      const radius = Math.min(dimensions.width, dimensions.height) / 2.3;
+      const [cx, cy] = [dimensions.width / 2, dimensions.height / 2];
+
+      // Atmospheric outer glow
+      const outerGlow = ctx.createRadialGradient(cx, cy, radius * 0.92, cx, cy, radius * 1.15);
+      outerGlow.addColorStop(0, 'rgba(14, 165, 233, 0.25)');
+      outerGlow.addColorStop(0.5, 'rgba(6, 182, 212, 0.08)');
+      outerGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = outerGlow;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 1.15, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Globe sphere ocean
+      const oceanGrad = ctx.createRadialGradient(cx - radius * 0.3, cy - radius * 0.3, radius * 0.1, cx, cy, radius);
+      oceanGrad.addColorStop(0, '#1e293b');
+      oceanGrad.addColorStop(1, '#0f172a');
+      ctx.fillStyle = oceanGrad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Graticules (Latitude / Longitude grid)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      path(graticule);
+      ctx.stroke();
+
+      // Draw countries
+      for (const feat of geoFeatures) {
+        const country = COUNTRIES_BY_NUMERIC.get(String(feat.id));
+        ctx.fillStyle = getCountryFill(country);
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 0.6;
+
+        ctx.beginPath();
+        path(feat);
+        ctx.fill();
+        ctx.stroke();
+      }
+
+      // Globe rim highlight
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+      ctx.stroke();
+
+      animFrameRef.current = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      if (animFrameRef.current) {
+        cancelAnimationFrame(animFrameRef.current);
+      }
+    };
+  }, [dimensions, projection, geoFeatures, getCountryFill, autoRotate]);
+
+  // Mouse interaction handlers for rotation and drag
+  const handleMouseDown = (e: React.MouseEvent) => {
+    isDraggingRef.current = true;
+    lastMousePosRef.current = { x: e.clientX, y: e.clientY };
+    velocityRef.current = { x: 0, y: 0 };
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDraggingRef.current && lastMousePosRef.current) {
+      const dx = e.clientX - lastMousePosRef.current.x;
+      const dy = e.clientY - lastMousePosRef.current.y;
+
+      const sensitivity = 0.35;
+      rotationRef.current[0] += dx * sensitivity;
+      rotationRef.current[1] = Math.max(-80, Math.min(80, rotationRef.current[1] - dy * sensitivity));
+
+      velocityRef.current = { x: dx * 0.15, y: -dy * 0.15 };
+      lastMousePosRef.current = { x: e.clientX, y: e.clientY };
+    } else {
+      // Hover detection on globe surface
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+
+        const coords = projection.invert ? projection.invert([mx, my]) : null;
+        if (coords) {
+          const [lng, lat] = coords;
+          if (!isNaN(lng) && !isNaN(lat)) {
+            // Find country containing coords or closest country
+            const match = geoFeatures.find((f) => d3.geoContains(f, [lng, lat]));
+            if (match) {
+              const country = COUNTRIES_BY_NUMERIC.get(String(match.id));
+              if (country) {
+                setHoveredCountry({ country, x: e.clientX, y: e.clientY });
+                return;
+              }
+            }
+          }
+        }
+      }
+      setHoveredCountry(null);
+    }
+  };
+
+  const handleMouseUp = () => {
+    isDraggingRef.current = false;
+    lastMousePosRef.current = null;
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (Math.abs(velocityRef.current.x) > 1 || Math.abs(velocityRef.current.y) > 1) {
+      return; // Was dragging, don't trigger click
+    }
+
+    if (containerRef.current && onSelectCountry) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+
+      const coords = projection.invert ? projection.invert([mx, my]) : null;
+      if (coords) {
+        const [lng, lat] = coords;
+        if (!isNaN(lng) && !isNaN(lat)) {
+          const match = geoFeatures.find((f) => d3.geoContains(f, [lng, lat]));
+          if (match) {
+            const country = COUNTRIES_BY_NUMERIC.get(String(match.id));
+            if (country) {
+              onSelectCountry(country);
+            }
+          }
+        }
+      }
+    }
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className={`relative w-full h-full overflow-hidden bg-[#0f172a] select-none ${className}`}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      onClick={handleClick}
+    >
+      <canvas ref={canvasRef} className="w-full h-full cursor-grab active:cursor-grabbing block" />
+
+      {/* Floating Hover Tooltip */}
+      {hoveredCountry && (
+        <div
+          className="fixed pointer-events-none z-50 px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-700/80 shadow-2xl backdrop-blur-md transform -translate-x-1/2 -translate-y-full mb-3 text-xs flex items-center gap-2"
+          style={{ left: hoveredCountry.x, top: hoveredCountry.y }}
+        >
+          <span className="text-base">{hoveredCountry.country.flagEmoji}</span>
+          <div>
+            <div className="font-bold text-white tracking-wide">{hoveredCountry.country.name}</div>
+            <div className="text-[10px] text-emerald-400">Capital: {hoveredCountry.country.capital}</div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
