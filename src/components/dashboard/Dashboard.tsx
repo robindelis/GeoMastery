@@ -20,6 +20,7 @@ import { computeMasteryStats } from '../../core/srsEngine';
 import { StorageService } from '../../core/storage';
 import { soundFx } from '../../core/soundFx';
 import { PlanetaryBackground } from '../common/PlanetaryBackground';
+import { CartographerDossier } from './CartographerDossier';
 
 interface DashboardProps {
   onStartSession: (continent: 'All' | Continent, attributes: string[], practiceMode?: boolean) => void;
@@ -151,7 +152,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
   return (
     <PlanetaryBackground className="flex-1 flex flex-col h-full overflow-y-auto text-slate-100 p-5 sm:p-8 lg:p-10">
-      <div className="max-w-6xl mx-auto w-full flex flex-col gap-8 pb-16">
+      <div className="max-w-[1600px] mx-auto w-full flex flex-col gap-8 pb-16">
         {/* Top Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
@@ -209,8 +210,22 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </div>
         </div>
 
-        {/* Hero Command Center Card ("Daily Master Hub") */}
-        <div className="relative overflow-hidden rounded-3xl bg-slate-900/80 border border-slate-700/80 p-6 sm:p-9 shadow-2xl backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6 glass-card">
+        {/* Main Dashboard Responsive Matrix */}
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+          {/* Left Wing: Cartographer Dossier */}
+          <div className="xl:col-span-4 2xl:col-span-4 flex flex-col gap-6 order-2 xl:order-1">
+            <CartographerDossier
+              srsItemsMap={srsItemsMap}
+              stats={stats}
+              onOpenAtlas={onOpenAtlas}
+              onStartSession={onStartSession}
+            />
+          </div>
+
+          {/* Right Wing: Primary Command Center & Operations */}
+          <div className="xl:col-span-8 2xl:col-span-8 flex flex-col gap-8 order-1 xl:order-2">
+            {/* Hero Command Center Card ("Daily Master Hub") */}
+            <div className="relative overflow-hidden rounded-3xl bg-slate-900/80 border border-slate-700/80 p-6 sm:p-9 shadow-2xl backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6 glass-card">
           {/* Subtle Top Ambient Gradient */}
           <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-emerald-500/10 via-sky-500/5 to-transparent pointer-events-none" />
 
@@ -544,6 +559,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </div>
         </div>
       </div>
-    </PlanetaryBackground>
-  );
+    </div>
+  </div>
+</PlanetaryBackground>
+);
 };

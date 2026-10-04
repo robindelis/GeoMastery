@@ -270,6 +270,138 @@ export const PlanetaryBackground: React.FC<PlanetaryBackgroundProps> = ({
       ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
       ctx.stroke();
 
+      // 8. Deep Space Celestial Body: Crescent Moon (Upper Left Cosmic Expanse)
+      if (dimensions.width > 768) {
+        const moonX = dimensions.width * 0.11;
+        const moonY = dimensions.height * 0.14;
+        const moonRadius = 22;
+
+        // Dark side earthshine
+        ctx.fillStyle = 'rgba(30, 41, 59, 0.35)';
+        ctx.beginPath();
+        ctx.arc(moonX, moonY, moonRadius, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Moon subtle lunar halo
+        const moonGlow = ctx.createRadialGradient(moonX, moonY, moonRadius * 0.8, moonX, moonY, moonRadius * 2);
+        moonGlow.addColorStop(0, 'rgba(226, 232, 240, 0.12)');
+        moonGlow.addColorStop(1, 'rgba(226, 232, 240, 0)');
+        ctx.fillStyle = moonGlow;
+        ctx.beginPath();
+        ctx.arc(moonX, moonY, moonRadius * 2, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Silver illuminated crescent
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(moonX, moonY, moonRadius, 0, 2 * Math.PI);
+        ctx.clip();
+
+        // Sunlit side
+        ctx.fillStyle = 'rgba(241, 245, 249, 0.9)';
+        ctx.beginPath();
+        ctx.arc(moonX - 5, moonY - 2, moonRadius, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Shadow cut-out creating the crescent
+        ctx.fillStyle = '#090d16';
+        ctx.beginPath();
+        ctx.arc(moonX + 3, moonY - 1, moonRadius * 0.9, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // 9. Navigational Satellite (GeoMastery Recon Orbiter) & Trajectory Arc
+      if (dimensions.width > 900) {
+        const satOrbitRadiusX = dimensions.width * 0.62;
+        const satOrbitRadiusY = dimensions.height * 0.44;
+
+        // Orbit Trajectory Arc
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.12)';
+        ctx.setLineDash([4, 8]);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, satOrbitRadiusX, satOrbitRadiusY, -Math.PI / 10, Math.PI * 0.82, Math.PI * 1.55);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Satellite position traveling along orbit
+        const satAngle = Math.PI * 1.18 + Math.sin(frameCount * 0.003) * 0.15;
+        const rot = -Math.PI / 10;
+        const cosR = Math.cos(rot);
+        const sinR = Math.sin(rot);
+        const rawX = Math.cos(satAngle) * satOrbitRadiusX;
+        const rawY = Math.sin(satAngle) * satOrbitRadiusY;
+        const satX = cx + cosR * rawX - sinR * rawY;
+        const satY = cy + sinR * rawX + cosR * rawY;
+
+        // Radio signal pulse rings
+        const pulseCycle = (frameCount * 0.025) % 1;
+        const pulseRadius = pulseCycle * 32 + 4;
+        const pulseAlpha = (1 - pulseCycle) * 0.4;
+        ctx.strokeStyle = `rgba(56, 189, 248, ${pulseAlpha})`;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.arc(satX, satY, pulseRadius, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        // Solar panels
+        ctx.fillStyle = '#0284c7';
+        ctx.fillRect(satX - 14, satY - 2.5, 8, 5);
+        ctx.fillRect(satX + 6, satY - 2.5, 8, 5);
+        // Solar panel grid lines
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.lineWidth = 0.6;
+        ctx.strokeRect(satX - 14, satY - 2.5, 8, 5);
+        ctx.strokeRect(satX + 6, satY - 2.5, 8, 5);
+
+        // Satellite bus body
+        ctx.fillStyle = '#e2e8f0';
+        ctx.fillRect(satX - 4, satY - 3.5, 8, 7);
+
+        // Blinking beacon photon
+        const isBlink = Math.sin(frameCount * 0.15) > 0;
+        ctx.fillStyle = isBlink ? '#34d399' : '#047857';
+        ctx.beginPath();
+        ctx.arc(satX, satY, 1.8, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      // 10. Left-Edge Cartographic Coordinate Telemetry & Astrolabe Quadrant
+      if (dimensions.width > 1100) {
+        // Astrolabe arcs in upper-left corner
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.07)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(0, 0, 180, 0, Math.PI / 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, 0, 280, 0, Math.PI / 2);
+        ctx.stroke();
+
+        // Coordinate ticks along left edge
+        const tickYValues = [0.2, 0.35, 0.5, 0.65, 0.8];
+        const labels = ['+60°N', '+30°N', 'EQ 00°', '-30°S', '-60°S'];
+        ctx.font = '8px monospace';
+        ctx.fillStyle = 'rgba(148, 163, 184, 0.28)';
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.2)';
+        ctx.lineWidth = 1;
+
+        tickYValues.forEach((frac, idx) => {
+          const ty = dimensions.height * frac;
+          ctx.beginPath();
+          ctx.moveTo(8, ty);
+          ctx.lineTo(20, ty);
+          ctx.stroke();
+          ctx.fillText(labels[idx], 24, ty + 3);
+        });
+
+        // Top Telemetry Header
+        ctx.fillText('GEO-ORBITAL RECON // CH-01', 24, dimensions.height * 0.25);
+        ctx.fillText('EPHEMERIS: TRACKING ACTIVE', 24, dimensions.height * 0.25 + 13);
+        ctx.fillText('FOV: 45° • MAG: 1.0X', 24, dimensions.height * 0.25 + 26);
+      }
+
       animFrameRef.current = requestAnimationFrame(render);
     };
 
@@ -296,8 +428,8 @@ export const PlanetaryBackground: React.FC<PlanetaryBackgroundProps> = ({
       />
 
       {/* Atmospheric Contrast Overlays */}
-      {/* Left-edge vignette: ensures maximum readability for hero headline and dashboard controls */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#090d16]/95 via-[#090d16]/75 to-transparent pointer-events-none" />
+      {/* Softened left-edge vignette: preserves celestial depth while maintaining high readability */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#090d16]/75 via-[#090d16]/40 to-transparent pointer-events-none" />
 
       {/* Bottom fade: softens cards as they scroll */}
       <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#090d16] via-[#090d16]/60 to-transparent pointer-events-none" />
