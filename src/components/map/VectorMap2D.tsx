@@ -4,6 +4,7 @@ import { feature } from 'topojson-client';
 import worldData50m from '../../assets/geo/countries-50m.json';
 import { Country, SRSItem } from '../../core/types';
 import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
+import { getMicrostateList } from '../../core/microstates';
 
 interface VectorMap2DProps {
   selectedCountryId?: string | null;
@@ -124,6 +125,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   const nameRef = useRef<HTMLDivElement | null>(null);
   const capRef = useRef<HTMLDivElement | null>(null);
   const zoomBehaviorRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+  const zoomTransformRef = useRef<d3.ZoomTransform>(d3.zoomIdentity);
 
   const [dimensions, setDimensions] = useState({ width: 960, height: 540 });
 
@@ -190,8 +192,13 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       .zoom<SVGSVGElement, unknown>()
       .scaleExtent([1, 24])
       .on('zoom', (event) => {
+        zoomTransformRef.current = event.transform;
         if (gRef.current) {
           d3.select(gRef.current).attr('transform', event.transform);
+          const k = event.transform.k;
+          d3.select(gRef.current).selectAll('.microstate-dot').attr('r', 3.5 / k);
+          d3.select(gRef.current).selectAll('.microstate-pulse').attr('r', 8 / k);
+          d3.select(gRef.current).selectAll('.microstate-hitbox').attr('r', 16 / k);
         }
       });
 
@@ -302,6 +309,64 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     [feedbackState, targetCountryId, selectedCountryId, highlightedCountryIds, showHeatmap, srsItemsMap]
   );
 
+  // Compute projected microstate anchor points (includes Tuvalu, Vatican, Nauru, etc.)
+  const microstateItems = useMemo(() => {
+    const list = getMicrostateList();
+    return list
+      .map((country) => {
+        const coords = projection(country.coordinates);
+        return {
+          country,
+          cx: coords ? coords[0] : 0,
+          cy: coords ? coords[1] : 0,
+          hasValidCoords: Boolean(coords && !isNaN(coords[0]) && !isNaN(coords[1]))
+        };
+      })
+      .filter((item) => item.hasValidCoords);
+  }, [projection]);
+
+  // Open-ocean proximity click assist (snaps to nearest island / microstate within 28 screen px)
+  const handleSvgClick = useCallback(
+    (e: React.MouseEvent<SVGSVGElement>) => {
+      const target = e.target as SVGElement;
+      const isDirectTarget =
+        target.classList?.contains('country-vector-path') ||
+        target.classList?.contains('microstate-hitbox') ||
+        target.classList?.contains('microstate-dot');
+      if (isDirectTarget) return;
+
+      const svg = svgRef.current;
+      if (!svg || !gRef.current) return;
+
+      const pt = svg.createSVGPoint();
+      pt.x = e.clientX;
+      pt.y = e.clientY;
+      const ctm = gRef.current.getScreenCTM();
+      if (!ctm) return;
+      const transformedPt = pt.matrixTransform(ctm.inverse());
+
+      const k = zoomTransformRef.current?.k || 1;
+      let minScreenDist = Infinity;
+      let nearestCountry: Country | null = null;
+
+      for (const m of microstateItems) {
+        const dx = (transformedPt.x - m.cx) * k;
+        const dy = (transformedPt.y - m.cy) * k;
+        const dist = Math.hypot(dx, dy);
+        if (dist < minScreenDist) {
+          minScreenDist = dist;
+          nearestCountry = m.country;
+        }
+      }
+
+      // Proximity threshold: within 28 screen pixels of an island/microstate in open waters
+      if (minScreenDist <= 28 && nearestCountry) {
+        handleCountrySelect(nearestCountry);
+      }
+    },
+    [microstateItems, handleCountrySelect]
+  );
+
   return (
     <div
       ref={containerRef}
@@ -314,6 +379,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       {/* Main SVG Map */}
       <svg
         ref={svgRef}
+        onClick={handleSvgClick}
         className="w-full h-full cursor-grab active:cursor-grabbing block"
         viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
       >
@@ -349,6 +415,69 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
               />
             );
           })}
+
+          {/* Microstates & Small Island Nations Beacons Layer */}
+          <g className="microstate-beacons-layer">
+            {microstateItems.map(({ country, cx, cy }) => {
+              const isSelected = country.id === selectedCountryId;
+              const isTarget = country.id === targetCountryId;
+              const isFeedbackCorrect = feedbackState === 'correct' && Boolean(isSelected || isTarget);
+              const isFeedbackIncorrect = feedbackState === 'incorrect' && Boolean(isSelected);
+              const k = zoomTransformRef.current?.k || 1;
+              const dotRadius = 3.5 / k;
+              const hitRadius = 16 / k;
+              const pulseRadius = 8 / k;
+
+              const fill = getCountryFill(country);
+              const stroke = isSelected || isTarget ? '#ffffff' : '#38bdf8';
+
+              return (
+                <g key={`beacon-${country.id}`} className="microstate-beacon-group">
+                  {/* Pulsing ring when active or in feedback */}
+                  {(isSelected || isTarget) && (
+                    <circle
+                      cx={cx}
+                      cy={cy}
+                      r={pulseRadius}
+                      className="microstate-pulse animate-ping opacity-75"
+                      fill="none"
+                      stroke={isFeedbackCorrect ? '#10b981' : isFeedbackIncorrect ? '#f43f5e' : '#38bdf8'}
+                      strokeWidth="1.2"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  )}
+
+                  {/* Core beacon dot */}
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={dotRadius}
+                    className="microstate-dot transition-colors duration-150 cursor-pointer"
+                    fill={fill}
+                    stroke={stroke}
+                    strokeWidth="1"
+                    vectorEffect="non-scaling-stroke"
+                  />
+
+                  {/* Generous invisible clickable hit-target (32px diameter on screen) */}
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={hitRadius}
+                    className="microstate-hitbox cursor-pointer"
+                    fill="transparent"
+                    pointerEvents="all"
+                    onMouseEnter={() => handleCountryHover(country)}
+                    onMouseLeave={handleCountryLeave}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCountrySelect(country);
+                    }}
+                  />
+                </g>
+              );
+            })}
+          </g>
         </g>
       </svg>
 

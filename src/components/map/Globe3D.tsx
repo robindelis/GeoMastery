@@ -4,6 +4,7 @@ import { feature } from 'topojson-client';
 import worldData50m from '../../assets/geo/countries-50m.json';
 import { Country, SRSItem } from '../../core/types';
 import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
+import { getMicrostateList } from '../../core/microstates';
 
 interface Globe3DProps {
   selectedCountryId?: string | null;
@@ -52,6 +53,8 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       return [];
     }
   }, []);
+
+  const microstateList = useMemo(() => getMicrostateList(), []);
 
   // Responsive sizing
   useEffect(() => {
@@ -223,6 +226,37 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         ctx.stroke();
       }
 
+      // Draw Microstate Beacons on 3D Globe (Vatican, Tuvalu, Nauru, etc.)
+      const centerCoords = [-rotationRef.current[0], -rotationRef.current[1]];
+      for (const country of microstateList) {
+        const dist = d3.geoDistance(country.coordinates, centerCoords as any);
+        if (dist < Math.PI / 2) {
+          const projected = projection(country.coordinates);
+          if (projected) {
+            const [px, py] = projected;
+            const isSelected = country.id === selectedCountryId;
+            const isTarget = country.id === targetCountryId;
+
+            // Subtle pulsing beacon ring for selected/target microstates
+            if (isSelected || isTarget) {
+              ctx.strokeStyle = '#38bdf8';
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.arc(px, py, 7, 0, 2 * Math.PI);
+              ctx.stroke();
+            }
+
+            ctx.fillStyle = getCountryFill(country);
+            ctx.strokeStyle = isSelected || isTarget ? '#ffffff' : '#38bdf8';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(px, py, 3.5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+          }
+        }
+      }
+
       // Globe rim highlight
       ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
       ctx.lineWidth = 1.5;
@@ -267,6 +301,28 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         const mx = e.clientX - rect.left;
         const my = e.clientY - rect.top;
 
+        // Check proximity to microstates first (since microstates are sub-pixel)
+        const center = [-rotationRef.current[0], -rotationRef.current[1]];
+        let nearestMicrostate: Country | null = null;
+        let minMicroDist = Infinity;
+        for (const m of microstateList) {
+          if (d3.geoDistance(m.coordinates, center as any) < Math.PI / 2) {
+            const p = projection(m.coordinates);
+            if (p) {
+              const d = Math.hypot(mx - p[0], my - p[1]);
+              if (d <= 18 && d < minMicroDist) {
+                minMicroDist = d;
+                nearestMicrostate = m;
+              }
+            }
+          }
+        }
+
+        if (nearestMicrostate) {
+          setHoveredCountry({ country: nearestMicrostate, x: e.clientX, y: e.clientY });
+          return;
+        }
+
         const coords = projection.invert ? projection.invert([mx, my]) : null;
         if (coords) {
           const [lng, lat] = coords;
@@ -301,6 +357,28 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       const rect = containerRef.current.getBoundingClientRect();
       const mx = e.clientX - rect.left;
       const my = e.clientY - rect.top;
+
+      // Check proximity to microstates first
+      const center = [-rotationRef.current[0], -rotationRef.current[1]];
+      let nearestMicrostate: Country | null = null;
+      let minMicroDist = Infinity;
+      for (const m of microstateList) {
+        if (d3.geoDistance(m.coordinates, center as any) < Math.PI / 2) {
+          const p = projection(m.coordinates);
+          if (p) {
+            const d = Math.hypot(mx - p[0], my - p[1]);
+            if (d <= 22 && d < minMicroDist) {
+              minMicroDist = d;
+              nearestMicrostate = m;
+            }
+          }
+        }
+      }
+
+      if (nearestMicrostate) {
+        onSelectCountry(nearestMicrostate);
+        return;
+      }
 
       const coords = projection.invert ? projection.invert([mx, my]) : null;
       if (coords) {
