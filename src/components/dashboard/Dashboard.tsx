@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Globe2,
   Flame,
@@ -9,14 +9,17 @@ import {
   Upload,
   Volume2,
   VolumeX,
-  Play
+  Play,
+  CheckCircle2,
+  Target,
+  Award
 } from 'lucide-react';
 import { Continent, MapViewMode, SRSItem, UserStats, AppSettings } from '../../core/types';
 import { COUNTRIES } from '../../assets/data/countries';
 import { computeMasteryStats } from '../../core/srsEngine';
 import { StorageService } from '../../core/storage';
 import { soundFx } from '../../core/soundFx';
-import { AmbientBackground } from '../common/AmbientBackground';
+import { PlanetaryBackground } from '../common/PlanetaryBackground';
 
 interface DashboardProps {
   onStartSession: (continent: 'All' | Continent, attributes: string[], practiceMode?: boolean) => void;
@@ -25,6 +28,14 @@ interface DashboardProps {
   mapMode: MapViewMode;
   onToggleMapMode: (mode: MapViewMode) => void;
 }
+
+const CONTINENT_EMBLEMS: Record<Continent, string> = {
+  Europe: '🏛️',
+  Asia: '⛩️',
+  Africa: '🦁',
+  Americas: '🌎',
+  Oceania: '🏝️'
+};
 
 export const Dashboard: React.FC<DashboardProps> = ({
   onStartSession,
@@ -48,7 +59,28 @@ export const Dashboard: React.FC<DashboardProps> = ({
     return unsubscribe;
   }, []);
 
-  const mastery = computeMasteryStats(srsItemsMap);
+  const mastery = useMemo(() => computeMasteryStats(srsItemsMap), [srsItemsMap]);
+
+  // Total unique countries with progress (Stage 1 or Stage 2)
+  const uniqueNationsCount = useMemo(() => {
+    const set = new Set<string>();
+    srsItemsMap.forEach((item) => {
+      if (item.stage > 0) set.add(item.countryId);
+    });
+    return set.size;
+  }, [srsItemsMap]);
+
+  // Total cards currently due for review
+  const totalDueCount = useMemo(() => {
+    const now = new Date().toISOString();
+    let due = 0;
+    srsItemsMap.forEach((item) => {
+      if (selectedAttributeFilter.includes(item.attributeId) && item.nextDueAt <= now) {
+        due++;
+      }
+    });
+    return due;
+  }, [srsItemsMap, selectedAttributeFilter]);
 
   // Check if a continent has 0 due cards and 0 new cards
   const isContinentCaughtUp = (continent: Continent) => {
@@ -111,32 +143,38 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
   const continents: Continent[] = ['Europe', 'Asia', 'Africa', 'Americas', 'Oceania'];
 
+  // Circular Dial Math (Radius = 46, Circumference = 289.02)
+  const dialRadius = 46;
+  const dialCircumference = 2 * Math.PI * dialRadius;
+  const learningOffset = dialCircumference - (mastery.learningPercentage / 100) * dialCircumference;
+  const masteryOffset = dialCircumference - (mastery.masteryPercentage / 100) * dialCircumference;
+
   return (
-    <AmbientBackground className="flex-1 flex flex-col h-full overflow-y-auto text-slate-100 p-6 sm:p-10">
+    <PlanetaryBackground className="flex-1 flex flex-col h-full overflow-y-auto text-slate-100 p-5 sm:p-8 lg:p-10">
       <div className="max-w-6xl mx-auto w-full flex flex-col gap-8 pb-16">
         {/* Top Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 via-teal-500 to-sky-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20 text-2xl">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 via-teal-500 to-sky-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/25 text-2xl select-none">
               🌍
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white flex items-center gap-2">
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-2">
                 GeoMastery
-                <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/35 font-semibold">
+                <span className="text-[10px] tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/35 font-bold">
                   Desktop
                 </span>
               </h1>
               <p className="text-xs text-slate-300 font-medium mt-0.5">
-                World Geography, Capitals & Map Location Spaced Repetition
+                Cartography Command & Spaced Repetition Memory Engine
               </p>
             </div>
           </div>
 
           {/* Quick Settings & Streak Bar */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             {/* Streak Counter */}
-            <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800/90 border border-slate-700/80 text-amber-300 font-bold text-xs shadow-md">
+            <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/80 border border-slate-700/80 text-amber-300 font-bold text-xs shadow-md backdrop-blur-md">
               <Flame className="w-4 h-4 fill-amber-400 text-amber-400" />
               <span>{stats.currentStreak} Day Streak</span>
             </div>
@@ -144,46 +182,57 @@ export const Dashboard: React.FC<DashboardProps> = ({
             {/* Sound Toggle */}
             <button
               onClick={toggleSound}
-              className="p-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700/80 text-slate-200 transition-colors shadow-md"
+              className="p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 text-slate-200 transition-colors shadow-md backdrop-blur-md"
               title={settings.audioEnabled ? 'Mute Sound FX' : 'Enable Sound FX'}
             >
-              {settings.audioEnabled ? <Volume2 className="w-4 h-4 text-emerald-400" /> : <VolumeX className="w-4 h-4 text-slate-400" />}
+              {settings.audioEnabled ? (
+                <Volume2 className="w-4 h-4 text-emerald-400" />
+              ) : (
+                <VolumeX className="w-4 h-4 text-slate-400" />
+              )}
             </button>
 
             {/* Backup Export */}
             <button
               onClick={handleExportBackup}
-              className="p-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700/80 text-slate-200 transition-colors shadow-md"
+              className="p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 text-slate-200 transition-colors shadow-md backdrop-blur-md"
               title="Export JSON Backup"
             >
               <Download className="w-4 h-4" />
             </button>
 
             {/* Backup Import */}
-            <label className="p-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700/80 text-slate-200 transition-colors cursor-pointer shadow-md">
+            <label className="p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 text-slate-200 transition-colors cursor-pointer shadow-md backdrop-blur-md">
               <Upload className="w-4 h-4" />
               <input type="file" accept=".json" onChange={handleImportBackup} className="hidden" />
             </label>
           </div>
         </div>
 
-        {/* Hero Global Mastery Card */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-800/95 via-slate-800/90 to-emerald-950/40 border border-slate-700/80 p-7 sm:p-9 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-md">
-          <div className="flex flex-col gap-2.5 max-w-lg">
+        {/* Hero Command Center Card ("Daily Master Hub") */}
+        <div className="relative overflow-hidden rounded-3xl bg-slate-900/80 border border-slate-700/80 p-6 sm:p-9 shadow-2xl backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6 glass-card">
+          {/* Subtle Top Ambient Gradient */}
+          <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-emerald-500/10 via-sky-500/5 to-transparent pointer-events-none" />
+
+          {/* Left Column: Briefing & Controls */}
+          <div className="flex flex-col gap-3 max-w-lg relative z-10">
             <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs tracking-wider uppercase">
-              <Sparkles className="w-4 h-4" />
-              <span>Progressive Cognitive Scaffolding Engine</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Spaced Repetition Mission Control</span>
             </div>
+
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug">
               Ready for your daily review?
             </h2>
+
             <p className="text-sm text-slate-300 leading-relaxed font-normal">
-              New nations start in multiple-choice recognition. Once you answer correctly, they automatically graduate to active recall typing!
+              Progressive cognitive scaffolding: new nations start in multiple choice and graduate to active recall. Requires 2 consecutive correct answers to master.
             </p>
 
-            {/* Attribute Filter Toggles */}
-            <div className="flex items-center gap-2 mt-2">
-              <span className="text-xs text-slate-300 font-semibold">Training:</span>
+            {/* Training Mode Pills */}
+            <div className="flex flex-wrap items-center gap-2 mt-1">
+              <span className="text-xs text-slate-400 font-semibold mr-1">Focus:</span>
               <button
                 onClick={() => {
                   setSelectedAttributeFilter((prev) =>
@@ -196,11 +245,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 }}
                 className={`text-xs px-3 py-1.5 rounded-xl border font-semibold transition-all ${
                   selectedAttributeFilter.includes('capital')
-                    ? 'bg-emerald-500/25 border-emerald-400/60 text-emerald-200 shadow-sm'
-                    : 'bg-slate-700/60 border-slate-600/80 text-slate-300 hover:text-white'
+                    ? 'bg-emerald-500/20 border-emerald-400/60 text-emerald-300 shadow-sm'
+                    : 'bg-slate-800/60 border-slate-700/80 text-slate-400 hover:text-white'
                 }`}
               >
-                Capitals
+                🏛️ Capital Cities
               </button>
               <button
                 onClick={() => {
@@ -214,34 +263,97 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 }}
                 className={`text-xs px-3 py-1.5 rounded-xl border font-semibold transition-all ${
                   selectedAttributeFilter.includes('location')
-                    ? 'bg-sky-500/25 border-sky-400/60 text-sky-200 shadow-sm'
-                    : 'bg-slate-700/60 border-slate-600/80 text-slate-300 hover:text-white'
+                    ? 'bg-sky-500/20 border-sky-400/60 text-sky-300 shadow-sm'
+                    : 'bg-slate-800/60 border-slate-700/80 text-slate-400 hover:text-white'
                 }`}
               >
-                Map Locations
+                📍 Map Locations
               </button>
+            </div>
+
+            {/* Status Breakdown Pills */}
+            <div className="flex items-center gap-3 text-xs text-slate-400 pt-1">
+              <span className="flex items-center gap-1 font-medium">
+                <span className="w-2 h-2 rounded-full bg-amber-400" />
+                <strong className="text-amber-300">{mastery.globalStage1}</strong> in active recall
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1 font-medium">
+                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                <strong className="text-emerald-300">{mastery.globalStage2}</strong> mastered
+              </span>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-5 w-full md:w-auto">
-            {/* Mastery Dial / Percent */}
-            <div className="bg-slate-900/85 border border-slate-700/80 p-6 rounded-2xl flex flex-col items-center justify-center min-w-[150px] shadow-xl">
-              <span className="text-3xl sm:text-4xl font-black text-emerald-400 font-mono tracking-tight">
-                {mastery.masteryPercentage}%
-              </span>
-              <span className="text-[11px] text-slate-300 font-bold uppercase tracking-wider mt-1">World Mastered</span>
-              <div className="flex items-center gap-1.5 text-[11px] text-amber-300 font-semibold mt-1">
-                <span>{mastery.learningPercentage}% in Recall</span>
+          {/* Right Column: Circular SVG Mastery Dial & Big CTA */}
+          <div className="flex flex-col sm:flex-row items-center gap-6 w-full md:w-auto relative z-10">
+            {/* Precision Circular SVG Mastery Dial */}
+            <div className="relative flex items-center justify-center">
+              <svg className="w-32 h-32 -rotate-90 transform" viewBox="0 0 120 120">
+                {/* Background Track */}
+                <circle
+                  cx="60"
+                  cy="60"
+                  r={dialRadius}
+                  className="stroke-slate-800"
+                  strokeWidth="8"
+                  fill="transparent"
+                />
+
+                {/* Learning / Active Recall Ring (Amber) */}
+                <circle
+                  cx="60"
+                  cy="60"
+                  r={dialRadius}
+                  className="stroke-amber-400 transition-all duration-1000 ease-out"
+                  strokeWidth="8"
+                  strokeDasharray={dialCircumference}
+                  strokeDashoffset={learningOffset}
+                  strokeLinecap="round"
+                  fill="transparent"
+                  opacity="0.85"
+                />
+
+                {/* Mastered Ring (Emerald) */}
+                <circle
+                  cx="60"
+                  cy="60"
+                  r={dialRadius}
+                  className="stroke-emerald-400 transition-all duration-1000 ease-out"
+                  strokeWidth="8"
+                  strokeDasharray={dialCircumference}
+                  strokeDashoffset={masteryOffset}
+                  strokeLinecap="round"
+                  fill="transparent"
+                />
+              </svg>
+
+              {/* Dial Center Info */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                <span className="text-2xl font-black text-white font-mono tracking-tight">
+                  {mastery.masteryPercentage}%
+                </span>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">
+                  Mastered
+                </span>
+                <span className="text-[9px] font-semibold text-amber-300">
+                  {mastery.learningPercentage}% recall
+                </span>
               </div>
             </div>
 
-            {/* Launch Daily SRS Session Button */}
+            {/* Launch Daily World Review Button */}
             <button
               onClick={() => onStartSession('All', selectedAttributeFilter)}
-              className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-base shadow-xl shadow-emerald-500/30 flex items-center justify-center gap-3 transition-all transform active:scale-95"
+              className="w-full sm:w-auto px-7 py-4.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-base shadow-xl shadow-emerald-500/25 flex flex-col items-center justify-center gap-0.5 transition-all transform active:scale-95"
             >
-              <Play className="w-5 h-5 fill-slate-950" />
-              <span>TRAIN WORLD</span>
+              <div className="flex items-center gap-2">
+                <Play className="w-5 h-5 fill-slate-950" />
+                <span>TRAIN WORLD</span>
+              </div>
+              <span className="text-[11px] font-semibold text-slate-900/80">
+                {totalDueCount > 0 ? `${totalDueCount} Reviews Due` : '15 Mixed Reviews'}
+              </span>
             </button>
           </div>
         </div>
@@ -251,39 +363,53 @@ export const Dashboard: React.FC<DashboardProps> = ({
           {/* Atlas Explorer */}
           <button
             onClick={onOpenAtlas}
-            className="group p-6 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 hover:border-slate-600 flex items-center justify-between text-left transition-all shadow-xl glass-card-hover"
+            className="group p-6 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/80 hover:border-slate-600 flex items-center justify-between text-left transition-all shadow-xl backdrop-blur-md glass-card-hover"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-sky-500/20 border border-sky-400/35 flex items-center justify-center text-sky-400 group-hover:scale-110 transition-transform">
                 <Compass className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-white">Interactive World Atlas</h3>
-                <p className="text-xs text-slate-300 mt-0.5">
-                  Free-roam 2D vector map & 3D globe with search and country dossiers
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-bold text-white">Interactive World Atlas</h3>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-950/70 border border-sky-700/60 text-sky-300">
+                    Free-Roam
+                  </span>
+                </div>
+                <p className="text-xs text-slate-300 mt-1">
+                  Explore 196 sovereign nations on 2D vector map & 3D globe with search and country dossiers
                 </p>
               </div>
             </div>
-            <span className="text-slate-400 group-hover:text-white group-hover:translate-x-1 transition-all">→</span>
+            <span className="text-slate-400 group-hover:text-white group-hover:translate-x-1 transition-all text-lg font-bold">
+              →
+            </span>
           </button>
 
           {/* Time Attack Arcade */}
           <button
             onClick={onOpenArcade}
-            className="group p-6 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 hover:border-slate-600 flex items-center justify-between text-left transition-all shadow-xl glass-card-hover"
+            className="group p-6 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/80 hover:border-slate-600 flex items-center justify-between text-left transition-all shadow-xl backdrop-blur-md glass-card-hover"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-400/35 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
                 <Zap className="w-6 h-6 fill-amber-400" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-white">Time-Attack Blitz</h3>
-                <p className="text-xs text-slate-300 mt-0.5">
-                  60-second speedrun challenge with streak combo multipliers
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-bold text-white">Time-Attack Blitz</h3>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-950/70 border border-amber-700/60 text-amber-300">
+                    Arcade Speedrun
+                  </span>
+                </div>
+                <p className="text-xs text-slate-300 mt-1">
+                  60-second capital challenge with combo streak multipliers and personal records
                 </p>
               </div>
             </div>
-            <span className="text-slate-400 group-hover:text-white group-hover:translate-x-1 transition-all">→</span>
+            <span className="text-slate-400 group-hover:text-white group-hover:translate-x-1 transition-all text-lg font-bold">
+              →
+            </span>
           </button>
         </div>
 
@@ -294,38 +420,43 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <Globe2 className="w-5 h-5 text-emerald-400" />
               <span>Targeted Continental Drills</span>
             </h3>
-            <span className="text-xs text-slate-400 font-medium">Click a continent to start dedicated session</span>
+            <span className="text-xs text-slate-400 font-medium">Click a region to launch dedicated practice</span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {continents.map((continent) => {
               const b = mastery.breakdown[continent];
               const pct = b.total > 0 ? Math.round((b.stage2 / b.total) * 100) : 0;
               const learningPct = b.total > 0 ? Math.round((b.stage1 / b.total) * 100) : 0;
               const caughtUp = isContinentCaughtUp(continent);
+              const emblem = CONTINENT_EMBLEMS[continent] || '🌍';
 
               return (
                 <div
                   key={continent}
-                  className="bg-slate-800/80 border border-slate-700/80 hover:border-slate-600 rounded-2xl p-4 flex flex-col justify-between gap-4 transition-all shadow-lg glass-card-hover group"
+                  className="bg-slate-900/80 border border-slate-700/80 hover:border-slate-600 rounded-2xl p-4 flex flex-col justify-between gap-4 transition-all shadow-lg backdrop-blur-md glass-card-hover group"
                 >
                   <div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
+                        <span className="text-lg select-none">{emblem}</span>
                         <h4 className="font-bold text-white text-sm">{continent}</h4>
-                        {caughtUp && (
-                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                            Caught Up
-                          </span>
-                        )}
                       </div>
                       <span className="text-xs font-mono font-bold text-emerald-400">{pct}%</span>
                     </div>
 
-                    {/* Progress bars */}
-                    <div className="h-2 rounded-full bg-slate-900/80 mt-2.5 overflow-hidden flex">
-                      <div className="h-full bg-emerald-500 transition-all duration-300" style={{ width: `${pct}%` }} />
-                      <div className="h-full bg-amber-500 transition-all duration-300" style={{ width: `${learningPct}%` }} />
+                    {/* Dual-layer progress bar: Emerald (Mastered) + Amber (Learning) */}
+                    <div className="h-2 rounded-full bg-slate-950 mt-3 overflow-hidden flex">
+                      <div
+                        className="h-full bg-emerald-500 transition-all duration-300"
+                        style={{ width: `${pct}%` }}
+                        title={`${pct}% Mastered`}
+                      />
+                      <div
+                        className="h-full bg-amber-500 transition-all duration-300"
+                        style={{ width: `${learningPct}%` }}
+                        title={`${learningPct}% Active Recall`}
+                      />
                     </div>
 
                     <div className="flex items-center justify-between text-[11px] text-slate-300 mt-2">
@@ -336,10 +467,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
                   <button
                     onClick={() => onStartSession(continent, selectedAttributeFilter, caughtUp)}
-                    className={`w-full py-2.5 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm ${
+                    className={`w-full py-2.5 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95 ${
                       caughtUp
-                        ? 'bg-violet-950/60 hover:bg-violet-600 text-violet-200 hover:text-white border border-violet-700/50'
-                        : 'bg-slate-700/80 hover:bg-emerald-500 hover:text-slate-950 text-slate-100'
+                        ? 'bg-violet-950/70 hover:bg-violet-600 text-violet-200 hover:text-white border border-violet-700/50 shadow-violet-950/30'
+                        : 'bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-slate-100 border border-slate-700 hover:border-emerald-400'
                     }`}
                   >
                     {caughtUp ? (
@@ -360,28 +491,59 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </div>
         </div>
 
-        {/* Global Statistics Footer */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-800/70 border border-slate-700/80 rounded-2xl p-5 shadow-lg">
-          <div className="flex flex-col">
-            <span className="text-xs text-slate-400 font-medium">Total Reviews</span>
-            <span className="text-xl font-bold font-mono text-white mt-1">{stats.totalReviews}</span>
+        {/* Global Statistics Telemetry Pods */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 bg-slate-900/80 border border-slate-700/80 rounded-2xl p-5 shadow-xl backdrop-blur-md">
+          {/* 1. Total Reviews */}
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-sky-500/15 border border-sky-400/30 flex items-center justify-center text-sky-400">
+              <Target className="w-5 h-5" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-slate-400 font-medium">Total Reviews</span>
+              <span className="text-xl font-bold font-mono text-white mt-0.5">{stats.totalReviews}</span>
+            </div>
           </div>
-          <div className="flex flex-col">
-            <span className="text-xs text-slate-400 font-medium">Total Correct</span>
-            <span className="text-xl font-bold font-mono text-emerald-400 mt-1">{stats.totalCorrect}</span>
+
+          {/* 2. Overall Accuracy */}
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center text-emerald-400">
+              <CheckCircle2 className="w-5 h-5" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-slate-400 font-medium">Overall Accuracy</span>
+              <span className="text-xl font-bold font-mono text-emerald-400 mt-0.5">
+                {stats.totalReviews > 0 ? Math.round((stats.totalCorrect / stats.totalReviews) * 100) : 100}%
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col">
-            <span className="text-xs text-slate-400 font-medium">Overall Accuracy</span>
-            <span className="text-xl font-bold font-mono text-sky-400 mt-1">
-              {stats.totalReviews > 0 ? Math.round((stats.totalCorrect / stats.totalReviews) * 100) : 100}%
-            </span>
+
+          {/* 3. Streaks */}
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-400/30 flex items-center justify-center text-amber-400">
+              <Flame className="w-5 h-5 fill-amber-400" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-slate-400 font-medium">Streak Milestone</span>
+              <span className="text-xl font-bold font-mono text-amber-400 mt-0.5">
+                {stats.currentStreak} Days <span className="text-xs text-slate-400 font-normal">(Record: {stats.longestStreak}d)</span>
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col">
-            <span className="text-xs text-slate-400 font-medium">Longest Streak</span>
-            <span className="text-xl font-bold font-mono text-amber-400 mt-1">{stats.longestStreak} days</span>
+
+          {/* 4. Nations in Memory */}
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-400/30 flex items-center justify-center text-purple-400">
+              <Award className="w-5 h-5" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-slate-400 font-medium">Nations in Memory</span>
+              <span className="text-xl font-bold font-mono text-purple-300 mt-0.5">
+                {uniqueNationsCount} <span className="text-xs text-slate-400 font-normal">/ 196 World</span>
+              </span>
+            </div>
           </div>
         </div>
       </div>
-    </AmbientBackground>
+    </PlanetaryBackground>
   );
 };
