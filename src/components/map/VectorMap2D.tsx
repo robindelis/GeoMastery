@@ -84,7 +84,7 @@ const CountryPolygon = React.memo<CountryPolygonProps>(
         stroke={stroke}
         strokeWidth={strokeWidth}
         vectorEffect="non-scaling-stroke"
-        className={`country-vector-path transition-colors duration-100 cursor-pointer hover:brightness-125 ${
+        className={`country-vector-path cursor-pointer ${
           isFeedbackCorrect ? 'map-country-correct' : ''
         } ${isFeedbackIncorrect ? 'map-country-incorrect' : ''}`}
         onMouseEnter={handleMouseEnter}
@@ -321,7 +321,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       .scale(dimensions.width / 5.8)
       .translate([dimensions.width / 2, dimensions.height / 2 + 10]);
 
-    const path = d3.geoPath().projection(proj);
+    const path = d3.geoPath().projection(proj).digits(1);
     return { projection: proj, pathGenerator: path };
   }, [dimensions]);
 
@@ -346,6 +346,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   const isZoomingRef = useRef(false);
   const zoomEndTimerRef = useRef<number | null>(null);
   const rafZoomIdRef = useRef<number | null>(null);
+  const lastBeaconKRef = useRef<number | null>(null);
   const beaconCirclesRef = useRef<{ el: SVGCircleElement; baseR: number }[]>([]);
 
   // Index beacon circle elements after renders so zoom loops never perform querySelectorAll
@@ -391,9 +392,6 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         zoomTransformRef.current = event.transform;
         if (!gRef.current) return;
 
-        // Instantly apply matrix transform on GPU-promoted group
-        gRef.current.setAttribute('transform', event.transform.toString());
-
         // Toggle .is-zooming class during active gestures to suppress hit-test & hover thrashing
         if (!isZoomingRef.current) {
           isZoomingRef.current = true;
@@ -406,13 +404,17 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         }, 120);
 
         // Batch beacon radii resizing inside requestAnimationFrame (at most once per frame, zero querySelectorAll)
-        const k = event.transform.k;
+        // Transform and beacon radii are applied together once per frame, however many wheel events fired
         if (!rafZoomIdRef.current) {
           rafZoomIdRef.current = requestAnimationFrame(() => {
             rafZoomIdRef.current = null;
+            const t = zoomTransformRef.current;
+            gRef.current?.setAttribute('transform', t.toString());
+            if (t.k === lastBeaconKRef.current) return;
+            lastBeaconKRef.current = t.k;
             const beacons = beaconCirclesRef.current;
             for (let i = 0; i < beacons.length; i++) {
-              beacons[i].el.setAttribute('r', (beacons[i].baseR / k).toFixed(2));
+              beacons[i].el.setAttribute('r', (beacons[i].baseR / t.k).toFixed(2));
             }
           });
         }
