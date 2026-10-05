@@ -247,6 +247,30 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         Math.max(-180, Math.min(180, x)),
         Math.max(-89.999, Math.min(89.999, y))
       ];
+      const densifyRing = (ring: [number, number][]): [number, number][] => {
+        const newRing: [number, number][] = [];
+        for (let i = 0; i < ring.length - 1; i++) {
+          const p1 = clampCoord(ring[i]);
+          const p2 = clampCoord(ring[i + 1]);
+          newRing.push(p1);
+          const dLat = Math.abs(p1[1] - p2[1]);
+          const dLng = Math.abs(p1[0] - p2[0]);
+          if (dLat < 0.1 && dLng > 2.0) {
+            const steps = Math.ceil(dLng / 2.0);
+            const stepLng = (p2[0] - p1[0]) / steps;
+            const stepLat = (p2[1] - p1[1]) / steps;
+            for (let s = 1; s < steps; s++) {
+              newRing.push([
+                +(p1[0] + s * stepLng).toFixed(5),
+                +(p1[1] + s * stepLat).toFixed(5)
+              ]);
+            }
+          }
+        }
+        newRing.push(clampCoord(ring[ring.length - 1]));
+        return newRing;
+      };
+
       return rawFeatures.map((feat) => {
         if (!feat.geometry) return feat;
         if (feat.geometry.type === 'Polygon') {
@@ -254,7 +278,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
             ...feat,
             geometry: {
               ...feat.geometry,
-              coordinates: feat.geometry.coordinates.map((ring: any) => ring.map(clampCoord))
+              coordinates: feat.geometry.coordinates.map((ring: any) => densifyRing(ring))
             }
           };
         }
@@ -263,7 +287,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
             ...feat,
             geometry: {
               ...feat.geometry,
-              coordinates: feat.geometry.coordinates.map((poly: any) => poly.map((ring: any) => ring.map(clampCoord)))
+              coordinates: feat.geometry.coordinates.map((poly: any) => poly.map((ring: any) => densifyRing(ring)))
             }
           };
         }

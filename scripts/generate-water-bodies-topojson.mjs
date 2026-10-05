@@ -68,6 +68,40 @@ function clampGeometry(geom) {
   };
 }
 
+function densifyGeometry(geom, maxStepLng = 2.0) {
+  if (!geom) return geom;
+  function densifyRing(ring) {
+    const newRing = [];
+    for (let i = 0; i < ring.length - 1; i++) {
+      const p1 = ring[i];
+      const p2 = ring[i + 1];
+      newRing.push(p1);
+      const dLat = Math.abs(p1[1] - p2[1]);
+      const dLng = Math.abs(p1[0] - p2[0]);
+      // If latitude is constant or nearly constant and delta longitude is large (> maxStepLng)
+      if (dLat < 0.1 && dLng > maxStepLng) {
+        const steps = Math.ceil(dLng / maxStepLng);
+        const stepLng = (p2[0] - p1[0]) / steps;
+        const stepLat = (p2[1] - p1[1]) / steps;
+        for (let s = 1; s < steps; s++) {
+          const lng = +(p1[0] + s * stepLng).toFixed(5);
+          const lat = +(p1[1] + s * stepLat).toFixed(5);
+          newRing.push([lng, lat]);
+        }
+      }
+    }
+    newRing.push(ring[ring.length - 1]);
+    return newRing;
+  }
+  if (geom.type === 'Polygon') {
+    return { ...geom, coordinates: geom.coordinates.map(densifyRing) };
+  }
+  if (geom.type === 'MultiPolygon') {
+    return { ...geom, coordinates: geom.coordinates.map((poly) => poly.map(densifyRing)) };
+  }
+  return geom;
+}
+
 function createCorridorPolygon(pts, widthDeg = 0.08) {
   const left = [];
   const right = [];
@@ -374,9 +408,30 @@ async function main() {
   const combinedFeatures = [...clampedDissolved, ...straits];
   fs.writeFileSync(allCleanPath, JSON.stringify({ type: 'FeatureCollection', features: combinedFeatures }), 'utf8');
 
-  console.log('Compiling to TopoJSON via mapshaper with shape preservation...');
+  const simplifiedPath = path.join(CACHE_DIR, 'water_bodies_simplified.geojson');
+  const densifiedPath = path.join(CACHE_DIR, 'water_bodies_densified.geojson');
+
+  console.log('Simplifying non-parallel geometry with shape preservation...');
   execSync(
-    `npx mapshaper "${allCleanPath}" -simplify 20% keep-shapes -rename-layers water_bodies -o format=topojson id-field=wb_id "${OUTPUT_FILE}"`,
+    `npx mapshaper "${allCleanPath}" -simplify 20% keep-shapes -o "${simplifiedPath}" format=geojson`,
+    { stdio: 'inherit' }
+  );
+
+  console.log('Densifying parallel boundaries and re-clamping...');
+  const simplifiedData = JSON.parse(fs.readFileSync(simplifiedPath, 'utf8'));
+  const densifiedFeatures = simplifiedData.features.map((f) => ({
+    ...f,
+    geometry: densifyGeometry(clampGeometry(f.geometry))
+  }));
+  fs.writeFileSync(
+    densifiedPath,
+    JSON.stringify({ type: 'FeatureCollection', features: densifiedFeatures }),
+    'utf8'
+  );
+
+  console.log('Compiling densified geometry to TopoJSON...');
+  execSync(
+    `npx mapshaper "${densifiedPath}" -rename-layers water_bodies -o format=topojson id-field=wb_id "${OUTPUT_FILE}"`,
     { stdio: 'inherit' }
   );
 
@@ -397,18 +452,50 @@ async function main() {
       throw new Error(`Failed to generate valid SVG path for ${f.id}`);
     }
     const matches = [...d.matchAll(/([0-9.-]+),([0-9.-]+)/g)];
+    const minY = Math.min(...matches.map((m) => parseFloat(m[2])));
     const maxY = Math.max(...matches.map((m) => parseFloat(m[2])));
     const maxX = Math.max(...matches.map((m) => parseFloat(m[1])));
+    const b = d3.geoBounds(f);
 
     if (f.id === 'WATER_OCEAN_ARCTIC') {
       const highY = matches.filter((m) => parseFloat(m[2]) > 200);
       if (highY.length > 0 || maxY > 150) {
         throw new Error(`Arctic Ocean geometry corrupted: maxY=${maxY}, high Y points count=${highY.length}`);
       }
+      if (b[0][1] < 60) {
+        throw new Error(`Arctic Ocean minLat corrupted: ${b[0][1]} (must be >= 60)`);
+      }
+    }
+    if (f.id === 'WATER_OCEAN_INDIAN' || f.id === 'WATER_OCEAN_PACIFIC' || f.id === 'WATER_OCEAN_ATLANTIC') {
+      if (maxY > 456) {
+        throw new Error(`${f.id} bleeding into Antarctica: maxY=${maxY} (must be <= 456)`);
+      }
+      if (b[0][1] < -61) {
+        throw new Error(`${f.id} minLat bleeding into Antarctica: ${b[0][1]} (must be >= -61)`);
+      }
+    }
+    if (f.id === 'WATER_OCEAN_SOUTHERN') {
+      if (minY < 453) {
+        throw new Error(`Southern Ocean minY corrupted: ${minY} (must be >= 453)`);
+      }
+      if (b[1][1] > -60) {
+        throw new Error(`Southern Ocean maxLat corrupted: ${b[1][1]} (must be <= -60)`);
+      }
     }
     if (f.id === 'WATER_SEA_MEDITERRANEAN') {
       if (maxX > 600) {
         throw new Error(`Mediterranean Sea geometry corrupted: maxX=${maxX} (leaking into Eastern Asia)`);
+      }
+    }
+  }
+
+  // Verify zero overlap among all 5 oceans across a global grid
+  const oceans = compiledGeo.features.filter((f) => f.id.startsWith('WATER_OCEAN_'));
+  for (let lat = -88; lat <= 88; lat += 2) {
+    for (let lng = -178; lng <= 178; lng += 2) {
+      const hits = oceans.filter((o) => d3.geoContains(o, [lng, lat])).map((o) => o.id);
+      if (hits.length > 1) {
+        throw new Error(`Multiple oceans overlap at [${lng}, ${lat}]: ${hits.join(', ')}`);
       }
     }
   }

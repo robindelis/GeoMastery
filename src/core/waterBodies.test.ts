@@ -106,7 +106,7 @@ describe('Water Bodies & Maritime Hydrography Dataset', () => {
       expect(pathD!.length).toBeGreaterThan(10);
 
       // Strict boundaries verification:
-      // Arctic Ocean must be strictly bounded in the far north (Y <= 150 on 960x540 viewport)
+      // Arctic Ocean must be strictly bounded in the far north (Y <= 150 on 960x540 viewport, lat >= 60°N)
       // and must never span across the prime meridian down to the South Pole (Y > 200).
       if (wb.id === 'WATER_OCEAN_ARCTIC') {
         const matches = [...pathD!.matchAll(/([0-9.-]+),([0-9.-]+)/g)];
@@ -114,6 +114,26 @@ describe('Water Bodies & Maritime Hydrography Dataset', () => {
         const maxY = Math.max(...matches.map((m) => parseFloat(m[2])));
         expect(highYPoints.length, 'Arctic Ocean SVG path must have zero points with Y > 200').toBe(0);
         expect(maxY, 'Arctic Ocean SVG path maxY must stay in the northern hemisphere').toBeLessThan(150);
+        const bounds = d3.geoBounds(feat);
+        expect(bounds[0][1], 'Arctic Ocean minLat must be strictly in northern high latitudes').toBeGreaterThanOrEqual(60);
+      }
+
+      // Indian Ocean, Pacific Ocean, and Atlantic Ocean must strictly stay north of 60.5°S and not spill into Antarctica
+      if (wb.id === 'WATER_OCEAN_INDIAN' || wb.id === 'WATER_OCEAN_PACIFIC' || wb.id === 'WATER_OCEAN_ATLANTIC') {
+        const matches = [...pathD!.matchAll(/([0-9.-]+),([0-9.-]+)/g)];
+        const maxY = Math.max(...matches.map((m) => parseFloat(m[2])));
+        expect(maxY, `${wb.id} SVG path maxY must not bleed into Antarctica (< 456)`).toBeLessThanOrEqual(456);
+        const bounds = d3.geoBounds(feat);
+        expect(bounds[0][1], `${wb.id} minLat must not bleed into Antarctica (>= -61°)`).toBeGreaterThanOrEqual(-61);
+      }
+
+      // Southern Ocean must strictly stay in Antarctic waters south of 60°S (minY >= 453, maxLat <= -60)
+      if (wb.id === 'WATER_OCEAN_SOUTHERN') {
+        const matches = [...pathD!.matchAll(/([0-9.-]+),([0-9.-]+)/g)];
+        const minY = Math.min(...matches.map((m) => parseFloat(m[2])));
+        expect(minY, 'Southern Ocean SVG path minY must stay in southern polar region (>= 453)').toBeGreaterThanOrEqual(453);
+        const bounds = d3.geoBounds(feat);
+        expect(bounds[1][1], 'Southern Ocean maxLat must stay south of 60°S').toBeLessThanOrEqual(-60);
       }
 
       // Mediterranean Sea must not leak into Japan / Eastern Asia (X <= 600)
@@ -123,6 +143,39 @@ describe('Water Bodies & Maritime Hydrography Dataset', () => {
         expect(maxX, 'Mediterranean Sea SVG path maxX must stay in Europe/Levant (< 600)').toBeLessThan(600);
       }
     }
+  });
+
+  it('guarantees zero mutual polygon overlap among all 5 global oceans across a global grid', () => {
+    const geo = feature(waterBodies50m as any, (waterBodies50m as any).objects.water_bodies) as any;
+    const oceans = geo.features
+      .filter((f: any) => f.id.startsWith('WATER_OCEAN_'))
+      .map((f: any) => {
+        const b = d3.geoBounds(f);
+        return {
+          id: f.id,
+          feat: f,
+          bbox: [b[0][0], b[0][1], b[1][0], b[1][1]],
+          cross: b[0][0] > b[1][0]
+        };
+      });
+    expect(oceans.length).toBe(5);
+
+    let overlapCount = 0;
+    for (let lat = -86; lat <= 86; lat += 3) {
+      for (let lng = -177; lng <= 177; lng += 3) {
+        const hits = oceans
+          .filter((o: any) => {
+            if (lat < o.bbox[1] || lat > o.bbox[3]) return false;
+            if (o.cross ? (lng < o.bbox[0] && lng > o.bbox[2]) : (lng < o.bbox[0] || lng > o.bbox[2])) return false;
+            return d3.geoContains(o.feat, [lng, lat]);
+          })
+          .map((o: any) => o.id);
+        if (hits.length > 1) {
+          overlapCount++;
+        }
+      }
+    }
+    expect(overlapCount, 'Oceans must not overlap with one another anywhere on Earth').toBe(0);
   });
 
   it('correctly verifies point-in-polygon containment with d3.geoContains across water bodies', () => {
@@ -141,6 +194,21 @@ describe('Water Bodies & Maritime Hydrography Dataset', () => {
     // Must NOT contain Indian Ocean [70°E, -20°S] or Gulf of Guinea [0°E, 0°N]
     expect(d3.geoContains(arctic, [70, -20])).toBe(false);
     expect(d3.geoContains(arctic, [0, 0])).toBe(false);
+    expect(d3.geoContains(arctic, [0, -40])).toBe(false);
+
+    // Indian Ocean [75°E, -20°S]
+    const indian = featureMap.get('WATER_OCEAN_INDIAN');
+    expect(d3.geoContains(indian, [75, -20])).toBe(true);
+    // Must NOT contain Antarctica [75°E, -80°S] or Arctic [0°E, 85°N]
+    expect(d3.geoContains(indian, [75, -80])).toBe(false);
+    expect(d3.geoContains(indian, [0, 85])).toBe(false);
+
+    // Southern Ocean [0°E, -65°S]
+    const southern = featureMap.get('WATER_OCEAN_SOUTHERN');
+    expect(d3.geoContains(southern, [0, -65])).toBe(true);
+    // Must NOT contain Equator [0°E, 0°N] or Indian Ocean center [75°E, -20°S]
+    expect(d3.geoContains(southern, [0, 0])).toBe(false);
+    expect(d3.geoContains(southern, [75, -20])).toBe(false);
 
     // North Sea [3°E, 56°N]
     const northSea = featureMap.get('WATER_SEA_NORTH');
@@ -153,6 +221,12 @@ describe('Water Bodies & Maritime Hydrography Dataset', () => {
     // Atlantic Ocean [-30°W, 25°N]
     const atlantic = featureMap.get('WATER_OCEAN_ATLANTIC');
     expect(d3.geoContains(atlantic, [-30, 25])).toBe(true);
+    expect(d3.geoContains(atlantic, [-20, -80])).toBe(false);
+
+    // Pacific Ocean [-160°W, 0°N]
+    const pacific = featureMap.get('WATER_OCEAN_PACIFIC');
+    expect(d3.geoContains(pacific, [-160, 0])).toBe(true);
+    expect(d3.geoContains(pacific, [-120, -80])).toBe(false);
   });
 
   it('guarantees pure English naming without parenthesis translations across all water bodies', () => {
