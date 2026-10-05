@@ -172,13 +172,13 @@ const WaterBodyPolygon = React.memo<WaterBodyPolygonProps>(
         stroke={stroke}
         strokeWidth={strokeWidth}
         vectorEffect="non-scaling-stroke"
-        className={`water-body-vector-path cursor-pointer hover:brightness-125 transition-colors duration-100 ${
+        className={`water-body-vector-path cursor-pointer ${
           isFeedbackCorrect
-            ? '!fill-emerald-500/50 !stroke-emerald-400'
+            ? 'water-body-correct'
             : isFeedbackIncorrect
-            ? '!fill-rose-500/50 !stroke-rose-400'
+            ? 'water-body-incorrect'
             : isSelectedOrTarget
-            ? '!fill-cyan-500/40 !stroke-cyan-400'
+            ? 'water-body-selected'
             : ''
         }`}
         onMouseEnter={handleMouseEnter}
@@ -308,6 +308,22 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
           d3.select(gRef.current).selectAll('.microstate-dot').attr('r', 3.5 / k);
           d3.select(gRef.current).selectAll('.microstate-pulse').attr('r', 8 / k);
           d3.select(gRef.current).selectAll('.microstate-hitbox').attr('r', 16 / k);
+          d3.select(gRef.current).selectAll('.water-beacon-dot').attr('r', function () {
+            const el = this as SVGCircleElement;
+            const isOcean = el.getAttribute('data-ocean') === 'true';
+            const isStrait = el.getAttribute('data-strait') === 'true';
+            return (isStrait ? 4 : isOcean ? 6 : 5) / k;
+          });
+          d3.select(gRef.current).selectAll('.water-beacon-pulse').attr('r', function () {
+            const el = this as SVGCircleElement;
+            const isOcean = el.getAttribute('data-ocean') === 'true';
+            return (isOcean ? 16 : 12) / k;
+          });
+          d3.select(gRef.current).selectAll('.water-beacon-hitbox').attr('r', function () {
+            const el = this as SVGCircleElement;
+            const isOcean = el.getAttribute('data-ocean') === 'true';
+            return (isOcean ? 32 : 24) / k;
+          });
         }
       });
 
@@ -845,12 +861,6 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
               const isSelected = country.id === selectedCountryId;
               const isTarget = country.id === targetCountryId;
               const isStrait = wb.type === 'strait' || wb.type === 'channel';
-
-              // Assistive beacons for narrow straits/canals (like microstates) or when actively selected/targeted
-              if (!isStrait && !isSelected && !isTarget) {
-                return null;
-              }
-
               const isFeedbackCorrect = feedbackState === 'correct' && Boolean(isSelected || isTarget);
               const isFeedbackIncorrect = feedbackState === 'incorrect' && Boolean(isSelected);
               const k = zoomTransformRef.current?.k || 1;
@@ -860,8 +870,8 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
               const hitRadius = (isStrait ? 20 : isOcean ? 32 : 24) / k;
               const pulseRadius = (isStrait ? 10 : isOcean ? 16 : 12) / k;
 
-              let fill = isStrait ? '#0284c7' : isOcean ? '#0369a1' : '#0ea5e9';
-              let stroke = isSelected || isTarget ? '#ffffff' : '#38bdf8';
+              let fill = isStrait ? '#06b6d4' : isOcean ? '#38bdf8' : '#0ea5e9';
+              let stroke = isSelected || isTarget ? '#ffffff' : '#e0f2fe';
 
               if (feedbackState === 'correct' && (isSelected || isTarget)) {
                 fill = '#10b981';
@@ -882,6 +892,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
                       cx={cx}
                       cy={cy}
                       r={pulseRadius}
+                      data-ocean={isOcean ? 'true' : 'false'}
                       className="water-beacon-pulse animate-ping opacity-75"
                       fill="none"
                       stroke={isFeedbackCorrect ? '#10b981' : isFeedbackIncorrect ? '#f43f5e' : '#38bdf8'}
@@ -895,6 +906,8 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
                     cx={cx}
                     cy={cy}
                     r={dotRadius}
+                    data-ocean={isOcean ? 'true' : 'false'}
+                    data-strait={isStrait ? 'true' : 'false'}
                     className="water-beacon-dot transition-colors duration-150 cursor-pointer"
                     fill={fill}
                     stroke={stroke}
@@ -922,6 +935,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
                     cx={cx}
                     cy={cy}
                     r={hitRadius}
+                    data-ocean={isOcean ? 'true' : 'false'}
                     className="water-beacon-hitbox cursor-pointer"
                     fill="transparent"
                     pointerEvents="all"

@@ -13,7 +13,6 @@ if (!fs.existsSync(CACHE_DIR)) {
   fs.mkdirSync(CACHE_DIR, { recursive: true });
 }
 
-// Fetch helper with caching
 async function fetchCached(url, filename) {
   const filePath = path.join(CACHE_DIR, filename);
   if (fs.existsSync(filePath)) {
@@ -52,7 +51,6 @@ function collectCoords(feats) {
   return feats.flatMap((f) => getCoords(f));
 }
 
-// Create buffered channel polygon around a centerline
 function createCorridorPolygon(pts, widthDeg = 0.08) {
   const left = [];
   const right = [];
@@ -114,7 +112,7 @@ async function main() {
   ]);
 
   const generators = {
-    // 1. OCEANS (Complete planetary coverage: all marginal seas and bays merged into their parent ocean basin)
+    // 1. OCEANS (Complete coverage: all marginal seas and bays cleanly merged)
     WATER_OCEAN_PACIFIC: () => ({
       type: 'MultiPolygon',
       coordinates: collectCoords(
@@ -217,7 +215,7 @@ async function main() {
       )
     }),
 
-    // 2. MAJOR SEAS (Full regional sub-basin coverage)
+    // 2. MAJOR SEAS
     WATER_SEA_MEDITERRANEAN: () => ({
       type: 'MultiPolygon',
       coordinates: collectCoords(
@@ -334,6 +332,8 @@ async function main() {
       type: 'Feature',
       id: wb.id,
       properties: {
+        id: wb.id,
+        wb_id: wb.id,
         name: wb.name,
         type: wb.type
       },
@@ -341,13 +341,25 @@ async function main() {
     };
   });
 
-  const geoJsonPath = path.join(CACHE_DIR, 'water_bodies_complete.geojson');
-  fs.writeFileSync(geoJsonPath, JSON.stringify({ type: 'FeatureCollection', features }), 'utf8');
-  console.log(`Generated complete 100% coverage GeoJSON with ${features.length} features.`);
+  const nonStraits = features.filter((f) => f.properties.type !== 'strait' && f.properties.type !== 'channel');
+  const straits = features.filter((f) => f.properties.type === 'strait' || f.properties.type === 'channel');
 
-  console.log('Compiling to optimized TopoJSON via mapshaper with 25% shape-preserving simplification...');
+  const nonStraitsPath = path.join(CACHE_DIR, 'water_bodies_non_straits.geojson');
+  const dissolvedPath = path.join(CACHE_DIR, 'water_bodies_non_straits_dissolved.geojson');
+  const allCleanPath = path.join(CACHE_DIR, 'water_bodies_all_clean.geojson');
+
+  fs.writeFileSync(nonStraitsPath, JSON.stringify({ type: 'FeatureCollection', features: nonStraits }), 'utf8');
+
+  console.log('Dissolving internal boundaries of ocean and sea basins via mapshaper...');
+  execSync(`npx mapshaper "${nonStraitsPath}" -dissolve wb_id -o "${dissolvedPath}" format=geojson`, { stdio: 'inherit' });
+
+  const dissolvedNonStraits = JSON.parse(fs.readFileSync(dissolvedPath, 'utf8')).features;
+  const combinedFeatures = [...dissolvedNonStraits, ...straits];
+  fs.writeFileSync(allCleanPath, JSON.stringify({ type: 'FeatureCollection', features: combinedFeatures }), 'utf8');
+
+  console.log('Compiling to TopoJSON via mapshaper with shape preservation...');
   execSync(
-    `npx mapshaper "${geoJsonPath}" -simplify 25% keep-shapes -rename-layers water_bodies -o format=topojson id-field=id "${OUTPUT_FILE}"`,
+    `npx mapshaper "${allCleanPath}" -simplify 20% keep-shapes -rename-layers water_bodies -o format=topojson id-field=wb_id "${OUTPUT_FILE}"`,
     { stdio: 'inherit' }
   );
 

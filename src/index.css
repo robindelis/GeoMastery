@@ -74,6 +74,35 @@
   filter: brightness(1.28);
 }
 
+/* Instant CSS hover and active highlight for hydrographic bodies */
+.water-body-vector-path {
+  transition: fill 0.15s ease, stroke 0.15s ease, filter 0.15s ease;
+}
+.water-body-vector-path:hover {
+  fill: rgba(14, 165, 233, 0.4) !important;
+  stroke: #38bdf8 !important;
+  stroke-width: 1.5px !important;
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6));
+}
+.water-body-selected {
+  fill: rgba(2, 132, 199, 0.45) !important;
+  stroke: #38bdf8 !important;
+  stroke-width: 1.8px !important;
+  filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.7));
+}
+.water-body-correct {
+  animation: pulse-emerald 1.2s ease-in-out infinite;
+  fill: rgba(16, 185, 129, 0.5) !important;
+  stroke: #10b981 !important;
+  stroke-width: 2px !important;
+}
+.water-body-incorrect {
+  animation: pulse-rose 1.2s ease-in-out infinite;
+  fill: rgba(244, 63, 94, 0.5) !important;
+  stroke: #f43f5e !important;
+  stroke-width: 2px !important;
+}
+
 /* Elevated glass card styling in lighter slate palette */
 .glass-card {
   background: rgba(30, 41, 59, 0.75);

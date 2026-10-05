@@ -57,6 +57,19 @@ export const Globe3D: React.FC<Globe3DProps> = ({
     }
   }, []);
 
+  const countryFeatureItems = useMemo(() => {
+    return geoFeatures.map((feat) => {
+      const country = COUNTRIES_BY_NUMERIC.get(String(feat.id));
+      const b = d3.geoBounds(feat);
+      return {
+        feat,
+        country,
+        bbox: [b[0][0], b[0][1], b[1][0], b[1][1]] as [number, number, number, number],
+        isCrossAntimeridian: b[0][0] > b[1][0]
+      };
+    });
+  }, [geoFeatures]);
+
   const microstateList = useMemo(() => getMicrostateList(), []);
 
   const hoveredWaterIdRef = useRef<string | null>(null);
@@ -350,14 +363,11 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         ctx.stroke();
       }
 
-      // Draw Water Bodies on 3D Globe (for narrow straits/canals or when active/targeted)
+      // Draw Water Bodies on 3D Globe
       for (const wb of WATER_BODIES) {
         const isSelected = wb.id === selectedCountryId;
         const isTarget = wb.id === targetCountryId;
         const isStrait = wb.type === 'strait' || wb.type === 'channel';
-
-        // Only draw beacons for narrow straits/channels or when actively selected/targeted
-        if (!isStrait && !isSelected && !isTarget) continue;
 
         const dist = d3.geoDistance(wb.coordinates, centerCoords as any);
         if (dist < Math.PI / 2) {
@@ -375,19 +385,19 @@ export const Globe3D: React.FC<Globe3DProps> = ({
                   : '#38bdf8';
               ctx.lineWidth = 1.4;
               ctx.beginPath();
-              ctx.arc(px, py, isOcean ? 12 : 8, 0, 2 * Math.PI);
+              ctx.arc(px, py, isOcean ? 14 : 9, 0, 2 * Math.PI);
               ctx.stroke();
             }
 
-            ctx.fillStyle = isStrait ? '#0284c7' : isOcean ? '#0369a1' : '#0ea5e9';
+            ctx.fillStyle = isStrait ? '#06b6d4' : isOcean ? '#38bdf8' : '#0ea5e9';
             if (feedbackState === 'correct' && (isSelected || isTarget)) ctx.fillStyle = '#10b981';
             else if (feedbackState === 'incorrect' && isSelected) ctx.fillStyle = '#f43f5e';
             else if (feedbackState === 'incorrect' && isTarget) ctx.fillStyle = '#10b981';
 
-            ctx.strokeStyle = isSelected || isTarget ? '#ffffff' : '#38bdf8';
+            ctx.strokeStyle = isSelected || isTarget ? '#ffffff' : '#e0f2fe';
             ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.arc(px, py, isOcean ? 6 : isStrait ? 4 : 4.5, 0, 2 * Math.PI);
+            ctx.arc(px, py, isOcean ? 5.5 : isStrait ? 4 : 4.5, 0, 2 * Math.PI);
             ctx.fill();
             ctx.stroke();
           }
@@ -456,11 +466,115 @@ export const Globe3D: React.FC<Globe3DProps> = ({
   ]);
 
   // Mouse interaction handlers for rotation and drag
+  const mouseHoverCoordsRef = useRef<{ mx: number; my: number; clientX: number; clientY: number } | null>(null);
+  const hoverRafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (hoverRafRef.current) {
+        cancelAnimationFrame(hoverRafRef.current);
+      }
+    };
+  }, []);
+
   const handleMouseDown = (e: React.MouseEvent) => {
     isDraggingRef.current = true;
     lastMousePosRef.current = { x: e.clientX, y: e.clientY };
     velocityRef.current = { x: 0, y: 0 };
+    if (hoverRafRef.current) {
+      cancelAnimationFrame(hoverRafRef.current);
+      hoverRafRef.current = null;
+    }
   };
+
+  const processHover = useCallback(() => {
+    hoverRafRef.current = null;
+    const coords = mouseHoverCoordsRef.current;
+    if (!coords || !containerRef.current || isDraggingRef.current) return;
+
+    const { mx, my, clientX, clientY } = coords;
+
+    // Check proximity to microstates first (since microstates are sub-pixel)
+    const center = [-rotationRef.current[0], -rotationRef.current[1]];
+    let nearestMicrostate: Country | null = null;
+    let minMicroDist = Infinity;
+    for (const m of microstateList) {
+      if (d3.geoDistance(m.coordinates, center as any) < Math.PI / 2) {
+        const p = projection(m.coordinates);
+        if (p) {
+          const d = Math.hypot(mx - p[0], my - p[1]);
+          if (d <= 18 && d < minMicroDist) {
+            minMicroDist = d;
+            nearestMicrostate = m;
+          }
+        }
+      }
+    }
+
+    if (nearestMicrostate) {
+      hoveredWaterIdRef.current = null;
+      setHoveredCountry({ country: nearestMicrostate, x: clientX, y: clientY });
+      return;
+    }
+
+    const geoCoords = projection.invert ? projection.invert([mx, my]) : null;
+    if (geoCoords) {
+      const [lng, lat] = geoCoords;
+      if (!isNaN(lng) && !isNaN(lat)) {
+        // Fast bounding-box filtered land check (Zero lag)
+        let matchCountry: Country | null = null;
+        for (const item of countryFeatureItems) {
+          if (lat < item.bbox[1] || lat > item.bbox[3]) continue;
+          if (!item.isCrossAntimeridian && (lng < item.bbox[0] || lng > item.bbox[2])) continue;
+          if (d3.geoContains(item.feat, [lng, lat])) {
+            matchCountry = item.country || null;
+            break;
+          }
+        }
+
+        if (matchCountry) {
+          hoveredWaterIdRef.current = null;
+          setHoveredCountry({ country: matchCountry, x: clientX, y: clientY });
+          return;
+        }
+
+        // Fast bounding-box filtered water body check
+        for (const { feat, wb, bbox, isCrossAntimeridian } of sortedWaterItemsForDetection) {
+          if (lat < bbox[1] || lat > bbox[3]) continue;
+          if (!isCrossAntimeridian && (lng < bbox[0] || lng > bbox[2])) continue;
+          if (d3.geoContains(feat, [lng, lat])) {
+            hoveredWaterIdRef.current = wb.id;
+            setHoveredCountry({ country: waterBodyToCountry(wb), x: clientX, y: clientY });
+            return;
+          }
+        }
+      }
+    }
+
+    // Proximity fallback to water body beacon dots
+    for (const wb of WATER_BODIES) {
+      if (d3.geoDistance(wb.coordinates, center as any) < Math.PI / 2) {
+        const p = projection(wb.coordinates);
+        if (p) {
+          const d = Math.hypot(mx - p[0], my - p[1]);
+          const thresh =
+            wb.type === 'strait' || wb.type === 'channel'
+              ? 22
+              : wb.type === 'sea' || wb.type === 'gulf' || wb.type === 'bay'
+              ? 32
+              : 45;
+          if (d <= thresh) {
+            hoveredWaterIdRef.current = wb.id;
+            setHoveredCountry({ country: waterBodyToCountry(wb), x: clientX, y: clientY });
+            return;
+          }
+        }
+      }
+    }
+
+    hoveredWaterIdRef.current = null;
+    setHoveredCountry(null);
+  }, [countryFeatureItems, microstateList, projection, sortedWaterItemsForDetection]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isDraggingRef.current && lastMousePosRef.current) {
@@ -474,92 +588,36 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       velocityRef.current = { x: dx * 0.15, y: -dy * 0.15 };
       lastMousePosRef.current = { x: e.clientX, y: e.clientY };
     } else {
-      // Hover detection on globe surface
+      // RAF-throttled hover detection on globe surface (avoids freezing the event loop)
       if (containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
-        const mx = e.clientX - rect.left;
-        const my = e.clientY - rect.top;
-
-        // Check proximity to microstates first (since microstates are sub-pixel)
-        const center = [-rotationRef.current[0], -rotationRef.current[1]];
-        let nearestMicrostate: Country | null = null;
-        let minMicroDist = Infinity;
-        for (const m of microstateList) {
-          if (d3.geoDistance(m.coordinates, center as any) < Math.PI / 2) {
-            const p = projection(m.coordinates);
-            if (p) {
-              const d = Math.hypot(mx - p[0], my - p[1]);
-              if (d <= 18 && d < minMicroDist) {
-                minMicroDist = d;
-                nearestMicrostate = m;
-              }
-            }
-          }
-        }
-
-        if (nearestMicrostate) {
-          hoveredWaterIdRef.current = null;
-          setHoveredCountry({ country: nearestMicrostate, x: e.clientX, y: e.clientY });
-          return;
-        }
-
-        const coords = projection.invert ? projection.invert([mx, my]) : null;
-        if (coords) {
-          const [lng, lat] = coords;
-          if (!isNaN(lng) && !isNaN(lat)) {
-            // Find country containing coords or closest country
-            const match = geoFeatures.find((f) => d3.geoContains(f, [lng, lat]));
-            if (match) {
-              const country = COUNTRIES_BY_NUMERIC.get(String(match.id));
-              if (country) {
-                hoveredWaterIdRef.current = null;
-                setHoveredCountry({ country, x: e.clientX, y: e.clientY });
-                return;
-              }
-            }
-
-            // Not land, so it's WATER! Check water bodies (straits first, then seas, then oceans):
-            for (const { feat, wb, bbox, isCrossAntimeridian } of sortedWaterItemsForDetection) {
-              if (lat < bbox[1] || lat > bbox[3]) continue;
-              if (!isCrossAntimeridian && (lng < bbox[0] || lng > bbox[2])) continue;
-              if (d3.geoContains(feat, [lng, lat])) {
-                hoveredWaterIdRef.current = wb.id;
-                setHoveredCountry({ country: waterBodyToCountry(wb), x: e.clientX, y: e.clientY });
-                return;
-              }
-            }
-          }
-        }
-
-        // Proximity fallback to water body beacon dots
-        for (const wb of WATER_BODIES) {
-          if (d3.geoDistance(wb.coordinates, center as any) < Math.PI / 2) {
-            const p = projection(wb.coordinates);
-            if (p) {
-              const d = Math.hypot(mx - p[0], my - p[1]);
-              const thresh =
-                wb.type === 'strait' || wb.type === 'channel'
-                  ? 22
-                  : wb.type === 'sea' || wb.type === 'gulf' || wb.type === 'bay'
-                  ? 32
-                  : 45;
-              if (d <= thresh) {
-                hoveredWaterIdRef.current = wb.id;
-                setHoveredCountry({ country: waterBodyToCountry(wb), x: e.clientX, y: e.clientY });
-                return;
-              }
-            }
-          }
+        mouseHoverCoordsRef.current = {
+          mx: e.clientX - rect.left,
+          my: e.clientY - rect.top,
+          clientX: e.clientX,
+          clientY: e.clientY
+        };
+        if (!hoverRafRef.current) {
+          hoverRafRef.current = requestAnimationFrame(processHover);
         }
       }
-      hoveredWaterIdRef.current = null;
-      setHoveredCountry(null);
     }
   };
 
   const handleMouseUp = () => {
     isDraggingRef.current = false;
     lastMousePosRef.current = null;
+  };
+
+  const handleMouseLeave = () => {
+    isDraggingRef.current = false;
+    lastMousePosRef.current = null;
+    hoveredWaterIdRef.current = null;
+    setHoveredCountry(null);
+    if (hoverRafRef.current) {
+      cancelAnimationFrame(hoverRafRef.current);
+      hoverRafRef.current = null;
+    }
   };
 
   const handleClick = (e: React.MouseEvent) => {
@@ -598,13 +656,19 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       if (coords) {
         const [lng, lat] = coords;
         if (!isNaN(lng) && !isNaN(lat)) {
-          const match = geoFeatures.find((f) => d3.geoContains(f, [lng, lat]));
-          if (match) {
-            const country = COUNTRIES_BY_NUMERIC.get(String(match.id));
-            if (country) {
-              onSelectCountry(country);
-              return;
+          // Fast bounding-box filtered land check
+          let matchedCountry: Country | null = null;
+          for (const item of countryFeatureItems) {
+            if (lat < item.bbox[1] || lat > item.bbox[3]) continue;
+            if (!item.isCrossAntimeridian && (lng < item.bbox[0] || lng > item.bbox[2])) continue;
+            if (d3.geoContains(item.feat, [lng, lat])) {
+              matchedCountry = item.country || null;
+              break;
             }
+          }
+          if (matchedCountry) {
+            onSelectCountry(matchedCountry);
+            return;
           }
 
           // Water body basin click
@@ -648,7 +712,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
       onClick={handleClick}
     >
       <canvas ref={canvasRef} className="w-full h-full cursor-grab active:cursor-grabbing block" />
