@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import * as d3 from 'd3';
 import { feature } from 'topojson-client';
 import worldData50m from '../../assets/geo/countries-50m.json';
+import waterBodies50m from '../../assets/geo/water-bodies-50m.json';
 import { Country, SRSItem } from '../../core/types';
 import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
-import { WATER_BODIES, getWaterBodyById } from '../../assets/data/waterBodies';
+import { WATER_BODIES, getWaterBodyById, WaterBody } from '../../assets/data/waterBodies';
 import { waterBodyToCountry } from '../../core/srsEngine';
 import { getMicrostateList } from '../../core/microstates';
 
@@ -60,27 +61,46 @@ export const Globe3D: React.FC<Globe3DProps> = ({
 
   const hoveredWaterIdRef = useRef<string | null>(null);
 
-  const sortedWaterBodiesForDetection = useMemo(() => {
-    return [...WATER_BODIES].sort((a, b) => {
+  const waterGeoFeatures = useMemo(() => {
+    try {
+      const geo = feature(waterBodies50m as any, (waterBodies50m as any).objects.water_bodies) as any;
+      return (geo.features as any[]) || [];
+    } catch (e) {
+      console.error('Failed to parse water bodies TopoJSON:', e);
+      return [];
+    }
+  }, []);
+
+  const waterFeatureItems = useMemo(() => {
+    return waterGeoFeatures
+      .map((feat) => {
+        const wb = getWaterBodyById(feat.id);
+        return wb ? { feat, wb } : null;
+      })
+      .filter((item): item is { feat: any; wb: WaterBody } => item !== null);
+  }, [waterGeoFeatures]);
+
+  const sortedWaterItemsForDetection = useMemo(() => {
+    return [...waterFeatureItems].sort((a, b) => {
       const typeRank = (t: string) => {
         if (t === 'strait' || t === 'channel') return 1;
         if (t === 'sea' || t === 'gulf' || t === 'bay') return 2;
         return 3;
       };
-      return typeRank(a.type) - typeRank(b.type);
+      return typeRank(a.wb.type) - typeRank(b.wb.type);
     });
-  }, []);
+  }, [waterFeatureItems]);
 
-  const sortedWaterBodiesForRender = useMemo(() => {
-    return [...WATER_BODIES].sort((a, b) => {
+  const sortedWaterItemsForRender = useMemo(() => {
+    return [...waterFeatureItems].sort((a, b) => {
       const typeRank = (t: string) => {
         if (t === 'ocean') return 1;
         if (t === 'sea' || t === 'gulf' || t === 'bay') return 2;
         return 3;
       };
-      return typeRank(a.type) - typeRank(b.type);
+      return typeRank(a.wb.type) - typeRank(b.wb.type);
     });
-  }, []);
+  }, [waterFeatureItems]);
 
   // Responsive sizing
   useEffect(() => {
@@ -243,9 +263,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       const centerCoords = [-rotationRef.current[0], -rotationRef.current[1]];
 
       // Draw Water Body Basin Polygons (rendered UNDER country landmasses so coastlines cleanly mask them)
-      for (const wb of sortedWaterBodiesForRender) {
-        if (!wb.geoCircles || !wb.geoCircles.length) continue;
-
+      for (const { feat, wb } of sortedWaterItemsForRender) {
         const isSelected = wb.id === selectedCountryId;
         const isTarget = wb.id === targetCountryId;
         const isHovered = wb.id === hoveredWaterIdRef.current;
@@ -292,17 +310,14 @@ export const Globe3D: React.FC<Globe3DProps> = ({
           lineWidth = 1.2;
         }
 
-        for (const circle of wb.geoCircles) {
-          const circleGeo = d3.geoCircle().center(circle.center).radius(circle.radiusDeg)();
-          ctx.beginPath();
-          path(circleGeo);
-          ctx.fillStyle = fillStyle;
-          ctx.fill();
-          if (strokeStyle !== 'transparent') {
-            ctx.strokeStyle = strokeStyle;
-            ctx.lineWidth = lineWidth;
-            ctx.stroke();
-          }
+        ctx.beginPath();
+        path(feat);
+        ctx.fillStyle = fillStyle;
+        ctx.fill();
+        if (strokeStyle !== 'transparent') {
+          ctx.strokeStyle = strokeStyle;
+          ctx.lineWidth = lineWidth;
+          ctx.stroke();
         }
       }
 
@@ -319,16 +334,20 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         ctx.stroke();
       }
 
-      // Draw Water Bodies on 3D Globe
+      // Draw Water Bodies on 3D Globe (for narrow straits/canals or when active/targeted)
       for (const wb of WATER_BODIES) {
+        const isSelected = wb.id === selectedCountryId;
+        const isTarget = wb.id === targetCountryId;
+        const isStrait = wb.type === 'strait' || wb.type === 'channel';
+
+        // Only draw beacons for narrow straits/channels or when actively selected/targeted
+        if (!isStrait && !isSelected && !isTarget) continue;
+
         const dist = d3.geoDistance(wb.coordinates, centerCoords as any);
         if (dist < Math.PI / 2) {
           const projected = projection(wb.coordinates);
           if (projected) {
             const [px, py] = projected;
-            const isSelected = wb.id === selectedCountryId;
-            const isTarget = wb.id === targetCountryId;
-            const isStrait = wb.type === 'strait' || wb.type === 'channel';
             const isOcean = wb.type === 'ocean';
 
             if (isSelected || isTarget) {
@@ -412,7 +431,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
     geoFeatures,
     getCountryFill,
     autoRotate,
-    sortedWaterBodiesForRender,
+    sortedWaterItemsForRender,
     feedbackState,
     targetCountryId,
     selectedCountryId,
@@ -484,22 +503,11 @@ export const Globe3D: React.FC<Globe3DProps> = ({
             }
 
             // Not land, so it's WATER! Check water bodies (straits first, then seas, then oceans):
-            for (const wb of sortedWaterBodiesForDetection) {
-              if (wb.geoCircles) {
-                let inside = false;
-                for (const circle of wb.geoCircles) {
-                  const distRad = d3.geoDistance(circle.center, [lng, lat]);
-                  const radiusRad = (circle.radiusDeg * Math.PI) / 180;
-                  if (distRad <= radiusRad) {
-                    inside = true;
-                    break;
-                  }
-                }
-                if (inside) {
-                  hoveredWaterIdRef.current = wb.id;
-                  setHoveredCountry({ country: waterBodyToCountry(wb), x: e.clientX, y: e.clientY });
-                  return;
-                }
+            for (const { feat, wb } of sortedWaterItemsForDetection) {
+              if (d3.geoContains(feat, [lng, lat])) {
+                hoveredWaterIdRef.current = wb.id;
+                setHoveredCountry({ country: waterBodyToCountry(wb), x: e.clientX, y: e.clientY });
+                return;
               }
             }
           }
@@ -582,16 +590,10 @@ export const Globe3D: React.FC<Globe3DProps> = ({
           }
 
           // Water body basin click
-          for (const wb of sortedWaterBodiesForDetection) {
-            if (wb.geoCircles) {
-              for (const circle of wb.geoCircles) {
-                const distRad = d3.geoDistance(circle.center, [lng, lat]);
-                const radiusRad = (circle.radiusDeg * Math.PI) / 180;
-                if (distRad <= radiusRad) {
-                  onSelectCountry(waterBodyToCountry(wb));
-                  return;
-                }
-              }
+          for (const { feat, wb } of sortedWaterItemsForDetection) {
+            if (d3.geoContains(feat, [lng, lat])) {
+              onSelectCountry(waterBodyToCountry(wb));
+              return;
             }
           }
         }

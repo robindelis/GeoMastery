@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import * as d3 from 'd3';
 import { feature } from 'topojson-client';
 import worldData50m from '../../assets/geo/countries-50m.json';
+import waterBodies50m from '../../assets/geo/water-bodies-50m.json';
 import { Country, SRSItem } from '../../core/types';
 import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
 import { WATER_BODIES, getWaterBodyById, WaterBody } from '../../assets/data/waterBodies';
@@ -237,6 +238,17 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     }
   }, []);
 
+  // Convert water bodies TopoJSON to GeoJSON features once
+  const waterGeoFeatures = useMemo(() => {
+    try {
+      const geo = feature(waterBodies50m as any, (waterBodies50m as any).objects.water_bodies) as any;
+      return (geo.features as any[]) || [];
+    } catch (e) {
+      console.error('Failed to parse water bodies TopoJSON:', e);
+      return [];
+    }
+  }, []);
+
   // Window resize observer
   useEffect(() => {
     const updateSize = () => {
@@ -443,41 +455,34 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     }).filter((item) => item.hasValidCoords);
   }, [projection]);
 
-  // Precompute water body SVG paths once when projection changes
+  // Precompute boundary-accurate water body SVG paths once when projection changes
   const { oceanFeatures, seaFeatures, straitFeatures } = useMemo(() => {
-    if (!pathGenerator) return { oceanFeatures: [], seaFeatures: [], straitFeatures: [] };
+    if (!pathGenerator || !waterGeoFeatures.length) {
+      return { oceanFeatures: [], seaFeatures: [], straitFeatures: [] };
+    }
 
     const oceans: { wb: WaterBody; pathD: string }[] = [];
     const seas: { wb: WaterBody; pathD: string }[] = [];
     const straits: { wb: WaterBody; pathD: string }[] = [];
 
-    for (const wb of WATER_BODIES) {
-      if (!wb.geoCircles || !wb.geoCircles.length) continue;
+    for (const feat of waterGeoFeatures) {
+      const wb = getWaterBodyById(feat.id);
+      if (!wb) continue;
+      const pathD = pathGenerator(feat);
+      if (!pathD) continue;
 
-      const subPaths: string[] = [];
-      for (const circle of wb.geoCircles) {
-        const circleGeo = d3.geoCircle().center(circle.center).radius(circle.radiusDeg)();
-        const d = pathGenerator(circleGeo);
-        if (d) {
-          subPaths.push(d);
-        }
-      }
-
-      if (subPaths.length > 0) {
-        const pathD = subPaths.join(' ');
-        const item = { wb, pathD };
-        if (wb.type === 'ocean') {
-          oceans.push(item);
-        } else if (wb.type === 'strait' || wb.type === 'channel') {
-          straits.push(item);
-        } else {
-          seas.push(item);
-        }
+      const item = { wb, pathD };
+      if (wb.type === 'ocean') {
+        oceans.push(item);
+      } else if (wb.type === 'strait' || wb.type === 'channel') {
+        straits.push(item);
+      } else {
+        seas.push(item);
       }
     }
 
     return { oceanFeatures: oceans, seaFeatures: seas, straitFeatures: straits };
-  }, [pathGenerator]);
+  }, [pathGenerator, waterGeoFeatures]);
 
   const getWaterBodyFill = useCallback(
     (wb: WaterBody) => {
@@ -839,11 +844,16 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
             {waterBodyItems.map(({ wb, country, cx, cy }) => {
               const isSelected = country.id === selectedCountryId;
               const isTarget = country.id === targetCountryId;
+              const isStrait = wb.type === 'strait' || wb.type === 'channel';
+
+              // Assistive beacons for narrow straits/canals (like microstates) or when actively selected/targeted
+              if (!isStrait && !isSelected && !isTarget) {
+                return null;
+              }
+
               const isFeedbackCorrect = feedbackState === 'correct' && Boolean(isSelected || isTarget);
               const isFeedbackIncorrect = feedbackState === 'incorrect' && Boolean(isSelected);
               const k = zoomTransformRef.current?.k || 1;
-
-              const isStrait = wb.type === 'strait' || wb.type === 'channel';
               const isOcean = wb.type === 'ocean';
 
               const dotRadius = (isStrait ? 4 : isOcean ? 6 : 5) / k;

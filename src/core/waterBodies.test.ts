@@ -1,4 +1,7 @@
 import { describe, it, expect } from 'vitest';
+import * as d3 from 'd3';
+import { feature } from 'topojson-client';
+import waterBodies50m from '../assets/geo/water-bodies-50m.json';
 import { WATER_BODIES, getWaterBodyById, WATER_BODIES_BY_ID } from '../assets/data/waterBodies';
 import {
   waterBodyToCountry,
@@ -68,21 +71,51 @@ describe('Water Bodies & Maritime Hydrography Dataset', () => {
     expect(gibraltar?.significance).toContain('Atlantic Ocean');
   });
 
-  it('provides valid spherical geoCircles for interactive hover and hit testing on all 40 water bodies', () => {
+  it('provides authentic boundary-accurate TopoJSON polygons for all 40 water bodies in water-bodies-50m.json', () => {
+    const geo = feature(waterBodies50m as any, (waterBodies50m as any).objects.water_bodies) as any;
+    expect(geo.features.length).toBe(40);
+
+    const proj = d3.geoNaturalEarth1().scale(960 / 5.8).translate([960 / 2, 540 / 2 + 10]);
+    const pathGen = d3.geoPath().projection(proj);
+
+    const featureMap = new Map<string, any>(geo.features.map((f: any) => [f.id, f]));
+
     for (const wb of WATER_BODIES) {
-      expect(wb.geoCircles).toBeDefined();
-      expect(wb.geoCircles!.length).toBeGreaterThan(0);
-      for (const circle of wb.geoCircles!) {
-        expect(circle.center).toHaveLength(2);
-        const [lng, lat] = circle.center;
-        expect(lng).toBeGreaterThanOrEqual(-180);
-        expect(lng).toBeLessThanOrEqual(180);
-        expect(lat).toBeGreaterThanOrEqual(-90);
-        expect(lat).toBeLessThanOrEqual(90);
-        expect(circle.radiusDeg).toBeGreaterThan(0);
-        expect(circle.radiusDeg).toBeLessThanOrEqual(35);
-      }
+      const feat = featureMap.get(wb.id);
+      expect(feat, `Feature for ${wb.id} (${wb.name}) should exist in TopoJSON`).toBeDefined();
+      expect(['Polygon', 'MultiPolygon']).toContain(feat.geometry.type);
+      expect(feat.geometry.coordinates.length).toBeGreaterThan(0);
+
+      // Verify D3 Natural Earth SVG path generation
+      const pathD = pathGen(feat);
+      expect(pathD, `D3 path for ${wb.id} should generate a valid SVG path`).toBeTruthy();
+      expect(pathD!.length).toBeGreaterThan(10);
     }
+  });
+
+  it('correctly verifies point-in-polygon containment with d3.geoContains across water bodies', () => {
+    const geo = feature(waterBodies50m as any, (waterBodies50m as any).objects.water_bodies) as any;
+    const featureMap = new Map<string, any>(geo.features.map((f: any) => [f.id, f]));
+
+    // Mediterranean Sea [15°E, 35°N]
+    const med = featureMap.get('WATER_SEA_MEDITERRANEAN');
+    expect(d3.geoContains(med, [15, 35])).toBe(true);
+
+    // Arctic Ocean [0°E, 85°N]
+    const arctic = featureMap.get('WATER_OCEAN_ARCTIC');
+    expect(d3.geoContains(arctic, [0, 85])).toBe(true);
+
+    // North Sea [3°E, 56°N]
+    const northSea = featureMap.get('WATER_SEA_NORTH');
+    expect(d3.geoContains(northSea, [3, 56])).toBe(true);
+
+    // Gulf of Mexico [-90°W, 25°N]
+    const gulfMex = featureMap.get('WATER_GULF_MEXICO');
+    expect(d3.geoContains(gulfMex, [-90, 25])).toBe(true);
+
+    // Atlantic Ocean [-30°W, 25°N]
+    const atlantic = featureMap.get('WATER_OCEAN_ATLANTIC');
+    expect(d3.geoContains(atlantic, [-30, 25])).toBe(true);
   });
 
   it('guarantees pure English naming without parenthesis translations across all water bodies', () => {
