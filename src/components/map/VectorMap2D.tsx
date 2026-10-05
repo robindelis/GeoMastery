@@ -17,6 +17,7 @@ interface VectorMap2DProps {
   srsItemsMap?: Map<string, SRSItem>;
   showHeatmap?: boolean;
   disableAutoZoom?: boolean;
+  hideHoverTooltip?: boolean;
   onSelectCountry?: (country: Country) => void;
   className?: string;
 }
@@ -68,6 +69,7 @@ interface FrameState {
   selectedId?: string | null;
   targetId?: string | null;
   feedbackState?: 'correct' | 'incorrect' | 'neutral' | null;
+  hideHoverTooltip?: boolean;
 }
 
 // Polygons below this zoom level are drawn with a decimated outline while the camera is moving
@@ -347,7 +349,7 @@ function drawOverlay(
     if (!w.wb) continue;
     const { isStrait, dot } = waterBeaconRadii(w.wb);
     const active = w.wb.id === s.selectedId || w.wb.id === s.targetId;
-    if (!active && !(isStrait && k >= 3.5)) continue;
+    if (!active && !(isStrait && k >= 3.5 && !s.hideHoverTooltip)) continue;
     const sx = w.cx * k + t.x;
     const sy = w.cy * k + t.y;
     if (sx < -100 || sx > W + 100 || sy < -20 || sy > H + 20) continue;
@@ -364,6 +366,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   srsItemsMap,
   showHeatmap = false,
   disableAutoZoom = false,
+  hideHoverTooltip = false,
   onSelectCountry,
   className = '',
 }) => {
@@ -543,19 +546,32 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     }).filter((item) => !isNaN(item.cx) && !isNaN(item.cy));
   }, [projection]);
 
-  const handleCountryHover = useCallback((country?: Country) => {
-    if (!country || !tooltipRef.current) return;
-    if (flagRef.current) flagRef.current.textContent = country.flagEmoji;
-    if (nameRef.current) nameRef.current.textContent = country.officialName || country.name;
-    if (capRef.current) {
-      if (country.id.startsWith('WATER_')) {
-        capRef.current.textContent = `${country.subregion} • ${country.facts?.significance || ''}`;
-      } else {
-        capRef.current.textContent = `Capital: ${country.capital}`;
+  const handleCountryHover = useCallback(
+    (country?: Country) => {
+      if (!country || !tooltipRef.current) return;
+      if (hideHoverTooltip) {
+        tooltipRef.current.style.opacity = '0';
+        return;
       }
+      if (flagRef.current) flagRef.current.textContent = country.flagEmoji;
+      if (nameRef.current) nameRef.current.textContent = country.officialName || country.name;
+      if (capRef.current) {
+        if (country.id.startsWith('WATER_')) {
+          capRef.current.textContent = `${country.subregion} • ${country.facts?.significance || ''}`;
+        } else {
+          capRef.current.textContent = `Capital: ${country.capital}`;
+        }
+      }
+      tooltipRef.current.style.opacity = '1';
+    },
+    [hideHoverTooltip]
+  );
+
+  useEffect(() => {
+    if (hideHoverTooltip && tooltipRef.current) {
+      tooltipRef.current.style.opacity = '0';
     }
-    tooltipRef.current.style.opacity = '1';
-  }, []);
+  }, [hideHoverTooltip]);
 
   const handleCountryLeave = useCallback(() => {
     if (tooltipRef.current) {
@@ -726,6 +742,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     selectedId: selectedCountryId,
     targetId: targetCountryId,
     feedbackState,
+    hideHoverTooltip,
   };
 
   const frameRef = useRef<(now: number) => void>(() => {});

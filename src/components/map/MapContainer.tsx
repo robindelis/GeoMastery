@@ -14,6 +14,7 @@ interface MapContainerProps {
   srsItemsMap?: Map<string, SRSItem>;
   showHeatmap?: boolean;
   disableAutoZoom?: boolean;
+  hideHoverTooltip?: boolean;
   onToggleHeatmap?: () => void;
   autoRotate?: boolean;
   onToggleAutoRotate?: () => void;
@@ -31,6 +32,7 @@ export const MapContainer: React.FC<MapContainerProps> = ({
   srsItemsMap,
   showHeatmap = false,
   disableAutoZoom = false,
+  hideHoverTooltip = false,
   onToggleHeatmap,
   autoRotate = false,
   onToggleAutoRotate,
@@ -50,6 +52,7 @@ export const MapContainer: React.FC<MapContainerProps> = ({
             srsItemsMap={srsItemsMap}
             showHeatmap={showHeatmap}
             disableAutoZoom={disableAutoZoom}
+            hideHoverTooltip={hideHoverTooltip}
             onSelectCountry={onSelectCountry}
           />
         ) : (
@@ -62,6 +65,7 @@ export const MapContainer: React.FC<MapContainerProps> = ({
             showHeatmap={showHeatmap}
             autoRotate={autoRotate}
             disableAutoSpin={disableAutoZoom}
+            hideHoverTooltip={hideHoverTooltip}
             onSelectCountry={onSelectCountry}
           />
         )}

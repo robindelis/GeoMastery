@@ -18,6 +18,7 @@ interface Globe3DProps {
   showHeatmap?: boolean;
   autoRotate?: boolean;
   disableAutoSpin?: boolean;
+  hideHoverTooltip?: boolean;
   onSelectCountry?: (country: Country) => void;
   className?: string;
 }
@@ -31,6 +32,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
   showHeatmap = false,
   autoRotate = false,
   disableAutoSpin = false,
+  hideHoverTooltip = false,
   onSelectCountry,
   className = ''
 }) => {
@@ -768,7 +770,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       <canvas ref={canvasRef} className="w-full h-full cursor-grab active:cursor-grabbing block" />
 
       {/* Floating Hover Tooltip */}
-      {hoveredCountry && (
+      {!hideHoverTooltip && hoveredCountry && (
         <div
           className="fixed pointer-events-none z-50 px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-700/80 shadow-2xl backdrop-blur-md transform -translate-x-1/2 -translate-y-full mb-3 text-xs flex items-center gap-2"
           style={{ left: hoveredCountry.x, top: hoveredCountry.y }}

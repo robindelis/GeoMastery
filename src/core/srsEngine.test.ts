@@ -153,4 +153,28 @@ describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
       expect(q.country.continent).toBe('Europe');
     }
   });
+
+  it('correctly distinguishes Stage 0 recognition vs Stage 1+ active recall for map placement questions', () => {
+    const france = COUNTRIES_BY_ID.get('FRA')!;
+    let item = createInitialSRSItem('FRA', 'location');
+    expect(item.stage).toBe(0);
+
+    // Initial Stage 0 question
+    const q0 = buildQuestion(item, france, COUNTRIES);
+    expect(q0.stage).toBe(0);
+    expect(q0.expectedInputMode).toBe('map_click');
+
+    // Answer correctly the first time -> graduates to Stage 1 (Active Recall)
+    const res = processAnswer(item, true, 'map_click', 'France', 1500);
+    expect(res.promotedToLearning).toBe(true);
+    item = res.updatedItem;
+    expect(item.stage).toBe(1);
+
+    // Now in Stage 1 Active Recall stage:
+    const q1 = buildQuestion(item, france, COUNTRIES);
+    expect(q1.stage).toBe(1);
+    expect(q1.stage >= 1).toBe(true);
+    expect(q1.expectedInputMode).toBe('map_click');
+  });
 });
+

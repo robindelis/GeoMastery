@@ -484,6 +484,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
           selectedCountryId={selectedMapCountry?.id || null}
           feedbackState={feedbackState}
           disableAutoZoom={!isSubmitted}
+          hideHoverTooltip={!isSubmitted && currentQuestion?.expectedInputMode === 'map_click' && (currentQuestion?.stage ?? 0) >= 1}
           srsItemsMap={srsItemsMap}
           onSelectCountry={handleMapCountrySelect}
         />
