@@ -26,11 +26,13 @@ git push origin main
   * Always check `isPracticeMode` / `isPracticeModeRef` before persisting card schedule updates.
 
 ### 3. Map Performance (Zero-Lag Standard)
-* Vector map rendering MUST maintain sub-millisecond interaction speeds:
-  * Do NOT recalculate `pathGenerator(feat)` inside the render loop for 241 countries. Use `useMemo`.
-  * `<CountryPolygon>` MUST remain memoized with `React.memo`.
-  * Any parent event callbacks passed to `<CountryPolygon>` must be backed by a stable proxy ref (e.g. `onSelectCountryRef`) to prevent stale closures while preserving zero-re-render click speed.
-  * SVG paths must use `vectorEffect="non-scaling-stroke"` with thin hairline strokes (`0.6px`) so zooming into Western Europe never obscures microstates.
+* The map is rendered on two stacked `<canvas>` layers in `VectorMap2D.tsx` (static base layer + dynamic overlay for hover, selection, pulses, labels):
+  * Geometry is converted to `Path2D` (full + decimated LOD) once per projection via `useMemo`. NEVER rebuild paths or resolve fills/strokes inside the frame loop; styles are precomputed on prop change.
+  * Pan/zoom must never trigger React renders. Draws are batched in a single `requestAnimationFrame` frame loop and cull items outside the viewport by bounding box.
+  * While the camera is moving, use the LOD paths (below zoom 3), skip water strokes and suppress hover hit-testing.
+  * Parent callbacks must go through a stable proxy ref (e.g. `onSelectCountryRef`) to prevent stale closures.
+  * Strokes use hairline widths (`0.8px`) divided by zoom `k` so they stay constant on screen.
+  * Do NOT reintroduce SVG per-country elements or CSS `filter`/`drop-shadow` on the map.
 
 ### 5. Absolute User Progress & Data Preservation Rule
 **User learning progress (SRS items, review counts, streaks, continent mastery, settings) is sacred and must NEVER be wiped, reset, or bypassed:**

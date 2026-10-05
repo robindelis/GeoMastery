@@ -21,188 +21,340 @@ interface VectorMap2DProps {
   className?: string;
 }
 
-interface CountryFeatureItem {
-  id: string | number;
+type BBox = [number, number, number, number];
+
+interface PolyItem {
+  id: string;
   country?: Country;
-  pathD: string;
+  wb?: WaterBody;
+  full: Path2D;
+  lod: Path2D;
+  bbox: BBox;
 }
 
-interface CountryPolygonProps {
-  country?: Country;
-  pathD: string;
-  fill: string;
-  stroke: string;
-  strokeWidth: string;
-  isFeedbackCorrect: boolean;
-  isFeedbackIncorrect: boolean;
-  onCountryHover: (country?: Country) => void;
-  onCountryLeave: () => void;
-  onSelectCountry?: (country: Country) => void;
+interface BeaconItem {
+  country: Country;
+  wb?: WaterBody;
+  cx: number;
+  cy: number;
 }
 
-// Memoized Country Polygon: Only updates when its specific fill/stroke/feedback state changes!
-const CountryPolygon = React.memo<CountryPolygonProps>(
-  ({
-    country,
-    pathD,
-    fill,
-    stroke,
-    strokeWidth,
-    isFeedbackCorrect,
-    isFeedbackIncorrect,
-    onCountryHover,
-    onCountryLeave,
-    onSelectCountry,
-  }) => {
-    const onSelectRef = useRef(onSelectCountry);
-    onSelectRef.current = onSelectCountry;
+interface HoverState {
+  country: Country;
+  poly?: PolyItem;
+}
 
-    const onHoverRef = useRef(onCountryHover);
-    onHoverRef.current = onCountryHover;
+interface FrameState {
+  W: number;
+  H: number;
+  dpr: number;
+  t: d3.ZoomTransform;
+  moving: boolean;
+  oceans: PolyItem[];
+  seas: PolyItem[];
+  straits: PolyItem[];
+  countries: PolyItem[];
+  oceanFills: string[];
+  seaFills: string[];
+  straitFills: string[];
+  oceanStrokes: string[];
+  seaStrokes: string[];
+  straitStrokes: string[];
+  countryFills: string[];
+  micro: BeaconItem[];
+  microFills: string[];
+  waterBeacons: BeaconItem[];
+  polyById: Map<string, PolyItem>;
+  selectedId?: string | null;
+  targetId?: string | null;
+  feedbackState?: 'correct' | 'incorrect' | 'neutral' | null;
+}
 
-    const onLeaveRef = useRef(onCountryLeave);
-    onLeaveRef.current = onCountryLeave;
+// Polygons below this zoom level are drawn with a decimated outline while the camera is moving
+const LOD_MAX_ZOOM = 3;
+const LOD_MIN_SEGMENT_PX = 1.5;
+const PULSE_PERIOD_MS = 1200;
+const PING_PERIOD_MS = 1000;
 
-    const handleMouseEnter = useCallback(() => {
-      onHoverRef.current?.(country);
-    }, [country]);
+// Path context that drops vertices closer than a threshold to the previous one
+class DecimatingContext {
+  private lx = 0;
+  private ly = 0;
+  constructor(private target: Path2D, private minDist2: number) {}
+  moveTo(x: number, y: number) {
+    this.target.moveTo(x, y);
+    this.lx = x;
+    this.ly = y;
+  }
+  lineTo(x: number, y: number) {
+    const dx = x - this.lx;
+    const dy = y - this.ly;
+    if (dx * dx + dy * dy < this.minDist2) return;
+    this.target.lineTo(x, y);
+    this.lx = x;
+    this.ly = y;
+  }
+  closePath() {
+    this.target.closePath();
+  }
+  arc() {}
+  rect() {}
+}
 
-    const handleMouseLeave = useCallback(() => {
-      onLeaveRef.current?.();
-    }, []);
+const pulseEmerald = {
+  fill: d3.interpolateRgb('#10b981', '#059669'),
+  stroke: d3.interpolateRgb('#34d399', '#6ee7b7'),
+};
+const pulseRose = {
+  fill: d3.interpolateRgb('#f43f5e', '#e11d48'),
+  stroke: d3.interpolateRgb('#fb7185', '#fda4af'),
+};
 
-    const handleClick = useCallback(() => {
-      if (country) {
-        onSelectRef.current?.(country);
+const isVisible = (b: BBox, x0: number, y0: number, x1: number, y1: number) =>
+  b[2] >= x0 && b[0] <= x1 && b[3] >= y0 && b[1] <= y1;
+
+const waterBeaconRadii = (wb: WaterBody) => {
+  const isStrait = wb.type === 'strait' || wb.type === 'channel';
+  const isOcean = wb.type === 'ocean';
+  return {
+    isStrait,
+    isOcean,
+    dot: isStrait ? 4 : isOcean ? 6 : 5,
+    hit: isStrait ? 20 : isOcean ? 32 : 24,
+    pulse: isStrait ? 10 : isOcean ? 16 : 12,
+  };
+};
+
+const waterBeaconColors = (
+  wb: WaterBody,
+  s: Pick<FrameState, 'selectedId' | 'targetId' | 'feedbackState'>
+) => {
+  const { isStrait, isOcean } = waterBeaconRadii(wb);
+  const isSelected = wb.id === s.selectedId;
+  const isTarget = wb.id === s.targetId;
+  let fill = isStrait ? '#06b6d4' : isOcean ? '#38bdf8' : '#0ea5e9';
+  let stroke = isSelected || isTarget ? '#ffffff' : '#e0f2fe';
+  if (s.feedbackState === 'correct' && (isSelected || isTarget)) {
+    fill = '#10b981';
+    stroke = '#ffffff';
+  } else if (s.feedbackState === 'incorrect' && isSelected) {
+    fill = '#f43f5e';
+    stroke = '#ffffff';
+  } else if (s.feedbackState === 'incorrect' && isTarget) {
+    fill = '#10b981';
+    stroke = '#ffffff';
+  }
+  return { fill, stroke };
+};
+
+function drawBase(ctx: CanvasRenderingContext2D, s: FrameState) {
+  const { W, H, dpr, t, moving } = s;
+  const k = t.k;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, W, H);
+  ctx.setTransform(dpr * k, 0, 0, dpr * k, dpr * t.x, dpr * t.y);
+  ctx.lineJoin = 'round';
+
+  const vx0 = -t.x / k;
+  const vy0 = -t.y / k;
+  const vx1 = (W - t.x) / k;
+  const vy1 = (H - t.y) / k;
+  const lod = moving && k < LOD_MAX_ZOOM;
+
+  const drawWater = (items: PolyItem[], fills: string[], strokes: string[], width: number) => {
+    for (let i = 0; i < items.length; i++) {
+      const it = items[i];
+      if (!isVisible(it.bbox, vx0, vy0, vx1, vy1)) continue;
+      ctx.fillStyle = fills[i];
+      ctx.fill(lod ? it.lod : it.full);
+      if (!moving && strokes[i] !== 'none') {
+        ctx.lineWidth = width / k;
+        ctx.strokeStyle = strokes[i];
+        ctx.stroke(it.full);
       }
-    }, [country]);
+    }
+  };
+  drawWater(s.oceans, s.oceanFills, s.oceanStrokes, 0.8);
+  drawWater(s.seas, s.seaFills, s.seaStrokes, 0.8);
+  drawWater(s.straits, s.straitFills, s.straitStrokes, 1);
 
-    return (
-      <path
-        d={pathD}
-        fill={fill}
-        stroke={stroke}
-        strokeWidth={strokeWidth}
-        vectorEffect="non-scaling-stroke"
-        className={`country-vector-path cursor-pointer ${
-          isFeedbackCorrect ? 'map-country-correct' : ''
-        } ${isFeedbackIncorrect ? 'map-country-incorrect' : ''}`}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={handleClick}
-      />
-    );
-  },
-  (prev, next) => {
-    return (
-      prev.fill === next.fill &&
-      prev.stroke === next.stroke &&
-      prev.strokeWidth === next.strokeWidth &&
-      prev.isFeedbackCorrect === next.isFeedbackCorrect &&
-      prev.isFeedbackIncorrect === next.isFeedbackIncorrect &&
-      prev.pathD === next.pathD &&
-      prev.country?.id === next.country?.id &&
-      prev.onSelectCountry === next.onSelectCountry
-    );
+  for (let i = 0; i < s.countries.length; i++) {
+    const it = s.countries[i];
+    if (!isVisible(it.bbox, vx0, vy0, vx1, vy1)) continue;
+    const path = lod ? it.lod : it.full;
+    ctx.fillStyle = s.countryFills[i];
+    ctx.fill(path);
+    const active = it.country && (it.country.id === s.selectedId || it.country.id === s.targetId);
+    ctx.lineWidth = (active ? 1.5 : 0.8) / k;
+    ctx.strokeStyle = active ? '#38bdf8' : '#64748b';
+    ctx.stroke(path);
   }
-);
 
-CountryPolygon.displayName = 'CountryPolygon';
+  // Microstate beacons
+  ctx.lineWidth = 1 / k;
+  for (let i = 0; i < s.micro.length; i++) {
+    const m = s.micro[i];
+    if (m.cx < vx0 - 20 / k || m.cx > vx1 + 20 / k || m.cy < vy0 - 20 / k || m.cy > vy1 + 20 / k) continue;
+    const active = m.country.id === s.selectedId || m.country.id === s.targetId;
+    ctx.beginPath();
+    ctx.arc(m.cx, m.cy, 3.5 / k, 0, Math.PI * 2);
+    ctx.fillStyle = s.microFills[i];
+    ctx.strokeStyle = active ? '#ffffff' : '#38bdf8';
+    ctx.fill();
+    ctx.stroke();
+  }
 
-interface WaterBodyPolygonProps {
-  waterBody: WaterBody;
-  pathD: string;
-  fill: string;
-  stroke: string;
-  strokeWidth: string;
-  isFeedbackCorrect: boolean;
-  isFeedbackIncorrect: boolean;
-  isSelectedOrTarget: boolean;
-  onHover: (country?: Country) => void;
-  onLeave: () => void;
-  onSelectCountry?: (country: Country) => void;
+  // Maritime beacons
+  ctx.lineWidth = 1.2 / k;
+  for (let i = 0; i < s.waterBeacons.length; i++) {
+    const w = s.waterBeacons[i];
+    if (!w.wb) continue;
+    if (w.cx < vx0 - 20 / k || w.cx > vx1 + 20 / k || w.cy < vy0 - 20 / k || w.cy > vy1 + 20 / k) continue;
+    const { dot } = waterBeaconRadii(w.wb);
+    const { fill, stroke } = waterBeaconColors(w.wb, s);
+    ctx.beginPath();
+    ctx.arc(w.cx, w.cy, dot / k, 0, Math.PI * 2);
+    ctx.fillStyle = fill;
+    ctx.strokeStyle = stroke;
+    ctx.fill();
+    ctx.stroke();
+  }
 }
 
-// Memoized Water Body Polygon: renders interactive ocean basin, sea, or strait
-const WaterBodyPolygon = React.memo<WaterBodyPolygonProps>(
-  ({
-    waterBody,
-    pathD,
-    fill,
-    stroke,
-    strokeWidth,
-    isFeedbackCorrect,
-    isFeedbackIncorrect,
-    isSelectedOrTarget,
-    onHover,
-    onLeave,
-    onSelectCountry,
-  }) => {
-    const country = useMemo(() => waterBodyToCountry(waterBody), [waterBody]);
+function drawOverlay(
+  ctx: CanvasRenderingContext2D,
+  s: FrameState,
+  hover: HoverState | null,
+  now: number
+) {
+  const { W, H, dpr, t } = s;
+  const k = t.k;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, W, H);
+  ctx.setTransform(dpr * k, 0, 0, dpr * k, dpr * t.x, dpr * t.y);
+  ctx.lineJoin = 'round';
 
-    const onSelectRef = useRef(onSelectCountry);
-    onSelectRef.current = onSelectCountry;
+  const pulse = 0.5 - 0.5 * Math.cos((2 * Math.PI * (now % PULSE_PERIOD_MS)) / PULSE_PERIOD_MS);
+  const fb = s.feedbackState;
 
-    const onHoverRef = useRef(onHover);
-    onHoverRef.current = onHover;
+  const highlight = (poly: PolyItem | undefined, isHovered: boolean) => {
+    if (!poly) return;
+    const id = poly.id;
+    const isSelected = id === s.selectedId;
+    const isTarget = id === s.targetId;
+    const path = poly.full;
 
-    const onLeaveRef = useRef(onLeave);
-    onLeaveRef.current = onLeave;
+    if (poly.wb) {
+      let fill: string | null = null;
+      let stroke = '#38bdf8';
+      let width = 1.5;
+      if (fb === 'correct' && (isSelected || isTarget)) {
+        fill = 'rgba(16, 185, 129, 0.5)';
+        stroke = '#10b981';
+        width = 2;
+      } else if (fb === 'incorrect' && isTarget) {
+        fill = 'rgba(16, 185, 129, 0.5)';
+        stroke = '#10b981';
+        width = 2;
+      } else if (fb === 'incorrect' && isSelected) {
+        fill = 'rgba(244, 63, 94, 0.5)';
+        stroke = '#f43f5e';
+        width = 2;
+      } else if (isSelected || isTarget) {
+        fill = 'rgba(2, 132, 199, 0.45)';
+        width = 1.8;
+      } else if (isHovered) {
+        fill = 'rgba(14, 165, 233, 0.4)';
+      }
+      if (!fill) return;
+      ctx.fillStyle = fill;
+      ctx.fill(path);
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = width / k;
+      ctx.stroke(path);
+      return;
+    }
 
-    const handleMouseEnter = useCallback(() => {
-      onHoverRef.current?.(country);
-    }, [country]);
+    if (fb === 'correct' && (isSelected || isTarget)) {
+      ctx.fillStyle = pulseEmerald.fill(pulse);
+      ctx.strokeStyle = pulseEmerald.stroke(pulse);
+      ctx.lineWidth = (2 + 2 * pulse) / k;
+    } else if (fb === 'incorrect' && isSelected) {
+      ctx.fillStyle = pulseRose.fill(pulse);
+      ctx.strokeStyle = pulseRose.stroke(pulse);
+      ctx.lineWidth = (2 + 2 * pulse) / k;
+    } else if (isHovered) {
+      ctx.fillStyle = '#0284c7';
+      ctx.strokeStyle = isSelected || isTarget ? '#38bdf8' : '#64748b';
+      ctx.lineWidth = (isSelected || isTarget ? 1.5 : 0.8) / k;
+    } else if (isSelected || isTarget) {
+      const idx = s.countries.indexOf(poly);
+      ctx.fillStyle = idx >= 0 ? s.countryFills[idx] : '#334155';
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 1.5 / k;
+    } else {
+      return;
+    }
+    ctx.fill(path);
+    ctx.stroke(path);
+  };
 
-    const handleMouseLeave = useCallback(() => {
-      onLeaveRef.current?.();
-    }, []);
-
-    const handleClick = useCallback(
-      (e: React.MouseEvent) => {
-        e.stopPropagation();
-        onSelectRef.current?.(country);
-      },
-      [country]
-    );
-
-    return (
-      <path
-        d={pathD}
-        fill={fill}
-        stroke={stroke}
-        strokeWidth={strokeWidth}
-        vectorEffect={stroke !== 'none' ? 'non-scaling-stroke' : undefined}
-        className={`water-body-vector-path cursor-pointer ${
-          isFeedbackCorrect
-            ? 'water-body-correct'
-            : isFeedbackIncorrect
-            ? 'water-body-incorrect'
-            : isSelectedOrTarget
-            ? 'water-body-selected'
-            : ''
-        }`}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={handleClick}
-      />
-    );
-  },
-  (prev, next) => {
-    return (
-      prev.fill === next.fill &&
-      prev.stroke === next.stroke &&
-      prev.strokeWidth === next.strokeWidth &&
-      prev.isFeedbackCorrect === next.isFeedbackCorrect &&
-      prev.isFeedbackIncorrect === next.isFeedbackIncorrect &&
-      prev.isSelectedOrTarget === next.isSelectedOrTarget &&
-      prev.pathD === next.pathD &&
-      prev.waterBody.id === next.waterBody.id &&
-      prev.onSelectCountry === next.onSelectCountry
-    );
+  const hoveredPoly = hover?.poly;
+  const drawn = new Set<PolyItem>();
+  for (const id of [s.selectedId, s.targetId]) {
+    if (!id) continue;
+    const poly = s.polyById.get(id);
+    if (poly && !drawn.has(poly)) {
+      drawn.add(poly);
+      highlight(poly, poly === hoveredPoly);
+    }
   }
-);
+  if (hoveredPoly && !drawn.has(hoveredPoly)) highlight(hoveredPoly, true);
 
-WaterBodyPolygon.displayName = 'WaterBodyPolygon';
+  // Expanding ping rings for the active beacons
+  const ping = (now % PING_PERIOD_MS) / PING_PERIOD_MS;
+  const eased = 1 - Math.pow(1 - ping, 3);
+  const ring = (b: BeaconItem, baseR: number, width: number) => {
+    const isSelected = b.country.id === s.selectedId;
+    const isTarget = b.country.id === s.targetId;
+    if (!isSelected && !isTarget) return;
+    const color =
+      fb === 'correct'
+        ? '#10b981'
+        : fb === 'incorrect' && isSelected
+        ? '#f43f5e'
+        : '#38bdf8';
+    ctx.beginPath();
+    ctx.arc(b.cx, b.cy, (baseR / k) * (1 + eased), 0, Math.PI * 2);
+    ctx.globalAlpha = 0.75 * (1 - eased);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width / k;
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  };
+  for (const m of s.micro) ring(m, 8, 1.2);
+  for (const w of s.waterBeacons) if (w.wb) ring(w, waterBeaconRadii(w.wb).pulse, 1.4);
+
+  // Labels live in screen space so text stays crisp and constant-size
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.font = 'bold 11px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.lineJoin = 'round';
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = '#090e1a';
+  ctx.fillStyle = '#ffffff';
+  for (const w of s.waterBeacons) {
+    if (!w.wb) continue;
+    const { isStrait, dot } = waterBeaconRadii(w.wb);
+    const active = w.wb.id === s.selectedId || w.wb.id === s.targetId;
+    if (!active && !(isStrait && k >= 3.5)) continue;
+    const sx = w.cx * k + t.x;
+    const sy = w.cy * k + t.y;
+    if (sx < -100 || sx > W + 100 || sy < -20 || sy > H + 20) continue;
+    ctx.strokeText(w.wb.name, sx, sy - dot - 4);
+    ctx.fillText(w.wb.name, sx, sy - dot - 4);
+  }
+}
 
 export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   selectedCountryId,
@@ -216,14 +368,15 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   className = '',
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const svgRef = useRef<SVGSVGElement | null>(null);
-  const gRef = useRef<SVGGElement | null>(null);
+  const baseCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const overlayCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
   const flagRef = useRef<HTMLSpanElement | null>(null);
   const nameRef = useRef<HTMLDivElement | null>(null);
   const capRef = useRef<HTMLDivElement | null>(null);
-  const zoomBehaviorRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+  const zoomBehaviorRef = useRef<d3.ZoomBehavior<HTMLCanvasElement, unknown> | null>(null);
   const zoomTransformRef = useRef<d3.ZoomTransform>(d3.zoomIdentity);
+  const hitCtxRef = useRef<CanvasRenderingContext2D | null>(null);
 
   const [dimensions, setDimensions] = useState({ width: 960, height: 540 });
 
@@ -305,7 +458,11 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       if (containerRef.current) {
         const { clientWidth, clientHeight } = containerRef.current;
         if (clientWidth > 0 && clientHeight > 0) {
-          setDimensions({ width: clientWidth, height: clientHeight });
+          setDimensions((prev) =>
+            prev.width === clientWidth && prev.height === clientHeight
+              ? prev
+              : { width: clientWidth, height: clientHeight }
+          );
         }
       }
     };
@@ -314,164 +471,77 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
-  // Setup D3 Projection & Path generator
-  const { projection, pathGenerator } = useMemo(() => {
-    const proj = d3
-      .geoNaturalEarth1()
-      .scale(dimensions.width / 5.8)
-      .translate([dimensions.width / 2, dimensions.height / 2 + 10]);
+  const projection = useMemo(
+    () =>
+      d3
+        .geoNaturalEarth1()
+        .scale(dimensions.width / 5.8)
+        .translate([dimensions.width / 2, dimensions.height / 2 + 10]),
+    [dimensions]
+  );
 
-    const path = d3.geoPath().projection(proj).digits(1);
-    return { projection: proj, pathGenerator: path };
-  }, [dimensions]);
+  // Precompute Path2D geometry (full + decimated LOD) once per projection: zero path work while interacting
+  const geometry = useMemo(() => {
+    const boundsGen = d3.geoPath(projection);
+    const build = (feat: any, id: string, country?: Country, wb?: WaterBody): PolyItem | null => {
+      const b = boundsGen.bounds(feat);
+      if (!b || !isFinite(b[0][0]) || !isFinite(b[1][1])) return null;
+      const full = new Path2D();
+      d3.geoPath(projection, full as any)(feat);
+      const lod = new Path2D();
+      d3.geoPath(projection, new DecimatingContext(lod, LOD_MIN_SEGMENT_PX ** 2) as any)(feat);
+      return { id, country, wb, full, lod, bbox: [b[0][0], b[0][1], b[1][0], b[1][1]] };
+    };
 
-  // Precompute SVG paths once when geometry or projection changes (ZERO recalculation on clicks/hovers)
-  const countryFeatures = useMemo<CountryFeatureItem[]>(() => {
-    if (!pathGenerator || !geoFeatures.length) return [];
-    const items: CountryFeatureItem[] = [];
+    const countries: PolyItem[] = [];
     for (let i = 0; i < geoFeatures.length; i++) {
       const feat = geoFeatures[i];
-      const pathD = pathGenerator(feat);
-      if (pathD) {
-        items.push({
-          id: feat.id || i,
-          country: COUNTRIES_BY_NUMERIC.get(String(feat.id)),
-          pathD,
-        });
-      }
+      const country = COUNTRIES_BY_NUMERIC.get(String(feat.id));
+      const item = build(feat, country ? country.id : `__unmapped_${feat.id ?? i}`, country);
+      if (item) countries.push(item);
     }
-    return items;
-  }, [geoFeatures, pathGenerator]);
 
-  const isZoomingRef = useRef(false);
-  const zoomEndTimerRef = useRef<number | null>(null);
-  const rafZoomIdRef = useRef<number | null>(null);
-  const lastBeaconKRef = useRef<number | null>(null);
-  const beaconCirclesRef = useRef<{ el: SVGCircleElement; baseR: number }[]>([]);
-
-  // Index beacon circle elements after renders so zoom loops never perform querySelectorAll
-  useEffect(() => {
-    if (!gRef.current) return;
-    const items: { el: SVGCircleElement; baseR: number }[] = [];
-    gRef.current.querySelectorAll<SVGCircleElement>('.microstate-dot').forEach((el) => {
-      items.push({ el, baseR: 3.5 });
-    });
-    gRef.current.querySelectorAll<SVGCircleElement>('.microstate-pulse').forEach((el) => {
-      items.push({ el, baseR: 8 });
-    });
-    gRef.current.querySelectorAll<SVGCircleElement>('.microstate-hitbox').forEach((el) => {
-      items.push({ el, baseR: 16 });
-    });
-    gRef.current.querySelectorAll<SVGCircleElement>('.water-beacon-dot').forEach((el) => {
-      const isOcean = el.getAttribute('data-ocean') === 'true';
-      const isStrait = el.getAttribute('data-strait') === 'true';
-      items.push({ el, baseR: isStrait ? 4 : isOcean ? 6 : 5 });
-    });
-    gRef.current.querySelectorAll<SVGCircleElement>('.water-beacon-pulse').forEach((el) => {
-      const isOcean = el.getAttribute('data-ocean') === 'true';
-      items.push({ el, baseR: isOcean ? 16 : 12 });
-    });
-    gRef.current.querySelectorAll<SVGCircleElement>('.water-beacon-hitbox').forEach((el) => {
-      const isOcean = el.getAttribute('data-ocean') === 'true';
-      items.push({ el, baseR: isOcean ? 32 : 24 });
-    });
-    beaconCirclesRef.current = items;
-  });
-
-  // Setup Zoom behavior with GPU-accelerated transforms & smooth RAF batching
-  useEffect(() => {
-    if (!svgRef.current || !gRef.current) return;
-
-    const zoom = d3
-      .zoom<SVGSVGElement, unknown>()
-      .scaleExtent([1, 24])
-      .wheelDelta((event) => {
-        return -event.deltaY * (event.deltaMode === 1 ? 0.03 : event.deltaMode ? 0.5 : 0.0015);
-      })
-      .on('zoom', (event) => {
-        zoomTransformRef.current = event.transform;
-        if (!gRef.current) return;
-
-        // Toggle .is-zooming class during active gestures to suppress hit-test & hover thrashing
-        if (!isZoomingRef.current) {
-          isZoomingRef.current = true;
-          svgRef.current?.classList.add('is-zooming');
-        }
-        if (zoomEndTimerRef.current) clearTimeout(zoomEndTimerRef.current);
-        zoomEndTimerRef.current = window.setTimeout(() => {
-          isZoomingRef.current = false;
-          svgRef.current?.classList.remove('is-zooming');
-        }, 120);
-
-        // Batch beacon radii resizing inside requestAnimationFrame (at most once per frame, zero querySelectorAll)
-        // Transform and beacon radii are applied together once per frame, however many wheel events fired
-        if (!rafZoomIdRef.current) {
-          rafZoomIdRef.current = requestAnimationFrame(() => {
-            rafZoomIdRef.current = null;
-            const t = zoomTransformRef.current;
-            gRef.current?.setAttribute('transform', t.toString());
-            if (t.k === lastBeaconKRef.current) return;
-            lastBeaconKRef.current = t.k;
-            const beacons = beaconCirclesRef.current;
-            for (let i = 0; i < beacons.length; i++) {
-              beacons[i].el.setAttribute('r', (beacons[i].baseR / t.k).toFixed(2));
-            }
-          });
-        }
-      });
-
-    zoomBehaviorRef.current = zoom;
-    d3.select(svgRef.current).call(zoom);
-
-    return () => {
-      if (zoomEndTimerRef.current) clearTimeout(zoomEndTimerRef.current);
-      if (rafZoomIdRef.current) cancelAnimationFrame(rafZoomIdRef.current);
-    };
-  }, []);
-
-  // Programmatic camera focus (Smooth, cinematic auto-zoom when revealing answers / selecting locations)
-  useEffect(() => {
-    if (disableAutoZoom) return;
-
-    const countryToFocus = selectedCountryId || targetCountryId;
-    if (!countryToFocus || !svgRef.current || !zoomBehaviorRef.current) return;
-
-    const wb = getWaterBodyById(countryToFocus);
-    const c = wb ? waterBodyToCountry(wb) : COUNTRIES_BY_ID.get(countryToFocus);
-    if (!c || !c.coordinates) return;
-
-    const coords = projection(c.coordinates);
-    if (!coords) return;
-
-    const [cx, cy] = coords;
-    const targetScale = wb ? (wb.type === 'strait' || wb.type === 'channel' ? 5.5 : 3.0) : 3.5;
-    const transform = d3.zoomIdentity
-      .translate(dimensions.width / 2, dimensions.height / 2)
-      .scale(targetScale)
-      .translate(-cx, -cy);
-
-    // Suppress pointer events & hover trashing during camera fly-over so passing paths don't trigger filters
-    svgRef.current.classList.add('is-zooming');
-
-    d3.select(svgRef.current)
-      .transition()
-      .duration(700)
-      .ease(d3.easeCubicOut)
-      .call(zoomBehaviorRef.current.transform, transform)
-      .on('end', () => {
-        svgRef.current?.classList.remove('is-zooming');
-      })
-      .on('interrupt', () => {
-        svgRef.current?.classList.remove('is-zooming');
-      });
-  }, [selectedCountryId, targetCountryId, disableAutoZoom, projection, dimensions]);
-
-  // High-performance direct DOM tooltip tracking (Zero React re-renders during mouse movements)
-  const handleContainerMouseMove = useCallback((e: React.MouseEvent) => {
-    if (tooltipRef.current) {
-      tooltipRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY - 12}px, 0)`;
+    const oceans: PolyItem[] = [];
+    const seas: PolyItem[] = [];
+    const straits: PolyItem[] = [];
+    for (const feat of waterGeoFeatures) {
+      const wb = getWaterBodyById(feat.id);
+      if (!wb) continue;
+      const item = build(feat, wb.id, waterBodyToCountry(wb), wb);
+      if (!item) continue;
+      if (wb.type === 'ocean') oceans.push(item);
+      else if (wb.type === 'strait' || wb.type === 'channel') straits.push(item);
+      else seas.push(item);
     }
-  }, []);
+
+    const polyById = new Map<string, PolyItem>();
+    for (const p of [...oceans, ...seas, ...straits, ...countries]) polyById.set(p.id, p);
+
+    return { countries, oceans, seas, straits, polyById };
+  }, [geoFeatures, waterGeoFeatures, projection]);
+
+  // Projected microstate anchor points
+  const microstateItems = useMemo<BeaconItem[]>(() => {
+    return getMicrostateList()
+      .map((country) => {
+        const coords = projection(country.coordinates);
+        return { country, cx: coords ? coords[0] : NaN, cy: coords ? coords[1] : NaN };
+      })
+      .filter((item) => !isNaN(item.cx) && !isNaN(item.cy));
+  }, [projection]);
+
+  // Projected anchor points for all hydrographic bodies
+  const waterBodyItems = useMemo<BeaconItem[]>(() => {
+    return WATER_BODIES.map((wb) => {
+      const coords = projection(wb.coordinates);
+      return {
+        wb,
+        country: waterBodyToCountry(wb),
+        cx: coords ? coords[0] : NaN,
+        cy: coords ? coords[1] : NaN,
+      };
+    }).filter((item) => !isNaN(item.cx) && !isNaN(item.cy));
+  }, [projection]);
 
   const handleCountryHover = useCallback((country?: Country) => {
     if (!country || !tooltipRef.current) return;
@@ -503,110 +573,48 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     onSelectCountryRef.current?.(country);
   }, []);
 
-  // Calculate country fill color (Elevated base fill #334155 for crisp contrast against #090e1a ocean)
+  const highlightedSet = useMemo(() => new Set(highlightedCountryIds), [highlightedCountryIds]);
+
   const getCountryFill = useCallback(
     (country?: Country) => {
       if (!country) return '#334155';
 
-      // Quiz feedback states:
       if (feedbackState === 'correct') {
         if (country.id === targetCountryId || country.id === selectedCountryId) {
-          return '#10b981'; // Emerald
+          return '#10b981';
         }
       }
       if (feedbackState === 'incorrect') {
         if (country.id === targetCountryId) {
-          return '#10b981'; // Always show correct answer target in Emerald!
+          return '#10b981';
         }
         if (country.id === selectedCountryId) {
-          return '#f43f5e'; // Rose for user's incorrect pick
+          return '#f43f5e';
         }
       }
 
-      // Selected state
       if (country.id === selectedCountryId) {
-        return '#0284c7'; // Vivid Cyan/Sky
+        return '#0284c7';
       }
 
-      // Highlighted list
-      if (highlightedCountryIds.includes(country.id)) {
+      if (highlightedSet.has(country.id)) {
         return '#38bdf8';
       }
 
-      // Heatmap mode
       if (showHeatmap && srsItemsMap) {
         const capItem = srsItemsMap.get(`${country.id}:capital`);
         const locItem = srsItemsMap.get(`${country.id}:location`);
-        const score = (capItem?.stage || 0) + (locItem?.stage || 0); // 0 to 4
-        if (score >= 3) return '#059669'; // Emerald Mastered
+        const score = (capItem?.stage || 0) + (locItem?.stage || 0);
+        if (score >= 3) return '#059669';
         if (score === 2) return '#10b981';
-        if (score === 1) return '#d97706'; // Amber Learning
-        return '#334155'; // Slate 700 New
+        if (score === 1) return '#d97706';
+        return '#334155';
       }
 
-      return '#334155'; // Slate 700 high-contrast continental base
+      return '#334155';
     },
-    [feedbackState, targetCountryId, selectedCountryId, highlightedCountryIds, showHeatmap, srsItemsMap]
+    [feedbackState, targetCountryId, selectedCountryId, highlightedSet, showHeatmap, srsItemsMap]
   );
-
-  // Compute projected microstate anchor points (includes Tuvalu, Vatican, Nauru, etc.)
-  const microstateItems = useMemo(() => {
-    const list = getMicrostateList();
-    return list
-      .map((country) => {
-        const coords = projection(country.coordinates);
-        return {
-          country,
-          cx: coords ? coords[0] : 0,
-          cy: coords ? coords[1] : 0,
-          hasValidCoords: Boolean(coords && !isNaN(coords[0]) && !isNaN(coords[1]))
-        };
-      })
-      .filter((item) => item.hasValidCoords);
-  }, [projection]);
-
-  // Precompute projected coordinates for all 40 hydrographic bodies (straits, seas, oceans)
-  const waterBodyItems = useMemo(() => {
-    return WATER_BODIES.map((wb) => {
-      const coords = projection(wb.coordinates);
-      return {
-        wb,
-        country: waterBodyToCountry(wb),
-        cx: coords ? coords[0] : 0,
-        cy: coords ? coords[1] : 0,
-        hasValidCoords: Boolean(coords && !isNaN(coords[0]) && !isNaN(coords[1]))
-      };
-    }).filter((item) => item.hasValidCoords);
-  }, [projection]);
-
-  // Precompute boundary-accurate water body SVG paths once when projection changes
-  const { oceanFeatures, seaFeatures, straitFeatures } = useMemo(() => {
-    if (!pathGenerator || !waterGeoFeatures.length) {
-      return { oceanFeatures: [], seaFeatures: [], straitFeatures: [] };
-    }
-
-    const oceans: { wb: WaterBody; pathD: string }[] = [];
-    const seas: { wb: WaterBody; pathD: string }[] = [];
-    const straits: { wb: WaterBody; pathD: string }[] = [];
-
-    for (const feat of waterGeoFeatures) {
-      const wb = getWaterBodyById(feat.id);
-      if (!wb) continue;
-      const pathD = pathGenerator(feat);
-      if (!pathD) continue;
-
-      const item = { wb, pathD };
-      if (wb.type === 'ocean') {
-        oceans.push(item);
-      } else if (wb.type === 'strait' || wb.type === 'channel') {
-        straits.push(item);
-      } else {
-        seas.push(item);
-      }
-    }
-
-    return { oceanFeatures: oceans, seaFeatures: seas, straitFeatures: straits };
-  }, [pathGenerator, waterGeoFeatures]);
 
   const getWaterBodyFill = useCallback(
     (wb: WaterBody) => {
@@ -625,7 +633,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         return 'rgba(2, 132, 199, 0.45)';
       }
 
-      if (highlightedCountryIds.includes(wb.id)) {
+      if (highlightedSet.has(wb.id)) {
         return 'rgba(56, 189, 248, 0.35)';
       }
 
@@ -643,7 +651,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       }
       return 'rgba(14, 165, 233, 0.09)';
     },
-    [selectedCountryId, targetCountryId, feedbackState, highlightedCountryIds, showHeatmap, srsItemsMap]
+    [selectedCountryId, targetCountryId, feedbackState, highlightedSet, showHeatmap, srsItemsMap]
   );
 
   const getWaterBodyStroke = useCallback(
@@ -674,67 +682,317 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     [selectedCountryId, targetCountryId, feedbackState]
   );
 
-  // Open-ocean proximity click assist (snaps to nearest microstate or water body)
-  const handleSvgClick = useCallback(
-    (e: React.MouseEvent<SVGSVGElement>) => {
-      const target = e.target as SVGElement;
-      const isDirectTarget =
-        target.classList?.contains('country-vector-path') ||
-        target.classList?.contains('water-body-vector-path') ||
-        target.classList?.contains('microstate-hitbox') ||
-        target.classList?.contains('microstate-dot') ||
-        target.classList?.contains('water-beacon-hitbox') ||
-        target.classList?.contains('water-beacon-dot');
-      if (isDirectTarget) return;
+  // Styles are resolved once per prop change, never per frame
+  const styles = useMemo(() => {
+    const wbFills = (items: PolyItem[]) => items.map((p) => getWaterBodyFill(p.wb!));
+    const wbStrokes = (items: PolyItem[]) => items.map((p) => getWaterBodyStroke(p.wb!));
+    return {
+      countryFills: geometry.countries.map((p) => getCountryFill(p.country)),
+      oceanFills: wbFills(geometry.oceans),
+      seaFills: wbFills(geometry.seas),
+      straitFills: wbFills(geometry.straits),
+      oceanStrokes: wbStrokes(geometry.oceans),
+      seaStrokes: wbStrokes(geometry.seas),
+      straitStrokes: wbStrokes(geometry.straits),
+      microFills: microstateItems.map((m) => getCountryFill(m.country)),
+    };
+  }, [geometry, microstateItems, getCountryFill, getWaterBodyFill, getWaterBodyStroke]);
 
-      const svg = svgRef.current;
-      if (!svg || !gRef.current) return;
+  // --- Frame loop -------------------------------------------------------------------------------
+  const movingRef = useRef(false);
+  const moveEndTimerRef = useRef<number | null>(null);
+  const hoverRef = useRef<HoverState | null>(null);
+  const baseDirtyRef = useRef(true);
+  const frameRafRef = useRef<number | null>(null);
+  const lastOverlayRef = useRef(0);
+  const lastPointerRef = useRef<{ x: number; y: number } | null>(null);
+  const hoverRafRef = useRef<number | null>(null);
 
-      const pt = svg.createSVGPoint();
-      pt.x = e.clientX;
-      pt.y = e.clientY;
-      const ctm = gRef.current.getScreenCTM();
-      if (!ctm) return;
-      const transformedPt = pt.matrixTransform(ctm.inverse());
+  const stateRef = useRef<FrameState | null>(null);
+  stateRef.current = {
+    W: dimensions.width,
+    H: dimensions.height,
+    dpr: Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2),
+    t: zoomTransformRef.current,
+    moving: movingRef.current,
+    oceans: geometry.oceans,
+    seas: geometry.seas,
+    straits: geometry.straits,
+    countries: geometry.countries,
+    ...styles,
+    micro: microstateItems,
+    waterBeacons: waterBodyItems,
+    polyById: geometry.polyById,
+    selectedId: selectedCountryId,
+    targetId: targetCountryId,
+    feedbackState,
+  };
 
-      const k = zoomTransformRef.current?.k || 1;
+  const frameRef = useRef<(now: number) => void>(() => {});
+  frameRef.current = (now: number) => {
+    frameRafRef.current = null;
+    const base = baseCanvasRef.current;
+    const overlay = overlayCanvasRef.current;
+    const s = stateRef.current;
+    if (!base || !overlay || !s) return;
 
-      // 1. Proximity check for microstates (within 28 screen px)
+    s.t = zoomTransformRef.current;
+    s.moving = movingRef.current;
+
+    const pw = Math.round(s.W * s.dpr);
+    const ph = Math.round(s.H * s.dpr);
+    if (base.width !== pw || base.height !== ph) {
+      base.width = overlay.width = pw;
+      base.height = overlay.height = ph;
+      baseDirtyRef.current = true;
+    }
+
+    const animating = Boolean(s.selectedId || s.targetId);
+    if (baseDirtyRef.current) {
+      baseDirtyRef.current = false;
+      const ctx = base.getContext('2d');
+      if (ctx) drawBase(ctx, s);
+    }
+
+    // Idle pulse animations are capped at ~30fps; interaction runs at full rate
+    if (animating && !s.moving && now - lastOverlayRef.current < 32) {
+      frameRafRef.current = requestAnimationFrame((n) => frameRef.current(n));
+      return;
+    }
+    lastOverlayRef.current = now;
+    const octx = overlay.getContext('2d');
+    if (octx) drawOverlay(octx, s, hoverRef.current, now);
+
+    if (animating) {
+      frameRafRef.current = requestAnimationFrame((n) => frameRef.current(n));
+    }
+  };
+
+  const scheduleFrame = useCallback((baseChanged: boolean) => {
+    if (baseChanged) baseDirtyRef.current = true;
+    if (frameRafRef.current == null) {
+      frameRafRef.current = requestAnimationFrame((n) => frameRef.current(n));
+    }
+  }, []);
+
+  // Redraw whenever props/geometry/size change
+  useEffect(() => {
+    scheduleFrame(true);
+  });
+
+  useEffect(() => {
+    return () => {
+      if (frameRafRef.current) cancelAnimationFrame(frameRafRef.current);
+      if (hoverRafRef.current) cancelAnimationFrame(hoverRafRef.current);
+      if (moveEndTimerRef.current) clearTimeout(moveEndTimerRef.current);
+    };
+  }, []);
+
+  // --- Hit testing ------------------------------------------------------------------------------
+  const hitTest = useCallback(
+    (px: number, py: number): HoverState | null => {
+      const t = zoomTransformRef.current;
+      const k = t.k;
+      const wx = (px - t.x) / k;
+      const wy = (py - t.y) / k;
+
+      for (const w of waterBodyItems) {
+        if (!w.wb) continue;
+        const hit = waterBeaconRadii(w.wb).hit;
+        if (Math.hypot((wx - w.cx) * k, (wy - w.cy) * k) <= hit) return { country: w.country };
+      }
+      for (const m of microstateItems) {
+        if (Math.hypot((wx - m.cx) * k, (wy - m.cy) * k) <= 16) return { country: m.country };
+      }
+
+      if (!hitCtxRef.current) {
+        hitCtxRef.current = document.createElement('canvas').getContext('2d');
+      }
+      const hctx = hitCtxRef.current;
+      if (!hctx) return null;
+
+      const test = (items: PolyItem[]): HoverState | null => {
+        for (let i = items.length - 1; i >= 0; i--) {
+          const it = items[i];
+          const b = it.bbox;
+          if (wx < b[0] || wx > b[2] || wy < b[1] || wy > b[3]) continue;
+          if (hctx.isPointInPath(it.full, wx, wy)) {
+            const country = it.country;
+            return country ? { country, poly: it } : null;
+          }
+        }
+        return null;
+      };
+      return (
+        test(geometry.countries) || test(geometry.straits) || test(geometry.seas) || test(geometry.oceans)
+      );
+    },
+    [geometry, microstateItems, waterBodyItems]
+  );
+
+  const updateHover = useCallback(() => {
+    hoverRafRef.current = null;
+    const p = lastPointerRef.current;
+    if (!p || movingRef.current) return;
+    const hit = p ? hitTest(p.x, p.y) : null;
+    const prev = hoverRef.current;
+    if (prev?.country.id === hit?.country.id) return;
+    hoverRef.current = hit;
+    if (hit) handleCountryHover(hit.country);
+    else handleCountryLeave();
+    if (overlayCanvasRef.current) overlayCanvasRef.current.style.cursor = hit ? 'pointer' : '';
+    scheduleFrame(false);
+  }, [hitTest, handleCountryHover, handleCountryLeave, scheduleFrame]);
+
+  const requestHoverUpdate = useCallback(() => {
+    if (hoverRafRef.current == null) {
+      hoverRafRef.current = requestAnimationFrame(updateHover);
+    }
+  }, [updateHover]);
+
+  const requestHoverUpdateRef = useRef(requestHoverUpdate);
+  requestHoverUpdateRef.current = requestHoverUpdate;
+
+  // --- Zoom behaviour ---------------------------------------------------------------------------
+  useEffect(() => {
+    const canvas = overlayCanvasRef.current;
+    if (!canvas) return;
+
+    const zoom = d3
+      .zoom<HTMLCanvasElement, unknown>()
+      .scaleExtent([1, 24])
+      .wheelDelta((event) => {
+        return -event.deltaY * (event.deltaMode === 1 ? 0.03 : event.deltaMode ? 0.5 : 0.0015);
+      })
+      .on('zoom', (event) => {
+        zoomTransformRef.current = event.transform;
+
+        if (!movingRef.current) {
+          movingRef.current = true;
+          if (hoverRef.current) {
+            hoverRef.current = null;
+            handleCountryLeave();
+            canvas.style.cursor = '';
+          }
+        }
+        if (moveEndTimerRef.current) clearTimeout(moveEndTimerRef.current);
+        moveEndTimerRef.current = window.setTimeout(() => {
+          movingRef.current = false;
+          scheduleFrame(true);
+          requestHoverUpdateRef.current();
+        }, 120);
+
+        scheduleFrame(true);
+      });
+
+    zoomBehaviorRef.current = zoom;
+    d3.select(canvas).call(zoom);
+
+    return () => {
+      d3.select(canvas).on('.zoom', null);
+    };
+  }, [scheduleFrame, handleCountryLeave]);
+
+  // Programmatic camera focus (Smooth, cinematic auto-zoom when revealing answers / selecting locations)
+  useEffect(() => {
+    if (disableAutoZoom) return;
+
+    const countryToFocus = selectedCountryId || targetCountryId;
+    const canvas = overlayCanvasRef.current;
+    if (!countryToFocus || !canvas || !zoomBehaviorRef.current) return;
+
+    const wb = getWaterBodyById(countryToFocus);
+    const c = wb ? waterBodyToCountry(wb) : COUNTRIES_BY_ID.get(countryToFocus);
+    if (!c || !c.coordinates) return;
+
+    const coords = projection(c.coordinates);
+    if (!coords) return;
+
+    const [cx, cy] = coords;
+    const targetScale = wb ? (wb.type === 'strait' || wb.type === 'channel' ? 5.5 : 3.0) : 3.5;
+    const transform = d3.zoomIdentity
+      .translate(dimensions.width / 2, dimensions.height / 2)
+      .scale(targetScale)
+      .translate(-cx, -cy);
+
+    d3.select(canvas)
+      .transition()
+      .duration(700)
+      .ease(d3.easeCubicOut)
+      .call(zoomBehaviorRef.current.transform, transform);
+  }, [selectedCountryId, targetCountryId, disableAutoZoom, projection, dimensions]);
+
+  // High-performance direct DOM tooltip tracking (Zero React re-renders during mouse movements)
+  const handleContainerMouseMove = useCallback((e: React.MouseEvent) => {
+    if (tooltipRef.current) {
+      tooltipRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY - 12}px, 0)`;
+    }
+  }, []);
+
+  const handleCanvasMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      lastPointerRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      if (!movingRef.current) requestHoverUpdate();
+    },
+    [requestHoverUpdate]
+  );
+
+  const handleCanvasMouseLeave = useCallback(() => {
+    lastPointerRef.current = null;
+    if (hoverRef.current) {
+      hoverRef.current = null;
+      handleCountryLeave();
+      if (overlayCanvasRef.current) overlayCanvasRef.current.style.cursor = '';
+      scheduleFrame(false);
+    }
+  }, [handleCountryLeave, scheduleFrame]);
+
+  // Click: direct hit first, then open-ocean proximity assist (snaps to nearest microstate or water body)
+  const handleCanvasClick = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const px = e.clientX - rect.left;
+      const py = e.clientY - rect.top;
+
+      const direct = hitTest(px, py);
+      if (direct) {
+        handleCountrySelect(direct.country);
+        return;
+      }
+
+      const t = zoomTransformRef.current;
+      const k = t.k;
+      const wx = (px - t.x) / k;
+      const wy = (py - t.y) / k;
+
       let minScreenDist = Infinity;
       let nearestCountry: Country | null = null;
-
       for (const m of microstateItems) {
-        const dx = (transformedPt.x - m.cx) * k;
-        const dy = (transformedPt.y - m.cy) * k;
-        const dist = Math.hypot(dx, dy);
+        const dist = Math.hypot((wx - m.cx) * k, (wy - m.cy) * k);
         if (dist < minScreenDist) {
           minScreenDist = dist;
           nearestCountry = m.country;
         }
       }
-
       if (minScreenDist <= 28 && nearestCountry) {
         handleCountrySelect(nearestCountry);
         return;
       }
 
-      // 2. Proximity check for water bodies (straits ~35px, seas ~65px, oceans ~120px)
       let minWaterDist = Infinity;
       let nearestWater: Country | null = null;
       const isWaterDrill = Boolean(targetCountryId?.startsWith('WATER_'));
 
       for (const w of waterBodyItems) {
-        const dx = (transformedPt.x - w.cx) * k;
-        const dy = (transformedPt.y - w.cy) * k;
-        const dist = Math.hypot(dx, dy);
-
+        if (!w.wb) continue;
+        const dist = Math.hypot((wx - w.cx) * k, (wy - w.cy) * k);
         const threshold =
           w.wb.type === 'strait' || w.wb.type === 'channel'
             ? 35
             : w.wb.type === 'sea' || w.wb.type === 'gulf' || w.wb.type === 'bay'
             ? 65
             : 120;
-
         if (dist < threshold && dist < minWaterDist) {
           minWaterDist = dist;
           nearestWater = w.country;
@@ -744,13 +1002,10 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       if (nearestWater) {
         handleCountrySelect(nearestWater);
       } else if (isWaterDrill) {
-        // If drilling water bodies, snap to closest water body on map
         let closestWb: Country | null = null;
         let closestDist = Infinity;
         for (const w of waterBodyItems) {
-          const dx = (transformedPt.x - w.cx) * k;
-          const dy = (transformedPt.y - w.cy) * k;
-          const dist = Math.hypot(dx, dy);
+          const dist = Math.hypot((wx - w.cx) * k, (wy - w.cy) * k);
           if (dist < closestDist) {
             closestDist = dist;
             closestWb = w.country;
@@ -761,7 +1016,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         }
       }
     },
-    [microstateItems, waterBodyItems, handleCountrySelect, targetCountryId]
+    [hitTest, microstateItems, waterBodyItems, handleCountrySelect, targetCountryId]
   );
 
   return (
@@ -773,296 +1028,20 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       {/* Background soft ambient radial gradient */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(20,32,54,0.6)_0%,rgba(9,14,26,1)_100%)]" />
 
-      {/* Main SVG Map */}
-      <svg
-        ref={svgRef}
-        onClick={handleSvgClick}
-        className="w-full h-full cursor-grab active:cursor-grabbing block"
-        viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
-      >
-        <defs>
-          <radialGradient id="sphere-ocean" cx="50%" cy="50%" r="50%">
-            <stop offset="60%" stopColor="#142036" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#090e1a" stopOpacity="1" />
-          </radialGradient>
-        </defs>
+      {/* Static map layer: water bodies, countries, beacons */}
+      <canvas
+        ref={baseCanvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none"
+      />
 
-        <g ref={gRef} className="vector-map-main-group">
-          {/* Water Bodies Layer 1: Global Oceans (deepest water layer) */}
-          <g className="oceans-layer">
-            {oceanFeatures.map(({ wb, pathD }) => {
-              const isSelected = wb.id === selectedCountryId;
-              const isTarget = wb.id === targetCountryId;
-              const isFeedbackCorrect =
-                (feedbackState === 'correct' && Boolean(isSelected || isTarget)) ||
-                (feedbackState === 'incorrect' && Boolean(isTarget));
-              const isFeedbackIncorrect = feedbackState === 'incorrect' && Boolean(isSelected);
-
-              return (
-                <WaterBodyPolygon
-                  key={wb.id}
-                  waterBody={wb}
-                  pathD={pathD}
-                  fill={getWaterBodyFill(wb)}
-                  stroke={getWaterBodyStroke(wb)}
-                  strokeWidth="0.8"
-                  isFeedbackCorrect={isFeedbackCorrect}
-                  isFeedbackIncorrect={isFeedbackIncorrect}
-                  isSelectedOrTarget={isSelected || isTarget}
-                  onHover={handleCountryHover}
-                  onLeave={handleCountryLeave}
-                  onSelectCountry={handleCountrySelect}
-                />
-              );
-            })}
-          </g>
-
-          {/* Water Bodies Layer 2: Marginal Seas, Gulfs, and Bays */}
-          <g className="seas-layer">
-            {seaFeatures.map(({ wb, pathD }) => {
-              const isSelected = wb.id === selectedCountryId;
-              const isTarget = wb.id === targetCountryId;
-              const isFeedbackCorrect =
-                (feedbackState === 'correct' && Boolean(isSelected || isTarget)) ||
-                (feedbackState === 'incorrect' && Boolean(isTarget));
-              const isFeedbackIncorrect = feedbackState === 'incorrect' && Boolean(isSelected);
-
-              return (
-                <WaterBodyPolygon
-                  key={wb.id}
-                  waterBody={wb}
-                  pathD={pathD}
-                  fill={getWaterBodyFill(wb)}
-                  stroke={getWaterBodyStroke(wb)}
-                  strokeWidth="0.8"
-                  isFeedbackCorrect={isFeedbackCorrect}
-                  isFeedbackIncorrect={isFeedbackIncorrect}
-                  isSelectedOrTarget={isSelected || isTarget}
-                  onHover={handleCountryHover}
-                  onLeave={handleCountryLeave}
-                  onSelectCountry={handleCountrySelect}
-                />
-              );
-            })}
-          </g>
-
-          {/* Water Bodies Layer 3: Strategic Straits, Canals, and Channels */}
-          <g className="straits-layer">
-            {straitFeatures.map(({ wb, pathD }) => {
-              const isSelected = wb.id === selectedCountryId;
-              const isTarget = wb.id === targetCountryId;
-              const isFeedbackCorrect =
-                (feedbackState === 'correct' && Boolean(isSelected || isTarget)) ||
-                (feedbackState === 'incorrect' && Boolean(isTarget));
-              const isFeedbackIncorrect = feedbackState === 'incorrect' && Boolean(isSelected);
-
-              return (
-                <WaterBodyPolygon
-                  key={wb.id}
-                  waterBody={wb}
-                  pathD={pathD}
-                  fill={getWaterBodyFill(wb)}
-                  stroke={getWaterBodyStroke(wb)}
-                  strokeWidth="1"
-                  isFeedbackCorrect={isFeedbackCorrect}
-                  isFeedbackIncorrect={isFeedbackIncorrect}
-                  isSelectedOrTarget={isSelected || isTarget}
-                  onHover={handleCountryHover}
-                  onLeave={handleCountryLeave}
-                  onSelectCountry={handleCountrySelect}
-                />
-              );
-            })}
-          </g>
-
-          {/* Countries vector polygons */}
-          {countryFeatures.map((item) => {
-            const country = item.country;
-            const isSelected = country && country.id === selectedCountryId;
-            const isTarget = country && country.id === targetCountryId;
-            const isFeedbackCorrect = feedbackState === 'correct' && Boolean(isSelected || isTarget);
-            const isFeedbackIncorrect = feedbackState === 'incorrect' && Boolean(isSelected);
-
-            return (
-              <CountryPolygon
-                key={item.id}
-                country={country}
-                pathD={item.pathD}
-                fill={getCountryFill(country)}
-                stroke={isSelected || isTarget ? '#38bdf8' : '#64748b'}
-                strokeWidth={isSelected || isTarget ? '1.5' : '0.8'}
-                isFeedbackCorrect={isFeedbackCorrect}
-                isFeedbackIncorrect={isFeedbackIncorrect}
-                onCountryHover={handleCountryHover}
-                onCountryLeave={handleCountryLeave}
-                onSelectCountry={handleCountrySelect}
-              />
-            );
-          })}
-
-          {/* Microstates & Small Island Nations Beacons Layer */}
-          <g className="microstate-beacons-layer">
-            {microstateItems.map(({ country, cx, cy }) => {
-              const isSelected = country.id === selectedCountryId;
-              const isTarget = country.id === targetCountryId;
-              const isFeedbackCorrect = feedbackState === 'correct' && Boolean(isSelected || isTarget);
-              const isFeedbackIncorrect = feedbackState === 'incorrect' && Boolean(isSelected);
-              const k = zoomTransformRef.current?.k || 1;
-              const dotRadius = 3.5 / k;
-              const hitRadius = 16 / k;
-              const pulseRadius = 8 / k;
-
-              const fill = getCountryFill(country);
-              const stroke = isSelected || isTarget ? '#ffffff' : '#38bdf8';
-
-              return (
-                <g key={`beacon-${country.id}`} className="microstate-beacon-group">
-                  {/* Pulsing ring when active or in feedback */}
-                  {(isSelected || isTarget) && (
-                    <circle
-                      cx={cx}
-                      cy={cy}
-                      r={pulseRadius}
-                      className="microstate-pulse animate-ping opacity-75"
-                      fill="none"
-                      stroke={isFeedbackCorrect ? '#10b981' : isFeedbackIncorrect ? '#f43f5e' : '#38bdf8'}
-                      strokeWidth="1.2"
-                      vectorEffect="non-scaling-stroke"
-                    />
-                  )}
-
-                  {/* Core beacon dot */}
-                  <circle
-                    cx={cx}
-                    cy={cy}
-                    r={dotRadius}
-                    className="microstate-dot transition-colors duration-150 cursor-pointer"
-                    fill={fill}
-                    stroke={stroke}
-                    strokeWidth="1"
-                    vectorEffect="non-scaling-stroke"
-                  />
-
-                  {/* Generous invisible clickable hit-target (32px diameter on screen) */}
-                  <circle
-                    cx={cx}
-                    cy={cy}
-                    r={hitRadius}
-                    className="microstate-hitbox cursor-pointer"
-                    fill="transparent"
-                    pointerEvents="all"
-                    onMouseEnter={() => handleCountryHover(country)}
-                    onMouseLeave={handleCountryLeave}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCountrySelect(country);
-                    }}
-                  />
-                </g>
-              );
-            })}
-          </g>
-
-          {/* Maritime Bodies & Straits Beacons Layer */}
-          <g className="maritime-beacons-layer">
-            {waterBodyItems.map(({ wb, country, cx, cy }) => {
-              const isSelected = country.id === selectedCountryId;
-              const isTarget = country.id === targetCountryId;
-              const isStrait = wb.type === 'strait' || wb.type === 'channel';
-              const isFeedbackCorrect = feedbackState === 'correct' && Boolean(isSelected || isTarget);
-              const isFeedbackIncorrect = feedbackState === 'incorrect' && Boolean(isSelected);
-              const k = zoomTransformRef.current?.k || 1;
-              const isOcean = wb.type === 'ocean';
-
-              const dotRadius = (isStrait ? 4 : isOcean ? 6 : 5) / k;
-              const hitRadius = (isStrait ? 20 : isOcean ? 32 : 24) / k;
-              const pulseRadius = (isStrait ? 10 : isOcean ? 16 : 12) / k;
-
-              let fill = isStrait ? '#06b6d4' : isOcean ? '#38bdf8' : '#0ea5e9';
-              let stroke = isSelected || isTarget ? '#ffffff' : '#e0f2fe';
-
-              if (feedbackState === 'correct' && (isSelected || isTarget)) {
-                fill = '#10b981';
-                stroke = '#ffffff';
-              } else if (feedbackState === 'incorrect' && isSelected) {
-                fill = '#f43f5e';
-                stroke = '#ffffff';
-              } else if (feedbackState === 'incorrect' && isTarget) {
-                fill = '#10b981';
-                stroke = '#ffffff';
-              }
-
-              return (
-                <g key={`water-beacon-${wb.id}`} className="water-beacon-group">
-                  {/* Pulsing ring when active or in feedback */}
-                  {(isSelected || isTarget) && (
-                    <circle
-                      cx={cx}
-                      cy={cy}
-                      r={pulseRadius}
-                      data-ocean={isOcean ? 'true' : 'false'}
-                      className="water-beacon-pulse animate-ping opacity-75"
-                      fill="none"
-                      stroke={isFeedbackCorrect ? '#10b981' : isFeedbackIncorrect ? '#f43f5e' : '#38bdf8'}
-                      strokeWidth="1.4"
-                      vectorEffect="non-scaling-stroke"
-                    />
-                  )}
-
-                  {/* Core beacon dot */}
-                  <circle
-                    cx={cx}
-                    cy={cy}
-                    r={dotRadius}
-                    data-ocean={isOcean ? 'true' : 'false'}
-                    data-strait={isStrait ? 'true' : 'false'}
-                    className="water-beacon-dot transition-colors duration-150 cursor-pointer"
-                    fill={fill}
-                    stroke={stroke}
-                    strokeWidth="1.2"
-                    vectorEffect="non-scaling-stroke"
-                  />
-
-                  {/* Name label shown when active or at zoom */}
-                  {(isSelected || isTarget || (isStrait && k >= 3.5)) && (
-                    <text
-                      x={cx}
-                      y={cy - (dotRadius + 4 / k)}
-                      textAnchor="middle"
-                      fill="#ffffff"
-                      stroke="#090e1a"
-                      strokeWidth={1.5 / k}
-                      paintOrder="stroke fill"
-                      fontSize={Math.max(8, 11 / k)}
-                      fontWeight="bold"
-                      className="pointer-events-none select-none"
-                    >
-                      {wb.name}
-                    </text>
-                  )}
-
-                  {/* Generous invisible clickable hit-target */}
-                  <circle
-                    cx={cx}
-                    cy={cy}
-                    r={hitRadius}
-                    data-ocean={isOcean ? 'true' : 'false'}
-                    className="water-beacon-hitbox cursor-pointer"
-                    fill="transparent"
-                    pointerEvents="all"
-                    onMouseEnter={() => handleCountryHover(country)}
-                    onMouseLeave={handleCountryLeave}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCountrySelect(country);
-                    }}
-                  />
-                </g>
-              );
-            })}
-          </g>
-        </g>
-      </svg>
+      {/* Dynamic layer: hover, selection, feedback pulses, labels. Receives all pointer input. */}
+      <canvas
+        ref={overlayCanvasRef}
+        onMouseMove={handleCanvasMouseMove}
+        onMouseLeave={handleCanvasMouseLeave}
+        onClick={handleCanvasClick}
+        className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing block"
+      />
 
       {/* High-Performance Direct Tooltip (Zero React re-renders during cursor movements) */}
       <div
