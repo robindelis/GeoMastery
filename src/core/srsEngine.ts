@@ -147,7 +147,7 @@ export function waterBodyToCountry(wb: WaterBody): Country {
     numericId: wb.id,
     iso2: 'WB',
     name: wb.name,
-    officialName: wb.frenchName ? `${wb.name} (${wb.frenchName})` : wb.name,
+    officialName: wb.name,
     continent: 'Oceania', // placeholder
     subregion: typeLabel,
     capital: wb.significance,
@@ -156,8 +156,7 @@ export function waterBodyToCountry(wb: WaterBody): Country {
     flagEmoji: flag,
     facts: {
       significance: wb.significance,
-      type: wb.type,
-      frenchName: wb.frenchName
+      type: wb.type
     }
   };
 }
@@ -173,7 +172,6 @@ export function buildQuestion(
   // If it's a water body item (Oceans, Seas, Straits, Gulfs)
   if (srsItem.countryId.startsWith('WATER_') || country.id.startsWith('WATER_')) {
     const wb = getWaterBodyById(country.id) || getWaterBodyById(srsItem.countryId);
-    const frenchSuffix = wb?.frenchName ? ` (${wb.frenchName})` : '';
     const typeName = wb?.type === 'strait' || wb?.type === 'channel'
       ? 'Strait'
       : wb?.type === 'ocean'
@@ -183,7 +181,7 @@ export function buildQuestion(
       : wb?.type === 'bay'
       ? 'Bay'
       : 'Sea';
-    const prompt = wb ? `Locate ${typeName}: ${wb.name}${frenchSuffix}` : `Locate on map: ${country.name}`;
+    const prompt = wb ? `Locate ${typeName}: ${wb.name}` : `Locate on map: ${country.name}`;
     const correctAnswer = wb ? wb.name : country.name;
 
     let options: string[] | undefined = undefined;

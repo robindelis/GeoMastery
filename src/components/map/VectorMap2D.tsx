@@ -4,7 +4,7 @@ import { feature } from 'topojson-client';
 import worldData50m from '../../assets/geo/countries-50m.json';
 import { Country, SRSItem } from '../../core/types';
 import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
-import { WATER_BODIES, getWaterBodyById } from '../../assets/data/waterBodies';
+import { WATER_BODIES, getWaterBodyById, WaterBody } from '../../assets/data/waterBodies';
 import { waterBodyToCountry } from '../../core/srsEngine';
 import { getMicrostateList } from '../../core/microstates';
 
@@ -107,6 +107,101 @@ const CountryPolygon = React.memo<CountryPolygonProps>(
 );
 
 CountryPolygon.displayName = 'CountryPolygon';
+
+interface WaterBodyPolygonProps {
+  waterBody: WaterBody;
+  pathD: string;
+  fill: string;
+  stroke: string;
+  strokeWidth: string;
+  isFeedbackCorrect: boolean;
+  isFeedbackIncorrect: boolean;
+  isSelectedOrTarget: boolean;
+  onHover: (country?: Country) => void;
+  onLeave: () => void;
+  onSelectCountry?: (country: Country) => void;
+}
+
+// Memoized Water Body Polygon: renders interactive ocean basin, sea, or strait
+const WaterBodyPolygon = React.memo<WaterBodyPolygonProps>(
+  ({
+    waterBody,
+    pathD,
+    fill,
+    stroke,
+    strokeWidth,
+    isFeedbackCorrect,
+    isFeedbackIncorrect,
+    isSelectedOrTarget,
+    onHover,
+    onLeave,
+    onSelectCountry,
+  }) => {
+    const country = useMemo(() => waterBodyToCountry(waterBody), [waterBody]);
+
+    const onSelectRef = useRef(onSelectCountry);
+    onSelectRef.current = onSelectCountry;
+
+    const onHoverRef = useRef(onHover);
+    onHoverRef.current = onHover;
+
+    const onLeaveRef = useRef(onLeave);
+    onLeaveRef.current = onLeave;
+
+    const handleMouseEnter = useCallback(() => {
+      onHoverRef.current?.(country);
+    }, [country]);
+
+    const handleMouseLeave = useCallback(() => {
+      onLeaveRef.current?.();
+    }, []);
+
+    const handleClick = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onSelectRef.current?.(country);
+      },
+      [country]
+    );
+
+    return (
+      <path
+        d={pathD}
+        fill={fill}
+        stroke={stroke}
+        strokeWidth={strokeWidth}
+        vectorEffect="non-scaling-stroke"
+        className={`water-body-vector-path transition-colors duration-150 cursor-pointer ${
+          isFeedbackCorrect
+            ? '!fill-emerald-500/50 !stroke-emerald-400'
+            : isFeedbackIncorrect
+            ? '!fill-rose-500/50 !stroke-rose-400'
+            : isSelectedOrTarget
+            ? '!fill-cyan-500/40 !stroke-cyan-400'
+            : 'hover:!fill-sky-400/45 hover:!stroke-sky-300'
+        }`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
+      />
+    );
+  },
+  (prev, next) => {
+    return (
+      prev.fill === next.fill &&
+      prev.stroke === next.stroke &&
+      prev.strokeWidth === next.strokeWidth &&
+      prev.isFeedbackCorrect === next.isFeedbackCorrect &&
+      prev.isFeedbackIncorrect === next.isFeedbackIncorrect &&
+      prev.isSelectedOrTarget === next.isSelectedOrTarget &&
+      prev.pathD === next.pathD &&
+      prev.waterBody.id === next.waterBody.id &&
+      prev.onSelectCountry === next.onSelectCountry
+    );
+  }
+);
+
+WaterBodyPolygon.displayName = 'WaterBodyPolygon';
 
 export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   selectedCountryId,
@@ -348,12 +443,115 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     }).filter((item) => item.hasValidCoords);
   }, [projection]);
 
+  // Precompute water body SVG paths once when projection changes
+  const { oceanFeatures, seaFeatures, straitFeatures } = useMemo(() => {
+    if (!pathGenerator) return { oceanFeatures: [], seaFeatures: [], straitFeatures: [] };
+
+    const oceans: { wb: WaterBody; pathD: string }[] = [];
+    const seas: { wb: WaterBody; pathD: string }[] = [];
+    const straits: { wb: WaterBody; pathD: string }[] = [];
+
+    for (const wb of WATER_BODIES) {
+      if (!wb.geoCircles || !wb.geoCircles.length) continue;
+
+      const subPaths: string[] = [];
+      for (const circle of wb.geoCircles) {
+        const circleGeo = d3.geoCircle().center(circle.center).radius(circle.radiusDeg)();
+        const d = pathGenerator(circleGeo);
+        if (d) {
+          subPaths.push(d);
+        }
+      }
+
+      if (subPaths.length > 0) {
+        const pathD = subPaths.join(' ');
+        const item = { wb, pathD };
+        if (wb.type === 'ocean') {
+          oceans.push(item);
+        } else if (wb.type === 'strait' || wb.type === 'channel') {
+          straits.push(item);
+        } else {
+          seas.push(item);
+        }
+      }
+    }
+
+    return { oceanFeatures: oceans, seaFeatures: seas, straitFeatures: straits };
+  }, [pathGenerator]);
+
+  const getWaterBodyFill = useCallback(
+    (wb: WaterBody) => {
+      const isSelected = wb.id === selectedCountryId;
+      const isTarget = wb.id === targetCountryId;
+
+      if (feedbackState === 'correct' && (isSelected || isTarget)) {
+        return 'rgba(16, 185, 129, 0.45)';
+      }
+      if (feedbackState === 'incorrect') {
+        if (isTarget) return 'rgba(16, 185, 129, 0.45)';
+        if (isSelected) return 'rgba(244, 63, 94, 0.45)';
+      }
+
+      if (isSelected || isTarget) {
+        return 'rgba(2, 132, 199, 0.45)';
+      }
+
+      if (highlightedCountryIds.includes(wb.id)) {
+        return 'rgba(56, 189, 248, 0.35)';
+      }
+
+      if (showHeatmap && srsItemsMap) {
+        const item = srsItemsMap.get(`${wb.id}:location`);
+        if (item?.stage === 2) return 'rgba(16, 185, 129, 0.25)';
+        if (item?.stage === 1) return 'rgba(217, 119, 6, 0.25)';
+      }
+
+      if (wb.type === 'strait' || wb.type === 'channel') {
+        return 'rgba(14, 165, 233, 0.18)';
+      }
+      if (wb.type === 'ocean') {
+        return 'rgba(3, 105, 161, 0.05)';
+      }
+      return 'rgba(14, 165, 233, 0.09)';
+    },
+    [selectedCountryId, targetCountryId, feedbackState, highlightedCountryIds, showHeatmap, srsItemsMap]
+  );
+
+  const getWaterBodyStroke = useCallback(
+    (wb: WaterBody) => {
+      const isSelected = wb.id === selectedCountryId;
+      const isTarget = wb.id === targetCountryId;
+
+      if (feedbackState === 'correct' && (isSelected || isTarget)) {
+        return '#10b981';
+      }
+      if (feedbackState === 'incorrect') {
+        if (isTarget) return '#10b981';
+        if (isSelected) return '#f43f5e';
+      }
+
+      if (isSelected || isTarget) {
+        return '#38bdf8';
+      }
+
+      if (wb.type === 'strait' || wb.type === 'channel') {
+        return 'rgba(56, 189, 248, 0.35)';
+      }
+      if (wb.type === 'ocean') {
+        return 'none';
+      }
+      return 'rgba(56, 189, 248, 0.18)';
+    },
+    [selectedCountryId, targetCountryId, feedbackState]
+  );
+
   // Open-ocean proximity click assist (snaps to nearest microstate or water body)
   const handleSvgClick = useCallback(
     (e: React.MouseEvent<SVGSVGElement>) => {
       const target = e.target as SVGElement;
       const isDirectTarget =
         target.classList?.contains('country-vector-path') ||
+        target.classList?.contains('water-body-vector-path') ||
         target.classList?.contains('microstate-hitbox') ||
         target.classList?.contains('microstate-dot') ||
         target.classList?.contains('water-beacon-hitbox') ||
@@ -461,6 +659,93 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         </defs>
 
         <g ref={gRef}>
+          {/* Water Bodies Layer 1: Global Oceans (deepest water layer) */}
+          <g className="oceans-layer">
+            {oceanFeatures.map(({ wb, pathD }) => {
+              const isSelected = wb.id === selectedCountryId;
+              const isTarget = wb.id === targetCountryId;
+              const isFeedbackCorrect =
+                (feedbackState === 'correct' && Boolean(isSelected || isTarget)) ||
+                (feedbackState === 'incorrect' && Boolean(isTarget));
+              const isFeedbackIncorrect = feedbackState === 'incorrect' && Boolean(isSelected);
+
+              return (
+                <WaterBodyPolygon
+                  key={wb.id}
+                  waterBody={wb}
+                  pathD={pathD}
+                  fill={getWaterBodyFill(wb)}
+                  stroke={getWaterBodyStroke(wb)}
+                  strokeWidth="0.8"
+                  isFeedbackCorrect={isFeedbackCorrect}
+                  isFeedbackIncorrect={isFeedbackIncorrect}
+                  isSelectedOrTarget={isSelected || isTarget}
+                  onHover={handleCountryHover}
+                  onLeave={handleCountryLeave}
+                  onSelectCountry={handleCountrySelect}
+                />
+              );
+            })}
+          </g>
+
+          {/* Water Bodies Layer 2: Marginal Seas, Gulfs, and Bays */}
+          <g className="seas-layer">
+            {seaFeatures.map(({ wb, pathD }) => {
+              const isSelected = wb.id === selectedCountryId;
+              const isTarget = wb.id === targetCountryId;
+              const isFeedbackCorrect =
+                (feedbackState === 'correct' && Boolean(isSelected || isTarget)) ||
+                (feedbackState === 'incorrect' && Boolean(isTarget));
+              const isFeedbackIncorrect = feedbackState === 'incorrect' && Boolean(isSelected);
+
+              return (
+                <WaterBodyPolygon
+                  key={wb.id}
+                  waterBody={wb}
+                  pathD={pathD}
+                  fill={getWaterBodyFill(wb)}
+                  stroke={getWaterBodyStroke(wb)}
+                  strokeWidth="0.8"
+                  isFeedbackCorrect={isFeedbackCorrect}
+                  isFeedbackIncorrect={isFeedbackIncorrect}
+                  isSelectedOrTarget={isSelected || isTarget}
+                  onHover={handleCountryHover}
+                  onLeave={handleCountryLeave}
+                  onSelectCountry={handleCountrySelect}
+                />
+              );
+            })}
+          </g>
+
+          {/* Water Bodies Layer 3: Strategic Straits, Canals, and Channels */}
+          <g className="straits-layer">
+            {straitFeatures.map(({ wb, pathD }) => {
+              const isSelected = wb.id === selectedCountryId;
+              const isTarget = wb.id === targetCountryId;
+              const isFeedbackCorrect =
+                (feedbackState === 'correct' && Boolean(isSelected || isTarget)) ||
+                (feedbackState === 'incorrect' && Boolean(isTarget));
+              const isFeedbackIncorrect = feedbackState === 'incorrect' && Boolean(isSelected);
+
+              return (
+                <WaterBodyPolygon
+                  key={wb.id}
+                  waterBody={wb}
+                  pathD={pathD}
+                  fill={getWaterBodyFill(wb)}
+                  stroke={getWaterBodyStroke(wb)}
+                  strokeWidth="1"
+                  isFeedbackCorrect={isFeedbackCorrect}
+                  isFeedbackIncorrect={isFeedbackIncorrect}
+                  isSelectedOrTarget={isSelected || isTarget}
+                  onHover={handleCountryHover}
+                  onLeave={handleCountryLeave}
+                  onSelectCountry={handleCountrySelect}
+                />
+              );
+            })}
+          </g>
+
           {/* Countries vector polygons */}
           {countryFeatures.map((item) => {
             const country = item.country;

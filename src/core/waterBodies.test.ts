@@ -65,7 +65,30 @@ describe('Water Bodies & Maritime Hydrography Dataset', () => {
     expect(gibraltar).toBeDefined();
     expect(gibraltar?.name).toBe('Strait of Gibraltar');
     expect(gibraltar?.type).toBe('strait');
-    expect(gibraltar?.frenchName).toBe('Détroit de Gibraltar');
+    expect(gibraltar?.significance).toContain('Atlantic Ocean');
+  });
+
+  it('provides valid spherical geoCircles for interactive hover and hit testing on all 40 water bodies', () => {
+    for (const wb of WATER_BODIES) {
+      expect(wb.geoCircles).toBeDefined();
+      expect(wb.geoCircles!.length).toBeGreaterThan(0);
+      for (const circle of wb.geoCircles!) {
+        expect(circle.center).toHaveLength(2);
+        const [lng, lat] = circle.center;
+        expect(lng).toBeGreaterThanOrEqual(-180);
+        expect(lng).toBeLessThanOrEqual(180);
+        expect(lat).toBeGreaterThanOrEqual(-90);
+        expect(lat).toBeLessThanOrEqual(90);
+        expect(circle.radiusDeg).toBeGreaterThan(0);
+        expect(circle.radiusDeg).toBeLessThanOrEqual(35);
+      }
+    }
+  });
+
+  it('guarantees pure English naming without parenthesis translations across all water bodies', () => {
+    for (const wb of WATER_BODIES) {
+      expect(wb.name).not.toMatch(/\(.*\)/);
+    }
   });
 });
 
