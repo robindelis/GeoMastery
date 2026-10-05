@@ -176,7 +176,7 @@ describe('Water Bodies & Maritime Hydrography Dataset', () => {
       }
     }
     expect(overlapCount, 'Oceans must not overlap with one another anywhere on Earth').toBe(0);
-  });
+  }, 60000);
 
   it('correctly verifies point-in-polygon containment with d3.geoContains across water bodies', () => {
     const geo = feature(waterBodies50m as any, (waterBodies50m as any).objects.water_bodies) as any;

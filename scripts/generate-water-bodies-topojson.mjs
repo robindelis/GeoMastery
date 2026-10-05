@@ -408,14 +408,22 @@ async function main() {
   const combinedFeatures = [...clampedDissolved, ...straits];
   fs.writeFileSync(allCleanPath, JSON.stringify({ type: 'FeatureCollection', features: combinedFeatures }), 'utf8');
 
-  const simplifiedPath = path.join(CACHE_DIR, 'water_bodies_simplified.geojson');
+  const snappedPath = path.join(CACHE_DIR, 'water_bodies_snapped.geojson');
   const densifiedPath = path.join(CACHE_DIR, 'water_bodies_densified.geojson');
+  const landPath = path.join(CACHE_DIR, 'land_50m.geojson');
 
-  console.log('Simplifying non-parallel geometry with shape preservation...');
+  // Cut/extend every water body to the exact coastline rendered by countries-50m.json.
+  // Requires python3 with shapely>=2 and numpy (override the interpreter with PYTHON=...).
+  const countriesTopo = JSON.parse(
+    fs.readFileSync(path.join(ROOT_DIR, 'src', 'assets', 'geo', 'countries-50m.json'), 'utf8')
+  );
+  fs.writeFileSync(landPath, JSON.stringify(feature(countriesTopo, countriesTopo.objects.countries)), 'utf8');
+  console.log('Snapping water bodies to the coastline...');
   execSync(
-    `npx mapshaper "${allCleanPath}" -simplify 20% keep-shapes -o "${simplifiedPath}" format=geojson`,
+    `${process.env.PYTHON || 'python3'} "${path.join(__dirname, 'snap-water-to-coast.py')}" "${allCleanPath}" "${landPath}" "${snappedPath}"`,
     { stdio: 'inherit' }
   );
+  const simplifiedPath = snappedPath;
 
   console.log('Densifying parallel boundaries and re-clamping...');
   const simplifiedData = JSON.parse(fs.readFileSync(simplifiedPath, 'utf8'));
@@ -431,7 +439,7 @@ async function main() {
 
   console.log('Compiling densified geometry to TopoJSON...');
   execSync(
-    `npx mapshaper "${densifiedPath}" -rename-layers water_bodies -o format=topojson id-field=wb_id "${OUTPUT_FILE}"`,
+    `npx mapshaper "${densifiedPath}" -rename-layers water_bodies -o format=topojson quantization=100000 id-field=wb_id "${OUTPUT_FILE}"`,
     { stdio: 'inherit' }
   );
 
