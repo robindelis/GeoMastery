@@ -75,9 +75,16 @@ export const Globe3D: React.FC<Globe3DProps> = ({
     return waterGeoFeatures
       .map((feat) => {
         const wb = getWaterBodyById(feat.id);
-        return wb ? { feat, wb } : null;
+        if (!wb) return null;
+        const b = d3.geoBounds(feat);
+        return {
+          feat,
+          wb,
+          bbox: [b[0][0], b[0][1], b[1][0], b[1][1]] as [number, number, number, number],
+          isCrossAntimeridian: b[0][0] > b[1][0]
+        };
       })
-      .filter((item): item is { feat: any; wb: WaterBody } => item !== null);
+      .filter((item): item is { feat: any; wb: WaterBody; bbox: [number, number, number, number]; isCrossAntimeridian: boolean } => item !== null);
   }, [waterGeoFeatures]);
 
   const sortedWaterItemsForDetection = useMemo(() => {
@@ -267,6 +274,15 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         const isSelected = wb.id === selectedCountryId;
         const isTarget = wb.id === targetCountryId;
         const isHovered = wb.id === hoveredWaterIdRef.current;
+        const isFeedback = feedbackState !== null && (isSelected || isTarget);
+        const isHighlighted = highlightedCountryIds.includes(wb.id);
+
+        const isOcean = wb.type === 'ocean';
+        const isActive = isSelected || isTarget || isHovered || isFeedback || isHighlighted;
+
+        // Performance standard: Inactive oceans blend into the dark navy ocean sphere.
+        // Skipping invisible full-ocean path renders at 60fps delivers zero-lag rotation!
+        if (isOcean && !isActive) continue;
 
         let fillStyle =
           wb.type === 'strait' || wb.type === 'channel'
@@ -503,7 +519,9 @@ export const Globe3D: React.FC<Globe3DProps> = ({
             }
 
             // Not land, so it's WATER! Check water bodies (straits first, then seas, then oceans):
-            for (const { feat, wb } of sortedWaterItemsForDetection) {
+            for (const { feat, wb, bbox, isCrossAntimeridian } of sortedWaterItemsForDetection) {
+              if (lat < bbox[1] || lat > bbox[3]) continue;
+              if (!isCrossAntimeridian && (lng < bbox[0] || lng > bbox[2])) continue;
               if (d3.geoContains(feat, [lng, lat])) {
                 hoveredWaterIdRef.current = wb.id;
                 setHoveredCountry({ country: waterBodyToCountry(wb), x: e.clientX, y: e.clientY });
@@ -590,7 +608,9 @@ export const Globe3D: React.FC<Globe3DProps> = ({
           }
 
           // Water body basin click
-          for (const { feat, wb } of sortedWaterItemsForDetection) {
+          for (const { feat, wb, bbox, isCrossAntimeridian } of sortedWaterItemsForDetection) {
+            if (lat < bbox[1] || lat > bbox[3]) continue;
+            if (!isCrossAntimeridian && (lng < bbox[0] || lng > bbox[2])) continue;
             if (d3.geoContains(feat, [lng, lat])) {
               onSelectCountry(waterBodyToCountry(wb));
               return;

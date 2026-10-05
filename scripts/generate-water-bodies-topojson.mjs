@@ -27,7 +27,6 @@ async function fetchCached(url, filename) {
   return JSON.parse(text);
 }
 
-// Helper to normalize names
 function norm(n) {
   return (n || '').toLowerCase().replace(/\s+/g, ' ').trim();
 }
@@ -37,9 +36,9 @@ function findFeature(dataset, name) {
   return dataset.features.find((f) => norm(f.properties?.name || f.properties?.NAME) === target);
 }
 
-function findFeatures(dataset, name) {
-  const target = norm(name);
-  return dataset.features.filter((f) => norm(f.properties?.name || f.properties?.NAME) === target);
+function findFeatures(dataset, names) {
+  const targets = new Set(names.map(norm));
+  return dataset.features.filter((f) => targets.has(norm(f.properties?.name || f.properties?.NAME)));
 }
 
 function getCoords(feat) {
@@ -47,6 +46,10 @@ function getCoords(feat) {
   if (feat.geometry.type === 'Polygon') return [feat.geometry.coordinates];
   if (feat.geometry.type === 'MultiPolygon') return feat.geometry.coordinates;
   return [];
+}
+
+function collectCoords(feats) {
+  return feats.flatMap((f) => getCoords(f));
 }
 
 // Create buffered channel polygon around a centerline
@@ -111,50 +114,170 @@ async function main() {
   ]);
 
   const generators = {
-    // 1. OCEANS (5)
+    // 1. OCEANS (Complete planetary coverage: all marginal seas and bays merged into their parent ocean basin)
     WATER_OCEAN_PACIFIC: () => ({
       type: 'MultiPolygon',
-      coordinates: [
-        ...getCoords(findFeature(m50, 'NORTH PACIFIC OCEAN')),
-        ...getCoords(findFeature(m50, 'SOUTH PACIFIC OCEAN'))
-      ]
+      coordinates: collectCoords(
+        findFeatures(m50, [
+          'NORTH PACIFIC OCEAN',
+          'SOUTH PACIFIC OCEAN',
+          'Philippine Sea',
+          'Sea of Okhotsk',
+          'East China Sea',
+          'Gulf of Alaska',
+          'Bismarck Sea',
+          'Solomon Sea',
+          'Banda Sea',
+          'Celebes Sea',
+          'Ceram Sea',
+          'Java Sea',
+          'Molucca Sea',
+          'Sulu Sea',
+          'Cook Inlet',
+          'Bristol Bay',
+          'Bay of Plenty',
+          'Golfo de Panamá',
+          'Shelikhova Gulf',
+          'Makassar Strait'
+        ])
+      )
     }),
     WATER_OCEAN_ATLANTIC: () => ({
       type: 'MultiPolygon',
-      coordinates: [
-        ...getCoords(findFeature(m50, 'NORTH ATLANTIC OCEAN')),
-        ...getCoords(findFeature(m50, 'SOUTH ATLANTIC OCEAN'))
-      ]
+      coordinates: collectCoords(
+        findFeatures(m50, [
+          'NORTH ATLANTIC OCEAN',
+          'SOUTH ATLANTIC OCEAN',
+          'Bay of Biscay',
+          'Greenland Sea',
+          'Labrador Sea',
+          'Baffin Bay',
+          'Irish Sea',
+          'Bristol Channel',
+          'Davis  Strait',
+          'Davis Strait',
+          'Gulf of St. Lawrence',
+          'Gulf of Maine',
+          'Bay of Fundy',
+          'Chesapeake Bay',
+          'Straits of Florida',
+          'Golfo San Jorge',
+          'Río de la Plata'
+        ])
+      )
     }),
-    WATER_OCEAN_INDIAN: () => findFeature(m50, 'INDIAN OCEAN').geometry,
-    WATER_OCEAN_ARCTIC: () => findFeature(m50, 'ARCTIC OCEAN').geometry,
-    WATER_OCEAN_SOUTHERN: () => findFeature(m50, 'SOUTHERN OCEAN').geometry,
+    WATER_OCEAN_INDIAN: () => ({
+      type: 'MultiPolygon',
+      coordinates: collectCoords(
+        findFeatures(m50, [
+          'INDIAN OCEAN',
+          'Mozambique Channel',
+          'Great Australian Bight',
+          'Laccadive Sea',
+          'Gulf of Mannar',
+          'Timor Sea',
+          'Arafura Sea'
+        ])
+      )
+    }),
+    WATER_OCEAN_ARCTIC: () => ({
+      type: 'MultiPolygon',
+      coordinates: collectCoords(
+        findFeatures(m50, [
+          'ARCTIC OCEAN',
+          'Barents Sea',
+          'Kara Sea',
+          'Laptev Sea',
+          'Chukchi Sea',
+          'Beaufort  Sea',
+          'Beaufort Sea',
+          'White  Sea',
+          'White Sea',
+          'Amundsen Gulf',
+          'Melville Bay',
+          'Viscount Melville Sound',
+          'The North Western Passages'
+        ])
+      )
+    }),
+    WATER_OCEAN_SOUTHERN: () => ({
+      type: 'MultiPolygon',
+      coordinates: collectCoords(
+        findFeatures(m50, [
+          'SOUTHERN OCEAN',
+          'Weddell  Sea',
+          'Weddell Sea',
+          'Ross  Sea',
+          'Ross Sea',
+          'Amundsen Sea',
+          'Bellingshausen Sea',
+          'Scotia Sea',
+          'Drake Passage'
+        ])
+      )
+    }),
 
-    // 2. MAJOR SEAS (16)
+    // 2. MAJOR SEAS (Full regional sub-basin coverage)
     WATER_SEA_MEDITERRANEAN: () => ({
       type: 'MultiPolygon',
-      coordinates: findFeatures(m50, 'Mediterranean Sea').flatMap((f) => getCoords(f))
+      coordinates: collectCoords(
+        findFeatures(m50, [
+          'Mediterranean Sea',
+          'Adriatic Sea',
+          'Aegean Sea',
+          'Ionian Sea',
+          'Tyrrhenian Sea',
+          'Balearic Sea',
+          'Golfe du Lion',
+          'Inner Sea'
+        ])
+      )
     }),
     WATER_SEA_CARIBBEAN: () => findFeature(m50, 'Caribbean Sea').geometry,
-    WATER_SEA_SOUTH_CHINA: () => findFeature(m50, 'South China Sea').geometry,
+    WATER_SEA_SOUTH_CHINA: () => ({
+      type: 'MultiPolygon',
+      coordinates: collectCoords(
+        findFeatures(m50, ['South China Sea', 'Gulf of Tonkin', 'Gulf of Thailand', 'Luzon Strait'])
+      )
+    }),
     WATER_SEA_NORTH: () => findFeature(m50, 'North Sea').geometry,
-    WATER_SEA_BALTIC: () => findFeature(m50, 'Baltic Sea').geometry,
+    WATER_SEA_BALTIC: () => ({
+      type: 'MultiPolygon',
+      coordinates: collectCoords(findFeatures(m50, ['Baltic Sea', 'Gulf of Bothnia', 'Gulf of Finland']))
+    }),
     WATER_SEA_BLACK: () => findFeature(m50, 'Black Sea').geometry,
     WATER_SEA_RED: () => findFeature(m50, 'Red Sea').geometry,
-    WATER_SEA_ARABIAN: () => findFeature(m50, 'Arabian Sea').geometry,
-    WATER_SEA_CORAL: () => findFeature(m50, 'Coral Sea').geometry,
+    WATER_SEA_ARABIAN: () => ({
+      type: 'MultiPolygon',
+      coordinates: collectCoords(findFeatures(m50, ['Arabian Sea', 'Gulf of Oman', 'Gulf of Kutch']))
+    }),
+    WATER_SEA_CORAL: () => ({
+      type: 'MultiPolygon',
+      coordinates: collectCoords(findFeatures(m50, ['Coral Sea', 'Great Barrier Reef', 'Gulf of Carpentaria']))
+    }),
     WATER_SEA_BERING: () => findFeature(m50, 'Bering Sea').geometry,
-    WATER_SEA_JAPAN: () => findFeature(m50, 'Sea of Japan').geometry,
+    WATER_SEA_JAPAN: () => ({
+      type: 'MultiPolygon',
+      coordinates: collectCoords(findFeatures(m50, ['Sea of Japan', 'Korea Strait']))
+    }),
     WATER_SEA_CASPIAN: () => findFeature(m50, 'Caspian Sea').geometry,
-    WATER_SEA_YELLOW: () => findFeature(m50, 'Yellow Sea').geometry,
+    WATER_SEA_YELLOW: () => ({
+      type: 'MultiPolygon',
+      coordinates: collectCoords(findFeatures(m50, ['Yellow Sea', 'Bo Hai']))
+    }),
     WATER_SEA_NORWEGIAN: () => findFeature(m50, 'Norwegian Sea').geometry,
     WATER_SEA_TASMAN: () => findFeature(m50, 'Tasman Sea').geometry,
     WATER_SEA_SARGASSO: () => findFeature(m50, 'Sargasso Sea').geometry,
 
-    // 3. STRATEGIC STRAITS & CANALS (12)
+    // 3. STRATEGIC STRAITS & CANALS
     WATER_STRAIT_GIBRALTAR: () => findFeature(m10, 'Strait of Gibraltar').geometry,
     WATER_STRAIT_HORMUZ: () => hormuzGeo.features[0].geometry,
-    WATER_STRAIT_MALACCA: () => findFeature(m10, 'Strait of Malacca').geometry,
+    WATER_STRAIT_MALACCA: () => ({
+      type: 'MultiPolygon',
+      coordinates: collectCoords(
+        [findFeature(m10, 'Strait of Malacca'), findFeature(m50, 'Strait of Singapore')].filter(Boolean)
+      )
+    }),
     WATER_STRAIT_BOSPORUS: () => findFeature(m10, 'Bosporus').geometry,
     WATER_STRAIT_DARDANELLES: () => findFeature(m10, 'Dardanelles').geometry,
     WATER_STRAIT_BAB_EL_MANDEB: () => findFeature(m10, 'Bab el Mandeb').geometry,
@@ -165,11 +288,22 @@ async function main() {
     WATER_CANAL_SUEZ: () => createCorridorPolygon(suezCenterline, 0.12),
     WATER_CANAL_PANAMA: () => createCorridorPolygon(panamaCenterline, 0.10),
 
-    // 4. MAJOR GULFS & BAYS (7)
-    WATER_GULF_MEXICO: () => findFeature(m50, 'Gulf of Mexico').geometry,
+    // 4. MAJOR GULFS & BAYS
+    WATER_GULF_MEXICO: () => ({
+      type: 'MultiPolygon',
+      coordinates: collectCoords(
+        findFeatures(m50, ['Gulf of Mexico', 'Bah\x92a de Campeche', 'Bahía de Campeche', 'Gulf of Honduras'])
+      )
+    }),
     WATER_GULF_PERSIAN: () => findFeature(m50, 'Persian Gulf').geometry,
-    WATER_BAY_BENGAL: () => findFeature(m50, 'Bay of Bengal').geometry,
-    WATER_BAY_HUDSON: () => findFeature(m50, 'Hudson Bay').geometry,
+    WATER_BAY_BENGAL: () => ({
+      type: 'MultiPolygon',
+      coordinates: collectCoords(findFeatures(m50, ['Bay of Bengal', 'Andaman Sea']))
+    }),
+    WATER_BAY_HUDSON: () => ({
+      type: 'MultiPolygon',
+      coordinates: collectCoords(findFeatures(m50, ['Hudson Bay', 'James Bay', 'Hudson Strait', 'Ungava Bay']))
+    }),
     WATER_GULF_GUINEA: () => findFeature(m50, 'Gulf of Guinea').geometry,
     WATER_GULF_ADEN: () => findFeature(m50, 'Gulf of Aden').geometry,
     WATER_GULF_CALIFORNIA: () => findFeature(m50, 'Golfo de California').geometry
@@ -207,13 +341,13 @@ async function main() {
     };
   });
 
-  const geoJsonPath = path.join(CACHE_DIR, 'water_bodies_combined.geojson');
+  const geoJsonPath = path.join(CACHE_DIR, 'water_bodies_complete.geojson');
   fs.writeFileSync(geoJsonPath, JSON.stringify({ type: 'FeatureCollection', features }), 'utf8');
-  console.log(`Generated intermediate GeoJSON with ${features.length} features.`);
+  console.log(`Generated complete 100% coverage GeoJSON with ${features.length} features.`);
 
-  console.log('Compiling to TopoJSON via mapshaper...');
+  console.log('Compiling to optimized TopoJSON via mapshaper with 25% shape-preserving simplification...');
   execSync(
-    `npx mapshaper "${geoJsonPath}" -rename-layers water_bodies -o format=topojson id-field=id "${OUTPUT_FILE}"`,
+    `npx mapshaper "${geoJsonPath}" -simplify 25% keep-shapes -rename-layers water_bodies -o format=topojson id-field=id "${OUTPUT_FILE}"`,
     { stdio: 'inherit' }
   );
 

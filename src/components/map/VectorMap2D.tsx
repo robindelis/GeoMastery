@@ -172,14 +172,14 @@ const WaterBodyPolygon = React.memo<WaterBodyPolygonProps>(
         stroke={stroke}
         strokeWidth={strokeWidth}
         vectorEffect="non-scaling-stroke"
-        className={`water-body-vector-path transition-colors duration-150 cursor-pointer ${
+        className={`water-body-vector-path cursor-pointer hover:brightness-125 transition-colors duration-100 ${
           isFeedbackCorrect
             ? '!fill-emerald-500/50 !stroke-emerald-400'
             : isFeedbackIncorrect
             ? '!fill-rose-500/50 !stroke-rose-400'
             : isSelectedOrTarget
             ? '!fill-cyan-500/40 !stroke-cyan-400'
-            : 'hover:!fill-sky-400/45 hover:!stroke-sky-300'
+            : ''
         }`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
