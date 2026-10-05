@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Country } from '../../core/types';
+import { ArrowRight } from 'lucide-react';
 
 interface MultipleChoicePromptProps {
   country: Country;
@@ -9,6 +10,8 @@ interface MultipleChoicePromptProps {
   correctAnswer: string;
   isSubmitted: boolean;
   onSelectOption: (option: string) => void;
+  onGiveUp?: () => void;
+  onNextQuestion?: () => void;
 }
 
 export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
@@ -18,13 +21,23 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
   selectedOption,
   correctAnswer,
   isSubmitted,
-  onSelectOption
+  onSelectOption,
+  onGiveUp,
+  onNextQuestion
 }) => {
-  // Keyboard listener for 1, 2, 3, 4
-  useEffect(() => {
-    if (isSubmitted) return;
+  const isWater = country.id.startsWith('WATER_');
 
+  // Keyboard listener for 1, 2, 3, 4 when unsubmitted, or Enter/Space when submitted
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (isSubmitted) {
+        if ((e.key === 'Enter' || e.key === ' ') && onNextQuestion) {
+          e.preventDefault();
+          onNextQuestion();
+        }
+        return;
+      }
+
       const key = e.key;
       if (['1', '2', '3', '4'].includes(key)) {
         const index = parseInt(key, 10) - 1;
@@ -36,7 +49,7 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [options, isSubmitted, onSelectOption]);
+  }, [options, isSubmitted, onSelectOption, onNextQuestion]);
 
   return (
     <div className="flex flex-col gap-4 w-full max-w-xl mx-auto">
@@ -45,7 +58,7 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
         <div className="flex items-center gap-2">
           <span className="text-3xl">{country.flagEmoji}</span>
           <span className="text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700">
-            {country.continent} • {country.subregion}
+            {isWater ? `🌊 Oceans & Straits • ${country.subregion}` : `${country.continent} • ${country.subregion}`}
           </span>
         </div>
         <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight mt-1">
@@ -91,6 +104,40 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
           );
         })}
       </div>
+
+      {/* Bottom Actions: Don't Know button or Next Question Banner */}
+      {!isSubmitted && onGiveUp && (
+        <div className="flex justify-center pt-1">
+          <button
+            type="button"
+            onClick={onGiveUp}
+            className="text-xs text-rose-400/90 hover:text-rose-300 font-medium px-3.5 py-1.5 rounded-xl border border-rose-900/50 bg-rose-950/30 hover:bg-rose-950/60 transition-colors flex items-center gap-1.5 shadow-sm"
+          >
+            <span>🤷 Don't Know / Reveal Answer</span>
+          </button>
+        </div>
+      )}
+
+      {isSubmitted && onNextQuestion && (
+        <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 border border-slate-700 shadow-xl">
+          <span className="text-xs font-semibold text-slate-300">
+            {selectedOption === correctAnswer ? (
+              <span className="text-emerald-400 font-bold">🎯 Correct choice!</span>
+            ) : (
+              <span className="text-rose-400 font-medium">
+                Answer: <strong className="text-white">{correctAnswer}</strong>
+              </span>
+            )}
+          </span>
+          <button
+            onClick={onNextQuestion}
+            className="px-3.5 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold flex items-center gap-1 text-xs shadow-md transition-all"
+          >
+            <span>Next</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

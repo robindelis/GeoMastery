@@ -1,4 +1,7 @@
 export type Continent = 'Africa' | 'Americas' | 'Asia' | 'Europe' | 'Oceania';
+export type TrainingCategory = 'All' | Continent | 'Oceans';
+
+export type { WaterBody, WaterBodyType } from '../assets/data/waterBodies';
 
 export interface Country {
   id: string; // ISO 3166-1 alpha-3, e.g. "FRA"

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Country } from '../../core/types';
-import { MapPin, ArrowRight } from 'lucide-react';
+import { MapPin, ArrowRight, Waves } from 'lucide-react';
 
 interface MapClickPromptProps {
   country: Country;
@@ -9,6 +9,7 @@ interface MapClickPromptProps {
   isCorrect?: boolean;
   onNextQuestion: () => void;
   onSkip?: () => void;
+  onGiveUp?: () => void;
 }
 
 export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
@@ -17,8 +18,28 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
   selectedCountryName,
   isCorrect,
   onNextQuestion,
-  onSkip
+  onSkip,
+  onGiveUp
 }) => {
+  const isWater = country.id.startsWith('WATER_');
+
+  // Keyboard Enter or Space listener to advance when submitted
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isSubmitted && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        onNextQuestion();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isSubmitted, onNextQuestion]);
+
+  const handleConcede = () => {
+    if (onGiveUp) onGiveUp();
+    else if (onSkip) onSkip();
+  };
+
   return (
     <div className="flex flex-col gap-3 w-full max-w-xl mx-auto">
       {/* Target Card */}
@@ -26,7 +47,7 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
         <div className="flex items-center gap-2">
           <span className="text-3xl">{country.flagEmoji}</span>
           <span className="text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700">
-            {country.continent} • {country.subregion}
+            {isWater ? `🌊 Oceans & Straits • ${country.subregion}` : `${country.continent} • ${country.subregion}`}
           </span>
         </div>
 
@@ -36,13 +57,23 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
           </h2>
         </div>
 
-        <div className="text-xs text-slate-400">
-          Capital: <span className="text-slate-200 font-semibold">{country.capital}</span>
-        </div>
+        {isWater ? (
+          <div className="text-xs text-slate-300 max-w-md line-clamp-2 px-2">
+            {country.facts?.significance || country.capital}
+          </div>
+        ) : (
+          <div className="text-xs text-slate-400">
+            Capital: <span className="text-slate-200 font-semibold">{country.capital}</span>
+          </div>
+        )}
 
         <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium mt-1">
-          <MapPin className="w-3.5 h-3.5" />
-          <span>Click this country on the map or globe above</span>
+          {isWater ? <Waves className="w-3.5 h-3.5 text-sky-400" /> : <MapPin className="w-3.5 h-3.5" />}
+          <span>
+            {isWater
+              ? 'Click this strait or body of water on the map or globe above'
+              : 'Click this country on the map or globe above'}
+          </span>
         </div>
       </div>
 
@@ -54,7 +85,9 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
               <span className="text-emerald-400 font-bold">🎯 Spot on! Perfect location!</span>
             ) : (
               <span className="text-rose-400 font-bold">
-                You clicked: {selectedCountryName || 'another country'}
+                {selectedCountryName
+                  ? `You clicked: ${selectedCountryName}`
+                  : `Target: ${country.name} (shown on map)`}
               </span>
             )}
           </div>
@@ -67,13 +100,13 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
           </button>
         </div>
       ) : (
-        onSkip && (
+        (onGiveUp || onSkip) && (
           <div className="flex justify-center">
             <button
-              onClick={onSkip}
-              className="text-xs text-slate-500 hover:text-slate-300 underline transition-colors"
+              onClick={handleConcede}
+              className="text-xs text-rose-400/90 hover:text-rose-300 font-medium px-3.5 py-1.5 rounded-xl border border-rose-900/50 bg-rose-950/30 hover:bg-rose-950/60 transition-colors flex items-center gap-1.5 shadow-sm"
             >
-              Skip / Show location
+              <span>🤷 Don't Know / Show Location</span>
             </button>
           </div>
         )

@@ -18,7 +18,7 @@ import {
   Sparkles,
   ArrowRight
 } from 'lucide-react';
-import { Continent } from '../../core/types';
+import { Continent, TrainingCategory } from '../../core/types';
 import { TrainingQuestion } from '../../core/srsEngine';
 import { COUNTRIES_BY_ID } from '../../assets/data/countries';
 
@@ -33,7 +33,7 @@ export interface SessionAnswerRecord {
 }
 
 interface SessionCompletedViewProps {
-  continent: Continent | 'All';
+  continent: TrainingCategory;
   isPracticeMode: boolean;
   results: SessionAnswerRecord[];
   sessionDurationMs: number;
@@ -185,7 +185,7 @@ export const SessionCompletedView: React.FC<SessionCompletedViewProps> = ({
         <div className="flex flex-wrap items-center justify-center gap-2 mt-2 text-xs">
           <span className="bg-slate-800/90 border border-slate-700/80 px-3 py-1 rounded-full text-slate-300 font-medium flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            Region: <strong className="text-white">{continent}</strong>
+            Region: <strong className="text-white">{continent === 'Oceans' ? 'Oceans & Straits' : continent}</strong>
           </span>
 
           {isPracticeMode ? (

@@ -14,8 +14,9 @@ import {
   Target,
   Award
 } from 'lucide-react';
-import { Continent, MapViewMode, SRSItem, UserStats, AppSettings } from '../../core/types';
+import { Continent, TrainingCategory, MapViewMode, SRSItem, UserStats, AppSettings } from '../../core/types';
 import { COUNTRIES } from '../../assets/data/countries';
+import { WATER_BODIES } from '../../assets/data/waterBodies';
 import { computeMasteryStats } from '../../core/srsEngine';
 import { StorageService } from '../../core/storage';
 import { soundFx } from '../../core/soundFx';
@@ -23,7 +24,7 @@ import { PlanetaryBackground } from '../common/PlanetaryBackground';
 import { CartographerDossier } from './CartographerDossier';
 
 interface DashboardProps {
-  onStartSession: (continent: 'All' | Continent, attributes: string[], practiceMode?: boolean) => void;
+  onStartSession: (continent: TrainingCategory, attributes: string[], practiceMode?: boolean) => void;
   onOpenAtlas: () => void;
   onOpenArcade: () => void;
   mapMode: MapViewMode;
@@ -83,10 +84,19 @@ export const Dashboard: React.FC<DashboardProps> = ({
     return due;
   }, [srsItemsMap, selectedAttributeFilter]);
 
-  // Check if a continent has 0 due cards and 0 new cards
-  const isContinentCaughtUp = (continent: Continent) => {
+  // Check if a continent or category has 0 due cards and 0 new cards
+  const isContinentCaughtUp = (category: TrainingCategory) => {
     const now = new Date().toISOString();
-    const countries = COUNTRIES.filter((c) => c.continent === continent);
+    if (category === 'Oceans') {
+      for (const wb of WATER_BODIES) {
+        const existing = srsItemsMap.get(`${wb.id}:location`);
+        if (!existing || existing.nextDueAt <= now || existing.intervalDays === 0) {
+          return false;
+        }
+      }
+      return true;
+    }
+    const countries = COUNTRIES.filter((c) => c.continent === category);
     for (const country of countries) {
       for (const attrId of selectedAttributeFilter) {
         const existing = srsItemsMap.get(`${country.id}:${attrId}`);
@@ -143,6 +153,30 @@ export const Dashboard: React.FC<DashboardProps> = ({
   };
 
   const continents: Continent[] = ['Europe', 'Asia', 'Africa', 'Americas', 'Oceania'];
+
+  const regionalCategories = useMemo(() => {
+    return [
+      ...continents.map((continent) => {
+        const b = mastery.breakdown[continent];
+        return {
+          id: continent as TrainingCategory,
+          name: continent,
+          emblem: CONTINENT_EMBLEMS[continent] || '🌍',
+          subtitle: `${Math.round(b.total / 2)} nations`,
+          b,
+          isWater: false
+        };
+      }),
+      {
+        id: 'Oceans' as TrainingCategory,
+        name: 'Oceans & Straits',
+        emblem: '🌊',
+        subtitle: `${WATER_BODIES.length} maritime bodies`,
+        b: mastery.waterBreakdown || { total: WATER_BODIES.length, stage0: WATER_BODIES.length, stage1: 0, stage2: 0 },
+        isWater: true
+      }
+    ];
+  }, [continents, mastery]);
 
   // Circular Dial Math (Radius = 46, Circumference = 289.02)
   const dialRadius = 46;
@@ -428,42 +462,46 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </button>
         </div>
 
-        {/* Continent Drill Cards */}
+        {/* Continent & Hydrography Drill Cards */}
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-bold text-white flex items-center gap-2">
               <Globe2 className="w-5 h-5 text-emerald-400" />
-              <span>Targeted Continental Drills</span>
+              <span>Targeted Regional & Maritime Drills</span>
             </h3>
-            <span className="text-xs text-slate-400 font-medium">Click a region to launch dedicated practice</span>
+            <span className="text-xs text-slate-400 font-medium">Click a region or maritime category to launch dedicated practice</span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {continents.map((continent) => {
-              const b = mastery.breakdown[continent];
-              const pct = b.total > 0 ? Math.round((b.stage2 / b.total) * 100) : 0;
-              const learningPct = b.total > 0 ? Math.round((b.stage1 / b.total) * 100) : 0;
-              const caughtUp = isContinentCaughtUp(continent);
-              const emblem = CONTINENT_EMBLEMS[continent] || '🌍';
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+            {regionalCategories.map((cat) => {
+              const pct = cat.b.total > 0 ? Math.round((cat.b.stage2 / cat.b.total) * 100) : 0;
+              const learningPct = cat.b.total > 0 ? Math.round((cat.b.stage1 / cat.b.total) * 100) : 0;
+              const caughtUp = isContinentCaughtUp(cat.id);
 
               return (
                 <div
-                  key={continent}
-                  className="bg-slate-900/80 border border-slate-700/80 hover:border-slate-600 rounded-2xl p-4 flex flex-col justify-between gap-4 transition-all shadow-lg backdrop-blur-md glass-card-hover group"
+                  key={cat.id}
+                  className={`rounded-2xl p-4 flex flex-col justify-between gap-4 transition-all shadow-lg backdrop-blur-md glass-card-hover group border ${
+                    cat.isWater
+                      ? 'bg-slate-900/85 border-sky-500/40 hover:border-sky-400'
+                      : 'bg-slate-900/80 border-slate-700/80 hover:border-slate-600'
+                  }`}
                 >
                   <div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-lg select-none">{emblem}</span>
-                        <h4 className="font-bold text-white text-sm">{continent}</h4>
+                        <span className="text-lg select-none">{cat.emblem}</span>
+                        <h4 className="font-bold text-white text-sm">{cat.name}</h4>
                       </div>
-                      <span className="text-xs font-mono font-bold text-emerald-400">{pct}%</span>
+                      <span className={`text-xs font-mono font-bold ${cat.isWater ? 'text-sky-400' : 'text-emerald-400'}`}>
+                        {pct}%
+                      </span>
                     </div>
 
-                    {/* Dual-layer progress bar: Emerald (Mastered) + Amber (Learning) */}
+                    {/* Dual-layer progress bar: Emerald/Sky (Mastered) + Amber (Learning) */}
                     <div className="h-2 rounded-full bg-slate-950 mt-3 overflow-hidden flex">
                       <div
-                        className="h-full bg-emerald-500 transition-all duration-300"
+                        className={`h-full transition-all duration-300 ${cat.isWater ? 'bg-sky-400' : 'bg-emerald-500'}`}
                         style={{ width: `${pct}%` }}
                         title={`${pct}% Mastered`}
                       />
@@ -475,28 +513,30 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     </div>
 
                     <div className="flex items-center justify-between text-[11px] text-slate-300 mt-2">
-                      <span>{Math.round(b.total / 2)} nations</span>
-                      <span className="text-amber-300 font-semibold">{b.stage1} in recall</span>
+                      <span>{cat.subtitle}</span>
+                      <span className="text-amber-300 font-semibold">{cat.b.stage1} in recall</span>
                     </div>
                   </div>
 
                   <button
-                    onClick={() => onStartSession(continent, selectedAttributeFilter, caughtUp)}
+                    onClick={() => onStartSession(cat.id, cat.isWater ? ['location'] : selectedAttributeFilter, caughtUp)}
                     className={`w-full py-2.5 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95 ${
                       caughtUp
                         ? 'bg-violet-950/70 hover:bg-violet-600 text-violet-200 hover:text-white border border-violet-700/50 shadow-violet-950/30'
+                        : cat.isWater
+                        ? 'bg-slate-800 hover:bg-sky-500 hover:text-slate-950 text-slate-100 border border-slate-700 hover:border-sky-400'
                         : 'bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-slate-100 border border-slate-700 hover:border-emerald-400'
                     }`}
                   >
                     {caughtUp ? (
                       <>
                         <Zap className="w-3.5 h-3.5 fill-violet-400 text-violet-400" />
-                        <span>Practice {continent}</span>
+                        <span>Practice {cat.id === 'Oceans' ? 'Oceans' : cat.name}</span>
                       </>
                     ) : (
                       <>
                         <Play className="w-3.5 h-3.5" />
-                        <span>Train {continent}</span>
+                        <span>Train {cat.id === 'Oceans' ? 'Oceans' : cat.name}</span>
                       </>
                     )}
                   </button>

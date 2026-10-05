@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import confetti from 'canvas-confetti';
-import { Country, Continent, SRSItem, MapViewMode } from '../../core/types';
+import { Country, Continent, TrainingCategory, SRSItem, MapViewMode } from '../../core/types';
 import { COUNTRIES_BY_ID } from '../../assets/data/countries';
 import {
   TrainingQuestion,
@@ -19,7 +19,7 @@ import { AmbientBackground } from '../common/AmbientBackground';
 import { SessionCompletedView, SessionAnswerRecord } from './SessionCompletedView';
 
 interface TrainingSessionProps {
-  continentFilter: 'All' | Continent;
+  continentFilter: TrainingCategory;
   attributeFilter: string[];
   initialPracticeMode?: boolean;
   mapMode: MapViewMode;
@@ -99,7 +99,12 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     let correct = false;
     let feedback = '';
 
-    if (question.expectedInputMode === 'map_click') {
+    if (answer === '__DONT_KNOW__') {
+      correct = false;
+      feedback = question.expectedInputMode === 'map_click'
+        ? `Target was ${question.country.name}`
+        : `Answer: ${question.correctAnswer}`;
+    } else if (question.expectedInputMode === 'map_click') {
       const targetId = question.country.id?.trim().toUpperCase();
       const clickedId = selectedCountryId?.trim().toUpperCase();
       const targetName = question.country.name?.trim().toLowerCase();
@@ -244,6 +249,12 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       soundFx.playLevelUp();
     }
   }, [currentIndex, queue.length, sessionStartTime]);
+
+  // Give up / reveal answer handler
+  const handleGiveUp = useCallback(() => {
+    if (isSubmittedRef.current) return;
+    handleAnswer('__DONT_KNOW__');
+  }, [handleAnswer]);
 
   // Map Click Handler during training
   const handleMapCountrySelect = useCallback((country: Country) => {
@@ -482,6 +493,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
           <div className="pointer-events-auto w-full max-w-xl">
             {currentQuestion.expectedInputMode === 'multiple_choice' ? (
               <MultipleChoicePrompt
+                key={currentQuestion.srsItemId}
                 country={currentQuestion.country}
                 promptText={currentQuestion.prompt}
                 options={currentQuestion.options || []}
@@ -495,9 +507,12 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
                     handleNext();
                   }, 1200);
                 }}
+                onGiveUp={handleGiveUp}
+                onNextQuestion={handleNext}
               />
             ) : currentQuestion.expectedInputMode === 'typing' ? (
               <TypingRecallPrompt
+                key={currentQuestion.srsItemId}
                 country={currentQuestion.country}
                 promptText={currentQuestion.prompt}
                 correctAnswer={currentQuestion.correctAnswer}
@@ -506,15 +521,18 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
                 isCorrect={isCurrentCorrect}
                 onSubmitAnswer={(val) => handleAnswer(val)}
                 onNextQuestion={handleNext}
+                onGiveUp={handleGiveUp}
               />
             ) : (
               <MapClickPrompt
+                key={currentQuestion.srsItemId}
                 country={currentQuestion.country}
                 isSubmitted={isSubmitted}
                 selectedCountryName={selectedMapCountry?.name}
                 isCorrect={isCurrentCorrect}
                 onNextQuestion={handleNext}
-                onSkip={() => handleAnswer('skip')}
+                onSkip={handleGiveUp}
+                onGiveUp={handleGiveUp}
               />
             )}
           </div>

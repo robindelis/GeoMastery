@@ -12,6 +12,7 @@ interface TypingRecallPromptProps {
   matchedFeedback?: string;
   onSubmitAnswer: (input: string) => void;
   onNextQuestion: () => void;
+  onGiveUp?: () => void;
 }
 
 export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
@@ -23,11 +24,18 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
   isCorrect,
   matchedFeedback,
   onSubmitAnswer,
-  onNextQuestion
+  onNextQuestion,
+  onGiveUp
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [hintCount, setHintCount] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // Auto-clear input on question transition (safeguard against sticking values)
+  useEffect(() => {
+    setInputValue('');
+    setHintCount(0);
+  }, [country.id, promptText]);
 
   // Auto focus input when active
   useEffect(() => {
@@ -93,9 +101,13 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
             ref={inputRef}
             type="text"
             disabled={isSubmitted}
-            value={inputValue}
+            value={isSubmitted && userAnswer === '__DONT_KNOW__' ? '' : inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Type answer here..."
+            placeholder={
+              isSubmitted && userAnswer === '__DONT_KNOW__'
+                ? `Did not know (Answer: ${correctAnswer})`
+                : 'Type answer here...'
+            }
             className={`w-full px-5 py-4 rounded-xl text-lg font-medium bg-slate-900/90 border transition-all outline-none shadow-xl ${
               isSubmitted
                 ? isCorrect
@@ -129,14 +141,25 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
         <div className="flex items-center justify-between text-xs px-1">
           {!isSubmitted ? (
             <>
-              <button
-                type="button"
-                onClick={() => setHintCount((c) => Math.min(2, c + 1))}
-                className="text-slate-400 hover:text-slate-200 flex items-center gap-1 transition-colors"
-              >
-                <HelpCircle className="w-3.5 h-3.5" />
-                <span>Need a hint?</span>
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setHintCount((c) => Math.min(2, c + 1))}
+                  className="text-slate-400 hover:text-slate-200 flex items-center gap-1 transition-colors"
+                >
+                  <HelpCircle className="w-3.5 h-3.5" />
+                  <span>Need a hint?</span>
+                </button>
+                {onGiveUp && (
+                  <button
+                    type="button"
+                    onClick={onGiveUp}
+                    className="text-xs text-rose-400/90 hover:text-rose-300 font-medium px-2.5 py-1 rounded-lg border border-rose-900/50 bg-rose-950/30 hover:bg-rose-950/60 transition-colors flex items-center gap-1"
+                  >
+                    <span>🤷 Don't Know</span>
+                  </button>
+                )}
+              </div>
               {getHintText() && (
                 <span className="text-amber-400 font-mono bg-amber-950/50 px-2 py-0.5 rounded border border-amber-800/50">
                   {getHintText()}
@@ -146,7 +169,9 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
           ) : (
             <div className="w-full flex items-center justify-between text-xs">
               <span className={`font-semibold ${isCorrect ? 'text-emerald-400' : 'text-rose-400'}`}>
-                {matchedFeedback || (isCorrect ? 'Correct!' : `Answer: ${correctAnswer}`)}
+                {userAnswer === '__DONT_KNOW__'
+                  ? `Correct Answer: ${correctAnswer}`
+                  : matchedFeedback || (isCorrect ? 'Correct!' : `Answer: ${correctAnswer}`)}
               </span>
               <span className="text-slate-400">Press Enter or Space for next</span>
             </div>

@@ -4,6 +4,8 @@ import { feature } from 'topojson-client';
 import worldData50m from '../../assets/geo/countries-50m.json';
 import { Country, SRSItem } from '../../core/types';
 import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
+import { WATER_BODIES, getWaterBodyById } from '../../assets/data/waterBodies';
+import { waterBodyToCountry } from '../../core/srsEngine';
 import { getMicrostateList } from '../../core/microstates';
 
 interface VectorMap2DProps {
@@ -213,14 +215,15 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     const countryToFocus = selectedCountryId || targetCountryId;
     if (!countryToFocus || !svgRef.current || !zoomBehaviorRef.current) return;
 
-    const c = COUNTRIES_BY_ID.get(countryToFocus);
+    const wb = getWaterBodyById(countryToFocus);
+    const c = wb ? waterBodyToCountry(wb) : COUNTRIES_BY_ID.get(countryToFocus);
     if (!c || !c.coordinates) return;
 
     const coords = projection(c.coordinates);
     if (!coords) return;
 
     const [cx, cy] = coords;
-    const targetScale = 3.5;
+    const targetScale = wb ? (wb.type === 'strait' || wb.type === 'channel' ? 5.5 : 3.0) : 3.5;
     const transform = d3.zoomIdentity
       .translate(dimensions.width / 2, dimensions.height / 2)
       .scale(targetScale)
@@ -242,8 +245,14 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   const handleCountryHover = useCallback((country?: Country) => {
     if (!country || !tooltipRef.current) return;
     if (flagRef.current) flagRef.current.textContent = country.flagEmoji;
-    if (nameRef.current) nameRef.current.textContent = country.name;
-    if (capRef.current) capRef.current.textContent = `Capital: ${country.capital}`;
+    if (nameRef.current) nameRef.current.textContent = country.officialName || country.name;
+    if (capRef.current) {
+      if (country.id.startsWith('WATER_')) {
+        capRef.current.textContent = `${country.subregion} • ${country.facts?.significance || ''}`;
+      } else {
+        capRef.current.textContent = `Capital: ${country.capital}`;
+      }
+    }
     tooltipRef.current.style.opacity = '1';
   }, []);
 
@@ -263,10 +272,10 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     onSelectCountryRef.current?.(country);
   }, []);
 
-  // Calculate country fill color
+  // Calculate country fill color (Elevated base fill #334155 for crisp contrast against #090e1a ocean)
   const getCountryFill = useCallback(
     (country?: Country) => {
-      if (!country) return '#1e293b';
+      if (!country) return '#334155';
 
       // Quiz feedback states:
       if (feedbackState === 'correct') {
@@ -304,7 +313,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         return '#334155'; // Slate 700 New
       }
 
-      return '#1e293b'; // Slate 800 continental base
+      return '#334155'; // Slate 700 high-contrast continental base
     },
     [feedbackState, targetCountryId, selectedCountryId, highlightedCountryIds, showHeatmap, srsItemsMap]
   );
@@ -325,14 +334,30 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       .filter((item) => item.hasValidCoords);
   }, [projection]);
 
-  // Open-ocean proximity click assist (snaps to nearest island / microstate within 28 screen px)
+  // Precompute projected coordinates for all 40 hydrographic bodies (straits, seas, oceans)
+  const waterBodyItems = useMemo(() => {
+    return WATER_BODIES.map((wb) => {
+      const coords = projection(wb.coordinates);
+      return {
+        wb,
+        country: waterBodyToCountry(wb),
+        cx: coords ? coords[0] : 0,
+        cy: coords ? coords[1] : 0,
+        hasValidCoords: Boolean(coords && !isNaN(coords[0]) && !isNaN(coords[1]))
+      };
+    }).filter((item) => item.hasValidCoords);
+  }, [projection]);
+
+  // Open-ocean proximity click assist (snaps to nearest microstate or water body)
   const handleSvgClick = useCallback(
     (e: React.MouseEvent<SVGSVGElement>) => {
       const target = e.target as SVGElement;
       const isDirectTarget =
         target.classList?.contains('country-vector-path') ||
         target.classList?.contains('microstate-hitbox') ||
-        target.classList?.contains('microstate-dot');
+        target.classList?.contains('microstate-dot') ||
+        target.classList?.contains('water-beacon-hitbox') ||
+        target.classList?.contains('water-beacon-dot');
       if (isDirectTarget) return;
 
       const svg = svgRef.current;
@@ -346,6 +371,8 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       const transformedPt = pt.matrixTransform(ctm.inverse());
 
       const k = zoomTransformRef.current?.k || 1;
+
+      // 1. Proximity check for microstates (within 28 screen px)
       let minScreenDist = Infinity;
       let nearestCountry: Country | null = null;
 
@@ -359,22 +386,65 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         }
       }
 
-      // Proximity threshold: within 28 screen pixels of an island/microstate in open waters
       if (minScreenDist <= 28 && nearestCountry) {
         handleCountrySelect(nearestCountry);
+        return;
+      }
+
+      // 2. Proximity check for water bodies (straits ~35px, seas ~65px, oceans ~120px)
+      let minWaterDist = Infinity;
+      let nearestWater: Country | null = null;
+      const isWaterDrill = Boolean(targetCountryId?.startsWith('WATER_'));
+
+      for (const w of waterBodyItems) {
+        const dx = (transformedPt.x - w.cx) * k;
+        const dy = (transformedPt.y - w.cy) * k;
+        const dist = Math.hypot(dx, dy);
+
+        const threshold =
+          w.wb.type === 'strait' || w.wb.type === 'channel'
+            ? 35
+            : w.wb.type === 'sea' || w.wb.type === 'gulf' || w.wb.type === 'bay'
+            ? 65
+            : 120;
+
+        if (dist < threshold && dist < minWaterDist) {
+          minWaterDist = dist;
+          nearestWater = w.country;
+        }
+      }
+
+      if (nearestWater) {
+        handleCountrySelect(nearestWater);
+      } else if (isWaterDrill) {
+        // If drilling water bodies, snap to closest water body on map
+        let closestWb: Country | null = null;
+        let closestDist = Infinity;
+        for (const w of waterBodyItems) {
+          const dx = (transformedPt.x - w.cx) * k;
+          const dy = (transformedPt.y - w.cy) * k;
+          const dist = Math.hypot(dx, dy);
+          if (dist < closestDist) {
+            closestDist = dist;
+            closestWb = w.country;
+          }
+        }
+        if (closestWb && closestDist < 250) {
+          handleCountrySelect(closestWb);
+        }
       }
     },
-    [microstateItems, handleCountrySelect]
+    [microstateItems, waterBodyItems, handleCountrySelect, targetCountryId]
   );
 
   return (
     <div
       ref={containerRef}
       onMouseMove={handleContainerMouseMove}
-      className={`relative w-full h-full overflow-hidden bg-[#0f172a] select-none ${className}`}
+      className={`relative w-full h-full overflow-hidden bg-[#090e1a] select-none ${className}`}
     >
       {/* Background soft ambient radial gradient */}
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(30,41,59,0.5)_0%,rgba(15,23,42,1)_100%)]" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(20,32,54,0.6)_0%,rgba(9,14,26,1)_100%)]" />
 
       {/* Main SVG Map */}
       <svg
@@ -385,8 +455,8 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       >
         <defs>
           <radialGradient id="sphere-ocean" cx="50%" cy="50%" r="50%">
-            <stop offset="60%" stopColor="#1e293b" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#0f172a" stopOpacity="1" />
+            <stop offset="60%" stopColor="#142036" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#090e1a" stopOpacity="1" />
           </radialGradient>
         </defs>
 
@@ -405,8 +475,8 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
                 country={country}
                 pathD={item.pathD}
                 fill={getCountryFill(country)}
-                stroke={isSelected || isTarget ? '#38bdf8' : '#475569'}
-                strokeWidth={isSelected || isTarget ? '1.4' : '0.6'}
+                stroke={isSelected || isTarget ? '#38bdf8' : '#64748b'}
+                strokeWidth={isSelected || isTarget ? '1.5' : '0.8'}
                 isFeedbackCorrect={isFeedbackCorrect}
                 isFeedbackIncorrect={isFeedbackIncorrect}
                 onCountryHover={handleCountryHover}
@@ -465,6 +535,99 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
                     cy={cy}
                     r={hitRadius}
                     className="microstate-hitbox cursor-pointer"
+                    fill="transparent"
+                    pointerEvents="all"
+                    onMouseEnter={() => handleCountryHover(country)}
+                    onMouseLeave={handleCountryLeave}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCountrySelect(country);
+                    }}
+                  />
+                </g>
+              );
+            })}
+          </g>
+
+          {/* Maritime Bodies & Straits Beacons Layer */}
+          <g className="maritime-beacons-layer">
+            {waterBodyItems.map(({ wb, country, cx, cy }) => {
+              const isSelected = country.id === selectedCountryId;
+              const isTarget = country.id === targetCountryId;
+              const isFeedbackCorrect = feedbackState === 'correct' && Boolean(isSelected || isTarget);
+              const isFeedbackIncorrect = feedbackState === 'incorrect' && Boolean(isSelected);
+              const k = zoomTransformRef.current?.k || 1;
+
+              const isStrait = wb.type === 'strait' || wb.type === 'channel';
+              const isOcean = wb.type === 'ocean';
+
+              const dotRadius = (isStrait ? 4 : isOcean ? 6 : 5) / k;
+              const hitRadius = (isStrait ? 20 : isOcean ? 32 : 24) / k;
+              const pulseRadius = (isStrait ? 10 : isOcean ? 16 : 12) / k;
+
+              let fill = isStrait ? '#0284c7' : isOcean ? '#0369a1' : '#0ea5e9';
+              let stroke = isSelected || isTarget ? '#ffffff' : '#38bdf8';
+
+              if (feedbackState === 'correct' && (isSelected || isTarget)) {
+                fill = '#10b981';
+                stroke = '#ffffff';
+              } else if (feedbackState === 'incorrect' && isSelected) {
+                fill = '#f43f5e';
+                stroke = '#ffffff';
+              } else if (feedbackState === 'incorrect' && isTarget) {
+                fill = '#10b981';
+                stroke = '#ffffff';
+              }
+
+              return (
+                <g key={`water-beacon-${wb.id}`} className="water-beacon-group">
+                  {/* Pulsing ring when active or in feedback */}
+                  {(isSelected || isTarget) && (
+                    <circle
+                      cx={cx}
+                      cy={cy}
+                      r={pulseRadius}
+                      className="water-beacon-pulse animate-ping opacity-75"
+                      fill="none"
+                      stroke={isFeedbackCorrect ? '#10b981' : isFeedbackIncorrect ? '#f43f5e' : '#38bdf8'}
+                      strokeWidth="1.4"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  )}
+
+                  {/* Core beacon dot */}
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={dotRadius}
+                    className="water-beacon-dot transition-colors duration-150 cursor-pointer"
+                    fill={fill}
+                    stroke={stroke}
+                    strokeWidth="1.2"
+                    vectorEffect="non-scaling-stroke"
+                  />
+
+                  {/* Name label shown when active or at zoom */}
+                  {(isSelected || isTarget || (isStrait && k >= 3.5)) && (
+                    <text
+                      x={cx}
+                      y={cy - (dotRadius + 4 / k)}
+                      textAnchor="middle"
+                      fill="#ffffff"
+                      fontSize={Math.max(8, 11 / k)}
+                      fontWeight="bold"
+                      className="pointer-events-none select-none drop-shadow-md"
+                    >
+                      {wb.name}
+                    </text>
+                  )}
+
+                  {/* Generous invisible clickable hit-target */}
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={hitRadius}
+                    className="water-beacon-hitbox cursor-pointer"
                     fill="transparent"
                     pointerEvents="all"
                     onMouseEnter={() => handleCountryHover(country)}

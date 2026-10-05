@@ -4,6 +4,8 @@ import { feature } from 'topojson-client';
 import worldData50m from '../../assets/geo/countries-50m.json';
 import { Country, SRSItem } from '../../core/types';
 import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
+import { WATER_BODIES, getWaterBodyById } from '../../assets/data/waterBodies';
+import { waterBodyToCountry } from '../../core/srsEngine';
 import { getMicrostateList } from '../../core/microstates';
 
 interface Globe3DProps {
@@ -81,10 +83,10 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       .clipAngle(90);
   }, [dimensions]);
 
-  // Determine country fill color
+  // Determine country fill color (Elevated base fill #334155 for high contrast against deep ocean)
   const getCountryFill = useCallback(
     (country?: Country) => {
-      if (!country) return '#1e293b';
+      if (!country) return '#334155';
 
       if (feedbackState === 'correct') {
         if (country.id === targetCountryId || country.id === selectedCountryId) {
@@ -109,7 +111,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         return '#334155';
       }
 
-      return '#1e293b';
+      return '#334155';
     },
     [feedbackState, targetCountryId, selectedCountryId, highlightedCountryIds, showHeatmap, srsItemsMap]
   );
@@ -117,7 +119,8 @@ export const Globe3D: React.FC<Globe3DProps> = ({
   // Smooth spin to focus country coordinates
   const spinToCountry = useCallback(
     (countryId: string) => {
-      const c = COUNTRIES_BY_ID.get(countryId);
+      const wb = getWaterBodyById(countryId);
+      const c = wb ? waterBodyToCountry(wb) : COUNTRIES_BY_ID.get(countryId);
       if (!c || !c.coordinates) return;
 
       const [targetLng, targetLat] = c.coordinates;
@@ -197,10 +200,10 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       ctx.arc(cx, cy, radius * 1.15, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Globe sphere ocean
+      // Globe sphere ocean (Deep bathymetric gradient for high contrast)
       const oceanGrad = ctx.createRadialGradient(cx - radius * 0.3, cy - radius * 0.3, radius * 0.1, cx, cy, radius);
-      oceanGrad.addColorStop(0, '#1e293b');
-      oceanGrad.addColorStop(1, '#0f172a');
+      oceanGrad.addColorStop(0, '#142036');
+      oceanGrad.addColorStop(1, '#090e1a');
       ctx.fillStyle = oceanGrad;
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
@@ -213,12 +216,12 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       path(graticule);
       ctx.stroke();
 
-      // Draw countries
+      // Draw countries (Elevated fill & hairline borders)
       for (const feat of geoFeatures) {
         const country = COUNTRIES_BY_NUMERIC.get(String(feat.id));
         ctx.fillStyle = getCountryFill(country);
-        ctx.strokeStyle = '#475569';
-        ctx.lineWidth = 0.6;
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 0.8;
 
         ctx.beginPath();
         path(feat);
@@ -226,8 +229,49 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         ctx.stroke();
       }
 
-      // Draw Microstate Beacons on 3D Globe (Vatican, Tuvalu, Nauru, etc.)
       const centerCoords = [-rotationRef.current[0], -rotationRef.current[1]];
+
+      // Draw Water Bodies on 3D Globe
+      for (const wb of WATER_BODIES) {
+        const dist = d3.geoDistance(wb.coordinates, centerCoords as any);
+        if (dist < Math.PI / 2) {
+          const projected = projection(wb.coordinates);
+          if (projected) {
+            const [px, py] = projected;
+            const isSelected = wb.id === selectedCountryId;
+            const isTarget = wb.id === targetCountryId;
+            const isStrait = wb.type === 'strait' || wb.type === 'channel';
+            const isOcean = wb.type === 'ocean';
+
+            if (isSelected || isTarget) {
+              ctx.strokeStyle =
+                feedbackState === 'correct'
+                  ? '#10b981'
+                  : feedbackState === 'incorrect'
+                  ? '#f43f5e'
+                  : '#38bdf8';
+              ctx.lineWidth = 1.4;
+              ctx.beginPath();
+              ctx.arc(px, py, isOcean ? 12 : 8, 0, 2 * Math.PI);
+              ctx.stroke();
+            }
+
+            ctx.fillStyle = isStrait ? '#0284c7' : isOcean ? '#0369a1' : '#0ea5e9';
+            if (feedbackState === 'correct' && (isSelected || isTarget)) ctx.fillStyle = '#10b981';
+            else if (feedbackState === 'incorrect' && isSelected) ctx.fillStyle = '#f43f5e';
+            else if (feedbackState === 'incorrect' && isTarget) ctx.fillStyle = '#10b981';
+
+            ctx.strokeStyle = isSelected || isTarget ? '#ffffff' : '#38bdf8';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(px, py, isOcean ? 6 : isStrait ? 4 : 4.5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw Microstate Beacons on 3D Globe (Vatican, Tuvalu, Nauru, etc.)
       for (const country of microstateList) {
         const dist = d3.geoDistance(country.coordinates, centerCoords as any);
         if (dist < Math.PI / 2) {
@@ -323,6 +367,26 @@ export const Globe3D: React.FC<Globe3DProps> = ({
           return;
         }
 
+        // Check proximity to water bodies (straits, seas, oceans)
+        for (const wb of WATER_BODIES) {
+          if (d3.geoDistance(wb.coordinates, center as any) < Math.PI / 2) {
+            const p = projection(wb.coordinates);
+            if (p) {
+              const d = Math.hypot(mx - p[0], my - p[1]);
+              const thresh =
+                wb.type === 'strait' || wb.type === 'channel'
+                  ? 22
+                  : wb.type === 'sea' || wb.type === 'gulf' || wb.type === 'bay'
+                  ? 32
+                  : 45;
+              if (d <= thresh) {
+                setHoveredCountry({ country: waterBodyToCountry(wb), x: e.clientX, y: e.clientY });
+                return;
+              }
+            }
+          }
+        }
+
         const coords = projection.invert ? projection.invert([mx, my]) : null;
         if (coords) {
           const [lng, lat] = coords;
@@ -380,6 +444,26 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         return;
       }
 
+      // Check proximity to water bodies
+      for (const wb of WATER_BODIES) {
+        if (d3.geoDistance(wb.coordinates, center as any) < Math.PI / 2) {
+          const p = projection(wb.coordinates);
+          if (p) {
+            const d = Math.hypot(mx - p[0], my - p[1]);
+            const thresh =
+              wb.type === 'strait' || wb.type === 'channel'
+                ? 24
+                : wb.type === 'sea' || wb.type === 'gulf' || wb.type === 'bay'
+                ? 36
+                : 50;
+            if (d <= thresh) {
+              onSelectCountry(waterBodyToCountry(wb));
+              return;
+            }
+          }
+        }
+      }
+
       const coords = projection.invert ? projection.invert([mx, my]) : null;
       if (coords) {
         const [lng, lat] = coords;
@@ -399,7 +483,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-full overflow-hidden bg-[#0f172a] select-none ${className}`}
+      className={`relative w-full h-full overflow-hidden bg-[#090e1a] select-none ${className}`}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -416,8 +500,14 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         >
           <span className="text-base">{hoveredCountry.country.flagEmoji}</span>
           <div>
-            <div className="font-bold text-white tracking-wide">{hoveredCountry.country.name}</div>
-            <div className="text-[10px] text-emerald-400">Capital: {hoveredCountry.country.capital}</div>
+            <div className="font-bold text-white tracking-wide">
+              {hoveredCountry.country.officialName || hoveredCountry.country.name}
+            </div>
+            <div className="text-[10px] text-emerald-400">
+              {hoveredCountry.country.id.startsWith('WATER_')
+                ? `${hoveredCountry.country.subregion} • ${hoveredCountry.country.facts?.significance || ''}`
+                : `Capital: ${hoveredCountry.country.capital}`}
+            </div>
           </div>
         </div>
       )}

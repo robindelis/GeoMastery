@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Continent, MapViewMode, Country } from './core/types';
+import { Continent, TrainingCategory, MapViewMode, Country } from './core/types';
 import { StorageService } from './core/storage';
 import { soundFx } from './core/soundFx';
 import { Dashboard } from './components/dashboard/Dashboard';
@@ -13,7 +13,7 @@ type AppView = 'dashboard' | 'training' | 'atlas' | 'arcade';
 export const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>('dashboard');
   const [mapMode, setMapMode] = useState<MapViewMode>(() => StorageService.loadSettings().mapMode);
-  const [selectedContinent, setSelectedContinent] = useState<'All' | Continent>('All');
+  const [selectedContinent, setSelectedContinent] = useState<TrainingCategory>('All');
   const [selectedAttributes, setSelectedAttributes] = useState<string[]>(['capital', 'location']);
   const [initialPracticeMode, setInitialPracticeMode] = useState<boolean>(false);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(() => StorageService.loadSettings().audioEnabled);
@@ -34,7 +34,7 @@ export const App: React.FC = () => {
   }, []);
 
   const handleStartSession = (
-    continent: 'All' | Continent,
+    continent: TrainingCategory,
     attributes: string[],
     practiceMode: boolean = false
   ) => {

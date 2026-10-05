@@ -1,5 +1,6 @@
-import { Country, Continent, SRSItem, SRSStage, InputMode } from './types';
+import { Country, Continent, SRSItem, SRSStage, InputMode, TrainingCategory } from './types';
 import { COUNTRIES, COUNTRIES_BY_ID } from '../assets/data/countries';
+import { WATER_BODIES, getWaterBodyById, WaterBody } from '../assets/data/waterBodies';
 import { ATTRIBUTE_REGISTRY } from './attributes';
 
 export interface TrainingQuestion {
@@ -11,6 +12,7 @@ export interface TrainingQuestion {
   prompt: string;
   correctAnswer: string;
   options?: string[]; // Populated when expectedInputMode === 'multiple_choice'
+  waterBody?: WaterBody;
 }
 
 /**
@@ -135,6 +137,32 @@ export function processAnswer(
 }
 
 /**
+ * Converts a WaterBody to a synthetic Country object for unified UI & question compatibility.
+ */
+export function waterBodyToCountry(wb: WaterBody): Country {
+  const flag = wb.type === 'strait' || wb.type === 'channel' ? '⚓' : wb.type === 'ocean' ? '🌐' : '🌊';
+  const typeLabel = wb.type.toUpperCase();
+  return {
+    id: wb.id,
+    numericId: wb.id,
+    iso2: 'WB',
+    name: wb.name,
+    officialName: wb.frenchName ? `${wb.name} (${wb.frenchName})` : wb.name,
+    continent: 'Oceania', // placeholder
+    subregion: typeLabel,
+    capital: wb.significance,
+    coordinates: wb.coordinates,
+    capitalCoordinates: wb.coordinates,
+    flagEmoji: flag,
+    facts: {
+      significance: wb.significance,
+      type: wb.type,
+      frenchName: wb.frenchName
+    }
+  };
+}
+
+/**
  * Builds an interactive question from an SRSItem and country data.
  */
 export function buildQuestion(
@@ -142,6 +170,43 @@ export function buildQuestion(
   country: Country,
   allCountries: Country[]
 ): TrainingQuestion {
+  // If it's a water body item (Oceans, Seas, Straits, Gulfs)
+  if (srsItem.countryId.startsWith('WATER_') || country.id.startsWith('WATER_')) {
+    const wb = getWaterBodyById(country.id) || getWaterBodyById(srsItem.countryId);
+    const frenchSuffix = wb?.frenchName ? ` (${wb.frenchName})` : '';
+    const typeName = wb?.type === 'strait' || wb?.type === 'channel'
+      ? 'Strait'
+      : wb?.type === 'ocean'
+      ? 'Ocean'
+      : wb?.type === 'gulf'
+      ? 'Gulf'
+      : wb?.type === 'bay'
+      ? 'Bay'
+      : 'Sea';
+    const prompt = wb ? `Locate ${typeName}: ${wb.name}${frenchSuffix}` : `Locate on map: ${country.name}`;
+    const correctAnswer = wb ? wb.name : country.name;
+
+    let options: string[] | undefined = undefined;
+    if (srsItem.stage === 0) {
+      // 4 choices from other water bodies
+      const otherWbs = WATER_BODIES.filter((w) => w.id !== (wb?.id || country.id));
+      const shuffledOthers = [...otherWbs].sort(() => Math.random() - 0.5).slice(0, 3);
+      options = [correctAnswer, ...shuffledOthers.map((w) => w.name)].sort(() => Math.random() - 0.5);
+    }
+
+    return {
+      srsItemId: srsItem.id,
+      country: wb ? waterBodyToCountry(wb) : country,
+      attributeId: 'location',
+      stage: srsItem.stage,
+      expectedInputMode: 'map_click',
+      prompt,
+      correctAnswer,
+      options,
+      waterBody: wb
+    };
+  }
+
   const attrDef = ATTRIBUTE_REGISTRY.get(srsItem.attributeId);
   const prompt = attrDef ? attrDef.promptTemplate(country) : `Question about ${country.name}`;
   const correctAnswer = attrDef ? String(attrDef.getValue(country)) : country.capital;
@@ -196,12 +261,61 @@ export function buildQuestion(
  */
 export function prepareSessionQueue(
   existingItemsMap: Map<string, SRSItem>,
-  continentFilter: 'All' | Continent,
+  continentFilter: 'All' | Continent | 'Oceans',
   attributeFilter: string[],
   batchSize: number = 15,
   practiceMode: boolean = false
 ): TrainingQuestion[] {
   const now = new Date().toISOString();
+
+  // If drilling Oceans, Seas & Straits:
+  if (continentFilter === 'Oceans') {
+    const waterCountries = WATER_BODIES.map(waterBodyToCountry);
+    if (practiceMode) {
+      const candidates = WATER_BODIES.map((wb) => {
+        const id = `${wb.id}:location`;
+        const existing = existingItemsMap.get(id);
+        const itemToUse = existing || createInitialSRSItem(wb.id, 'location');
+        return buildQuestion(itemToUse, waterBodyToCountry(wb), waterCountries);
+      });
+      candidates.sort(() => Math.random() - 0.5);
+      return candidates.slice(0, batchSize);
+    }
+
+    const dueItems: SRSItem[] = [];
+    const newCandidates: WaterBody[] = [];
+    for (const wb of WATER_BODIES) {
+      const id = `${wb.id}:location`;
+      const existing = existingItemsMap.get(id);
+      if (existing) {
+        if (existing.nextDueAt <= now || existing.intervalDays === 0) {
+          dueItems.push(existing);
+        }
+      } else {
+        newCandidates.push(wb);
+      }
+    }
+
+    dueItems.sort((a, b) => (a.nextDueAt < b.nextDueAt ? -1 : 1));
+    const sessionQueue: TrainingQuestion[] = [];
+    for (const srsItem of dueItems.slice(0, batchSize)) {
+      const wb = getWaterBodyById(srsItem.countryId);
+      if (wb) {
+        sessionQueue.push(buildQuestion(srsItem, waterBodyToCountry(wb), waterCountries));
+      }
+    }
+
+    const remainingSlots = batchSize - sessionQueue.length;
+    if (remainingSlots > 0 && newCandidates.length > 0) {
+      const shuffledNew = [...newCandidates].sort(() => Math.random() - 0.5);
+      for (const cand of shuffledNew.slice(0, remainingSlots)) {
+        const initItem = createInitialSRSItem(cand.id, 'location');
+        sessionQueue.push(buildQuestion(initItem, waterBodyToCountry(cand), waterCountries));
+      }
+    }
+    return sessionQueue;
+  }
+
   const eligibleCountries = continentFilter === 'All'
     ? COUNTRIES
     : COUNTRIES.filter((c) => c.continent === continentFilter);
@@ -314,6 +428,15 @@ export function computeMasteryStats(itemsMap: Map<string, SRSItem>) {
   const masteryPercentage = Math.round((globalStage2 / grandTotal) * 100);
   const learningPercentage = Math.round((globalStage1 / grandTotal) * 100);
 
+  // Dedicated Water Bodies & Straits breakdown
+  const waterBreakdown = { total: WATER_BODIES.length, stage0: 0, stage1: 0, stage2: 0 };
+  for (const wb of WATER_BODIES) {
+    const item = itemsMap.get(`${wb.id}:location`);
+    if (!item || item.stage === 0) waterBreakdown.stage0++;
+    else if (item.stage === 1) waterBreakdown.stage1++;
+    else waterBreakdown.stage2++;
+  }
+
   return {
     grandTotal,
     globalStage0,
@@ -321,6 +444,7 @@ export function computeMasteryStats(itemsMap: Map<string, SRSItem>) {
     globalStage2,
     masteryPercentage,
     learningPercentage,
-    breakdown
+    breakdown,
+    waterBreakdown
   };
 }
