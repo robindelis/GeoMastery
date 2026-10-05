@@ -171,7 +171,7 @@ const WaterBodyPolygon = React.memo<WaterBodyPolygonProps>(
         fill={fill}
         stroke={stroke}
         strokeWidth={strokeWidth}
-        vectorEffect="non-scaling-stroke"
+        vectorEffect={stroke !== 'none' ? 'non-scaling-stroke' : undefined}
         className={`water-body-vector-path cursor-pointer ${
           isFeedbackCorrect
             ? 'water-body-correct'
@@ -343,45 +343,91 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     return items;
   }, [geoFeatures, pathGenerator]);
 
-  // Setup Zoom behavior with GPU-accelerated transforms
+  const isZoomingRef = useRef(false);
+  const zoomEndTimerRef = useRef<number | null>(null);
+  const rafZoomIdRef = useRef<number | null>(null);
+  const beaconCirclesRef = useRef<{ el: SVGCircleElement; baseR: number }[]>([]);
+
+  // Index beacon circle elements after renders so zoom loops never perform querySelectorAll
+  useEffect(() => {
+    if (!gRef.current) return;
+    const items: { el: SVGCircleElement; baseR: number }[] = [];
+    gRef.current.querySelectorAll<SVGCircleElement>('.microstate-dot').forEach((el) => {
+      items.push({ el, baseR: 3.5 });
+    });
+    gRef.current.querySelectorAll<SVGCircleElement>('.microstate-pulse').forEach((el) => {
+      items.push({ el, baseR: 8 });
+    });
+    gRef.current.querySelectorAll<SVGCircleElement>('.microstate-hitbox').forEach((el) => {
+      items.push({ el, baseR: 16 });
+    });
+    gRef.current.querySelectorAll<SVGCircleElement>('.water-beacon-dot').forEach((el) => {
+      const isOcean = el.getAttribute('data-ocean') === 'true';
+      const isStrait = el.getAttribute('data-strait') === 'true';
+      items.push({ el, baseR: isStrait ? 4 : isOcean ? 6 : 5 });
+    });
+    gRef.current.querySelectorAll<SVGCircleElement>('.water-beacon-pulse').forEach((el) => {
+      const isOcean = el.getAttribute('data-ocean') === 'true';
+      items.push({ el, baseR: isOcean ? 16 : 12 });
+    });
+    gRef.current.querySelectorAll<SVGCircleElement>('.water-beacon-hitbox').forEach((el) => {
+      const isOcean = el.getAttribute('data-ocean') === 'true';
+      items.push({ el, baseR: isOcean ? 32 : 24 });
+    });
+    beaconCirclesRef.current = items;
+  });
+
+  // Setup Zoom behavior with GPU-accelerated transforms & smooth RAF batching
   useEffect(() => {
     if (!svgRef.current || !gRef.current) return;
 
     const zoom = d3
       .zoom<SVGSVGElement, unknown>()
       .scaleExtent([1, 24])
+      .wheelDelta((event) => {
+        return -event.deltaY * (event.deltaMode === 1 ? 0.03 : event.deltaMode ? 0.5 : 0.0015);
+      })
       .on('zoom', (event) => {
         zoomTransformRef.current = event.transform;
-        if (gRef.current) {
-          d3.select(gRef.current).attr('transform', event.transform);
-          const k = event.transform.k;
-          d3.select(gRef.current).selectAll('.microstate-dot').attr('r', 3.5 / k);
-          d3.select(gRef.current).selectAll('.microstate-pulse').attr('r', 8 / k);
-          d3.select(gRef.current).selectAll('.microstate-hitbox').attr('r', 16 / k);
-          d3.select(gRef.current).selectAll('.water-beacon-dot').attr('r', function () {
-            const el = this as SVGCircleElement;
-            const isOcean = el.getAttribute('data-ocean') === 'true';
-            const isStrait = el.getAttribute('data-strait') === 'true';
-            return (isStrait ? 4 : isOcean ? 6 : 5) / k;
-          });
-          d3.select(gRef.current).selectAll('.water-beacon-pulse').attr('r', function () {
-            const el = this as SVGCircleElement;
-            const isOcean = el.getAttribute('data-ocean') === 'true';
-            return (isOcean ? 16 : 12) / k;
-          });
-          d3.select(gRef.current).selectAll('.water-beacon-hitbox').attr('r', function () {
-            const el = this as SVGCircleElement;
-            const isOcean = el.getAttribute('data-ocean') === 'true';
-            return (isOcean ? 32 : 24) / k;
+        if (!gRef.current) return;
+
+        // Instantly apply matrix transform on GPU-promoted group
+        gRef.current.setAttribute('transform', event.transform.toString());
+
+        // Toggle .is-zooming class during active gestures to suppress hit-test & hover thrashing
+        if (!isZoomingRef.current) {
+          isZoomingRef.current = true;
+          svgRef.current?.classList.add('is-zooming');
+        }
+        if (zoomEndTimerRef.current) clearTimeout(zoomEndTimerRef.current);
+        zoomEndTimerRef.current = window.setTimeout(() => {
+          isZoomingRef.current = false;
+          svgRef.current?.classList.remove('is-zooming');
+        }, 120);
+
+        // Batch beacon radii resizing inside requestAnimationFrame (at most once per frame, zero querySelectorAll)
+        const k = event.transform.k;
+        if (!rafZoomIdRef.current) {
+          rafZoomIdRef.current = requestAnimationFrame(() => {
+            rafZoomIdRef.current = null;
+            const beacons = beaconCirclesRef.current;
+            for (let i = 0; i < beacons.length; i++) {
+              beacons[i].el.setAttribute('r', (beacons[i].baseR / k).toFixed(2));
+            }
           });
         }
       });
 
     zoomBehaviorRef.current = zoom;
     d3.select(svgRef.current).call(zoom);
+
+    return () => {
+      if (zoomEndTimerRef.current) clearTimeout(zoomEndTimerRef.current);
+      if (rafZoomIdRef.current) cancelAnimationFrame(rafZoomIdRef.current);
+    };
   }, []);
 
-  // Programmatic camera focus (Only when auto-zoom is NOT disabled)
+  // Programmatic camera focus (Smooth, cinematic auto-zoom when revealing answers / selecting locations)
   useEffect(() => {
     if (disableAutoZoom) return;
 
@@ -402,10 +448,20 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       .scale(targetScale)
       .translate(-cx, -cy);
 
+    // Suppress pointer events & hover trashing during camera fly-over so passing paths don't trigger filters
+    svgRef.current.classList.add('is-zooming');
+
     d3.select(svgRef.current)
       .transition()
       .duration(700)
-      .call(zoomBehaviorRef.current.transform, transform);
+      .ease(d3.easeCubicOut)
+      .call(zoomBehaviorRef.current.transform, transform)
+      .on('end', () => {
+        svgRef.current?.classList.remove('is-zooming');
+      })
+      .on('interrupt', () => {
+        svgRef.current?.classList.remove('is-zooming');
+      });
   }, [selectedCountryId, targetCountryId, disableAutoZoom, projection, dimensions]);
 
   // High-performance direct DOM tooltip tracking (Zero React re-renders during mouse movements)
@@ -729,7 +785,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
           </radialGradient>
         </defs>
 
-        <g ref={gRef}>
+        <g ref={gRef} className="vector-map-main-group">
           {/* Water Bodies Layer 1: Global Oceans (deepest water layer) */}
           <g className="oceans-layer">
             {oceanFeatures.map(({ wb, pathD }) => {
@@ -972,9 +1028,12 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
                       y={cy - (dotRadius + 4 / k)}
                       textAnchor="middle"
                       fill="#ffffff"
+                      stroke="#090e1a"
+                      strokeWidth={1.5 / k}
+                      paintOrder="stroke fill"
                       fontSize={Math.max(8, 11 / k)}
                       fontWeight="bold"
-                      className="pointer-events-none select-none drop-shadow-md"
+                      className="pointer-events-none select-none"
                     >
                       {wb.name}
                     </text>

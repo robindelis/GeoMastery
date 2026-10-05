@@ -34,26 +34,30 @@
   background: rgba(100, 116, 139, 0.85);
 }
 
-/* Pulsing highlight animations for map selection */
+/* High-performance hardware-accelerated pulsing animations (zero expensive convolution filters) */
 @keyframes pulse-emerald {
   0%, 100% {
-    filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.8));
     fill: #10b981;
+    stroke: #34d399;
+    stroke-width: 2px;
   }
   50% {
-    filter: drop-shadow(0 0 24px rgba(16, 185, 129, 1));
-    fill: #34d399;
+    fill: #059669;
+    stroke: #6ee7b7;
+    stroke-width: 4px;
   }
 }
 
 @keyframes pulse-rose {
   0%, 100% {
-    filter: drop-shadow(0 0 12px rgba(244, 63, 94, 0.8));
     fill: #f43f5e;
+    stroke: #fb7185;
+    stroke-width: 2px;
   }
   50% {
-    filter: drop-shadow(0 0 24px rgba(244, 63, 94, 1));
-    fill: #fb7185;
+    fill: #e11d48;
+    stroke: #fda4af;
+    stroke-width: 4px;
   }
 }
 
@@ -63,6 +67,19 @@
 
 .map-country-incorrect {
   animation: pulse-rose 1.2s ease-in-out infinite;
+}
+
+/* Suppress hit-testing, hover state thrashing, and filter passes while camera is in motion */
+.is-zooming .country-vector-path,
+.is-zooming .water-body-vector-path,
+.is-zooming .microstate-beacon-group,
+.is-zooming .water-beacon-group {
+  pointer-events: none !important;
+}
+
+/* Hardware compositor promotion for the main transform group */
+.vector-map-main-group {
+  will-change: transform;
 }
 
 /* Instant CSS hover effect for vector map (zero JS overhead) */
