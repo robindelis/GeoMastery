@@ -2,6 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
+import * as d3 from 'd3';
+import { feature } from 'topojson-client';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -49,6 +51,21 @@ function getCoords(feat) {
 
 function collectCoords(feats) {
   return feats.flatMap((f) => getCoords(f));
+}
+
+function clampArr(arr) {
+  if (typeof arr[0] === 'number') {
+    return [Math.max(-180, Math.min(180, arr[0])), Math.max(-89.999, Math.min(89.999, arr[1]))];
+  }
+  return arr.map(clampArr);
+}
+
+function clampGeometry(geom) {
+  if (!geom) return geom;
+  return {
+    ...geom,
+    coordinates: clampArr(geom.coordinates)
+  };
 }
 
 function createCorridorPolygon(pts, widthDeg = 0.08) {
@@ -226,8 +243,7 @@ async function main() {
           'Ionian Sea',
           'Tyrrhenian Sea',
           'Balearic Sea',
-          'Golfe du Lion',
-          'Inner Sea'
+          'Golfe du Lion'
         ])
       )
     }),
@@ -327,7 +343,7 @@ async function main() {
   const features = wbList.map((wb) => {
     const gen = generators[wb.id];
     if (!gen) throw new Error(`Missing generator for ${wb.id}`);
-    const geometry = gen();
+    const geometry = clampGeometry(gen());
     return {
       type: 'Feature',
       id: wb.id,
@@ -354,7 +370,8 @@ async function main() {
   execSync(`npx mapshaper "${nonStraitsPath}" -dissolve wb_id -o "${dissolvedPath}" format=geojson`, { stdio: 'inherit' });
 
   const dissolvedNonStraits = JSON.parse(fs.readFileSync(dissolvedPath, 'utf8')).features;
-  const combinedFeatures = [...dissolvedNonStraits, ...straits];
+  const clampedDissolved = dissolvedNonStraits.map((f) => ({ ...f, geometry: clampGeometry(f.geometry) }));
+  const combinedFeatures = [...clampedDissolved, ...straits];
   fs.writeFileSync(allCleanPath, JSON.stringify({ type: 'FeatureCollection', features: combinedFeatures }), 'utf8');
 
   console.log('Compiling to TopoJSON via mapshaper with shape preservation...');
@@ -363,8 +380,41 @@ async function main() {
     { stdio: 'inherit' }
   );
 
+  // Validate the generated TopoJSON to guarantee zero polar overflow or projection failures
+  console.log('Validating compiled TopoJSON geometry & projections...');
+  const compiledTopo = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf8'));
+  const compiledGeo = feature(compiledTopo, compiledTopo.objects.water_bodies);
+  if (!compiledGeo || !compiledGeo.features || compiledGeo.features.length !== 40) {
+    throw new Error(`Expected exactly 40 water bodies in output TopoJSON, found ${compiledGeo?.features?.length}`);
+  }
+
+  const proj = d3.geoNaturalEarth1().scale(960 / 5.8).translate([960 / 2, 540 / 2 + 10]);
+  const pathGen = d3.geoPath().projection(proj);
+
+  for (const f of compiledGeo.features) {
+    const d = pathGen(f);
+    if (!d || d.length < 10) {
+      throw new Error(`Failed to generate valid SVG path for ${f.id}`);
+    }
+    const matches = [...d.matchAll(/([0-9.-]+),([0-9.-]+)/g)];
+    const maxY = Math.max(...matches.map((m) => parseFloat(m[2])));
+    const maxX = Math.max(...matches.map((m) => parseFloat(m[1])));
+
+    if (f.id === 'WATER_OCEAN_ARCTIC') {
+      const highY = matches.filter((m) => parseFloat(m[2]) > 200);
+      if (highY.length > 0 || maxY > 150) {
+        throw new Error(`Arctic Ocean geometry corrupted: maxY=${maxY}, high Y points count=${highY.length}`);
+      }
+    }
+    if (f.id === 'WATER_SEA_MEDITERRANEAN') {
+      if (maxX > 600) {
+        throw new Error(`Mediterranean Sea geometry corrupted: maxX=${maxX} (leaking into Eastern Asia)`);
+      }
+    }
+  }
+
   const stats = fs.statSync(OUTPUT_FILE);
-  console.log(`Successfully created ${OUTPUT_FILE} (${(stats.size / 1024).toFixed(1)} KB)`);
+  console.log(`Successfully verified and created ${OUTPUT_FILE} (${(stats.size / 1024).toFixed(1)} KB)`);
 }
 
 main().catch((err) => {

@@ -86,10 +86,42 @@ describe('Water Bodies & Maritime Hydrography Dataset', () => {
       expect(['Polygon', 'MultiPolygon']).toContain(feat.geometry.type);
       expect(feat.geometry.coordinates.length).toBeGreaterThan(0);
 
+      // Verify no coordinates exceed geographic spherical limits [-180, 180] and [-90, 90]
+      const checkCoords = (coords: any) => {
+        if (typeof coords[0] === 'number') {
+          const [lng, lat] = coords;
+          expect(lng).toBeGreaterThanOrEqual(-180);
+          expect(lng).toBeLessThanOrEqual(180);
+          expect(lat).toBeGreaterThanOrEqual(-90);
+          expect(lat).toBeLessThanOrEqual(90);
+        } else {
+          coords.forEach(checkCoords);
+        }
+      };
+      checkCoords(feat.geometry.coordinates);
+
       // Verify D3 Natural Earth SVG path generation
       const pathD = pathGen(feat);
       expect(pathD, `D3 path for ${wb.id} should generate a valid SVG path`).toBeTruthy();
       expect(pathD!.length).toBeGreaterThan(10);
+
+      // Strict boundaries verification:
+      // Arctic Ocean must be strictly bounded in the far north (Y <= 150 on 960x540 viewport)
+      // and must never span across the prime meridian down to the South Pole (Y > 200).
+      if (wb.id === 'WATER_OCEAN_ARCTIC') {
+        const matches = [...pathD!.matchAll(/([0-9.-]+),([0-9.-]+)/g)];
+        const highYPoints = matches.filter((m) => parseFloat(m[2]) > 200);
+        const maxY = Math.max(...matches.map((m) => parseFloat(m[2])));
+        expect(highYPoints.length, 'Arctic Ocean SVG path must have zero points with Y > 200').toBe(0);
+        expect(maxY, 'Arctic Ocean SVG path maxY must stay in the northern hemisphere').toBeLessThan(150);
+      }
+
+      // Mediterranean Sea must not leak into Japan / Eastern Asia (X <= 600)
+      if (wb.id === 'WATER_SEA_MEDITERRANEAN') {
+        const matches = [...pathD!.matchAll(/([0-9.-]+),([0-9.-]+)/g)];
+        const maxX = Math.max(...matches.map((m) => parseFloat(m[1])));
+        expect(maxX, 'Mediterranean Sea SVG path maxX must stay in Europe/Levant (< 600)').toBeLessThan(600);
+      }
     }
   });
 
@@ -100,10 +132,15 @@ describe('Water Bodies & Maritime Hydrography Dataset', () => {
     // Mediterranean Sea [15°E, 35°N]
     const med = featureMap.get('WATER_SEA_MEDITERRANEAN');
     expect(d3.geoContains(med, [15, 35])).toBe(true);
+    // Must NOT contain Seto Inland Sea / Japan [133.5°E, 34.2°N]
+    expect(d3.geoContains(med, [133.5, 34.2])).toBe(false);
 
     // Arctic Ocean [0°E, 85°N]
     const arctic = featureMap.get('WATER_OCEAN_ARCTIC');
     expect(d3.geoContains(arctic, [0, 85])).toBe(true);
+    // Must NOT contain Indian Ocean [70°E, -20°S] or Gulf of Guinea [0°E, 0°N]
+    expect(d3.geoContains(arctic, [70, -20])).toBe(false);
+    expect(d3.geoContains(arctic, [0, 0])).toBe(false);
 
     // North Sea [3°E, 56°N]
     const northSea = featureMap.get('WATER_SEA_NORTH');

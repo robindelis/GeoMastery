@@ -77,7 +77,33 @@ export const Globe3D: React.FC<Globe3DProps> = ({
   const waterGeoFeatures = useMemo(() => {
     try {
       const geo = feature(waterBodies50m as any, (waterBodies50m as any).objects.water_bodies) as any;
-      return (geo.features as any[]) || [];
+      const rawFeatures = (geo.features as any[]) || [];
+      const clampCoord = ([x, y]: [number, number]): [number, number] => [
+        Math.max(-180, Math.min(180, x)),
+        Math.max(-89.999, Math.min(89.999, y))
+      ];
+      return rawFeatures.map((feat) => {
+        if (!feat.geometry) return feat;
+        if (feat.geometry.type === 'Polygon') {
+          return {
+            ...feat,
+            geometry: {
+              ...feat.geometry,
+              coordinates: feat.geometry.coordinates.map((ring: any) => ring.map(clampCoord))
+            }
+          };
+        }
+        if (feat.geometry.type === 'MultiPolygon') {
+          return {
+            ...feat,
+            geometry: {
+              ...feat.geometry,
+              coordinates: feat.geometry.coordinates.map((poly: any) => poly.map((ring: any) => ring.map(clampCoord)))
+            }
+          };
+        }
+        return feat;
+      });
     } catch (e) {
       console.error('Failed to parse water bodies TopoJSON:', e);
       return [];
