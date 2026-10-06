@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Country } from '../../core/types';
 import { ArrowRight } from 'lucide-react';
 
@@ -26,10 +26,24 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
   onNextQuestion
 }) => {
   const isWater = country.id.startsWith('WATER_');
+  const hasSelectedRef = useRef(false);
+
+  // Reset selection state when question changes
+  useEffect(() => {
+    hasSelectedRef.current = false;
+  }, [country.id, promptText]);
+
+  const handleSelect = (option: string) => {
+    if (isSubmitted || hasSelectedRef.current) return;
+    hasSelectedRef.current = true;
+    onSelectOption(option);
+  };
 
   // Keyboard listener for 1, 2, 3, 4 when unsubmitted, or Enter/Space when submitted
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.repeat) return;
+
       if (isSubmitted) {
         if ((e.key === 'Enter' || e.key === ' ') && onNextQuestion) {
           e.preventDefault();
@@ -42,14 +56,15 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
       if (['1', '2', '3', '4'].includes(key)) {
         const index = parseInt(key, 10) - 1;
         if (options[index]) {
-          onSelectOption(options[index]);
+          e.preventDefault();
+          handleSelect(options[index]);
         }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [options, isSubmitted, onSelectOption, onNextQuestion]);
+  }, [options, isSubmitted, onNextQuestion]);
 
   return (
     <div className="flex flex-col gap-4 w-full max-w-xl mx-auto">
@@ -92,8 +107,8 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
           return (
             <button
               key={option}
-              disabled={isSubmitted}
-              onClick={() => onSelectOption(option)}
+              disabled={isSubmitted || hasSelectedRef.current}
+              onClick={() => handleSelect(option)}
               className={`flex items-center justify-between p-4 rounded-xl border text-left transition-all duration-150 transform active:scale-[0.98] ${btnStyle}`}
             >
               <span className="text-base font-semibold truncate pr-2">{option}</span>
@@ -129,13 +144,16 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
               </span>
             )}
           </span>
-          <button
-            onClick={onNextQuestion}
-            className="px-3.5 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold flex items-center gap-1 text-xs shadow-md transition-all"
-          >
-            <span>Next</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-slate-400 hidden sm:inline">Press Enter or Space</span>
+            <button
+              onClick={onNextQuestion}
+              className="px-3.5 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold flex items-center gap-1 text-xs shadow-md transition-all active:scale-95"
+            >
+              <span>Next</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
       )}
     </div>

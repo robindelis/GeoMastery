@@ -26,6 +26,7 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
   // Keyboard Enter or Space listener to advance when submitted
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.repeat) return;
       if (isSubmitted && (e.key === 'Enter' || e.key === ' ')) {
         e.preventDefault();
         onNextQuestion();
@@ -91,13 +92,16 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
               </span>
             )}
           </div>
-          <button
-            onClick={onNextQuestion}
-            className="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold flex items-center gap-1 text-sm shadow-md transition-all"
-          >
-            <span>Next</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-slate-400 hidden sm:inline">Press Enter or Space</span>
+            <button
+              onClick={onNextQuestion}
+              className="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold flex items-center gap-1 text-sm shadow-md transition-all active:scale-95"
+            >
+              <span>Next</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       ) : (
         (onGiveUp || onSkip) && (

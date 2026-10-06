@@ -47,16 +47,15 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
   // Handle submit form
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isSubmitted) {
-      onNextQuestion();
-    } else if (inputValue.trim()) {
+    if (!isSubmitted && inputValue.trim()) {
       onSubmitAnswer(inputValue.trim());
     }
   };
 
-  // Keyboard Enter listener after submission to proceed
+  // Keyboard Enter / Space listener after submission to proceed
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.repeat) return;
       if (isSubmitted && (e.key === 'Enter' || e.key === ' ')) {
         e.preventDefault();
         onNextQuestion();

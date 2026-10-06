@@ -233,10 +233,18 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
   // Next Question
   const handleNext = useCallback(() => {
+    // Guard: Never advance to next question if current question is unsubmitted
+    if (!isSubmittedRef.current) {
+      return;
+    }
+
+    // Synchronously disarm submitted flag to prevent any subsequent events,
+    // double clicks, or key repeat from advancing past the next question.
+    isSubmittedRef.current = false;
+
     if (currentIndex + 1 < queue.length) {
       setCurrentIndex((i) => i + 1);
       setIsSubmitted(false);
-      isSubmittedRef.current = false;
       setUserAnswer('');
       setIsCurrentCorrect(undefined);
       setFeedbackState(null);
@@ -503,10 +511,6 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
                 isSubmitted={isSubmitted}
                 onSelectOption={(opt) => {
                   handleAnswer(opt);
-                  // Brief delay before next question on multiple choice
-                  setTimeout(() => {
-                    handleNext();
-                  }, 1200);
                 }}
                 onGiveUp={handleGiveUp}
                 onNextQuestion={handleNext}
