@@ -5,6 +5,7 @@ import { COUNTRIES, COUNTRIES_BY_ID } from '../../assets/data/countries';
 import { MapContainer } from '../map/MapContainer';
 import { StorageService } from '../../core/storage';
 import { soundFx } from '../../core/soundFx';
+import { formatCoordinates } from '../../core/geoUtils';
 
 interface ExplorerAtlasProps {
   mapMode: MapViewMode;
@@ -24,18 +25,29 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
   const [showHeatmap, setShowHeatmap] = useState(false);
   const [autoRotate, setAutoRotate] = useState(false);
 
-  // Filter countries for search dropdown
+  // Filter countries for search dropdown based on search query and selected continent
   const filteredCountries = useMemo(() => {
-    if (!searchQuery.trim()) return [];
+    let pool = COUNTRIES;
+    if (selectedContinent !== 'All') {
+      pool = pool.filter((c) => c.continent === selectedContinent);
+    }
+    if (!searchQuery.trim()) {
+      return selectedContinent !== 'All' ? pool.slice(0, 8) : [];
+    }
     const q = searchQuery.toLowerCase();
-    return COUNTRIES.filter(
+    return pool.filter(
       (c) =>
         c.name.toLowerCase().includes(q) ||
         c.capital.toLowerCase().includes(q) ||
         c.officialName.toLowerCase().includes(q) ||
         c.id.toLowerCase().includes(q)
     ).slice(0, 8);
-  }, [searchQuery]);
+  }, [searchQuery, selectedContinent]);
+
+  const highlightedCountryIds = useMemo(() => {
+    if (selectedContinent === 'All') return [];
+    return COUNTRIES.filter((c) => c.continent === selectedContinent).map((c) => c.id);
+  }, [selectedContinent]);
 
   const handleSelectCountry = (country: Country) => {
     setSelectedCountry(country);
@@ -133,6 +145,7 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
             mapMode={mapMode}
             onToggleMapMode={onToggleMapMode}
             selectedCountryId={selectedCountry?.id}
+            highlightedCountryIds={highlightedCountryIds}
             srsItemsMap={srsItemsMap}
             showHeatmap={showHeatmap}
             onToggleHeatmap={() => setShowHeatmap((h) => !h)}
@@ -196,7 +209,7 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
                     <div>
                       <div className="text-[11px] text-slate-400 font-medium">Geographic Center</div>
                       <div className="text-xs font-mono text-slate-300">
-                        {selectedCountry.coordinates[1].toFixed(2)}° N, {selectedCountry.coordinates[0].toFixed(2)}° E
+                        {formatCoordinates(selectedCountry.coordinates)}
                       </div>
                     </div>
                   </div>

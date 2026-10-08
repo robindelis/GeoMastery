@@ -138,8 +138,23 @@ export const Dashboard: React.FC<DashboardProps> = ({
     if (next) soundFx.playClick();
   };
 
-  const handleExportBackup = () => {
+  const handleExportBackup = async () => {
     const jsonStr = StorageService.exportBackupJSON();
+
+    // Use native OS save dialog when running inside Electron desktop app
+    if (window.electronAPI?.saveBackup) {
+      try {
+        const res = await window.electronAPI.saveBackup(jsonStr);
+        if (res.success) {
+          soundFx.playLevelUp();
+        }
+        return;
+      } catch (err) {
+        console.error('Electron save dialog error, falling back to web download:', err);
+      }
+    }
+
+    // Web browser fallback: blob download
     const blob = new Blob([jsonStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

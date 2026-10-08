@@ -69,15 +69,58 @@ export class StorageService {
             ? new Map<string, SRSItem>(diskData.srsItems)
             : new Map<string, SRSItem>();
 
-          // If disk has progress and local has less or equal, rehydrate from disk!
-          if (diskItems.size > 0 && diskItems.size >= localItems.size) {
+          const diskStats: UserStats | undefined = diskData.stats;
+          const localStats = this.loadStats();
+
+          // If disk has items but local is completely empty, restore from disk!
+          if (diskItems.size > 0 && localItems.size === 0) {
             this.saveSRSItems(diskItems);
             if (diskData.stats) this.saveStats(diskData.stats);
             if (diskData.settings) this.saveSettings(diskData.settings);
             this.notifySubscribers();
             return true;
-          } else if (localItems.size > diskItems.size) {
-            // Local is ahead, persist to disk
+          }
+
+          // If both have progress, reconcile item-by-item to preserve whichever is more advanced
+          if (diskItems.size > 0 && localItems.size > 0) {
+            let changed = false;
+            const mergedItems = new Map<string, SRSItem>(localItems);
+
+            diskItems.forEach((diskItem, id) => {
+              const localItem = mergedItems.get(id);
+              if (!localItem) {
+                mergedItems.set(id, diskItem);
+                changed = true;
+              } else {
+                const diskTime = diskItem.lastReviewedAt ? new Date(diskItem.lastReviewedAt).getTime() : 0;
+                const localTime = localItem.lastReviewedAt ? new Date(localItem.lastReviewedAt).getTime() : 0;
+                if (diskTime > localTime || diskItem.reps > localItem.reps) {
+                  mergedItems.set(id, diskItem);
+                  changed = true;
+                }
+              }
+            });
+
+            // Reconcile stats: pick higher review count
+            const diskReviews = diskStats?.totalReviews || 0;
+            const localReviews = localStats.totalReviews || 0;
+            if (diskReviews > localReviews && diskStats) {
+              this.saveStats(diskStats);
+              changed = true;
+            }
+
+            if (changed) {
+              this.saveSRSItems(mergedItems);
+              this.notifySubscribers();
+            }
+
+            // Sync reconciled state back to disk
+            this.syncToDiskNow();
+            return changed;
+          }
+
+          // If local has progress but disk is empty, push local to disk
+          if (localItems.size > 0 && diskItems.size === 0) {
             this.syncToDiskNow();
           }
         } else {
@@ -131,12 +174,24 @@ export class StorageService {
 
   /**
    * Saves all SRS items to persistent storage.
+   * Caps each item's history array to 15 entries to prevent localStorage quota exhaustion.
    */
   public static saveSRSItems(itemsMap: Map<string, SRSItem>): void {
     try {
       if (typeof localStorage !== 'undefined') {
-        const serialized = JSON.stringify(Array.from(itemsMap.entries()));
+        const cappedEntries: [string, SRSItem][] = [];
+        itemsMap.forEach((item, id) => {
+          if (item.history && item.history.length > 15) {
+            cappedEntries.push([id, { ...item, history: item.history.slice(-15) }]);
+          } else {
+            cappedEntries.push([id, item]);
+          }
+        });
+
+        const serialized = JSON.stringify(cappedEntries);
         localStorage.setItem(STORAGE_KEYS.SRS_ITEMS, serialized);
+        // Automated web fallback mirror
+        localStorage.setItem('geomastery_user_progress_backup_v1', serialized);
       }
       this.scheduleDiskSync();
     } catch (e) {
@@ -145,13 +200,25 @@ export class StorageService {
   }
 
   /**
-   * Loads user stats.
+   * Loads user stats with safe deep-merge of nested records.
    */
   public static loadStats(): UserStats {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.STATS);
       if (!data) return { ...DEFAULT_STATS };
-      return { ...DEFAULT_STATS, ...JSON.parse(data) };
+      const parsed = JSON.parse(data);
+      return {
+        ...DEFAULT_STATS,
+        ...parsed,
+        continentMastery: {
+          ...DEFAULT_STATS.continentMastery,
+          ...(parsed.continentMastery || {})
+        },
+        timeAttackRecords: {
+          ...DEFAULT_STATS.timeAttackRecords,
+          ...(parsed.timeAttackRecords || {})
+        }
+      };
     } catch (e) {
       return { ...DEFAULT_STATS };
     }
@@ -201,10 +268,12 @@ export class StorageService {
 
   /**
    * Records a completed review to update daily streaks and review counts.
+   * Uses local calendar date string to prevent UTC/DST boundary discrepancies.
    */
   public static recordReviewEvent(isCorrect: boolean): UserStats {
     const stats = this.loadStats();
-    const today = new Date().toISOString().split('T')[0];
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     const lastDate = stats.lastReviewDate;
 
     stats.totalReviews += 1;
@@ -250,21 +319,45 @@ export class StorageService {
   }
 
   /**
-   * Imports backup JSON.
+   * Imports backup JSON with schema and type validation.
    */
   public static importBackupJSON(jsonStr: string): boolean {
     try {
       const data = JSON.parse(jsonStr);
-      if (data.srsItems) {
-        const itemsMap = new Map<string, SRSItem>(data.srsItems);
-        this.saveSRSItems(itemsMap);
+      if (!data || typeof data !== 'object') return false;
+
+      let importedAny = false;
+
+      if (Array.isArray(data.srsItems)) {
+        // Validate items structure
+        const validatedItems = new Map<string, SRSItem>();
+        for (const entry of data.srsItems) {
+          if (Array.isArray(entry) && entry.length === 2 && typeof entry[0] === 'string') {
+            const [id, item] = entry;
+            if (item && typeof item === 'object' && 'stage' in item && 'countryId' in item) {
+              validatedItems.set(id, item as SRSItem);
+            }
+          }
+        }
+        if (validatedItems.size > 0) {
+          this.saveSRSItems(validatedItems);
+          importedAny = true;
+        }
       }
-      if (data.stats) {
+      if (data.stats && typeof data.stats === 'object' && typeof data.stats.totalReviews === 'number') {
         this.saveStats(data.stats);
+        importedAny = true;
       }
-      if (data.settings) {
+      if (data.settings && typeof data.settings === 'object' && typeof data.settings.audioEnabled === 'boolean') {
         this.saveSettings(data.settings);
+        importedAny = true;
       }
+
+      if (!importedAny) {
+        return false;
+      }
+
+      this.notifySubscribers();
       return true;
     } catch (e) {
       console.error('Failed to import backup:', e);

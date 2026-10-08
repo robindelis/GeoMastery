@@ -5,8 +5,12 @@ import { COUNTRIES_BY_ID } from '../../assets/data/countries';
 import {
   TrainingQuestion,
   prepareSessionQueue,
-  processAnswer
+  processAnswer,
+  buildQuestion,
+  createInitialSRSItem,
+  waterBodyToCountry
 } from '../../core/srsEngine';
+import { getWaterBodyById } from '../../assets/data/waterBodies';
 import { ATTRIBUTE_REGISTRY } from '../../core/attributes';
 import { StorageService } from '../../core/storage';
 import { soundFx } from '../../core/soundFx';
@@ -22,6 +26,7 @@ interface TrainingSessionProps {
   continentFilter: TrainingCategory;
   attributeFilter: string[];
   initialPracticeMode?: boolean;
+  targetCountryId?: string | null;
   mapMode: MapViewMode;
   onToggleMapMode: (mode: MapViewMode) => void;
   onFinishSession: () => void;
@@ -31,6 +36,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
   continentFilter,
   attributeFilter,
   initialPracticeMode = false,
+  targetCountryId = null,
   mapMode,
   onToggleMapMode,
   onFinishSession
@@ -63,7 +69,25 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
   // Initialize session queue
   useEffect(() => {
     const items = StorageService.loadSRSItems();
-    const newQueue = prepareSessionQueue(items, continentFilter, attributeFilter, 15, isPracticeMode);
+    let newQueue: TrainingQuestion[] = [];
+
+    if (targetCountryId) {
+      const wb = getWaterBodyById(targetCountryId);
+      const c = wb ? waterBodyToCountry(wb) : COUNTRIES_BY_ID.get(targetCountryId);
+      if (c) {
+        const countryContext = [c];
+        const activeAttrs = attributeFilter.length > 0 ? attributeFilter : ['capital', 'location'];
+        newQueue = activeAttrs.map((attrId) => {
+          const item = items.get(`${c.id}:${attrId}`) || createInitialSRSItem(c.id, attrId);
+          return buildQuestion(item, c, countryContext);
+        });
+      }
+    }
+
+    if (newQueue.length === 0) {
+      newQueue = prepareSessionQueue(items, continentFilter, attributeFilter, 15, isPracticeMode);
+    }
+
     setQueue(newQueue);
     setCurrentIndex(0);
     setCorrectCount(0);
@@ -74,7 +98,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     setFinalDurationMs(0);
     setQuestionStartTime(Date.now());
     questionStartTimeRef.current = Date.now();
-  }, [continentFilter, attributeFilter, isPracticeMode]);
+  }, [continentFilter, attributeFilter, isPracticeMode, targetCountryId]);
 
   const currentQuestion = queue[currentIndex];
   const currentQuestionRef = useRef<TrainingQuestion | undefined>(currentQuestion);
@@ -120,7 +144,8 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     } else {
       // Typing active recall
       if (attrDef) {
-        const valRes = attrDef.validateAnswer(answer, question.correctAnswer, question.country);
+        const settings = StorageService.loadSettings();
+        const valRes = attrDef.validateAnswer(answer, question.correctAnswer, question.country, settings.typingFuzzyTolerance);
         correct = valRes.isCorrect;
         feedback = valRes.feedback || (correct ? 'Correct!' : `Answer: ${question.correctAnswer}`);
       } else {
@@ -137,8 +162,8 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     let promotedToLearning = false;
     let promotedToMastered = false;
 
-    // Update SRS Record (Only in standard spaced repetition mode, NOT in free practice mode!)
-    if (!isPracticeModeRef.current) {
+    // Update SRS Record (Only in standard spaced repetition mode, NOT in free practice mode or in-session retries!)
+    if (!isPracticeModeRef.current && !question.isRetry) {
       let existingItem = srsItemsMapRef.current.get(question.srsItemId);
       if (!existingItem) {
         existingItem = {
@@ -193,7 +218,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
           });
         }
       }
-    } else {
+    } else if (isPracticeModeRef.current) {
       // In Free Practice Mode: celebrate great streaks without altering SRS scheduling
       if (correct && (streak + 1) > 0 && (streak + 1) % 5 === 0) {
         confetti({
@@ -204,8 +229,10 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       }
     }
 
-    // Always record review count and trigger sounds
-    StorageService.recordReviewEvent(correct);
+    // Only record review count and streak for real scheduled reviews (not practice or in-session retries)
+    if (!isPracticeModeRef.current && !question.isRetry) {
+      StorageService.recordReviewEvent(correct);
+    }
 
     // Record answer attempt in session history
     const answerRecord: SessionAnswerRecord = {
@@ -226,8 +253,14 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     } else {
       soundFx.playError();
       setStreak(0);
-      // Re-queue missed question at end of session for reinforcement!
-      setQueue((q) => [...q, question]);
+      // Re-queue missed question at end of session for reinforcement (capped at 2 retries per card)
+      setQueue((prevQueue) => {
+        const retryCount = prevQueue.filter((q) => q.srsItemId === question.srsItemId && q.isRetry).length;
+        if (retryCount < 2) {
+          return [...prevQueue, { ...question, isRetry: true }];
+        }
+        return prevQueue;
+      });
     }
   }, [streak]);
 
@@ -492,7 +525,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
           selectedCountryId={selectedMapCountry?.id || null}
           feedbackState={feedbackState}
           disableAutoZoom={!isSubmitted}
-          hideHoverTooltip={!isSubmitted && currentQuestion?.expectedInputMode === 'map_click' && (currentQuestion?.stage ?? 0) >= 1}
+          hideHoverTooltip={!isSubmitted && currentQuestion?.expectedInputMode === 'map_click'}
           srsItemsMap={srsItemsMap}
           onSelectCountry={handleMapCountrySelect}
         />
@@ -502,7 +535,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
           <div className="pointer-events-auto w-full max-w-xl">
             {currentQuestion.expectedInputMode === 'multiple_choice' ? (
               <MultipleChoicePrompt
-                key={currentQuestion.srsItemId}
+                key={`${currentQuestion.srsItemId}-${currentIndex}`}
                 country={currentQuestion.country}
                 promptText={currentQuestion.prompt}
                 options={currentQuestion.options || []}
@@ -517,7 +550,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
               />
             ) : currentQuestion.expectedInputMode === 'typing' ? (
               <TypingRecallPrompt
-                key={currentQuestion.srsItemId}
+                key={`${currentQuestion.srsItemId}-${currentIndex}`}
                 country={currentQuestion.country}
                 promptText={currentQuestion.prompt}
                 correctAnswer={currentQuestion.correctAnswer}
@@ -530,7 +563,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
               />
             ) : (
               <MapClickPrompt
-                key={currentQuestion.srsItemId}
+                key={`${currentQuestion.srsItemId}-${currentIndex}`}
                 country={currentQuestion.country}
                 isSubmitted={isSubmitted}
                 selectedCountryName={selectedMapCountry?.name}

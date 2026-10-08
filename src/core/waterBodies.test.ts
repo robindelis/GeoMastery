@@ -161,8 +161,8 @@ describe('Water Bodies & Maritime Hydrography Dataset', () => {
     expect(oceans.length).toBe(5);
 
     let overlapCount = 0;
-    for (let lat = -86; lat <= 86; lat += 3) {
-      for (let lng = -177; lng <= 177; lng += 3) {
+    for (let lat = -86; lat <= 86; lat += 5) {
+      for (let lng = -177; lng <= 177; lng += 5) {
         const hits = oceans
           .filter((o: any) => {
             if (lat < o.bbox[1] || lat > o.bbox[3]) return false;

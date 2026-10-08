@@ -16,6 +16,7 @@ export const App: React.FC = () => {
   const [selectedContinent, setSelectedContinent] = useState<TrainingCategory>('All');
   const [selectedAttributes, setSelectedAttributes] = useState<string[]>(['capital', 'location']);
   const [initialPracticeMode, setInitialPracticeMode] = useState<boolean>(false);
+  const [targetCountryId, setTargetCountryId] = useState<string | undefined>(undefined);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(() => StorageService.loadSettings().audioEnabled);
 
   // Sync sound settings with engine
@@ -41,6 +42,7 @@ export const App: React.FC = () => {
     setSelectedContinent(continent);
     setSelectedAttributes(attributes);
     setInitialPracticeMode(practiceMode);
+    setTargetCountryId(undefined);
     setCurrentView('training');
     soundFx.playClick();
   };
@@ -179,9 +181,11 @@ export const App: React.FC = () => {
             continentFilter={selectedContinent}
             attributeFilter={selectedAttributes}
             initialPracticeMode={initialPracticeMode}
+            targetCountryId={targetCountryId}
             mapMode={mapMode}
             onToggleMapMode={handleToggleMapMode}
             onFinishSession={() => {
+              setTargetCountryId(undefined);
               setCurrentView('dashboard');
               soundFx.playClick();
             }}
@@ -194,6 +198,8 @@ export const App: React.FC = () => {
             onToggleMapMode={handleToggleMapMode}
             onStartSpecificDrill={(country: Country) => {
               setSelectedContinent(country.continent);
+              setTargetCountryId(country.id);
+              setInitialPracticeMode(true);
               setCurrentView('training');
               soundFx.playClick();
             }}

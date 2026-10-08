@@ -1,4 +1,4 @@
-import { Country, Continent, SRSItem, SRSStage, InputMode, TrainingCategory } from './types';
+import { Country, Continent, SRSItem, SRSStage, InputMode, TrainingCategory, SRSHistoryEntry } from './types';
 import { COUNTRIES, COUNTRIES_BY_ID } from '../assets/data/countries';
 import { WATER_BODIES, getWaterBodyById, WaterBody } from '../assets/data/waterBodies';
 import { ATTRIBUTE_REGISTRY } from './attributes';
@@ -13,6 +13,7 @@ export interface TrainingQuestion {
   correctAnswer: string;
   options?: string[]; // Populated when expectedInputMode === 'multiple_choice'
   waterBody?: WaterBody;
+  isRetry?: boolean;
 }
 
 /**
@@ -122,6 +123,14 @@ export function processAnswer(
   // Calculate next due date
   const nextDueDate = new Date(now.getTime() + intervalDays * 24 * 60 * 60 * 1000);
 
+  const newHistoryEntry: SRSHistoryEntry = {
+    timestamp: now.toISOString(),
+    inputMode,
+    userAnswer,
+    isCorrect,
+    timeSpentMs
+  };
+
   const updatedItem: SRSItem = {
     ...item,
     stage,
@@ -133,16 +142,7 @@ export function processAnswer(
     lapses,
     lastReviewedAt: now.toISOString(),
     nextDueAt: nextDueDate.toISOString(),
-    history: [
-      ...item.history,
-      {
-        timestamp: now.toISOString(),
-        inputMode,
-        userAnswer,
-        isCorrect,
-        timeSpentMs
-      }
-    ]
+    history: [...(item.history || []).slice(-14), newHistoryEntry]
   };
 
   return { updatedItem, promotedToLearning, promotedToMastered };
@@ -198,10 +198,17 @@ export function buildQuestion(
 
     let options: string[] | undefined = undefined;
     if (srsItem.stage === 0) {
-      // 4 choices from other water bodies
+      // 4 choices from other water bodies (guaranteed unique)
       const otherWbs = WATER_BODIES.filter((w) => w.id !== (wb?.id || country.id));
-      const shuffledOthers = shuffleArray(otherWbs).slice(0, 3);
-      options = shuffleArray([correctAnswer, ...shuffledOthers.map((w) => w.name)]);
+      const shuffledOthers = shuffleArray(otherWbs);
+      const uniqueOpts = new Set<string>([correctAnswer]);
+      for (const other of shuffledOthers) {
+        if (!uniqueOpts.has(other.name)) {
+          uniqueOpts.add(other.name);
+          if (uniqueOpts.size >= 4) break;
+        }
+      }
+      options = shuffleArray(Array.from(uniqueOpts));
     }
 
     return {
@@ -237,8 +244,15 @@ export function buildQuestion(
     } else {
       expectedInputMode = 'multiple_choice';
       if (attrDef) {
-        const distractors = attrDef.generateDistractors(country, allCountries, 3);
-        options = shuffleArray([correctAnswer, ...distractors]);
+        const distractors = attrDef.generateDistractors(country, allCountries, 5);
+        const uniqueOpts = new Set<string>([correctAnswer]);
+        for (const dist of distractors) {
+          if (dist && !uniqueOpts.has(dist)) {
+            uniqueOpts.add(dist);
+            if (uniqueOpts.size >= 4) break;
+          }
+        }
+        options = shuffleArray(Array.from(uniqueOpts));
       }
     }
   } else {

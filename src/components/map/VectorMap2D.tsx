@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState, useMemo, useCallback } from 'react';
 import * as d3 from 'd3';
 import { feature } from 'topojson-client';
 import worldData50m from '../../assets/geo/countries-50m.json';
@@ -8,6 +8,7 @@ import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countri
 import { WATER_BODIES, getWaterBodyById, WaterBody } from '../../assets/data/waterBodies';
 import { waterBodyToCountry } from '../../core/srsEngine';
 import { getMicrostateList } from '../../core/microstates';
+import { densifyGeoFeatures } from '../../core/geoUtils';
 
 interface VectorMap2DProps {
   selectedCountryId?: string | null;
@@ -399,56 +400,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     try {
       const geo = feature(waterBodies50m as any, (waterBodies50m as any).objects.water_bodies) as any;
       const rawFeatures = (geo.features as any[]) || [];
-      const clampCoord = ([x, y]: [number, number]): [number, number] => [
-        Math.max(-180, Math.min(180, x)),
-        Math.max(-89.999, Math.min(89.999, y))
-      ];
-      const densifyRing = (ring: [number, number][]): [number, number][] => {
-        const newRing: [number, number][] = [];
-        for (let i = 0; i < ring.length - 1; i++) {
-          const p1 = clampCoord(ring[i]);
-          const p2 = clampCoord(ring[i + 1]);
-          newRing.push(p1);
-          const dLat = Math.abs(p1[1] - p2[1]);
-          const dLng = Math.abs(p1[0] - p2[0]);
-          if (dLat < 0.1 && dLng > 2.0) {
-            const steps = Math.ceil(dLng / 2.0);
-            const stepLng = (p2[0] - p1[0]) / steps;
-            const stepLat = (p2[1] - p1[1]) / steps;
-            for (let s = 1; s < steps; s++) {
-              newRing.push([
-                +(p1[0] + s * stepLng).toFixed(5),
-                +(p1[1] + s * stepLat).toFixed(5)
-              ]);
-            }
-          }
-        }
-        newRing.push(clampCoord(ring[ring.length - 1]));
-        return newRing;
-      };
-
-      return rawFeatures.map((feat) => {
-        if (!feat.geometry) return feat;
-        if (feat.geometry.type === 'Polygon') {
-          return {
-            ...feat,
-            geometry: {
-              ...feat.geometry,
-              coordinates: feat.geometry.coordinates.map((ring: any) => densifyRing(ring))
-            }
-          };
-        }
-        if (feat.geometry.type === 'MultiPolygon') {
-          return {
-            ...feat,
-            geometry: {
-              ...feat.geometry,
-              coordinates: feat.geometry.coordinates.map((poly: any) => poly.map((ring: any) => densifyRing(ring)))
-            }
-          };
-        }
-        return feat;
-      });
+      return densifyGeoFeatures(rawFeatures);
     } catch (e) {
       console.error('Failed to parse water bodies TopoJSON:', e);
       return [];
@@ -725,25 +677,37 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   const hoverRafRef = useRef<number | null>(null);
 
   const stateRef = useRef<FrameState | null>(null);
-  stateRef.current = {
-    W: dimensions.width,
-    H: dimensions.height,
-    dpr: Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2),
-    t: zoomTransformRef.current,
-    moving: movingRef.current,
-    oceans: geometry.oceans,
-    seas: geometry.seas,
-    straits: geometry.straits,
-    countries: geometry.countries,
-    ...styles,
-    micro: microstateItems,
-    waterBeacons: waterBodyItems,
-    polyById: geometry.polyById,
-    selectedId: selectedCountryId,
-    targetId: targetCountryId,
+  useLayoutEffect(() => {
+    stateRef.current = {
+      W: dimensions.width,
+      H: dimensions.height,
+      dpr: Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2),
+      t: zoomTransformRef.current,
+      moving: movingRef.current,
+      oceans: geometry.oceans,
+      seas: geometry.seas,
+      straits: geometry.straits,
+      countries: geometry.countries,
+      ...styles,
+      micro: microstateItems,
+      waterBeacons: waterBodyItems,
+      polyById: geometry.polyById,
+      selectedId: selectedCountryId,
+      targetId: targetCountryId,
+      feedbackState,
+      hideHoverTooltip,
+    };
+  }, [
+    dimensions,
+    geometry,
+    styles,
+    microstateItems,
+    waterBodyItems,
+    selectedCountryId,
+    targetCountryId,
     feedbackState,
     hideHoverTooltip,
-  };
+  ]);
 
   const frameRef = useRef<(now: number) => void>(() => {});
   frameRef.current = (now: number) => {
@@ -795,7 +759,18 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   // Redraw whenever props/geometry/size change
   useEffect(() => {
     scheduleFrame(true);
-  });
+  }, [
+    dimensions,
+    geometry,
+    styles,
+    microstateItems,
+    waterBodyItems,
+    selectedCountryId,
+    targetCountryId,
+    feedbackState,
+    hideHoverTooltip,
+    scheduleFrame,
+  ]);
 
   useEffect(() => {
     return () => {
@@ -813,11 +788,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       const wx = (px - t.x) / k;
       const wy = (py - t.y) / k;
 
-      for (const w of waterBodyItems) {
-        if (!w.wb) continue;
-        const hit = waterBeaconRadii(w.wb).hit;
-        if (Math.hypot((wx - w.cx) * k, (wy - w.cy) * k) <= hit) return { country: w.country };
-      }
+      // 1. Microstates first (small 16px interactive beacons)
       for (const m of microstateItems) {
         if (Math.hypot((wx - m.cx) * k, (wy - m.cy) * k) <= 16) return { country: m.country };
       }
@@ -840,9 +811,27 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         }
         return null;
       };
-      return (
-        test(geometry.countries) || test(geometry.straits) || test(geometry.seas) || test(geometry.oceans)
-      );
+
+      // 2. Land countries (exact land polygon boundaries)
+      const landHit = test(geometry.countries);
+      if (landHit) return landHit;
+
+      // 3. Straits and inland seas
+      const straitHit = test(geometry.straits);
+      if (straitHit) return straitHit;
+
+      const seaHit = test(geometry.seas);
+      if (seaHit) return seaHit;
+
+      // 4. Water body beacons (dots for straits/seas/oceans)
+      for (const w of waterBodyItems) {
+        if (!w.wb) continue;
+        const hit = waterBeaconRadii(w.wb).hit;
+        if (Math.hypot((wx - w.cx) * k, (wy - w.cy) * k) <= hit) return { country: w.country };
+      }
+
+      // 5. Broad ocean polygons
+      return test(geometry.oceans);
     },
     [geometry, microstateItems, waterBodyItems]
   );
@@ -910,13 +899,37 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     };
   }, [scheduleFrame, handleCountryLeave]);
 
+  const wasAutoZoomedRef = useRef(false);
+
   // Programmatic camera focus (Smooth, cinematic auto-zoom when revealing answers / selecting locations)
   useEffect(() => {
-    if (disableAutoZoom) return;
+    const canvas = overlayCanvasRef.current;
+    if (!canvas || !zoomBehaviorRef.current) return;
+
+    if (disableAutoZoom) {
+      if (wasAutoZoomedRef.current) {
+        wasAutoZoomedRef.current = false;
+        d3.select(canvas)
+          .transition()
+          .duration(600)
+          .ease(d3.easeCubicOut)
+          .call(zoomBehaviorRef.current.transform, d3.zoomIdentity);
+      }
+      return;
+    }
 
     const countryToFocus = selectedCountryId || targetCountryId;
-    const canvas = overlayCanvasRef.current;
-    if (!countryToFocus || !canvas || !zoomBehaviorRef.current) return;
+    if (!countryToFocus) {
+      if (wasAutoZoomedRef.current) {
+        wasAutoZoomedRef.current = false;
+        d3.select(canvas)
+          .transition()
+          .duration(600)
+          .ease(d3.easeCubicOut)
+          .call(zoomBehaviorRef.current.transform, d3.zoomIdentity);
+      }
+      return;
+    }
 
     const wb = getWaterBodyById(countryToFocus);
     const c = wb ? waterBodyToCountry(wb) : COUNTRIES_BY_ID.get(countryToFocus);
@@ -932,6 +945,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       .scale(targetScale)
       .translate(-cx, -cy);
 
+    wasAutoZoomedRef.current = true;
     d3.select(canvas)
       .transition()
       .duration(700)

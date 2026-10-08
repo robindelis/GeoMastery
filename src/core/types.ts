@@ -50,7 +50,7 @@ export interface AttributeDefinition<T = any> {
   getValue: (country: Country) => T;
   renderValue: (val: T) => string;
   generateDistractors: (target: Country, all: Country[], count?: number) => string[];
-  validateAnswer: (userAnswer: string, correctValue: T, targetCountry?: Country) => AttributeValidationResult;
+  validateAnswer: (userAnswer: string, correctValue: T, targetCountry?: Country, tolerance?: number) => AttributeValidationResult;
 }
 
 export type SRSStage = 0 | 1 | 2; // 0: New / Multiple-Choice Scaffolding; 1: Learning / Typing Active Recall; 2: Mastered

@@ -106,7 +106,7 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
 
           return (
             <button
-              key={option}
+              key={`${option}-${idx}`}
               disabled={isSubmitted || hasSelectedRef.current}
               onClick={() => handleSelect(option)}
               className={`flex items-center justify-between p-4 rounded-xl border text-left transition-all duration-150 transform active:scale-[0.98] ${btnStyle}`}

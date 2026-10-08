@@ -1,5 +1,6 @@
 import { Country, AttributeDefinition, AttributeValidationResult } from './types';
 import { fuzzyMatch } from './fuzzyMatch';
+import { shuffleArray } from './srsEngine';
 
 /**
  * Intelligent distractor generator:
@@ -24,17 +25,7 @@ function getRegionalDistractors<T>(
     (c) => c.id !== target.id && c.continent !== target.continent && extractor(c) && extractor(c) !== targetVal
   );
 
-  // Shuffle array utility
-  const shuffle = <ArrayType>(arr: ArrayType[]): ArrayType[] => {
-    const copy = [...arr];
-    for (let i = copy.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [copy[i], copy[j]] = [copy[j], copy[i]];
-    }
-    return copy;
-  };
-
-  const pool = [...shuffle(sameContinent), ...shuffle(otherContinents)];
+  const pool = [...shuffleArray(sameContinent), ...shuffleArray(otherContinents)];
   const distractors: T[] = [];
   const seen = new Set<T>();
 
@@ -69,8 +60,8 @@ export const CapitalAttribute: AttributeDefinition<string> = {
   generateDistractors: (target: Country, all: Country[], count: number = 3) => {
     return getRegionalDistractors(target, all, (c) => c.capital, count);
   },
-  validateAnswer: (userAnswer: string, correctValue: string): AttributeValidationResult => {
-    const res = fuzzyMatch(userAnswer, correctValue);
+  validateAnswer: (userAnswer: string, correctValue: string, _targetCountry?: Country, tolerance: number = 1): AttributeValidationResult => {
+    const res = fuzzyMatch(userAnswer, correctValue, tolerance);
     return {
       isCorrect: res.isMatch,
       score: res.isMatch ? 1 : 0,
@@ -142,8 +133,8 @@ export const LeaderAttribute: AttributeDefinition<string> = {
   generateDistractors: (target: Country, all: Country[], count: number = 3) => {
     return getRegionalDistractors(target, all, (c) => c.facts.leader || '', count);
   },
-  validateAnswer: (userAnswer: string, correctValue: string): AttributeValidationResult => {
-    const res = fuzzyMatch(userAnswer, correctValue, 2);
+  validateAnswer: (userAnswer: string, correctValue: string, _targetCountry?: Country, tolerance: number = 2): AttributeValidationResult => {
+    const res = fuzzyMatch(userAnswer, correctValue, tolerance);
     return {
       isCorrect: res.isMatch,
       score: res.isMatch ? 1 : 0,
@@ -172,8 +163,8 @@ export const PoliticalRegimeAttribute: AttributeDefinition<string> = {
   generateDistractors: (target: Country, all: Country[], count: number = 3) => {
     return getRegionalDistractors(target, all, (c) => c.facts.politicalRegime || '', count);
   },
-  validateAnswer: (userAnswer: string, correctValue: string): AttributeValidationResult => {
-    const res = fuzzyMatch(userAnswer, correctValue, 2);
+  validateAnswer: (userAnswer: string, correctValue: string, _targetCountry?: Country, tolerance: number = 2): AttributeValidationResult => {
+    const res = fuzzyMatch(userAnswer, correctValue, tolerance);
     return {
       isCorrect: res.isMatch,
       score: res.isMatch ? 1 : 0,
@@ -201,8 +192,8 @@ export const CuisineAttribute: AttributeDefinition<string> = {
   generateDistractors: (target: Country, all: Country[], count: number = 3) => {
     return getRegionalDistractors(target, all, (c) => c.facts.cuisine || '', count);
   },
-  validateAnswer: (userAnswer: string, correctValue: string): AttributeValidationResult => {
-    const res = fuzzyMatch(userAnswer, correctValue, 2);
+  validateAnswer: (userAnswer: string, correctValue: string, _targetCountry?: Country, tolerance: number = 2): AttributeValidationResult => {
+    const res = fuzzyMatch(userAnswer, correctValue, tolerance);
     return {
       isCorrect: res.isMatch,
       score: res.isMatch ? 1 : 0,

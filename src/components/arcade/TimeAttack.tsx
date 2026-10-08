@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Zap, Timer, Flame, Trophy, RotateCcw, Home } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Country, Continent, MapViewMode } from '../../core/types';
 import { COUNTRIES } from '../../assets/data/countries';
 import { soundFx } from '../../core/soundFx';
 import { StorageService } from '../../core/storage';
+import { shuffleArray } from '../../core/srsEngine';
 import { MapContainer } from '../map/MapContainer';
 
 interface TimeAttackProps {
@@ -28,6 +29,10 @@ export const TimeAttack: React.FC<TimeAttackProps> = ({
   const [options, setOptions] = useState<string[]>([]);
   const [isGameOver, setIsGameOver] = useState(false);
 
+  const scoreRef = useRef(score);
+  scoreRef.current = score;
+  const endTimeRef = useRef(0);
+
   // Pool of countries based on continent
   const countryPool = React.useMemo(() => {
     return selectedContinent === 'All'
@@ -41,15 +46,13 @@ export const TimeAttack: React.FC<TimeAttackProps> = ({
     const target = countryPool[Math.floor(Math.random() * countryPool.length)];
     setCurrentCountry(target);
 
-    // Pick 3 distractors
+    // Pick 3 distractors using unbiased Fisher-Yates shuffle
     const otherCapitals = countryPool
       .filter((c) => c.id !== target.id)
-      .map((c) => c.capital)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3);
-
-    const shuffled = [target.capital, ...otherCapitals].sort(() => Math.random() - 0.5);
-    setOptions(shuffled);
+      .map((c) => c.capital);
+    const shuffledDistractors = shuffleArray(otherCapitals).slice(0, 3);
+    const uniqueOptions = Array.from(new Set([target.capital, ...shuffledDistractors]));
+    setOptions(shuffleArray(uniqueOptions));
   };
 
   // Start game
@@ -58,41 +61,44 @@ export const TimeAttack: React.FC<TimeAttackProps> = ({
     setIsGameOver(false);
     setTimeLeft(60);
     setScore(0);
+    scoreRef.current = 0;
     setStreak(0);
     setMultiplier(1);
+    endTimeRef.current = Date.now() + 60_000;
     nextQuestion();
   };
 
-  // Countdown timer
+  // Dedicated, uncoupled countdown timer (immune to score changes or rapid answering)
   useEffect(() => {
     if (!isPlaying) return;
 
-    if (timeLeft <= 0) {
-      setIsPlaying(false);
-      setIsGameOver(true);
-      soundFx.playLevelUp();
-      confetti({ particleCount: 100, spread: 70 });
-
-      // Save high score
-      const stats = StorageService.loadStats();
-      const existing = stats.timeAttackRecords[selectedContinent];
-      if (!existing || score > existing.highStreak) {
-        stats.timeAttackRecords[selectedContinent] = {
-          highStreak: score,
-          bestTimeSeconds: 60,
-          date: new Date().toISOString()
-        };
-        StorageService.saveStats(stats);
-      }
-      return;
-    }
-
     const timer = setInterval(() => {
-      setTimeLeft((t) => t - 1);
-    }, 1000);
+      const remainingSec = Math.max(0, Math.ceil((endTimeRef.current - Date.now()) / 1000));
+      setTimeLeft(remainingSec);
+
+      if (remainingSec <= 0) {
+        clearInterval(timer);
+        setIsPlaying(false);
+        setIsGameOver(true);
+        soundFx.playLevelUp();
+        confetti({ particleCount: 100, spread: 70 });
+
+        const finalScore = scoreRef.current;
+        const stats = StorageService.loadStats();
+        const existing = stats.timeAttackRecords[selectedContinent];
+        if (!existing || finalScore > existing.highStreak) {
+          stats.timeAttackRecords[selectedContinent] = {
+            highStreak: finalScore,
+            bestTimeSeconds: 60,
+            date: new Date().toISOString()
+          };
+          StorageService.saveStats(stats);
+        }
+      }
+    }, 250);
 
     return () => clearInterval(timer);
-  }, [isPlaying, timeLeft, score, selectedContinent]);
+  }, [isPlaying, selectedContinent]);
 
   // Handle choice
   const handleAnswer = (choice: string) => {

@@ -8,6 +8,7 @@ import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countri
 import { WATER_BODIES, getWaterBodyById, WaterBody } from '../../assets/data/waterBodies';
 import { waterBodyToCountry } from '../../core/srsEngine';
 import { getMicrostateList } from '../../core/microstates';
+import { densifyGeoFeatures } from '../../core/geoUtils';
 
 interface Globe3DProps {
   selectedCountryId?: string | null;
@@ -38,8 +39,9 @@ export const Globe3D: React.FC<Globe3DProps> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
-  const [hoveredCountry, setHoveredCountry] = useState<{ country: Country; x: number; y: number } | null>(null);
+  const [hoveredCountry, setHoveredCountry] = useState<Country | null>(null);
 
   // Rotation angles: [yaw, pitch, roll]
   const rotationRef = useRef<[number, number, number]>([0, -20, 0]);
@@ -47,6 +49,13 @@ export const Globe3D: React.FC<Globe3DProps> = ({
   const lastMousePosRef = useRef<{ x: number; y: number } | null>(null);
   const velocityRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const animFrameRef = useRef<number | null>(null);
+  const renderRef = useRef<(() => void) | null>(null);
+
+  const scheduleRender = useCallback(() => {
+    if (animFrameRef.current == null && renderRef.current) {
+      animFrameRef.current = requestAnimationFrame(renderRef.current);
+    }
+  }, []);
 
   // Convert TopoJSON to GeoJSON features
   const geoFeatures = useMemo(() => {
@@ -80,56 +89,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
     try {
       const geo = feature(waterBodies50m as any, (waterBodies50m as any).objects.water_bodies) as any;
       const rawFeatures = (geo.features as any[]) || [];
-      const clampCoord = ([x, y]: [number, number]): [number, number] => [
-        Math.max(-180, Math.min(180, x)),
-        Math.max(-89.999, Math.min(89.999, y))
-      ];
-      const densifyRing = (ring: [number, number][]): [number, number][] => {
-        const newRing: [number, number][] = [];
-        for (let i = 0; i < ring.length - 1; i++) {
-          const p1 = clampCoord(ring[i]);
-          const p2 = clampCoord(ring[i + 1]);
-          newRing.push(p1);
-          const dLat = Math.abs(p1[1] - p2[1]);
-          const dLng = Math.abs(p1[0] - p2[0]);
-          if (dLat < 0.1 && dLng > 2.0) {
-            const steps = Math.ceil(dLng / 2.0);
-            const stepLng = (p2[0] - p1[0]) / steps;
-            const stepLat = (p2[1] - p1[1]) / steps;
-            for (let s = 1; s < steps; s++) {
-              newRing.push([
-                +(p1[0] + s * stepLng).toFixed(5),
-                +(p1[1] + s * stepLat).toFixed(5)
-              ]);
-            }
-          }
-        }
-        newRing.push(clampCoord(ring[ring.length - 1]));
-        return newRing;
-      };
-
-      return rawFeatures.map((feat) => {
-        if (!feat.geometry) return feat;
-        if (feat.geometry.type === 'Polygon') {
-          return {
-            ...feat,
-            geometry: {
-              ...feat.geometry,
-              coordinates: feat.geometry.coordinates.map((ring: any) => densifyRing(ring))
-            }
-          };
-        }
-        if (feat.geometry.type === 'MultiPolygon') {
-          return {
-            ...feat,
-            geometry: {
-              ...feat.geometry,
-              coordinates: feat.geometry.coordinates.map((poly: any) => poly.map((ring: any) => densifyRing(ring)))
-            }
-          };
-        }
-        return feat;
-      });
+      return densifyGeoFeatures(rawFeatures);
     } catch (e) {
       console.error('Failed to parse water bodies TopoJSON:', e);
       return [];
@@ -290,13 +250,23 @@ export const Globe3D: React.FC<Globe3DProps> = ({
 
     const render = () => {
       // Auto-rotation or inertia deceleration
+      let isMoving = false;
       if (autoRotate && !isDraggingRef.current) {
         rotationRef.current[0] += 0.2;
-      } else if (!isDraggingRef.current) {
-        rotationRef.current[0] += velocityRef.current.x;
-        rotationRef.current[1] = Math.max(-80, Math.min(80, rotationRef.current[1] + velocityRef.current.y));
-        velocityRef.current.x *= 0.94;
-        velocityRef.current.y *= 0.94;
+        isMoving = true;
+      } else if (isDraggingRef.current) {
+        isMoving = true;
+      } else {
+        if (Math.abs(velocityRef.current.x) > 0.002 || Math.abs(velocityRef.current.y) > 0.002) {
+          rotationRef.current[0] += velocityRef.current.x;
+          rotationRef.current[1] = Math.max(-80, Math.min(80, rotationRef.current[1] + velocityRef.current.y));
+          velocityRef.current.x *= 0.94;
+          velocityRef.current.y *= 0.94;
+          isMoving = true;
+        } else {
+          velocityRef.current.x = 0;
+          velocityRef.current.y = 0;
+        }
       }
 
       projection.rotate(rotationRef.current);
@@ -493,15 +463,23 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
       ctx.stroke();
 
-      animFrameRef.current = requestAnimationFrame(render);
+      const isPulsing = Boolean(selectedCountryId || targetCountryId);
+      if (isMoving || isPulsing) {
+        animFrameRef.current = requestAnimationFrame(render);
+      } else {
+        animFrameRef.current = null;
+      }
     };
 
+    renderRef.current = render;
     render();
 
     return () => {
       if (animFrameRef.current) {
         cancelAnimationFrame(animFrameRef.current);
+        animFrameRef.current = null;
       }
+      renderRef.current = null;
     };
   }, [
     dimensions,
@@ -537,6 +515,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       cancelAnimationFrame(hoverRafRef.current);
       hoverRafRef.current = null;
     }
+    scheduleRender();
   };
 
   const processHover = useCallback(() => {
@@ -565,7 +544,10 @@ export const Globe3D: React.FC<Globe3DProps> = ({
 
     if (nearestMicrostate) {
       hoveredWaterIdRef.current = null;
-      setHoveredCountry({ country: nearestMicrostate, x: clientX, y: clientY });
+      if (tooltipRef.current) {
+        tooltipRef.current.style.transform = `translate3d(${clientX}px, ${clientY - 12}px, 0)`;
+      }
+      setHoveredCountry((prev) => (prev?.id === nearestMicrostate.id ? prev : nearestMicrostate));
       return;
     }
 
@@ -586,7 +568,10 @@ export const Globe3D: React.FC<Globe3DProps> = ({
 
         if (matchCountry) {
           hoveredWaterIdRef.current = null;
-          setHoveredCountry({ country: matchCountry, x: clientX, y: clientY });
+          if (tooltipRef.current) {
+            tooltipRef.current.style.transform = `translate3d(${clientX}px, ${clientY - 12}px, 0)`;
+          }
+          setHoveredCountry((prev) => (prev?.id === matchCountry.id ? prev : matchCountry));
           return;
         }
 
@@ -596,7 +581,11 @@ export const Globe3D: React.FC<Globe3DProps> = ({
           if (isCrossAntimeridian ? (lng < bbox[0] && lng > bbox[2]) : (lng < bbox[0] || lng > bbox[2])) continue;
           if (d3.geoContains(feat, [lng, lat])) {
             hoveredWaterIdRef.current = wb.id;
-            setHoveredCountry({ country: waterBodyToCountry(wb), x: clientX, y: clientY });
+            const wbCountry = waterBodyToCountry(wb);
+            if (tooltipRef.current) {
+              tooltipRef.current.style.transform = `translate3d(${clientX}px, ${clientY - 12}px, 0)`;
+            }
+            setHoveredCountry((prev) => (prev?.id === wbCountry.id ? prev : wbCountry));
             return;
           }
         }
@@ -617,7 +606,11 @@ export const Globe3D: React.FC<Globe3DProps> = ({
               : 45;
           if (d <= thresh) {
             hoveredWaterIdRef.current = wb.id;
-            setHoveredCountry({ country: waterBodyToCountry(wb), x: clientX, y: clientY });
+            const wbCountry = waterBodyToCountry(wb);
+            if (tooltipRef.current) {
+              tooltipRef.current.style.transform = `translate3d(${clientX}px, ${clientY - 12}px, 0)`;
+            }
+            setHoveredCountry((prev) => (prev?.id === wbCountry.id ? prev : wbCountry));
             return;
           }
         }
@@ -625,7 +618,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
     }
 
     hoveredWaterIdRef.current = null;
-    setHoveredCountry(null);
+    setHoveredCountry((prev) => (prev === null ? prev : null));
   }, [countryFeatureItems, microstateList, projection, sortedWaterItemsForDetection]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -639,7 +632,11 @@ export const Globe3D: React.FC<Globe3DProps> = ({
 
       velocityRef.current = { x: dx * 0.15, y: -dy * 0.15 };
       lastMousePosRef.current = { x: e.clientX, y: e.clientY };
+      scheduleRender();
     } else {
+      if (tooltipRef.current) {
+        tooltipRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY - 12}px, 0)`;
+      }
       // RAF-throttled hover detection on globe surface (avoids freezing the event loop)
       if (containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
@@ -772,18 +769,19 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       {/* Floating Hover Tooltip */}
       {!hideHoverTooltip && hoveredCountry && (
         <div
-          className="fixed pointer-events-none z-50 px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-700/80 shadow-2xl backdrop-blur-md transform -translate-x-1/2 -translate-y-full mb-3 text-xs flex items-center gap-2"
-          style={{ left: hoveredCountry.x, top: hoveredCountry.y }}
+          ref={tooltipRef}
+          className="fixed pointer-events-none z-50 px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-700/80 shadow-2xl backdrop-blur-md transform -translate-x-1/2 -translate-y-full mb-3 text-xs flex items-center gap-2 will-change-transform"
+          style={{ left: 0, top: 0 }}
         >
-          <span className="text-base">{hoveredCountry.country.flagEmoji}</span>
+          <span className="text-base">{hoveredCountry.flagEmoji}</span>
           <div>
             <div className="font-bold text-white tracking-wide">
-              {hoveredCountry.country.officialName || hoveredCountry.country.name}
+              {hoveredCountry.officialName || hoveredCountry.name}
             </div>
             <div className="text-[10px] text-emerald-400">
-              {hoveredCountry.country.id.startsWith('WATER_')
-                ? `${hoveredCountry.country.subregion} • ${hoveredCountry.country.facts?.significance || ''}`
-                : `Capital: ${hoveredCountry.country.capital}`}
+              {hoveredCountry.id.startsWith('WATER_')
+                ? `${hoveredCountry.subregion} • ${hoveredCountry.facts?.significance || ''}`
+                : `Capital: ${hoveredCountry.capital}`}
             </div>
           </div>
         </div>

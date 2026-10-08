@@ -27,7 +27,7 @@ function createWindow() {
   mainWindow.setMenuBarVisibility(false);
 
   // In dev mode, load Vite dev server; in production load built index.html
-  const isDev = process.env.NODE_ENV === 'development';
+  const isDev = !app.isPackaged || process.env.NODE_ENV === 'development';
   const indexPath = path.join(__dirname, '../dist/index.html');
 
   if (!isDev && fs.existsSync(indexPath)) {
@@ -58,17 +58,31 @@ ipcMain.handle('save-backup-dialog', async (_event, content: string) => {
   return { success: false, canceled: true };
 });
 
-// IPC: Robust Atomic Disk Storage for User Progress
+// IPC: Robust Atomic Disk Storage for User Progress with Automated Safeguard Backup
 ipcMain.handle('load-storage-data', async () => {
+  const userData = app.getPath('userData');
+  const dataFilePath = path.join(userData, 'geomastery_data.json');
+  const backupFilePath = path.join(userData, 'user_progress_backup.json');
+
   try {
-    const dataFilePath = path.join(app.getPath('userData'), 'geomastery_data.json');
     if (fs.existsSync(dataFilePath)) {
       const content = fs.readFileSync(dataFilePath, 'utf-8');
       return { success: true, data: JSON.parse(content) };
     }
   } catch (err) {
-    console.error('Failed to load storage data from disk:', err);
+    console.error('Failed to load primary storage data from disk, checking backup:', err);
   }
+
+  // Fallback to verified backup copy if primary was corrupt or missing
+  try {
+    if (fs.existsSync(backupFilePath)) {
+      const content = fs.readFileSync(backupFilePath, 'utf-8');
+      return { success: true, data: JSON.parse(content), recoveredFromBackup: true };
+    }
+  } catch (backupErr) {
+    console.error('Failed to load backup storage data from disk:', backupErr);
+  }
+
   return { success: false };
 });
 
@@ -79,9 +93,24 @@ ipcMain.handle('save-storage-data', async (_event, dataObj: any) => {
       fs.mkdirSync(userData, { recursive: true });
     }
     const dataFilePath = path.join(userData, 'geomastery_data.json');
+    const backupFilePath = path.join(userData, 'user_progress_backup.json');
     const tmpPath = `${dataFilePath}.tmp`;
-    fs.writeFileSync(tmpPath, JSON.stringify(dataObj, null, 2), 'utf-8');
+
+    const serialized = JSON.stringify(dataObj, null, 2);
+    fs.writeFileSync(tmpPath, serialized, 'utf-8');
     fs.renameSync(tmpPath, dataFilePath);
+
+    // Automated safeguard backup (Rule 5): keep secondary verified copy when data has progress
+    const hasProgress =
+      (Array.isArray(dataObj?.srsItems) && dataObj.srsItems.length > 0) ||
+      (dataObj?.stats && dataObj.stats.totalReviews > 0);
+
+    if (hasProgress) {
+      const backupTmpPath = `${backupFilePath}.tmp`;
+      fs.writeFileSync(backupTmpPath, serialized, 'utf-8');
+      fs.renameSync(backupTmpPath, backupFilePath);
+    }
+
     return { success: true };
   } catch (err) {
     console.error('Failed to save storage data to disk:', err);

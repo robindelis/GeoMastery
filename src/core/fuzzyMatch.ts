@@ -92,8 +92,9 @@ export function fuzzyMatch(
     }
 
     // Handle common prefixes/suffixes or parenthesis (e.g. "Washington, D.C." vs "Washington")
-    const simplifiedAnswer = answerNorm.replace(/\b(city|de|the|st|saint)\b/g, '').trim();
-    const simplifiedInput = inputNorm.replace(/\b(city|de|the|st|saint)\b/g, '').trim();
+    const cleanWord = (s: string) => s.replace(/\b(city|de|the|st|saint)\b/g, ' ').replace(/\s+/g, ' ').trim();
+    const simplifiedAnswer = cleanWord(answerNorm);
+    const simplifiedInput = cleanWord(inputNorm);
     if (simplifiedInput.length > 2 && simplifiedAnswer === simplifiedInput) {
       return { isMatch: true, distance: 0, bestMatch: rawAnswer };
     }
@@ -106,11 +107,11 @@ export function fuzzyMatch(
     }
 
     // Dynamic tolerance based on word length:
-    // <= 4 chars: strict (0-1 edit)
-    // > 4 chars: 1 edit
-    // > 8 chars: 2 edits allowed
+    // When strict tolerance 0 is requested, never allow typos regardless of word length
     let dynamicTolerance = maxAllowedDistance;
-    if (answerNorm.length <= 4) {
+    if (maxAllowedDistance === 0) {
+      dynamicTolerance = 0;
+    } else if (answerNorm.length <= 4) {
       dynamicTolerance = Math.min(1, maxAllowedDistance);
     } else if (answerNorm.length >= 8) {
       dynamicTolerance = Math.max(maxAllowedDistance, 2);
