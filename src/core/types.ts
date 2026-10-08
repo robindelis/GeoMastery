@@ -9,7 +9,7 @@ export interface Country {
   iso2: string; // ISO 3166-1 alpha-2, e.g. "FR"
   name: string; // Common English name
   officialName: string;
-  continent: Continent;
+  continent: Continent | 'Oceans';
   subregion: string;
   capital: string;
   coordinates: [number, number]; // [lng, lat]

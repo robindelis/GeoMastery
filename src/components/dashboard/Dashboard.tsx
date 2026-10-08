@@ -63,8 +63,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
   const mastery = useMemo(() => computeMasteryStats(srsItemsMap), [srsItemsMap]);
 
-  // Total unique countries with progress (Stage 1 or Stage 2)
-  const uniqueNationsCount = useMemo(() => {
+  const TOTAL_WORLD_ENTITIES = COUNTRIES.length + WATER_BODIES.length;
+
+  // Total unique countries & maritime bodies with progress (Stage 1 or Stage 2)
+  const uniqueEntitiesCount = useMemo(() => {
     const set = new Set<string>();
     srsItemsMap.forEach((item) => {
       if (item.stage > 0) set.add(item.countryId);
@@ -77,7 +79,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
     const now = new Date().toISOString();
     let due = 0;
     srsItemsMap.forEach((item) => {
-      if (selectedAttributeFilter.includes(item.attributeId) && item.nextDueAt <= now) {
+      if (selectedAttributeFilter.includes(item.attributeId) && (item.nextDueAt <= now || item.intervalDays === 0)) {
         due++;
       }
     });
@@ -92,6 +94,25 @@ export const Dashboard: React.FC<DashboardProps> = ({
         const existing = srsItemsMap.get(`${wb.id}:location`);
         if (!existing || existing.nextDueAt <= now || existing.intervalDays === 0) {
           return false;
+        }
+      }
+      return true;
+    }
+    if (category === 'All') {
+      for (const country of COUNTRIES) {
+        for (const attrId of selectedAttributeFilter) {
+          const existing = srsItemsMap.get(`${country.id}:${attrId}`);
+          if (!existing || existing.nextDueAt <= now || existing.intervalDays === 0) {
+            return false;
+          }
+        }
+      }
+      if (selectedAttributeFilter.includes('location')) {
+        for (const wb of WATER_BODIES) {
+          const existing = srsItemsMap.get(`${wb.id}:location`);
+          if (!existing || existing.nextDueAt <= now || existing.intervalDays === 0) {
+            return false;
+          }
         }
       }
       return true;
@@ -393,7 +414,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
             {/* Launch Daily World Review Button */}
             <button
-              onClick={() => onStartSession('All', selectedAttributeFilter)}
+              onClick={() => onStartSession('All', selectedAttributeFilter, totalDueCount === 0)}
               className="w-full sm:w-auto px-7 py-4.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-base shadow-xl shadow-emerald-500/25 flex flex-col items-center justify-center gap-0.5 transition-all transform active:scale-95"
             >
               <div className="flex items-center gap-2">
@@ -585,15 +606,15 @@ export const Dashboard: React.FC<DashboardProps> = ({
             </div>
           </div>
 
-          {/* 4. Nations in Memory */}
+          {/* 4. Nations & Seas in Memory */}
           <div className="flex items-center gap-3.5">
             <div className="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-400/30 flex items-center justify-center text-purple-400">
               <Award className="w-5 h-5" />
             </div>
             <div className="flex flex-col">
-              <span className="text-xs text-slate-400 font-medium">Nations in Memory</span>
+              <span className="text-xs text-slate-400 font-medium">Nations & Seas in Memory</span>
               <span className="text-xl font-bold font-mono text-purple-300 mt-0.5">
-                {uniqueNationsCount} <span className="text-xs text-slate-400 font-normal">/ 196 World</span>
+                {uniqueEntitiesCount} <span className="text-xs text-slate-400 font-normal">/ {TOTAL_WORLD_ENTITIES} World</span>
               </span>
             </div>
           </div>

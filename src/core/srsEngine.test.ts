@@ -4,9 +4,11 @@ import {
   processAnswer,
   buildQuestion,
   computeMasteryStats,
-  prepareSessionQueue
+  prepareSessionQueue,
+  shuffleArray
 } from './srsEngine';
 import { COUNTRIES, COUNTRIES_BY_ID } from '../assets/data/countries';
+import { WATER_BODIES } from '../assets/data/waterBodies';
 
 describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
   it('initializes items in Stage 0 (Multiple Choice Scaffolding)', () => {
@@ -21,6 +23,13 @@ describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
     expect(q.options).toBeDefined();
     expect(q.options?.length).toBe(4);
     expect(q.options).toContain('Paris');
+  });
+
+  it('correctly calculates mastery statistics across all continents and oceans', () => {
+    const itemsMap = new Map();
+    const stats = computeMasteryStats(itemsMap);
+    expect(stats.grandTotal).toBe(COUNTRIES.length * 2 + WATER_BODIES.length);
+    expect(stats.masteryPercentage).toBe(0);
   });
 
   it('graduates from Stage 0 to Stage 1 on first correct answer with 0 recall streak', () => {
@@ -105,13 +114,6 @@ describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
     expect(item.consecutiveRecallCorrect).toBe(0); // Streak reset
   });
 
-  it('correctly calculates mastery statistics across all continents', () => {
-    const itemsMap = new Map();
-    const stats = computeMasteryStats(itemsMap);
-    expect(stats.grandTotal).toBe(COUNTRIES.length * 2);
-    expect(stats.masteryPercentage).toBe(0);
-  });
-
   it('correctly generates and verifies Slovakia location question', () => {
     const slovakia = COUNTRIES_BY_ID.get('SVK')!;
     expect(slovakia).toBeDefined();
@@ -175,6 +177,73 @@ describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
     expect(q1.stage).toBe(1);
     expect(q1.stage >= 1).toBe(true);
     expect(q1.expectedInputMode).toBe('map_click');
+  });
+
+  it('includes oceans and straits in World review queue when location attribute is active', () => {
+    const itemsMap = new Map();
+    // Mark several water bodies as due
+    for (const wb of WATER_BODIES.slice(0, 5)) {
+      const item = createInitialSRSItem(wb.id, 'location');
+      itemsMap.set(item.id, item);
+    }
+
+    const queue = prepareSessionQueue(itemsMap, 'All', ['location'], 15, false);
+    const hasWaterQuestion = queue.some((q) => q.country.id.startsWith('WATER_'));
+    expect(hasWaterQuestion).toBe(true);
+  });
+
+  it('includes oceans and straits in World practice drill mode when location is active', () => {
+    const itemsMap = new Map();
+    const queue = prepareSessionQueue(itemsMap, 'All', ['location'], 236, true);
+    const waterQuestions = queue.filter((q) => q.country.id.startsWith('WATER_'));
+    expect(waterQuestions.length).toBe(WATER_BODIES.length);
+  });
+
+  it('uniformly randomizes due items in World quiz to prevent being stuck in a single continent', () => {
+    const itemsMap = new Map();
+    const pastDate = new Date(Date.now() - 86400000).toISOString();
+    const olderDate = new Date(Date.now() - 172800000).toISOString();
+
+    // Give all 14 Oceania countries the OLDEST timestamps (simulating recent Oceania batch practice)
+    const oceaniaCountries = COUNTRIES.filter((c) => c.continent === 'Oceania');
+    for (const c of oceaniaCountries) {
+      const itemCap = createInitialSRSItem(c.id, 'capital');
+      itemCap.nextDueAt = olderDate;
+      itemsMap.set(itemCap.id, itemCap);
+
+      const itemLoc = createInitialSRSItem(c.id, 'location');
+      itemLoc.nextDueAt = olderDate;
+      itemsMap.set(itemLoc.id, itemLoc);
+    }
+
+    // Add 100 other due items from Europe, Asia, Africa with slightly newer timestamps
+    const otherCountries = COUNTRIES.filter((c) => c.continent !== 'Oceania').slice(0, 50);
+    for (const c of otherCountries) {
+      const itemCap = createInitialSRSItem(c.id, 'capital');
+      itemCap.nextDueAt = pastDate;
+      itemsMap.set(itemCap.id, itemCap);
+
+      const itemLoc = createInitialSRSItem(c.id, 'location');
+      itemLoc.nextDueAt = pastDate;
+      itemsMap.set(itemLoc.id, itemLoc);
+    }
+
+    // Draw a batch of 15 World questions
+    const queue = prepareSessionQueue(itemsMap, 'All', ['capital', 'location'], 15, false);
+    expect(queue.length).toBe(15);
+
+    // Because the queue is uniformly randomized, it must NOT be 100% Oceania
+    const nonOceaniaCount = queue.filter((q) => q.country.continent !== 'Oceania').length;
+    expect(nonOceaniaCount).toBeGreaterThan(0);
+  });
+
+  it('shuffles arrays uniformly using Fisher-Yates shuffleArray without modifying original', () => {
+    const original = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const shuffled = shuffleArray(original);
+    expect(shuffled).toHaveLength(original.length);
+    expect(new Set(shuffled)).toEqual(new Set(original));
+    // Original array must be unchanged
+    expect(original).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   });
 });
 

@@ -16,6 +16,18 @@ export interface TrainingQuestion {
 }
 
 /**
+ * Unbiased Fisher-Yates (Knuth) array shuffle.
+ */
+export function shuffleArray<T>(array: T[]): T[] {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+/**
  * Creates an initial SRS item for a given country and attribute.
  */
 export function createInitialSRSItem(countryId: string, attributeId: string): SRSItem {
@@ -148,7 +160,7 @@ export function waterBodyToCountry(wb: WaterBody): Country {
     iso2: 'WB',
     name: wb.name,
     officialName: wb.name,
-    continent: 'Oceania', // placeholder
+    continent: 'Oceans',
     subregion: typeLabel,
     capital: wb.significance,
     coordinates: wb.coordinates,
@@ -188,8 +200,8 @@ export function buildQuestion(
     if (srsItem.stage === 0) {
       // 4 choices from other water bodies
       const otherWbs = WATER_BODIES.filter((w) => w.id !== (wb?.id || country.id));
-      const shuffledOthers = [...otherWbs].sort(() => Math.random() - 0.5).slice(0, 3);
-      options = [correctAnswer, ...shuffledOthers.map((w) => w.name)].sort(() => Math.random() - 0.5);
+      const shuffledOthers = shuffleArray(otherWbs).slice(0, 3);
+      options = shuffleArray([correctAnswer, ...shuffledOthers.map((w) => w.name)]);
     }
 
     return {
@@ -226,8 +238,7 @@ export function buildQuestion(
       expectedInputMode = 'multiple_choice';
       if (attrDef) {
         const distractors = attrDef.generateDistractors(country, allCountries, 3);
-        const shuffled = [correctAnswer, ...distractors].sort(() => Math.random() - 0.5);
-        options = shuffled;
+        options = shuffleArray([correctAnswer, ...distractors]);
       }
     }
   } else {
@@ -265,8 +276,10 @@ export function prepareSessionQueue(
   practiceMode: boolean = false
 ): TrainingQuestion[] {
   const now = new Date().toISOString();
+  const activeAttrIds = attributeFilter.length > 0 ? attributeFilter : ['capital', 'location'];
+  const includeWater = (continentFilter === 'All' || continentFilter === 'Oceans') && activeAttrIds.includes('location');
 
-  // If drilling Oceans, Seas & Straits:
+  // If drilling Oceans, Seas & Straits exclusively:
   if (continentFilter === 'Oceans') {
     const waterCountries = WATER_BODIES.map(waterBodyToCountry);
     if (practiceMode) {
@@ -276,8 +289,7 @@ export function prepareSessionQueue(
         const itemToUse = existing || createInitialSRSItem(wb.id, 'location');
         return buildQuestion(itemToUse, waterBodyToCountry(wb), waterCountries);
       });
-      candidates.sort(() => Math.random() - 0.5);
-      return candidates.slice(0, batchSize);
+      return shuffleArray(candidates).slice(0, batchSize);
     }
 
     const dueItems: SRSItem[] = [];
@@ -294,9 +306,10 @@ export function prepareSessionQueue(
       }
     }
 
-    dueItems.sort((a, b) => (a.nextDueAt < b.nextDueAt ? -1 : 1));
+    // Fully randomized sampling from due pool
+    const shuffledDue = shuffleArray(dueItems);
     const sessionQueue: TrainingQuestion[] = [];
-    for (const srsItem of dueItems.slice(0, batchSize)) {
+    for (const srsItem of shuffledDue.slice(0, batchSize)) {
       const wb = getWaterBodyById(srsItem.countryId);
       if (wb) {
         sessionQueue.push(buildQuestion(srsItem, waterBodyToCountry(wb), waterCountries));
@@ -305,20 +318,22 @@ export function prepareSessionQueue(
 
     const remainingSlots = batchSize - sessionQueue.length;
     if (remainingSlots > 0 && newCandidates.length > 0) {
-      const shuffledNew = [...newCandidates].sort(() => Math.random() - 0.5);
-      for (const cand of shuffledNew.slice(0, remainingSlots)) {
+      const shuffledNew = shuffleArray(newCandidates).slice(0, remainingSlots);
+      for (const cand of shuffledNew) {
         const initItem = createInitialSRSItem(cand.id, 'location');
         sessionQueue.push(buildQuestion(initItem, waterBodyToCountry(cand), waterCountries));
       }
     }
-    return sessionQueue;
+    return shuffleArray(sessionQueue);
   }
 
+  // Continental or Global World Training:
   const eligibleCountries = continentFilter === 'All'
     ? COUNTRIES
     : COUNTRIES.filter((c) => c.continent === continentFilter);
 
-  const activeAttrIds = attributeFilter.length > 0 ? attributeFilter : ['capital', 'location'];
+  const waterCountries = WATER_BODIES.map(waterBodyToCountry);
+  const allContextCountries = includeWater ? [...COUNTRIES, ...waterCountries] : COUNTRIES;
 
   // If in Free Practice Drill Mode:
   if (practiceMode) {
@@ -328,16 +343,28 @@ export function prepareSessionQueue(
         const id = `${country.id}:${attrId}`;
         const existing = existingItemsMap.get(id);
         const itemToUse = existing || createInitialSRSItem(country.id, attrId);
-        practiceCandidates.push(buildQuestion(itemToUse, country, COUNTRIES));
+        practiceCandidates.push(buildQuestion(itemToUse, country, allContextCountries));
       }
     }
-    // Shuffle candidates so each practice session is randomized
-    practiceCandidates.sort(() => Math.random() - 0.5);
-    return practiceCandidates.slice(0, batchSize);
+
+    // Include water bodies if training World with location enabled
+    if (includeWater) {
+      for (const wb of WATER_BODIES) {
+        const id = `${wb.id}:location`;
+        const existing = existingItemsMap.get(id);
+        const itemToUse = existing || createInitialSRSItem(wb.id, 'location');
+        practiceCandidates.push(buildQuestion(itemToUse, waterBodyToCountry(wb), allContextCountries));
+      }
+    }
+
+    // Unbiased Fisher-Yates shuffle
+    return shuffleArray(practiceCandidates).slice(0, batchSize);
   }
 
+  // Standard Spaced Repetition Review Mode:
   const dueItems: SRSItem[] = [];
-  const newCandidates: { country: Country; attributeId: string }[] = [];
+  type NewCandidate = { country: Country; attributeId: string };
+  const newCandidates: NewCandidate[] = [];
 
   for (const country of eligibleCountries) {
     for (const attrId of activeAttrIds) {
@@ -354,31 +381,54 @@ export function prepareSessionQueue(
     }
   }
 
-  // Shuffle due items slightly
-  dueItems.sort((a, b) => (a.nextDueAt < b.nextDueAt ? -1 : 1));
+  // Include water bodies in dueItems & newCandidates if training World with location active
+  if (includeWater) {
+    for (const wb of WATER_BODIES) {
+      const id = `${wb.id}:location`;
+      const existing = existingItemsMap.get(id);
 
+      if (existing) {
+        if (existing.nextDueAt <= now || existing.intervalDays === 0) {
+          dueItems.push(existing);
+        }
+      } else {
+        newCandidates.push({ country: waterBodyToCountry(wb), attributeId: 'location' });
+      }
+    }
+  }
+
+  // Unbiased Fisher-Yates shuffle across ALL due items globally:
+  // Eliminates chronological/geographic clustering (prevents getting stuck in any single continent like Oceania)
+  const shuffledDue = shuffleArray(dueItems);
   const sessionQueue: TrainingQuestion[] = [];
 
   // Add due reviews first
-  for (const srsItem of dueItems.slice(0, batchSize)) {
-    const country = COUNTRIES_BY_ID.get(srsItem.countryId);
-    if (country) {
-      sessionQueue.push(buildQuestion(srsItem, country, COUNTRIES));
+  for (const srsItem of shuffledDue.slice(0, batchSize)) {
+    if (srsItem.countryId.startsWith('WATER_')) {
+      const wb = getWaterBodyById(srsItem.countryId);
+      if (wb) {
+        sessionQueue.push(buildQuestion(srsItem, waterBodyToCountry(wb), allContextCountries));
+      }
+    } else {
+      const country = COUNTRIES_BY_ID.get(srsItem.countryId);
+      if (country) {
+        sessionQueue.push(buildQuestion(srsItem, country, allContextCountries));
+      }
     }
   }
 
   // If room left, introduce new items
   const remainingSlots = batchSize - sessionQueue.length;
   if (remainingSlots > 0 && newCandidates.length > 0) {
-    // Shuffle new candidates
-    const shuffledNew = [...newCandidates].sort(() => Math.random() - 0.5);
-    for (const cand of shuffledNew.slice(0, remainingSlots)) {
+    const shuffledNew = shuffleArray(newCandidates).slice(0, remainingSlots);
+    for (const cand of shuffledNew) {
       const initItem = createInitialSRSItem(cand.country.id, cand.attributeId);
-      sessionQueue.push(buildQuestion(initItem, cand.country, COUNTRIES));
+      sessionQueue.push(buildQuestion(initItem, cand.country, allContextCountries));
     }
   }
 
-  return sessionQueue;
+  // Final uniform shuffle to randomize order of due and new items
+  return shuffleArray(sessionQueue);
 }
 
 /**
@@ -399,7 +449,8 @@ export function computeMasteryStats(itemsMap: Map<string, SRSItem>) {
   let globalStage2 = 0;
 
   for (const country of COUNTRIES) {
-    breakdown[country.continent].total += 2; // capital + location
+    const cont = country.continent as Continent;
+    breakdown[cont].total += 2; // capital + location
     
     const capItem = itemsMap.get(`${country.id}:capital`);
     const locItem = itemsMap.get(`${country.id}:location`);
@@ -413,27 +464,34 @@ export function computeMasteryStats(itemsMap: Map<string, SRSItem>) {
     const sCap = assess(capItem);
     const sLoc = assess(locItem);
 
-    if (sCap === 0) { globalStage0++; breakdown[country.continent].stage0++; }
-    else if (sCap === 1) { globalStage1++; breakdown[country.continent].stage1++; }
-    else { globalStage2++; breakdown[country.continent].stage2++; }
+    if (sCap === 0) { globalStage0++; breakdown[cont].stage0++; }
+    else if (sCap === 1) { globalStage1++; breakdown[cont].stage1++; }
+    else { globalStage2++; breakdown[cont].stage2++; }
 
-    if (sLoc === 0) { globalStage0++; breakdown[country.continent].stage0++; }
-    else if (sLoc === 1) { globalStage1++; breakdown[country.continent].stage1++; }
-    else { globalStage2++; breakdown[country.continent].stage2++; }
+    if (sLoc === 0) { globalStage0++; breakdown[cont].stage0++; }
+    else if (sLoc === 1) { globalStage1++; breakdown[cont].stage1++; }
+    else { globalStage2++; breakdown[cont].stage2++; }
   }
 
-  const grandTotal = COUNTRIES.length * 2;
-  const masteryPercentage = Math.round((globalStage2 / grandTotal) * 100);
-  const learningPercentage = Math.round((globalStage1 / grandTotal) * 100);
-
-  // Dedicated Water Bodies & Straits breakdown
+  // Dedicated Water Bodies & Straits breakdown (40 location cards)
   const waterBreakdown = { total: WATER_BODIES.length, stage0: 0, stage1: 0, stage2: 0 };
   for (const wb of WATER_BODIES) {
     const item = itemsMap.get(`${wb.id}:location`);
-    if (!item || item.stage === 0) waterBreakdown.stage0++;
-    else if (item.stage === 1) waterBreakdown.stage1++;
-    else waterBreakdown.stage2++;
+    if (!item || item.stage === 0) {
+      waterBreakdown.stage0++;
+      globalStage0++;
+    } else if (item.stage === 1) {
+      waterBreakdown.stage1++;
+      globalStage1++;
+    } else {
+      waterBreakdown.stage2++;
+      globalStage2++;
+    }
   }
+
+  const grandTotal = (COUNTRIES.length * 2) + WATER_BODIES.length;
+  const masteryPercentage = Math.round((globalStage2 / grandTotal) * 100);
+  const learningPercentage = Math.round((globalStage1 / grandTotal) * 100);
 
   return {
     grandTotal,

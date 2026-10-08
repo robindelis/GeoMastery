@@ -245,6 +245,7 @@ describe('Water Bodies SRS & Question Integration', () => {
     expect(country.flagEmoji).toBe('⚓');
     expect(country.coordinates).toEqual(wb.coordinates);
     expect(country.subregion).toBe('STRAIT');
+    expect(country.continent).toBe('Oceans');
   });
 
   it('builds a map click question for water bodies', () => {
@@ -284,6 +285,13 @@ describe('Water Bodies SRS & Question Integration', () => {
       expect(q.waterBody).toBeDefined();
       expect(q.country.id).toMatch(/^WATER_/);
     }
+  });
+
+  it('integrates maritime bodies into World (All) session queue', () => {
+    const emptyMap = new Map<string, SRSItem>();
+    const practiceQueue = prepareSessionQueue(emptyMap, 'All', ['location'], 236, true);
+    const waterQuestions = practiceQueue.filter((q) => q.country.id.startsWith('WATER_'));
+    expect(waterQuestions.length).toBe(40);
   });
 
   it('computes mastery stats including dedicated waterBreakdown', () => {

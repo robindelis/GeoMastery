@@ -14,15 +14,16 @@ import {
   ShieldCheck,
   RotateCw
 } from 'lucide-react';
-import { Continent, SRSItem, UserStats, Country } from '../../core/types';
+import { Continent, TrainingCategory, SRSItem, UserStats, Country } from '../../core/types';
 import { COUNTRIES } from '../../assets/data/countries';
+import { WATER_BODIES } from '../../assets/data/waterBodies';
 import { soundFx } from '../../core/soundFx';
 
 interface CartographerDossierProps {
   srsItemsMap: Map<string, SRSItem>;
   stats: UserStats;
   onOpenAtlas: () => void;
-  onStartSession: (continent: 'All' | Continent, attributes: string[], practiceMode?: boolean) => void;
+  onStartSession: (continent: TrainingCategory, attributes: string[], practiceMode?: boolean) => void;
 }
 
 export const CartographerDossier: React.FC<CartographerDossierProps> = ({
@@ -53,33 +54,33 @@ export const CartographerDossier: React.FC<CartographerDossierProps> = ({
     return COUNTRIES[dayOfYear % COUNTRIES.length];
   }, [srsItemsMap]);
 
-  // Memory Pipeline breakdown across 196 nations
+  // Memory Pipeline breakdown across 236 nations & maritime bodies
   const pipeline = useMemo(() => {
     let masteredCount = 0;
     let recallCount = 0;
     let recognitionCount = 0;
 
-    const countryStages = new Map<string, number>();
+    const entityStages = new Map<string, number>();
     srsItemsMap.forEach((item) => {
-      const current = countryStages.get(item.countryId) || 0;
-      countryStages.set(item.countryId, Math.max(current, item.stage));
+      const current = entityStages.get(item.countryId) || 0;
+      entityStages.set(item.countryId, Math.max(current, item.stage));
     });
 
-    countryStages.forEach((stage) => {
+    entityStages.forEach((stage) => {
       if (stage === 2) masteredCount++;
       else if (stage === 1) recallCount++;
       else if (stage === 0) recognitionCount++;
     });
 
-    const totalNations = COUNTRIES.length; // 196
-    const unexplored = Math.max(0, totalNations - (masteredCount + recallCount + recognitionCount));
+    const totalEntities = COUNTRIES.length + WATER_BODIES.length; // 236 (196 nations + 40 oceans & straits)
+    const unexplored = Math.max(0, totalEntities - (masteredCount + recallCount + recognitionCount));
 
     return {
       masteredCount,
       recallCount,
       recognitionCount,
       unexplored,
-      totalNations
+      totalEntities
     };
   }, [srsItemsMap]);
 
@@ -201,7 +202,7 @@ export const CartographerDossier: React.FC<CartographerDossierProps> = ({
         </div>
       </div>
 
-      {/* 2. Global Memory Pipeline (196 Nations Horizon) */}
+      {/* 2. Global Memory Pipeline (236 Nations & Maritime Bodies Horizon) */}
       <div className="rounded-2xl bg-slate-900/85 border border-slate-700/80 p-5 shadow-2xl backdrop-blur-xl glass-card">
         <div className="flex items-center justify-between pb-3 border-b border-slate-800/80">
           <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs tracking-wider uppercase">
@@ -209,7 +210,7 @@ export const CartographerDossier: React.FC<CartographerDossierProps> = ({
             <span>Memory Retention Horizon</span>
           </div>
           <span className="text-[11px] font-mono font-bold text-slate-300">
-            {pipeline.masteredCount + pipeline.recallCount} / {pipeline.totalNations}
+            {pipeline.masteredCount + pipeline.recallCount} / {pipeline.totalEntities}
           </span>
         </div>
 
@@ -218,17 +219,17 @@ export const CartographerDossier: React.FC<CartographerDossierProps> = ({
           <div className="h-3 rounded-full bg-slate-950 overflow-hidden flex shadow-inner">
             <div
               className="h-full bg-emerald-500 transition-all duration-500"
-              style={{ width: `${(pipeline.masteredCount / pipeline.totalNations) * 100}%` }}
+              style={{ width: `${(pipeline.masteredCount / pipeline.totalEntities) * 100}%` }}
               title={`Mastered: ${pipeline.masteredCount}`}
             />
             <div
               className="h-full bg-amber-500 transition-all duration-500"
-              style={{ width: `${(pipeline.recallCount / pipeline.totalNations) * 100}%` }}
+              style={{ width: `${(pipeline.recallCount / pipeline.totalEntities) * 100}%` }}
               title={`Active Recall: ${pipeline.recallCount}`}
             />
             <div
               className="h-full bg-sky-500 transition-all duration-500"
-              style={{ width: `${(pipeline.recognitionCount / pipeline.totalNations) * 100}%` }}
+              style={{ width: `${(pipeline.recognitionCount / pipeline.totalEntities) * 100}%` }}
               title={`Recognition: ${pipeline.recognitionCount}`}
             />
           </div>
