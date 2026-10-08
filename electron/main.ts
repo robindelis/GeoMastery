@@ -27,7 +27,7 @@ function createWindow() {
   mainWindow.setMenuBarVisibility(false);
 
   // In dev mode, load Vite dev server; in production load built index.html
-  const isDev = !app.isPackaged || process.env.NODE_ENV === 'development';
+  const isDev = !app.isPackaged && process.env.NODE_ENV !== 'production';
   const indexPath = path.join(__dirname, '../dist/index.html');
 
   if (!isDev && fs.existsSync(indexPath)) {

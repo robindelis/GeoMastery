@@ -152,6 +152,7 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
             autoRotate={autoRotate}
             onToggleAutoRotate={() => setAutoRotate((r) => !r)}
             onSelectCountry={handleSelectCountry}
+            controlsClassName={selectedCountry ? 'right-4 sm:right-[25.5rem]' : 'right-4'}
           />
         </div>
 

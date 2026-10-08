@@ -37,6 +37,7 @@
     "autoprefixer": "^10.6.1",
     "concurrently": "^10.0.5",
     "electron": "^44.5.1",
+    "playwright": "^1.64.0",
     "postcss": "^8.5.28",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",

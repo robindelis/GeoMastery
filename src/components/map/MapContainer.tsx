@@ -20,6 +20,7 @@ interface MapContainerProps {
   onToggleAutoRotate?: () => void;
   onSelectCountry?: (country: Country) => void;
   className?: string;
+  controlsClassName?: string;
 }
 
 export const MapContainer: React.FC<MapContainerProps> = ({
@@ -37,7 +38,8 @@ export const MapContainer: React.FC<MapContainerProps> = ({
   autoRotate = false,
   onToggleAutoRotate,
   onSelectCountry,
-  className = ''
+  className = '',
+  controlsClassName = 'right-4'
 }) => {
   return (
     <div className={`relative w-full h-full overflow-hidden flex flex-col ${className}`}>
@@ -71,7 +73,7 @@ export const MapContainer: React.FC<MapContainerProps> = ({
         )}
 
         {/* Floating Cartographic Controls Bar */}
-        <div className="absolute top-4 right-4 z-40 flex items-center gap-2 bg-slate-900/85 backdrop-blur-md border border-slate-700/60 p-1.5 rounded-xl shadow-xl">
+        <div className={`absolute top-4 z-40 flex items-center gap-2 bg-slate-900/85 backdrop-blur-md border border-slate-700/60 p-1.5 rounded-xl shadow-xl transition-all duration-300 ${controlsClassName}`}>
           {/* 2D / 3D Switcher */}
           <div className="flex items-center bg-slate-800/80 p-0.5 rounded-lg border border-slate-700/50">
             <button
