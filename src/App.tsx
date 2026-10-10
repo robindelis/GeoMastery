@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Continent, TrainingCategory, MapViewMode, Country } from './core/types';
 import { StorageService } from './core/storage';
 import { soundFx } from './core/soundFx';
+import { speechEngine } from './core/speechEngine';
 import { Dashboard } from './components/dashboard/Dashboard';
 import { TrainingSession } from './components/training/TrainingSession';
 import { ExplorerAtlas } from './components/atlas/ExplorerAtlas';
@@ -19,9 +20,10 @@ export const App: React.FC = () => {
   const [targetCountryId, setTargetCountryId] = useState<string | undefined>(undefined);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(() => StorageService.loadSettings().audioEnabled);
 
-  // Sync sound settings with engine
+  // Sync sound settings with audio & speech engines
   useEffect(() => {
     soundFx.setEnabled(soundEnabled);
+    speechEngine.setEnabled(soundEnabled);
   }, [soundEnabled]);
 
   // Initialize persistent disk sync on boot
@@ -58,6 +60,7 @@ export const App: React.FC = () => {
     const next = !soundEnabled;
     setSoundEnabled(next);
     soundFx.setEnabled(next);
+    speechEngine.setEnabled(next);
     const settings = StorageService.loadSettings();
     StorageService.saveSettings({ ...settings, audioEnabled: next });
     if (next) soundFx.playClick();

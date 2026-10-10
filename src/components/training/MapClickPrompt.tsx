@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Country } from '../../core/types';
-import { MapPin, ArrowRight, Waves } from 'lucide-react';
+import { MapPin, ArrowRight, Waves, Volume2 } from 'lucide-react';
+import { speechEngine } from '../../core/speechEngine';
 
 interface MapClickPromptProps {
   country: Country;
@@ -63,8 +64,22 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
             {country.facts?.significance || country.capital}
           </div>
         ) : (
-          <div className="text-xs text-slate-400">
-            Capital: <span className="text-slate-200 font-semibold">{country.capital}</span>
+          <div className="flex items-center gap-1.5 text-xs text-slate-400">
+            <span>Capital:</span>
+            <span className="text-slate-200 font-semibold">{country.capital}</span>
+            {country.capital && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  speechEngine.speak(country.capital);
+                }}
+                className="p-1 rounded hover:bg-slate-800 text-sky-400 hover:text-sky-300 transition-colors inline-flex items-center active:scale-95"
+                title="Hear capital pronunciation"
+              >
+                <Volume2 className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         )}
 

@@ -14,6 +14,7 @@ import { getWaterBodyById } from '../../assets/data/waterBodies';
 import { ATTRIBUTE_REGISTRY } from '../../core/attributes';
 import { StorageService } from '../../core/storage';
 import { soundFx } from '../../core/soundFx';
+import { speechEngine } from '../../core/speechEngine';
 import { MapContainer } from '../map/MapContainer';
 import { MultipleChoicePrompt } from './MultipleChoicePrompt';
 import { TypingRecallPrompt } from './TypingRecallPrompt';
@@ -112,6 +113,19 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
   const questionStartTimeRef = useRef(questionStartTime);
   questionStartTimeRef.current = questionStartTime;
+
+  const speechTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Cleanup speech synthesis on component unmount
+  useEffect(() => {
+    return () => {
+      if (speechTimerRef.current) {
+        clearTimeout(speechTimerRef.current);
+        speechTimerRef.current = null;
+      }
+      speechEngine.cancel();
+    };
+  }, []);
 
   // Process Answer submission (immune to any closure staleness)
   const handleAnswer = useCallback((answer: string, selectedCountryId?: string) => {
@@ -262,6 +276,22 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
         return prevQueue;
       });
     }
+
+    // Vocal reading of the capital city when asking for capital or location on the map
+    const isCapitalOrLocation =
+      question.attributeId === 'capital' || question.attributeId === 'location';
+    const isCountry = Boolean(question.country && !question.country.id?.startsWith('WATER_'));
+    const capitalToSpeak = isCountry ? question.country.capital : null;
+
+    if (isCapitalOrLocation && capitalToSpeak) {
+      if (speechTimerRef.current) {
+        clearTimeout(speechTimerRef.current);
+      }
+      speechTimerRef.current = setTimeout(() => {
+        speechEngine.speak(capitalToSpeak);
+        speechTimerRef.current = null;
+      }, 200);
+    }
   }, [streak]);
 
   // Next Question
@@ -274,6 +304,12 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     // Synchronously disarm submitted flag to prevent any subsequent events,
     // double clicks, or key repeat from advancing past the next question.
     isSubmittedRef.current = false;
+
+    if (speechTimerRef.current) {
+      clearTimeout(speechTimerRef.current);
+      speechTimerRef.current = null;
+    }
+    speechEngine.cancel();
 
     if (currentIndex + 1 < queue.length) {
       setCurrentIndex((i) => i + 1);
@@ -307,6 +343,12 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
   // Handler to restart session with fresh queue
   const handleRestart = useCallback(() => {
+    if (speechTimerRef.current) {
+      clearTimeout(speechTimerRef.current);
+      speechTimerRef.current = null;
+    }
+    speechEngine.cancel();
+
     const items = StorageService.loadSRSItems();
     const newQueue = prepareSessionQueue(items, continentFilter, attributeFilter, 15, isPracticeMode);
     setQueue(newQueue);
@@ -327,6 +369,12 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
   // Handler to retry only the missed questions from this session
   const handleRetryMissed = useCallback((missedQuestions: TrainingQuestion[]) => {
+    if (speechTimerRef.current) {
+      clearTimeout(speechTimerRef.current);
+      speechTimerRef.current = null;
+    }
+    speechEngine.cancel();
+
     // Deduplicate by srsItemId
     const uniqueMap = new Map<string, TrainingQuestion>();
     missedQuestions.forEach((q) => uniqueMap.set(q.srsItemId, q));
@@ -350,6 +398,12 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
   // Handler to start Practice Drill when no reviews are due
   const handleStartPracticeDrill = useCallback(() => {
+    if (speechTimerRef.current) {
+      clearTimeout(speechTimerRef.current);
+      speechTimerRef.current = null;
+    }
+    speechEngine.cancel();
+
     const items = StorageService.loadSRSItems();
     const practiceQueue = prepareSessionQueue(items, continentFilter, attributeFilter, 15, true);
     setQueue(practiceQueue);

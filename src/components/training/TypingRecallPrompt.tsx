@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Country } from '../../core/types';
-import { Send, HelpCircle, ArrowRight } from 'lucide-react';
+import { Send, HelpCircle, ArrowRight, Volume2 } from 'lucide-react';
+import { speechEngine } from '../../core/speechEngine';
 
 interface TypingRecallPromptProps {
   country: Country;
@@ -167,11 +168,26 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
             </>
           ) : (
             <div className="w-full flex items-center justify-between text-xs">
-              <span className={`font-semibold ${isCorrect ? 'text-emerald-400' : 'text-rose-400'}`}>
-                {userAnswer === '__DONT_KNOW__'
-                  ? `Correct Answer: ${correctAnswer}`
-                  : matchedFeedback || (isCorrect ? 'Correct!' : `Answer: ${correctAnswer}`)}
-              </span>
+              <div className="flex items-center gap-1.5">
+                <span className={`font-semibold ${isCorrect ? 'text-emerald-400' : 'text-rose-400'}`}>
+                  {userAnswer === '__DONT_KNOW__'
+                    ? `Correct Answer: ${correctAnswer}`
+                    : matchedFeedback || (isCorrect ? 'Correct!' : `Answer: ${correctAnswer}`)}
+                </span>
+                {country.capital && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      speechEngine.speak(country.capital);
+                    }}
+                    className="p-1 rounded hover:bg-slate-800 text-sky-400 hover:text-sky-300 transition-colors inline-flex items-center active:scale-95"
+                    title="Hear capital pronunciation"
+                  >
+                    <Volume2 className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
               <span className="text-slate-400">Press Enter or Space for next</span>
             </div>
           )}

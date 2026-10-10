@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Country } from '../../core/types';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Volume2 } from 'lucide-react';
+import { speechEngine } from '../../core/speechEngine';
 
 interface MultipleChoicePromptProps {
   country: Country;
@@ -135,15 +136,30 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
 
       {isSubmitted && onNextQuestion && (
         <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 border border-slate-700 shadow-xl">
-          <span className="text-xs font-semibold text-slate-300">
-            {selectedOption === correctAnswer ? (
-              <span className="text-emerald-400 font-bold">🎯 Correct choice!</span>
-            ) : (
-              <span className="text-rose-400 font-medium">
-                Answer: <strong className="text-white">{correctAnswer}</strong>
-              </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-slate-300">
+              {selectedOption === correctAnswer ? (
+                <span className="text-emerald-400 font-bold">🎯 Correct choice!</span>
+              ) : (
+                <span className="text-rose-400 font-medium">
+                  Answer: <strong className="text-white">{correctAnswer}</strong>
+                </span>
+              )}
+            </span>
+            {country.capital && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  speechEngine.speak(country.capital);
+                }}
+                className="p-1 rounded hover:bg-slate-800 text-sky-400 hover:text-sky-300 transition-colors inline-flex items-center active:scale-95"
+                title="Hear capital pronunciation"
+              >
+                <Volume2 className="w-3.5 h-3.5" />
+              </button>
             )}
-          </span>
+          </div>
           <div className="flex items-center gap-2">
             <span className="text-xs text-slate-400 hidden sm:inline">Press Enter or Space</span>
             <button

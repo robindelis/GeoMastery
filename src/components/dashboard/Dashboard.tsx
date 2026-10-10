@@ -20,6 +20,7 @@ import { WATER_BODIES } from '../../assets/data/waterBodies';
 import { computeMasteryStats } from '../../core/srsEngine';
 import { StorageService } from '../../core/storage';
 import { soundFx } from '../../core/soundFx';
+import { speechEngine } from '../../core/speechEngine';
 import { PlanetaryBackground } from '../common/PlanetaryBackground';
 import { CartographerDossier } from './CartographerDossier';
 
@@ -135,6 +136,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
     setSettings(updated);
     StorageService.saveSettings(updated);
     soundFx.setEnabled(next);
+    speechEngine.setEnabled(next);
     if (next) soundFx.playClick();
   };
 
