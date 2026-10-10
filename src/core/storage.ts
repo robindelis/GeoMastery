@@ -12,7 +12,10 @@ const DEFAULT_SETTINGS: AppSettings = {
   mapMode: '2d',
   autoRotateGlobe: false,
   showMapCountryLabels: false,
-  typingFuzzyTolerance: 1
+  typingFuzzyTolerance: 1,
+  ttsProvider: 'google-stream',
+  geminiApiKey: '',
+  geminiVoice: 'Kore'
 };
 
 const DEFAULT_STATS: UserStats = {

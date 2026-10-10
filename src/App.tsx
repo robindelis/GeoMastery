@@ -24,14 +24,22 @@ export const App: React.FC = () => {
   useEffect(() => {
     soundFx.setEnabled(soundEnabled);
     speechEngine.setEnabled(soundEnabled);
+    const settings = StorageService.loadSettings();
+    if (settings.ttsProvider) speechEngine.setProvider(settings.ttsProvider);
+    if (settings.geminiApiKey) speechEngine.setGeminiApiKey(settings.geminiApiKey);
+    if (settings.geminiVoice) speechEngine.setGeminiVoice(settings.geminiVoice);
   }, [soundEnabled]);
 
   // Initialize persistent disk sync on boot
   useEffect(() => {
     StorageService.initPersistentSync().then((restored) => {
       if (restored) {
-        setMapMode(StorageService.loadSettings().mapMode);
-        setSoundEnabled(StorageService.loadSettings().audioEnabled);
+        const s = StorageService.loadSettings();
+        setMapMode(s.mapMode);
+        setSoundEnabled(s.audioEnabled);
+        if (s.ttsProvider) speechEngine.setProvider(s.ttsProvider);
+        if (s.geminiApiKey) speechEngine.setGeminiApiKey(s.geminiApiKey);
+        if (s.geminiVoice) speechEngine.setGeminiVoice(s.geminiVoice);
       }
     });
   }, []);

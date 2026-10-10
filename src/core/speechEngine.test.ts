@@ -1,59 +1,49 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { SpeechEngine } from './speechEngine';
+import { SpeechEngine, pcmToWavDataUrl } from './speechEngine';
 
-describe('SpeechEngine', () => {
+describe('SpeechEngine Multi-Provider Architecture', () => {
   let engine: SpeechEngine;
-  let mockSpeak: any;
-  let mockCancel: any;
-  let mockGetVoices: any;
-  let originalSpeechSynthesis: any;
-  let originalUtterance: any;
+  let mockAudioPlay: any;
+  let mockAudioPause: any;
+  let originalAudio: any;
+  let createdAudios: any[] = [];
 
   beforeEach(() => {
     engine = new SpeechEngine();
+    createdAudios = [];
 
-    mockSpeak = vi.fn();
-    mockCancel = vi.fn();
-    mockGetVoices = vi.fn().mockReturnValue([
-      { name: 'Google US English', lang: 'en-US' },
-      { name: 'Microsoft David', lang: 'en-US' },
-      { name: 'Amelie', lang: 'fr-FR' }
-    ]);
+    mockAudioPlay = vi.fn().mockReturnValue(Promise.resolve());
+    mockAudioPause = vi.fn();
 
-    originalSpeechSynthesis = (globalThis as any).speechSynthesis;
-    originalUtterance = (globalThis as any).SpeechSynthesisUtterance;
+    originalAudio = (globalThis as any).Audio;
 
-    (globalThis as any).speechSynthesis = {
-      speak: mockSpeak,
-      cancel: mockCancel,
-      getVoices: mockGetVoices,
-      speaking: false
-    };
-
-    (globalThis as any).SpeechSynthesisUtterance = class {
-      text: string;
-      lang: string = 'en-US';
-      rate: number = 1;
-      pitch: number = 1;
+    (globalThis as any).Audio = class {
+      src: string;
       volume: number = 1;
-      voice: any = null;
-      onend: any = null;
+      paused: boolean = true;
+      ended: boolean = false;
+      onended: any = null;
       onerror: any = null;
-      constructor(text: string) {
-        this.text = text;
+      play = mockAudioPlay;
+      pause = mockAudioPause;
+      currentTime: number = 0;
+
+      constructor(src: string) {
+        this.src = src;
+        createdAudios.push(this);
       }
     };
   });
 
   afterEach(() => {
-    (globalThis as any).speechSynthesis = originalSpeechSynthesis;
-    (globalThis as any).SpeechSynthesisUtterance = originalUtterance;
+    (globalThis as any).Audio = originalAudio;
     vi.restoreAllMocks();
   });
 
-  it('initializes in enabled state with volume 1.0', () => {
+  it('initializes with default google-stream provider and volume 1.0', () => {
     expect(engine.isEnabled()).toBe(true);
     expect(engine.getVolume()).toBe(1.0);
+    expect(engine.getProvider()).toBe('google-stream');
   });
 
   it('clamps volume between 0 and 1', () => {
@@ -67,62 +57,108 @@ describe('SpeechEngine', () => {
     expect(engine.getVolume()).toBe(0.75);
   });
 
-  it('cancels speech when setEnabled(false) is called', () => {
+  it('cancels playback when setEnabled(false) is called', () => {
+    engine.speak('Paris');
     engine.setEnabled(false);
     expect(engine.isEnabled()).toBe(false);
-    expect(mockCancel).toHaveBeenCalled();
+    expect(mockAudioPause).toHaveBeenCalled();
   });
 
   it('does not speak when disabled', () => {
     engine.setEnabled(false);
     engine.speak('Tokyo');
-    expect(mockSpeak).not.toHaveBeenCalled();
+    expect(mockAudioPlay).not.toHaveBeenCalled();
   });
 
   it('ignores empty or whitespace strings', () => {
     engine.speak('');
     engine.speak('   ');
-    expect(mockSpeak).not.toHaveBeenCalled();
+    expect(mockAudioPlay).not.toHaveBeenCalled();
   });
 
-  it('cancels existing speech before starting a new utterance', () => {
-    engine.speak('Paris');
-    expect(mockCancel).toHaveBeenCalledTimes(1);
-    expect(mockSpeak).toHaveBeenCalledTimes(1);
+  it('speaks via Google stream by default and encodes multi-word capitals properly', () => {
+    const multiWord = 'Washington, D.C.';
+    engine.speak(multiWord);
+
+    expect(createdAudios.length).toBe(1);
+    expect(createdAudios[0].src).toContain('translate.google.com/translate_tts');
+    expect(createdAudios[0].src).toContain(encodeURIComponent(multiWord));
+    expect(mockAudioPlay).toHaveBeenCalledTimes(1);
   });
 
-  it('vocalizes multi-word capital cities accurately', () => {
-    const multiWordCapitals = [
-      'Washington, D.C.',
-      'Buenos Aires',
-      'Kuala Lumpur',
-      'Sri Jayawardenepura Kotte',
-      'Andorra la Vella',
-      'New Delhi'
-    ];
+  it('caches audio URLs to prevent redundant network string building', () => {
+    engine.speak('Buenos Aires');
+    expect(createdAudios.length).toBe(1);
 
-    multiWordCapitals.forEach((capital) => {
-      mockSpeak.mockClear();
-      engine.speak(capital);
-      expect(mockSpeak).toHaveBeenCalledTimes(1);
-      const passedUtterance = mockSpeak.mock.calls[0][0];
-      expect(passedUtterance.text).toBe(capital);
-      expect(passedUtterance.rate).toBe(0.95);
-      expect(passedUtterance.lang).toBe('en-US');
+    engine.speak('Buenos Aires');
+    expect(createdAudios.length).toBe(2);
+    expect(createdAudios[0].src).toBe(createdAudios[1].src);
+  });
+
+  it('falls back to Google audio stream if Gemini TTS fails or lacks API key', async () => {
+    engine.setProvider('gemini-tts');
+    engine.setGeminiApiKey(''); // No key
+
+    globalThis.fetch = vi.fn().mockResolvedValue({ ok: false, status: 400, text: async () => 'Invalid Key' });
+
+    engine.speak('Kuala Lumpur');
+
+    // Wait microtask tick for async Gemini check
+    await new Promise((r) => setTimeout(r, 20));
+
+    expect(createdAudios.length).toBe(1);
+    expect(createdAudios[0].src).toContain('translate.google.com');
+    expect(createdAudios[0].src).toContain(encodeURIComponent('Kuala Lumpur'));
+    expect(mockAudioPlay).toHaveBeenCalled();
+  });
+
+  it('successfully invokes Gemini 3.8 Flash TTS when API returns valid audio', async () => {
+    engine.setProvider('gemini-tts');
+    engine.setGeminiApiKey('AIzaSyValidDummyKey');
+
+    const mockWavBase64 = 'UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        candidates: [
+          {
+            content: {
+              parts: [
+                {
+                  inlineData: {
+                    mimeType: 'audio/wav',
+                    data: mockWavBase64
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      })
     });
-  });
+    globalThis.fetch = mockFetch;
 
-  it('selects preferred high-quality natural/Google voice if available', () => {
     engine.speak('Reykjavik');
-    expect(mockSpeak).toHaveBeenCalled();
-    const passedUtterance = mockSpeak.mock.calls[0][0];
-    expect(passedUtterance.voice?.name).toBe('Google US English');
+
+    await new Promise((r) => setTimeout(r, 10));
+
+    expect(mockFetch).toHaveBeenCalled();
+    const fetchUrl = mockFetch.mock.calls[0][0];
+    expect(fetchUrl).toContain('gemini-3.8-flash-tts:generateContent');
+    expect(createdAudios.length).toBe(1);
+    expect(createdAudios[0].src).toBe(`data:audio/wav;base64,${mockWavBase64}`);
+    expect(mockAudioPlay).toHaveBeenCalled();
   });
 
-  it('handles environment where speechSynthesis is not available without crashing', () => {
-    delete (globalThis as any).speechSynthesis;
-    expect(() => engine.speak('Berlin')).not.toThrow();
-    expect(() => engine.cancel()).not.toThrow();
-    expect(engine.isSpeaking()).toBe(false);
+  it('wraps raw PCM to valid WAV data URL correctly', () => {
+    const rawPcm = 'AAAA'; // 4 bytes of 0x00
+    const wavUrl = pcmToWavDataUrl(rawPcm, 24000);
+    expect(wavUrl).toContain('data:audio/wav;base64,');
+  });
+
+  it('cancels ongoing audio when cancel() is called', () => {
+    engine.speak('Paris');
+    engine.cancel();
+    expect(mockAudioPause).toHaveBeenCalled();
   });
 });

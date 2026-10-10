@@ -58,6 +58,24 @@ ipcMain.handle('save-backup-dialog', async (_event, content: string) => {
   return { success: false, canceled: true };
 });
 
+// IPC: Read Gemini API key from local environment / .env file
+ipcMain.handle('get-gemini-key', async () => {
+  try {
+    const envPath = path.join(process.cwd(), '.env');
+    if (fs.existsSync(envPath)) {
+      const content = fs.readFileSync(envPath, 'utf-8').trim();
+      const match = content.match(/^(?:(?:VITE_)?GEMINI_API_KEY=)?\s*(.+)$/m);
+      if (match && match[1]) {
+        return match[1].trim();
+      }
+      return content;
+    }
+  } catch (err) {
+    console.error('Failed to read .env for Gemini key:', err);
+  }
+  return process.env.GEMINI_API_KEY || '';
+});
+
 // IPC: Robust Atomic Disk Storage for User Progress with Automated Safeguard Backup
 ipcMain.handle('load-storage-data', async () => {
   const userData = app.getPath('userData');

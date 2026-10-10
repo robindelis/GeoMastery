@@ -91,6 +91,8 @@ export interface UserStats {
   timeAttackRecords: Record<string, { highStreak: number; bestTimeSeconds: number; date: string }>;
 }
 
+export type TTSProvider = 'google-stream' | 'gemini-tts' | 'web-speech';
+
 export interface AppSettings {
   audioEnabled: boolean;
   soundVolume: number;
@@ -98,4 +100,7 @@ export interface AppSettings {
   autoRotateGlobe: boolean;
   showMapCountryLabels: boolean;
   typingFuzzyTolerance: number; // 0 (strict) to 2
+  ttsProvider?: TTSProvider;
+  geminiApiKey?: string;
+  geminiVoice?: string;
 }
