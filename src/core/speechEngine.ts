@@ -286,10 +286,7 @@ export class SpeechEngine {
             role: 'user',
             parts: [
               {
-                text: text,
-                speech_metadata: {
-                  style: 'clear and natural geographical pronunciation'
-                }
+                text: text
               }
             ]
           }
@@ -298,7 +295,9 @@ export class SpeechEngine {
           responseModalities: ['AUDIO'],
           speechConfig: {
             voiceConfig: {
-              voice: voice
+              prebuiltVoiceConfig: {
+                voiceName: voice
+              }
             }
           }
         }

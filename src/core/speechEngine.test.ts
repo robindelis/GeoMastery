@@ -144,7 +144,9 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
 
     expect(mockFetch).toHaveBeenCalled();
     const fetchUrl = mockFetch.mock.calls[0][0];
+    const fetchBody = JSON.parse(mockFetch.mock.calls[0][1].body);
     expect(fetchUrl).toContain('gemini-3.8-flash-tts:generateContent');
+    expect(fetchBody.generationConfig.speechConfig.voiceConfig.prebuiltVoiceConfig.voiceName).toBe('Kore');
     expect(createdAudios.length).toBe(1);
     expect(createdAudios[0].src).toBe(`data:audio/wav;base64,${mockWavBase64}`);
     expect(mockAudioPlay).toHaveBeenCalled();
