@@ -109,40 +109,16 @@ async function recordViaGemini(apiKey, capital) {
   }
 }
 
-async function recordViaHighQualityStream(capital, targetWavPath) {
-  const tmpMp3 = targetWavPath.replace(/\.wav$/, '.tmp.mp3');
-  const streamUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${encodeURIComponent(capital)}`;
-
-  const res = await fetch(streamUrl, {
-    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' }
-  });
-
-  if (!res.ok) {
-    throw new Error(`Stream HTTP ${res.status}`);
-  }
-
-  const arrayBuffer = await res.arrayBuffer();
-  fs.writeFileSync(tmpMp3, Buffer.from(arrayBuffer));
-
-  // Convert to clean standard 24kHz mono 16-bit WAV with ffmpeg
-  try {
-    execSync(`ffmpeg -y -v quiet -i "${tmpMp3}" -ar 24000 -ac 1 -c:a pcm_s16le "${targetWavPath}"`);
-  } finally {
-    if (fs.existsSync(tmpMp3)) fs.unlinkSync(tmpMp3);
-  }
-}
-
 async function main() {
   const apiKey = loadApiKey();
   const capitals = extractAllCapitals();
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
-  console.log(`🎙️  Batch Recording All 196 Capital Cities for Local Storage...`);
+  console.log(`🎙️  Batch Recording All 196 Capital Cities via Gemini 3.8 Flash TTS (Fenrir)...`);
   console.log(`Total capitals in dataset: ${capitals.length}`);
   console.log(`Target directory: ${OUTPUT_DIR}\n`);
 
   let geminiCount = 0;
-  let streamCount = 0;
   let skippedCount = 0;
   const manifest = [];
 
@@ -159,37 +135,22 @@ async function main() {
       continue;
     }
 
-    process.stdout.write(`[${i + 1}/${capitals.length}] Recording "${capital}"... `);
+    process.stdout.write(`[${i + 1}/${capitals.length}] Recording "${capital}" via Gemini 3.8 Flash TTS (Fenrir)... `);
 
-    let recorded = false;
-
-    // 1. Try Gemini 3.8 Flash TTS with Fenrir first if API key present
-    if (apiKey) {
-      try {
-        const wavBuffer = await recordViaGemini(apiKey, capital);
-        fs.writeFileSync(targetPath, wavBuffer);
-        geminiCount++;
-        recorded = true;
-        console.log(`✅ Saved via Gemini TTS (${wavBuffer.length} bytes)`);
-        manifest.push({ capital, normKey, file: targetFile, size: wavBuffer.length, source: 'gemini-fenrir' });
-        await new Promise((r) => setTimeout(r, 600));
-      } catch (geminiErr) {
-        // Fall back to stream
-      }
+    if (!apiKey) {
+      throw new Error(`GEMINI_API_KEY is not defined in .env! Cannot record capitals.`);
     }
 
-    // 2. If Gemini unavailable or quota limit reached, record via high-quality audio stream converted to WAV
-    if (!recorded) {
-      try {
-        await recordViaHighQualityStream(capital, targetPath);
-        const size = fs.statSync(targetPath).size;
-        streamCount++;
-        console.log(`✅ Saved local WAV (${size} bytes)`);
-        manifest.push({ capital, normKey, file: targetFile, size, source: 'local-stream' });
-        await new Promise((r) => setTimeout(r, 120));
-      } catch (err) {
-        console.log(`❌ Failed: ${err.message}`);
-      }
+    try {
+      const wavBuffer = await recordViaGemini(apiKey, capital);
+      fs.writeFileSync(targetPath, wavBuffer);
+      geminiCount++;
+      console.log(`✅ Saved (${wavBuffer.length} bytes)`);
+      manifest.push({ capital, normKey, file: targetFile, size: wavBuffer.length, source: 'gemini-3.8-flash-tts-fenrir' });
+      await new Promise((r) => setTimeout(r, 600));
+    } catch (geminiErr) {
+      console.log(`\n❌ Gemini TTS API failed: ${geminiErr.message}`);
+      throw geminiErr;
     }
   }
 
@@ -198,12 +159,13 @@ async function main() {
 
   console.log(`\n🎉 Complete!`);
   console.log(`- Already existing: ${skippedCount}`);
-  console.log(`- Recorded via Gemini: ${geminiCount}`);
-  console.log(`- Recorded via local stream: ${streamCount}`);
+  console.log(`- Recorded via Gemini 3.8 Flash TTS: ${geminiCount}`);
   console.log(`- Total local audio files on disk: ${fs.readdirSync(OUTPUT_DIR).filter(f => f.endsWith('.wav')).length}`);
 }
 
-main().catch((err) => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+if (process.argv[1] && process.argv[1].endsWith('record-capitals.mjs')) {
+  main().catch((err) => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}

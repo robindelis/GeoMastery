@@ -3,92 +3,79 @@
     "capital": "Tirana",
     "normKey": "tirana",
     "file": "tirana_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "Andorra la Vella",
     "normKey": "andorra_la_vella",
     "file": "andorra_la_vella_fenrir.wav",
-    "size": 89934,
-    "source": "local-stream"
+    "size": 89934
   },
   {
     "capital": "Vienna",
     "normKey": "vienna",
     "file": "vienna_fenrir.wav",
-    "size": 46158,
-    "source": "local-stream"
+    "size": 46158
   },
   {
     "capital": "Minsk",
     "normKey": "minsk",
     "file": "minsk_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Brussels",
     "normKey": "brussels",
     "file": "brussels_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "Sarajevo",
     "normKey": "sarajevo",
     "file": "sarajevo_fenrir.wav",
-    "size": 86478,
-    "source": "local-stream"
+    "size": 86478
   },
   {
     "capital": "Sofia",
     "normKey": "sofia",
     "file": "sofia_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "Zagreb",
     "normKey": "zagreb",
     "file": "zagreb_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "Nicosia",
     "normKey": "nicosia",
     "file": "nicosia_fenrir.wav",
-    "size": 72654,
-    "source": "local-stream"
+    "size": 72654
   },
   {
     "capital": "Prague",
     "normKey": "prague",
     "file": "prague_fenrir.wav",
-    "size": 51918,
-    "source": "local-stream"
+    "size": 51918
   },
   {
     "capital": "Copenhagen",
     "normKey": "copenhagen",
     "file": "copenhagen_fenrir.wav",
-    "size": 77262,
-    "source": "local-stream"
+    "size": 77262
   },
   {
     "capital": "Tallinn",
     "normKey": "tallinn",
     "file": "tallinn_fenrir.wav",
-    "size": 51918,
-    "source": "local-stream"
+    "size": 51918
   },
   {
     "capital": "Helsinki",
     "normKey": "helsinki",
     "file": "helsinki_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Paris",
@@ -100,22 +87,19 @@
     "capital": "Berlin",
     "normKey": "berlin",
     "file": "berlin_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Athens",
     "normKey": "athens",
     "file": "athens_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "Budapest",
     "normKey": "budapest",
     "file": "budapest_fenrir.wav",
-    "size": 66894,
-    "source": "local-stream"
+    "size": 66894
   },
   {
     "capital": "Reykjavik",
@@ -127,295 +111,253 @@
     "capital": "Dublin",
     "normKey": "dublin",
     "file": "dublin_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Rome",
     "normKey": "rome",
     "file": "rome_fenrir.wav",
-    "size": 42702,
-    "source": "local-stream"
+    "size": 42702
   },
   {
     "capital": "Riga",
     "normKey": "riga",
     "file": "riga_fenrir.wav",
-    "size": 49614,
-    "source": "local-stream"
+    "size": 49614
   },
   {
     "capital": "Vaduz",
     "normKey": "vaduz",
     "file": "vaduz_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Vilnius",
     "normKey": "vilnius",
     "file": "vilnius_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Luxembourg City",
     "normKey": "luxembourg_city",
     "file": "luxembourg_city_fenrir.wav",
-    "size": 86478,
-    "source": "local-stream"
+    "size": 86478
   },
   {
     "capital": "Valletta",
     "normKey": "valletta",
     "file": "valletta_fenrir.wav",
-    "size": 49614,
-    "source": "local-stream"
+    "size": 49614
   },
   {
     "capital": "Chisinau",
     "normKey": "chisinau",
     "file": "chisinau_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Monaco",
     "normKey": "monaco",
     "file": "monaco_fenrir.wav",
-    "size": 57678,
-    "source": "local-stream"
+    "size": 57678
   },
   {
     "capital": "Podgorica",
     "normKey": "podgorica",
     "file": "podgorica_fenrir.wav",
-    "size": 77262,
-    "source": "local-stream"
+    "size": 77262
   },
   {
     "capital": "Amsterdam",
     "normKey": "amsterdam",
     "file": "amsterdam_fenrir.wav",
-    "size": 69198,
-    "source": "local-stream"
+    "size": 69198
   },
   {
     "capital": "Skopje",
     "normKey": "skopje",
     "file": "skopje_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "Oslo",
     "normKey": "oslo",
     "file": "oslo_fenrir.wav",
-    "size": 51918,
-    "source": "local-stream"
+    "size": 51918
   },
   {
     "capital": "Warsaw",
     "normKey": "warsaw",
     "file": "warsaw_fenrir.wav",
-    "size": 57678,
-    "source": "local-stream"
+    "size": 57678
   },
   {
     "capital": "Lisbon",
     "normKey": "lisbon",
     "file": "lisbon_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Bucharest",
     "normKey": "bucharest",
     "file": "bucharest_fenrir.wav",
-    "size": 71502,
-    "source": "local-stream"
+    "size": 71502
   },
   {
     "capital": "Moscow",
     "normKey": "moscow",
     "file": "moscow_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "San Marino",
     "normKey": "san_marino",
     "file": "san_marino_fenrir.wav",
-    "size": 78414,
-    "source": "local-stream"
+    "size": 78414
   },
   {
     "capital": "Belgrade",
     "normKey": "belgrade",
     "file": "belgrade_fenrir.wav",
-    "size": 57678,
-    "source": "local-stream"
+    "size": 57678
   },
   {
     "capital": "Bratislava",
     "normKey": "bratislava",
     "file": "bratislava_fenrir.wav",
-    "size": 72654,
-    "source": "local-stream"
+    "size": 72654
   },
   {
     "capital": "Ljubljana",
     "normKey": "ljubljana",
     "file": "ljubljana_fenrir.wav",
-    "size": 83022,
-    "source": "local-stream"
+    "size": 83022
   },
   {
     "capital": "Madrid",
     "normKey": "madrid",
     "file": "madrid_fenrir.wav",
-    "size": 49614,
-    "source": "local-stream"
+    "size": 49614
   },
   {
     "capital": "Stockholm",
     "normKey": "stockholm",
     "file": "stockholm_fenrir.wav",
-    "size": 71502,
-    "source": "local-stream"
+    "size": 71502
   },
   {
     "capital": "Bern",
     "normKey": "bern",
     "file": "bern_fenrir.wav",
-    "size": 48462,
-    "source": "local-stream"
+    "size": 48462
   },
   {
     "capital": "Kyiv",
     "normKey": "kyiv",
     "file": "kyiv_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "London",
     "normKey": "london",
     "file": "london_fenrir.wav",
-    "size": 49614,
-    "source": "local-stream"
+    "size": 49614
   },
   {
     "capital": "Vatican City",
     "normKey": "vatican_city",
     "file": "vatican_city_fenrir.wav",
-    "size": 83022,
-    "source": "local-stream"
+    "size": 83022
   },
   {
     "capital": "Kabul",
     "normKey": "kabul",
     "file": "kabul_fenrir.wav",
-    "size": 51918,
-    "source": "local-stream"
+    "size": 51918
   },
   {
     "capital": "Yerevan",
     "normKey": "yerevan",
     "file": "yerevan_fenrir.wav",
-    "size": 66894,
-    "source": "local-stream"
+    "size": 66894
   },
   {
     "capital": "Baku",
     "normKey": "baku",
     "file": "baku_fenrir.wav",
-    "size": 51918,
-    "source": "local-stream"
+    "size": 51918
   },
   {
     "capital": "Manama",
     "normKey": "manama",
     "file": "manama_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Dhaka",
     "normKey": "dhaka",
     "file": "dhaka_fenrir.wav",
-    "size": 51918,
-    "source": "local-stream"
+    "size": 51918
   },
   {
     "capital": "Thimphu",
     "normKey": "thimphu",
     "file": "thimphu_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Bandar Seri Begawan",
     "normKey": "bandar_seri_begawan",
     "file": "bandar_seri_begawan_fenrir.wav",
-    "size": 111822,
-    "source": "local-stream"
+    "size": 111822
   },
   {
     "capital": "Phnom Penh",
     "normKey": "phnom_penh",
     "file": "phnom_penh_fenrir.wav",
-    "size": 65742,
-    "source": "local-stream"
+    "size": 65742
   },
   {
     "capital": "Beijing",
     "normKey": "beijing",
     "file": "beijing_fenrir.wav",
-    "size": 57678,
-    "source": "local-stream"
+    "size": 57678
   },
   {
     "capital": "Tbilisi",
     "normKey": "tbilisi",
     "file": "tbilisi_fenrir.wav",
-    "size": 71502,
-    "source": "local-stream"
+    "size": 71502
   },
   {
     "capital": "New Delhi",
     "normKey": "new_delhi",
     "file": "new_delhi_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Jakarta",
     "normKey": "jakarta",
     "file": "jakarta_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "Tehran",
     "normKey": "tehran",
     "file": "tehran_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Baghdad",
     "normKey": "baghdad",
     "file": "baghdad_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Jerusalem",
     "normKey": "jerusalem",
     "file": "jerusalem_fenrir.wav",
-    "size": 66894,
-    "source": "local-stream"
+    "size": 66894
   },
   {
     "capital": "Tokyo",
@@ -427,610 +369,523 @@
     "capital": "Amman",
     "normKey": "amman",
     "file": "amman_fenrir.wav",
-    "size": 49614,
-    "source": "local-stream"
+    "size": 49614
   },
   {
     "capital": "Astana",
     "normKey": "astana",
     "file": "astana_fenrir.wav",
-    "size": 57678,
-    "source": "local-stream"
+    "size": 57678
   },
   {
     "capital": "Kuwait City",
     "normKey": "kuwait_city",
     "file": "kuwait_city_fenrir.wav",
-    "size": 77262,
-    "source": "local-stream"
+    "size": 77262
   },
   {
     "capital": "Bishkek",
     "normKey": "bishkek",
     "file": "bishkek_fenrir.wav",
-    "size": 57678,
-    "source": "local-stream"
+    "size": 57678
   },
   {
     "capital": "Vientiane",
     "normKey": "vientiane",
     "file": "vientiane_fenrir.wav",
-    "size": 65742,
-    "source": "local-stream"
+    "size": 65742
   },
   {
     "capital": "Beirut",
     "normKey": "beirut",
     "file": "beirut_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Kuala Lumpur",
     "normKey": "kuala_lumpur",
     "file": "kuala_lumpur_fenrir.wav",
-    "size": 84174,
-    "source": "local-stream"
+    "size": 84174
   },
   {
     "capital": "Male",
     "normKey": "male",
     "file": "male_fenrir.wav",
-    "size": 49614,
-    "source": "local-stream"
+    "size": 49614
   },
   {
     "capital": "Ulaanbaatar",
     "normKey": "ulaanbaatar",
     "file": "ulaanbaatar_fenrir.wav",
-    "size": 72654,
-    "source": "local-stream"
+    "size": 72654
   },
   {
     "capital": "Naypyidaw",
     "normKey": "naypyidaw",
     "file": "naypyidaw_fenrir.wav",
-    "size": 65742,
-    "source": "local-stream"
+    "size": 65742
   },
   {
     "capital": "Kathmandu",
     "normKey": "kathmandu",
     "file": "kathmandu_fenrir.wav",
-    "size": 72654,
-    "source": "local-stream"
+    "size": 72654
   },
   {
     "capital": "Pyongyang",
     "normKey": "pyongyang",
     "file": "pyongyang_fenrir.wav",
-    "size": 65742,
-    "source": "local-stream"
+    "size": 65742
   },
   {
     "capital": "Muscat",
     "normKey": "muscat",
     "file": "muscat_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "Islamabad",
     "normKey": "islamabad",
     "file": "islamabad_fenrir.wav",
-    "size": 72654,
-    "source": "local-stream"
+    "size": 72654
   },
   {
     "capital": "Ramallah",
     "normKey": "ramallah",
     "file": "ramallah_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Manila",
     "normKey": "manila",
     "file": "manila_fenrir.wav",
-    "size": 49614,
-    "source": "local-stream"
+    "size": 49614
   },
   {
     "capital": "Doha",
     "normKey": "doha",
     "file": "doha_fenrir.wav",
-    "size": 48462,
-    "source": "local-stream"
+    "size": 48462
   },
   {
     "capital": "Riyadh",
     "normKey": "riyadh",
     "file": "riyadh_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Singapore",
     "normKey": "singapore",
     "file": "singapore_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "Seoul",
     "normKey": "seoul",
     "file": "seoul_fenrir.wav",
-    "size": 49614,
-    "source": "local-stream"
+    "size": 49614
   },
   {
     "capital": "Sri Jayawardenepura Kotte",
     "normKey": "sri_jayawardenepura_kotte",
     "file": "sri_jayawardenepura_kotte_fenrir.wav",
-    "size": 130254,
-    "source": "local-stream"
+    "size": 130254
   },
   {
     "capital": "Damascus",
     "normKey": "damascus",
     "file": "damascus_fenrir.wav",
-    "size": 66894,
-    "source": "local-stream"
+    "size": 66894
   },
   {
     "capital": "Taipei",
     "normKey": "taipei",
     "file": "taipei_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Dushanbe",
     "normKey": "dushanbe",
     "file": "dushanbe_fenrir.wav",
-    "size": 69198,
-    "source": "local-stream"
+    "size": 69198
   },
   {
     "capital": "Bangkok",
     "normKey": "bangkok",
     "file": "bangkok_fenrir.wav",
-    "size": 57678,
-    "source": "local-stream"
+    "size": 57678
   },
   {
     "capital": "Dili",
     "normKey": "dili",
     "file": "dili_fenrir.wav",
-    "size": 46158,
-    "source": "local-stream"
+    "size": 46158
   },
   {
     "capital": "Ankara",
     "normKey": "ankara",
     "file": "ankara_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "Ashgabat",
     "normKey": "ashgabat",
     "file": "ashgabat_fenrir.wav",
-    "size": 66894,
-    "source": "local-stream"
+    "size": 66894
   },
   {
     "capital": "Abu Dhabi",
     "normKey": "abu_dhabi",
     "file": "abu_dhabi_fenrir.wav",
-    "size": 69198,
-    "source": "local-stream"
+    "size": 69198
   },
   {
     "capital": "Tashkent",
     "normKey": "tashkent",
     "file": "tashkent_fenrir.wav",
-    "size": 69198,
-    "source": "local-stream"
+    "size": 69198
   },
   {
     "capital": "Hanoi",
     "normKey": "hanoi",
     "file": "hanoi_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Sana'a",
     "normKey": "sanaa",
     "file": "sanaa_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Algiers",
     "normKey": "algiers",
     "file": "algiers_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "Luanda",
     "normKey": "luanda",
     "file": "luanda_fenrir.wav",
-    "size": 65742,
-    "source": "local-stream"
+    "size": 65742
   },
   {
     "capital": "Porto-Novo",
     "normKey": "porto_novo",
     "file": "porto_novo_fenrir.wav",
-    "size": 84174,
-    "source": "local-stream"
+    "size": 84174
   },
   {
     "capital": "Gaborone",
     "normKey": "gaborone",
     "file": "gaborone_fenrir.wav",
-    "size": 66894,
-    "source": "local-stream"
+    "size": 66894
   },
   {
     "capital": "Ouagadougou",
     "normKey": "ouagadougou",
     "file": "ouagadougou_fenrir.wav",
-    "size": 74958,
-    "source": "local-stream"
+    "size": 74958
   },
   {
     "capital": "Gitega",
     "normKey": "gitega",
     "file": "gitega_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Praia",
     "normKey": "praia",
     "file": "praia_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Yaounde",
     "normKey": "yaounde",
     "file": "yaounde_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Bangui",
     "normKey": "bangui",
     "file": "bangui_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "N'Djamena",
     "normKey": "ndjamena",
     "file": "ndjamena_fenrir.wav",
-    "size": 66894,
-    "source": "local-stream"
+    "size": 66894
   },
   {
     "capital": "Moroni",
     "normKey": "moroni",
     "file": "moroni_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "Brazzaville",
     "normKey": "brazzaville",
     "file": "brazzaville_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Kinshasa",
     "normKey": "kinshasa",
     "file": "kinshasa_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Yamoussoukro",
     "normKey": "yamoussoukro",
     "file": "yamoussoukro_fenrir.wav",
-    "size": 80718,
-    "source": "local-stream"
+    "size": 80718
   },
   {
     "capital": "Djibouti",
     "normKey": "djibouti",
     "file": "djibouti_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Cairo",
     "normKey": "cairo",
     "file": "cairo_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Malabo",
     "normKey": "malabo",
     "file": "malabo_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "Asmara",
     "normKey": "asmara",
     "file": "asmara_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "Mbabane",
     "normKey": "mbabane",
     "file": "mbabane_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Addis Ababa",
     "normKey": "addis_ababa",
     "file": "addis_ababa_fenrir.wav",
-    "size": 78414,
-    "source": "local-stream"
+    "size": 78414
   },
   {
     "capital": "Libreville",
     "normKey": "libreville",
     "file": "libreville_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Banjul",
     "normKey": "banjul",
     "file": "banjul_fenrir.wav",
-    "size": 57678,
-    "source": "local-stream"
+    "size": 57678
   },
   {
     "capital": "Accra",
     "normKey": "accra",
     "file": "accra_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Conakry",
     "normKey": "conakry",
     "file": "conakry_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Bissau",
     "normKey": "bissau",
     "file": "bissau_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Nairobi",
     "normKey": "nairobi",
     "file": "nairobi_fenrir.wav",
-    "size": 66894,
-    "source": "local-stream"
+    "size": 66894
   },
   {
     "capital": "Maseru",
     "normKey": "maseru",
     "file": "maseru_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "Monrovia",
     "normKey": "monrovia",
     "file": "monrovia_fenrir.wav",
-    "size": 69198,
-    "source": "local-stream"
+    "size": 69198
   },
   {
     "capital": "Tripoli",
     "normKey": "tripoli",
     "file": "tripoli_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Antananarivo",
     "normKey": "antananarivo",
     "file": "antananarivo_fenrir.wav",
-    "size": 94542,
-    "source": "local-stream"
+    "size": 94542
   },
   {
     "capital": "Lilongwe",
     "normKey": "lilongwe",
     "file": "lilongwe_fenrir.wav",
-    "size": 66894,
-    "source": "local-stream"
+    "size": 66894
   },
   {
     "capital": "Bamako",
     "normKey": "bamako",
     "file": "bamako_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "Nouakchott",
     "normKey": "nouakchott",
     "file": "nouakchott_fenrir.wav",
-    "size": 69198,
-    "source": "local-stream"
+    "size": 69198
   },
   {
     "capital": "Port Louis",
     "normKey": "port_louis",
     "file": "port_louis_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Rabat",
     "normKey": "rabat",
     "file": "rabat_fenrir.wav",
-    "size": 49614,
-    "source": "local-stream"
+    "size": 49614
   },
   {
     "capital": "Maputo",
     "normKey": "maputo",
     "file": "maputo_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "Windhoek",
     "normKey": "windhoek",
     "file": "windhoek_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "Niamey",
     "normKey": "niamey",
     "file": "niamey_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "Abuja",
     "normKey": "abuja",
     "file": "abuja_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "Kigali",
     "normKey": "kigali",
     "file": "kigali_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Sao Tome",
     "normKey": "sao_tome",
     "file": "sao_tome_fenrir.wav",
-    "size": 57678,
-    "source": "local-stream"
+    "size": 57678
   },
   {
     "capital": "Dakar",
     "normKey": "dakar",
     "file": "dakar_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Victoria",
     "normKey": "victoria",
     "file": "victoria_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Freetown",
     "normKey": "freetown",
     "file": "freetown_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "Mogadishu",
     "normKey": "mogadishu",
     "file": "mogadishu_fenrir.wav",
-    "size": 69198,
-    "source": "local-stream"
+    "size": 69198
   },
   {
     "capital": "Pretoria",
     "normKey": "pretoria",
     "file": "pretoria_fenrir.wav",
-    "size": 69198,
-    "source": "local-stream"
+    "size": 69198
   },
   {
     "capital": "Juba",
     "normKey": "juba",
     "file": "juba_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Khartoum",
     "normKey": "khartoum",
     "file": "khartoum_fenrir.wav",
-    "size": 65742,
-    "source": "local-stream"
+    "size": 65742
   },
   {
     "capital": "Dodoma",
     "normKey": "dodoma",
     "file": "dodoma_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Lome",
     "normKey": "lome",
     "file": "lome_fenrir.wav",
-    "size": 48462,
-    "source": "local-stream"
+    "size": 48462
   },
   {
     "capital": "Tunis",
     "normKey": "tunis",
     "file": "tunis_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Kampala",
     "normKey": "kampala",
     "file": "kampala_fenrir.wav",
-    "size": 66894,
-    "source": "local-stream"
+    "size": 66894
   },
   {
     "capital": "Lusaka",
     "normKey": "lusaka",
     "file": "lusaka_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "Harare",
     "normKey": "harare",
     "file": "harare_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "St. John's",
     "normKey": "st_johns",
     "file": "st_johns_fenrir.wav",
-    "size": 69198,
-    "source": "local-stream"
+    "size": 69198
   },
   {
     "capital": "Buenos Aires",
@@ -1042,211 +897,181 @@
     "capital": "Nassau",
     "normKey": "nassau",
     "file": "nassau_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Bridgetown",
     "normKey": "bridgetown",
     "file": "bridgetown_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Belmopan",
     "normKey": "belmopan",
     "file": "belmopan_fenrir.wav",
-    "size": 69198,
-    "source": "local-stream"
+    "size": 69198
   },
   {
     "capital": "Sucre",
     "normKey": "sucre",
     "file": "sucre_fenrir.wav",
-    "size": 57678,
-    "source": "local-stream"
+    "size": 57678
   },
   {
     "capital": "Brasilia",
     "normKey": "brasilia",
     "file": "brasilia_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   },
   {
     "capital": "Ottawa",
     "normKey": "ottawa",
     "file": "ottawa_fenrir.wav",
-    "size": 51918,
-    "source": "local-stream"
+    "size": 51918
   },
   {
     "capital": "Santiago",
     "normKey": "santiago",
     "file": "santiago_fenrir.wav",
-    "size": 80718,
-    "source": "local-stream"
+    "size": 80718
   },
   {
     "capital": "Bogota",
     "normKey": "bogota",
     "file": "bogota_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "San Jose",
     "normKey": "san_jose",
     "file": "san_jose_fenrir.wav",
-    "size": 71502,
-    "source": "local-stream"
+    "size": 71502
   },
   {
     "capital": "Havana",
     "normKey": "havana",
     "file": "havana_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Roseau",
     "normKey": "roseau",
     "file": "roseau_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "Santo Domingo",
     "normKey": "santo_domingo",
     "file": "santo_domingo_fenrir.wav",
-    "size": 86478,
-    "source": "local-stream"
+    "size": 86478
   },
   {
     "capital": "Quito",
     "normKey": "quito",
     "file": "quito_fenrir.wav",
-    "size": 54222,
-    "source": "local-stream"
+    "size": 54222
   },
   {
     "capital": "San Salvador",
     "normKey": "san_salvador",
     "file": "san_salvador_fenrir.wav",
-    "size": 78414,
-    "source": "local-stream"
+    "size": 78414
   },
   {
     "capital": "St. George's",
     "normKey": "st_georges",
     "file": "st_georges_fenrir.wav",
-    "size": 69198,
-    "source": "local-stream"
+    "size": 69198
   },
   {
     "capital": "Guatemala City",
     "normKey": "guatemala_city",
     "file": "guatemala_city_fenrir.wav",
-    "size": 84174,
-    "source": "local-stream"
+    "size": 84174
   },
   {
     "capital": "Georgetown",
     "normKey": "georgetown",
     "file": "georgetown_fenrir.wav",
-    "size": 71502,
-    "source": "local-stream"
+    "size": 71502
   },
   {
     "capital": "Port-au-Prince",
     "normKey": "port_au_prince",
     "file": "port_au_prince_fenrir.wav",
-    "size": 83022,
-    "source": "local-stream"
+    "size": 83022
   },
   {
     "capital": "Tegucigalpa",
     "normKey": "tegucigalpa",
     "file": "tegucigalpa_fenrir.wav",
-    "size": 83022,
-    "source": "local-stream"
+    "size": 83022
   },
   {
     "capital": "Kingston",
     "normKey": "kingston",
     "file": "kingston_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "Mexico City",
     "normKey": "mexico_city",
     "file": "mexico_city_fenrir.wav",
-    "size": 83022,
-    "source": "local-stream"
+    "size": 83022
   },
   {
     "capital": "Managua",
     "normKey": "managua",
     "file": "managua_fenrir.wav",
-    "size": 55374,
-    "source": "local-stream"
+    "size": 55374
   },
   {
     "capital": "Panama City",
     "normKey": "panama_city",
     "file": "panama_city_fenrir.wav",
-    "size": 78414,
-    "source": "local-stream"
+    "size": 78414
   },
   {
     "capital": "Asuncion",
     "normKey": "asuncion",
     "file": "asuncion_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Lima",
     "normKey": "lima",
     "file": "lima_fenrir.wav",
-    "size": 46158,
-    "source": "local-stream"
+    "size": 46158
   },
   {
     "capital": "Basseterre",
     "normKey": "basseterre",
     "file": "basseterre_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "Castries",
     "normKey": "castries",
     "file": "castries_fenrir.wav",
-    "size": 66894,
-    "source": "local-stream"
+    "size": 66894
   },
   {
     "capital": "Kingstown",
     "normKey": "kingstown",
     "file": "kingstown_fenrir.wav",
-    "size": 69198,
-    "source": "local-stream"
+    "size": 69198
   },
   {
     "capital": "Paramaribo",
     "normKey": "paramaribo",
     "file": "paramaribo_fenrir.wav",
-    "size": 80718,
-    "source": "local-stream"
+    "size": 80718
   },
   {
     "capital": "Port of Spain",
     "normKey": "port_of_spain",
     "file": "port_of_spain_fenrir.wav",
-    "size": 74958,
-    "source": "local-stream"
+    "size": 74958
   },
   {
     "capital": "Washington, D.C.",
@@ -1258,112 +1083,96 @@
     "capital": "Montevideo",
     "normKey": "montevideo",
     "file": "montevideo_fenrir.wav",
-    "size": 78414,
-    "source": "local-stream"
+    "size": 78414
   },
   {
     "capital": "Caracas",
     "normKey": "caracas",
     "file": "caracas_fenrir.wav",
-    "size": 66894,
-    "source": "local-stream"
+    "size": 66894
   },
   {
     "capital": "Canberra",
     "normKey": "canberra",
     "file": "canberra_fenrir.wav",
-    "size": 57678,
-    "source": "local-stream"
+    "size": 57678
   },
   {
     "capital": "Suva",
     "normKey": "suva",
     "file": "suva_fenrir.wav",
-    "size": 49614,
-    "source": "local-stream"
+    "size": 49614
   },
   {
     "capital": "South Tarawa",
     "normKey": "south_tarawa",
     "file": "south_tarawa_fenrir.wav",
-    "size": 83022,
-    "source": "local-stream"
+    "size": 83022
   },
   {
     "capital": "Majuro",
     "normKey": "majuro",
     "file": "majuro_fenrir.wav",
-    "size": 61134,
-    "source": "local-stream"
+    "size": 61134
   },
   {
     "capital": "Palikir",
     "normKey": "palikir",
     "file": "palikir_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Yaren",
     "normKey": "yaren",
     "file": "yaren_fenrir.wav",
-    "size": 57678,
-    "source": "local-stream"
+    "size": 57678
   },
   {
     "capital": "Wellington",
     "normKey": "wellington",
     "file": "wellington_fenrir.wav",
-    "size": 71502,
-    "source": "local-stream"
+    "size": 71502
   },
   {
     "capital": "Ngerulmud",
     "normKey": "ngerulmud",
     "file": "ngerulmud_fenrir.wav",
-    "size": 71502,
-    "source": "local-stream"
+    "size": 71502
   },
   {
     "capital": "Port Moresby",
     "normKey": "port_moresby",
     "file": "port_moresby_fenrir.wav",
-    "size": 72654,
-    "source": "local-stream"
+    "size": 72654
   },
   {
     "capital": "Apia",
     "normKey": "apia",
     "file": "apia_fenrir.wav",
-    "size": 51918,
-    "source": "local-stream"
+    "size": 51918
   },
   {
     "capital": "Honiara",
     "normKey": "honiara",
     "file": "honiara_fenrir.wav",
-    "size": 63438,
-    "source": "local-stream"
+    "size": 63438
   },
   {
     "capital": "Nuku'alofa",
     "normKey": "nukualofa",
     "file": "nukualofa_fenrir.wav",
-    "size": 78414,
-    "source": "local-stream"
+    "size": 78414
   },
   {
     "capital": "Funafuti",
     "normKey": "funafuti",
     "file": "funafuti_fenrir.wav",
-    "size": 69198,
-    "source": "local-stream"
+    "size": 69198
   },
   {
     "capital": "Port Vila",
     "normKey": "port_vila",
     "file": "port_vila_fenrir.wav",
-    "size": 59982,
-    "source": "local-stream"
+    "size": 59982
   }
 ]
