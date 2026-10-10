@@ -675,600 +675,700 @@
     "capital": "Gaborone",
     "normKey": "gaborone",
     "file": "gaborone_fenrir.wav",
-    "size": 66894
+    "size": 63714,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Ouagadougou",
     "normKey": "ouagadougou",
     "file": "ouagadougou_fenrir.wav",
-    "size": 74958
+    "size": 80994,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Gitega",
     "normKey": "gitega",
     "file": "gitega_fenrir.wav",
-    "size": 55374
+    "size": 57954,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Praia",
     "normKey": "praia",
     "file": "praia_fenrir.wav",
-    "size": 55374
+    "size": 54114,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Yaounde",
     "normKey": "yaounde",
     "file": "yaounde_fenrir.wav",
-    "size": 55374
+    "size": 65634,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Bangui",
     "normKey": "bangui",
     "file": "bangui_fenrir.wav",
-    "size": 54222
+    "size": 57954,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "N'Djamena",
     "normKey": "ndjamena",
     "file": "ndjamena_fenrir.wav",
-    "size": 66894
+    "size": 59874,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Moroni",
     "normKey": "moroni",
     "file": "moroni_fenrir.wav",
-    "size": 59982
+    "size": 61794,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Brazzaville",
     "normKey": "brazzaville",
     "file": "brazzaville_fenrir.wav",
-    "size": 63438
+    "size": 71394,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Kinshasa",
     "normKey": "kinshasa",
     "file": "kinshasa_fenrir.wav",
-    "size": 63438
+    "size": 67554,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Yamoussoukro",
     "normKey": "yamoussoukro",
     "file": "yamoussoukro_fenrir.wav",
-    "size": 80718
+    "size": 67554,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Djibouti",
     "normKey": "djibouti",
     "file": "djibouti_fenrir.wav",
-    "size": 63438
+    "size": 63714,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Cairo",
     "normKey": "cairo",
     "file": "cairo_fenrir.wav",
-    "size": 55374
+    "size": 56034,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Malabo",
     "normKey": "malabo",
     "file": "malabo_fenrir.wav",
-    "size": 59982
+    "size": 67554,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Asmara",
     "normKey": "asmara",
     "file": "asmara_fenrir.wav",
-    "size": 61134
+    "size": 59874,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Mbabane",
     "normKey": "mbabane",
     "file": "mbabane_fenrir.wav",
-    "size": 63438
+    "size": 79074,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Addis Ababa",
     "normKey": "addis_ababa",
     "file": "addis_ababa_fenrir.wav",
-    "size": 78414
+    "size": 71394,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Libreville",
     "normKey": "libreville",
     "file": "libreville_fenrir.wav",
-    "size": 63438
+    "size": 63714,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Banjul",
     "normKey": "banjul",
     "file": "banjul_fenrir.wav",
-    "size": 57678
+    "size": 59874,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Accra",
     "normKey": "accra",
     "file": "accra_fenrir.wav",
-    "size": 54222
+    "size": 61794,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Conakry",
     "normKey": "conakry",
     "file": "conakry_fenrir.wav",
-    "size": 63438
+    "size": 52194,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Bissau",
     "normKey": "bissau",
     "file": "bissau_fenrir.wav",
-    "size": 54222
+    "size": 59874,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Nairobi",
     "normKey": "nairobi",
     "file": "nairobi_fenrir.wav",
-    "size": 66894
+    "size": 59874,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Maseru",
     "normKey": "maseru",
     "file": "maseru_fenrir.wav",
-    "size": 61134
+    "size": 57954,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Monrovia",
     "normKey": "monrovia",
     "file": "monrovia_fenrir.wav",
-    "size": 69198
+    "size": 63714,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Tripoli",
     "normKey": "tripoli",
     "file": "tripoli_fenrir.wav",
-    "size": 54222
+    "size": 59874,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Antananarivo",
     "normKey": "antananarivo",
     "file": "antananarivo_fenrir.wav",
-    "size": 94542
+    "size": 82914,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Lilongwe",
     "normKey": "lilongwe",
     "file": "lilongwe_fenrir.wav",
-    "size": 66894
+    "size": 82914,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Bamako",
     "normKey": "bamako",
     "file": "bamako_fenrir.wav",
-    "size": 59982
+    "size": 61794,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Nouakchott",
     "normKey": "nouakchott",
     "file": "nouakchott_fenrir.wav",
-    "size": 69198
+    "size": 69474,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Port Louis",
     "normKey": "port_louis",
     "file": "port_louis_fenrir.wav",
-    "size": 63438
+    "size": 69474,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Rabat",
     "normKey": "rabat",
     "file": "rabat_fenrir.wav",
-    "size": 49614
+    "size": 67554,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Maputo",
     "normKey": "maputo",
     "file": "maputo_fenrir.wav",
-    "size": 59982
+    "size": 71394,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Windhoek",
     "normKey": "windhoek",
     "file": "windhoek_fenrir.wav",
-    "size": 59982
+    "size": 59874,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Niamey",
     "normKey": "niamey",
     "file": "niamey_fenrir.wav",
-    "size": 61134
+    "size": 61794,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Abuja",
     "normKey": "abuja",
     "file": "abuja_fenrir.wav",
-    "size": 61134
+    "size": 56034,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Kigali",
     "normKey": "kigali",
     "file": "kigali_fenrir.wav",
-    "size": 63438
+    "size": 67554,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Sao Tome",
     "normKey": "sao_tome",
     "file": "sao_tome_fenrir.wav",
-    "size": 57678
+    "size": 71394,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Dakar",
     "normKey": "dakar",
     "file": "dakar_fenrir.wav",
-    "size": 55374
+    "size": 56034,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Victoria",
     "normKey": "victoria",
     "file": "victoria_fenrir.wav",
-    "size": 63438
+    "size": 73314,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Freetown",
     "normKey": "freetown",
     "file": "freetown_fenrir.wav",
-    "size": 61134
+    "size": 61794,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Mogadishu",
     "normKey": "mogadishu",
     "file": "mogadishu_fenrir.wav",
-    "size": 69198
+    "size": 65634,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Pretoria",
     "normKey": "pretoria",
     "file": "pretoria_fenrir.wav",
-    "size": 69198
+    "size": 67554,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Juba",
     "normKey": "juba",
     "file": "juba_fenrir.wav",
-    "size": 54222
+    "size": 56034,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Khartoum",
     "normKey": "khartoum",
     "file": "khartoum_fenrir.wav",
-    "size": 65742
+    "size": 65634,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Dodoma",
     "normKey": "dodoma",
     "file": "dodoma_fenrir.wav",
-    "size": 55374
+    "size": 61794,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Lome",
     "normKey": "lome",
     "file": "lome_fenrir.wav",
-    "size": 48462
+    "size": 54114,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Tunis",
     "normKey": "tunis",
     "file": "tunis_fenrir.wav",
-    "size": 54222
+    "size": 56034,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Kampala",
     "normKey": "kampala",
     "file": "kampala_fenrir.wav",
-    "size": 66894
+    "size": 69474,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Lusaka",
     "normKey": "lusaka",
     "file": "lusaka_fenrir.wav",
-    "size": 61134
+    "size": 67554,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Harare",
     "normKey": "harare",
     "file": "harare_fenrir.wav",
-    "size": 63438
+    "size": 59874,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "St. John's",
     "normKey": "st_johns",
     "file": "st_johns_fenrir.wav",
-    "size": 69198
+    "size": 71394,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Buenos Aires",
     "normKey": "buenos_aires",
     "file": "buenos_aires_fenrir.wav",
-    "size": 69164
+    "size": 65634,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Nassau",
     "normKey": "nassau",
     "file": "nassau_fenrir.wav",
-    "size": 55374
+    "size": 56034,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Bridgetown",
     "normKey": "bridgetown",
     "file": "bridgetown_fenrir.wav",
-    "size": 63438
+    "size": 65634,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Belmopan",
     "normKey": "belmopan",
     "file": "belmopan_fenrir.wav",
-    "size": 69198
+    "size": 63714,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Sucre",
     "normKey": "sucre",
     "file": "sucre_fenrir.wav",
-    "size": 57678
+    "size": 57954,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Brasilia",
     "normKey": "brasilia",
     "file": "brasilia_fenrir.wav",
-    "size": 59982
+    "size": 67554,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Ottawa",
     "normKey": "ottawa",
     "file": "ottawa_fenrir.wav",
-    "size": 51918
+    "size": 54114,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Santiago",
     "normKey": "santiago",
     "file": "santiago_fenrir.wav",
-    "size": 80718
+    "size": 63714,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Bogota",
     "normKey": "bogota",
     "file": "bogota_fenrir.wav",
-    "size": 61134
+    "size": 63714,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "San Jose",
     "normKey": "san_jose",
     "file": "san_jose_fenrir.wav",
-    "size": 71502
+    "size": 52194,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Havana",
     "normKey": "havana",
     "file": "havana_fenrir.wav",
-    "size": 55374
+    "size": 52194,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Roseau",
     "normKey": "roseau",
     "file": "roseau_fenrir.wav",
-    "size": 54222
+    "size": 52194,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Santo Domingo",
     "normKey": "santo_domingo",
     "file": "santo_domingo_fenrir.wav",
-    "size": 86478
+    "size": 77154,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Quito",
     "normKey": "quito",
     "file": "quito_fenrir.wav",
-    "size": 54222
+    "size": 54114,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "San Salvador",
     "normKey": "san_salvador",
     "file": "san_salvador_fenrir.wav",
-    "size": 78414
+    "size": 71394,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "St. George's",
     "normKey": "st_georges",
     "file": "st_georges_fenrir.wav",
-    "size": 69198
+    "size": 69474,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Guatemala City",
     "normKey": "guatemala_city",
     "file": "guatemala_city_fenrir.wav",
-    "size": 84174
+    "size": 77154,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Georgetown",
     "normKey": "georgetown",
     "file": "georgetown_fenrir.wav",
-    "size": 71502
+    "size": 65634,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Port-au-Prince",
     "normKey": "port_au_prince",
     "file": "port_au_prince_fenrir.wav",
-    "size": 83022
+    "size": 79074,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Tegucigalpa",
     "normKey": "tegucigalpa",
     "file": "tegucigalpa_fenrir.wav",
-    "size": 83022
+    "size": 73314,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Kingston",
     "normKey": "kingston",
     "file": "kingston_fenrir.wav",
-    "size": 61134
+    "size": 63714,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Mexico City",
     "normKey": "mexico_city",
     "file": "mexico_city_fenrir.wav",
-    "size": 83022
+    "size": 71394,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Managua",
     "normKey": "managua",
     "file": "managua_fenrir.wav",
-    "size": 55374
+    "size": 61794,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Panama City",
     "normKey": "panama_city",
     "file": "panama_city_fenrir.wav",
-    "size": 78414
+    "size": 73314,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Asuncion",
     "normKey": "asuncion",
     "file": "asuncion_fenrir.wav",
-    "size": 63438
+    "size": 67554,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Lima",
     "normKey": "lima",
     "file": "lima_fenrir.wav",
-    "size": 46158
+    "size": 57954,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Basseterre",
     "normKey": "basseterre",
     "file": "basseterre_fenrir.wav",
-    "size": 61134
+    "size": 69474,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Castries",
     "normKey": "castries",
     "file": "castries_fenrir.wav",
-    "size": 66894
+    "size": 69474,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Kingstown",
     "normKey": "kingstown",
     "file": "kingstown_fenrir.wav",
-    "size": 69198
+    "size": 61794,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Paramaribo",
     "normKey": "paramaribo",
     "file": "paramaribo_fenrir.wav",
-    "size": 80718
+    "size": 73314,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Port of Spain",
     "normKey": "port_of_spain",
     "file": "port_of_spain_fenrir.wav",
-    "size": 74958
+    "size": 69474,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Washington, D.C.",
     "normKey": "washington_dc",
     "file": "washington_dc_fenrir.wav",
-    "size": 77154
+    "size": 88674,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Montevideo",
     "normKey": "montevideo",
     "file": "montevideo_fenrir.wav",
-    "size": 78414
+    "size": 84834,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Caracas",
     "normKey": "caracas",
     "file": "caracas_fenrir.wav",
-    "size": 66894
+    "size": 67554,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Canberra",
     "normKey": "canberra",
     "file": "canberra_fenrir.wav",
-    "size": 57678
+    "size": 67554,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Suva",
     "normKey": "suva",
     "file": "suva_fenrir.wav",
-    "size": 49614
+    "size": 65634,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "South Tarawa",
     "normKey": "south_tarawa",
     "file": "south_tarawa_fenrir.wav",
-    "size": 83022
+    "size": 79074,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Majuro",
     "normKey": "majuro",
     "file": "majuro_fenrir.wav",
-    "size": 61134
+    "size": 56034,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Palikir",
     "normKey": "palikir",
     "file": "palikir_fenrir.wav",
-    "size": 63438
+    "size": 63714,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Yaren",
     "normKey": "yaren",
     "file": "yaren_fenrir.wav",
-    "size": 57678
+    "size": 54114,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Wellington",
     "normKey": "wellington",
     "file": "wellington_fenrir.wav",
-    "size": 71502
+    "size": 75234,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Ngerulmud",
     "normKey": "ngerulmud",
     "file": "ngerulmud_fenrir.wav",
-    "size": 71502
+    "size": 82914,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Port Moresby",
     "normKey": "port_moresby",
     "file": "port_moresby_fenrir.wav",
-    "size": 72654
+    "size": 79074,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Apia",
     "normKey": "apia",
     "file": "apia_fenrir.wav",
-    "size": 51918
+    "size": 57954,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Honiara",
     "normKey": "honiara",
     "file": "honiara_fenrir.wav",
-    "size": 63438
+    "size": 71394,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Nuku'alofa",
     "normKey": "nukualofa",
     "file": "nukualofa_fenrir.wav",
-    "size": 78414
+    "size": 79074,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Funafuti",
     "normKey": "funafuti",
     "file": "funafuti_fenrir.wav",
-    "size": 69198
+    "size": 63714,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   },
   {
     "capital": "Port Vila",
     "normKey": "port_vila",
     "file": "port_vila_fenrir.wav",
-    "size": 59982
+    "size": 65634,
+    "source": "gemini-3.8-flash-lite-tts-fenrir"
   }
 ]

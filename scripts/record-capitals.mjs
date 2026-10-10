@@ -64,7 +64,7 @@ function pcmToWavBuffer(base64Pcm, sampleRate = 24000) {
 }
 
 async function recordViaGemini(apiKey, capital, maxRetries = 5) {
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash-tts:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash-lite-tts:generateContent?key=${encodeURIComponent(apiKey)}`;
   const payload = {
     contents: [
       {
@@ -108,7 +108,7 @@ async function recordViaGemini(apiKey, capital, maxRetries = 5) {
 
     const errorText = await res.text();
     if ((res.status === 429 || res.status === 403 || res.status >= 500) && attempt < maxRetries) {
-      const delay = attempt * 3000;
+      const delay = attempt * 4000 + 2000;
       process.stdout.write(`[retry ${attempt} in ${delay}ms] `);
       await new Promise((r) => setTimeout(r, delay));
       continue;
@@ -123,7 +123,7 @@ async function main() {
   const capitals = extractAllCapitals();
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
-  console.log(`🎙️  Batch Recording All 196 Capital Cities via Gemini 3.8 Flash TTS (Fenrir)...`);
+  console.log(`🎙️  Batch Recording Capital Cities via Gemini 3.8 Flash Lite TTS (Fenrir)...`);
   console.log(`Total capitals in dataset: ${capitals.length}`);
   console.log(`Target directory: ${OUTPUT_DIR}\n`);
 
@@ -145,18 +145,20 @@ async function main() {
     const targetPath = path.join(OUTPUT_DIR, targetFile);
 
     const existingEntry = manifestMap.get(normKey);
-    // Skip only if already recorded with genuine Gemini 3.8 Flash TTS
-    if (
-      existingEntry?.source === 'gemini-3.8-flash-tts-fenrir' &&
+    // Skip if already recorded with genuine Gemini Flash or Lite TTS
+    const isGeminiRecorded =
+      (existingEntry?.source === 'gemini-3.8-flash-tts-fenrir' ||
+        existingEntry?.source === 'gemini-3.8-flash-lite-tts-fenrir') &&
       fs.existsSync(targetPath) &&
       fs.statSync(targetPath).size > 1000 &&
-      !process.argv.includes('--force')
-    ) {
+      !process.argv.includes('--force');
+
+    if (isGeminiRecorded) {
       skippedCount++;
       continue;
     }
 
-    process.stdout.write(`[${i + 1}/${capitals.length}] Recording "${capital}" via Gemini 3.8 Flash TTS (Fenrir)... `);
+    process.stdout.write(`[${i + 1}/${capitals.length}] Recording "${capital}" via Gemini 3.8 Flash Lite TTS (Fenrir)... `);
 
     if (!apiKey) {
       throw new Error(`GEMINI_API_KEY is not defined in .env! Cannot record capitals.`);
@@ -172,7 +174,7 @@ async function main() {
         normKey,
         file: targetFile,
         size: wavBuffer.length,
-        source: 'gemini-3.8-flash-tts-fenrir'
+        source: 'gemini-3.8-flash-lite-tts-fenrir'
       });
       // Save manifest progress incrementally
       fs.writeFileSync(manifestPath, JSON.stringify(Array.from(manifestMap.values()), null, 2), 'utf-8');
