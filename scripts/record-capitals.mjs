@@ -63,7 +63,7 @@ function pcmToWavBuffer(base64Pcm, sampleRate = 24000) {
   return Buffer.concat([header, pcmBuffer]);
 }
 
-async function recordViaGemini(apiKey, capital) {
+async function recordViaGemini(apiKey, capital, maxRetries = 5) {
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash-tts:generateContent?key=${encodeURIComponent(apiKey)}`;
   const payload = {
     contents: [
@@ -84,28 +84,37 @@ async function recordViaGemini(apiKey, capital) {
     }
   };
 
-  const res = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
 
-  if (!res.ok) {
+    if (res.ok) {
+      const json = await res.json();
+      const inlineData = json?.candidates?.[0]?.content?.parts?.[0]?.inlineData;
+      if (!inlineData?.data) {
+        throw new Error(`No inline audio data returned`);
+      }
+
+      const mimeType = inlineData.mimeType || 'audio/wav';
+      if (mimeType.includes('pcm') || mimeType.includes('l16')) {
+        return pcmToWavBuffer(inlineData.data, 24000);
+      } else {
+        return Buffer.from(inlineData.data, 'base64');
+      }
+    }
+
     const errorText = await res.text();
+    if ((res.status === 429 || res.status === 403 || res.status >= 500) && attempt < maxRetries) {
+      const delay = attempt * 3000;
+      process.stdout.write(`[retry ${attempt} in ${delay}ms] `);
+      await new Promise((r) => setTimeout(r, delay));
+      continue;
+    }
+
     throw new Error(`Gemini HTTP ${res.status}: ${errorText}`);
-  }
-
-  const json = await res.json();
-  const inlineData = json?.candidates?.[0]?.content?.parts?.[0]?.inlineData;
-  if (!inlineData?.data) {
-    throw new Error(`No inline audio data returned`);
-  }
-
-  const mimeType = inlineData.mimeType || 'audio/wav';
-  if (mimeType.includes('pcm') || mimeType.includes('l16')) {
-    return pcmToWavBuffer(inlineData.data, 24000);
-  } else {
-    return Buffer.from(inlineData.data, 'base64');
   }
 }
 
@@ -120,7 +129,14 @@ async function main() {
 
   let geminiCount = 0;
   let skippedCount = 0;
-  const manifest = [];
+  const manifestPath = path.join(OUTPUT_DIR, 'manifest.json');
+  let existingManifest = [];
+  if (fs.existsSync(manifestPath)) {
+    try {
+      existingManifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+    } catch {}
+  }
+  const manifestMap = new Map(existingManifest.map((m) => [m.normKey, m]));
 
   for (let i = 0; i < capitals.length; i++) {
     const capital = capitals[i];
@@ -128,10 +144,15 @@ async function main() {
     const targetFile = `${normKey}_fenrir.wav`;
     const targetPath = path.join(OUTPUT_DIR, targetFile);
 
-    // Skip if already recorded
-    if (fs.existsSync(targetPath) && fs.statSync(targetPath).size > 1000 && !process.argv.includes('--force')) {
+    const existingEntry = manifestMap.get(normKey);
+    // Skip only if already recorded with genuine Gemini 3.8 Flash TTS
+    if (
+      existingEntry?.source === 'gemini-3.8-flash-tts-fenrir' &&
+      fs.existsSync(targetPath) &&
+      fs.statSync(targetPath).size > 1000 &&
+      !process.argv.includes('--force')
+    ) {
       skippedCount++;
-      manifest.push({ capital, normKey, file: targetFile, size: fs.statSync(targetPath).size });
       continue;
     }
 
@@ -146,16 +167,24 @@ async function main() {
       fs.writeFileSync(targetPath, wavBuffer);
       geminiCount++;
       console.log(`✅ Saved (${wavBuffer.length} bytes)`);
-      manifest.push({ capital, normKey, file: targetFile, size: wavBuffer.length, source: 'gemini-3.8-flash-tts-fenrir' });
-      await new Promise((r) => setTimeout(r, 600));
+      manifestMap.set(normKey, {
+        capital,
+        normKey,
+        file: targetFile,
+        size: wavBuffer.length,
+        source: 'gemini-3.8-flash-tts-fenrir'
+      });
+      // Save manifest progress incrementally
+      fs.writeFileSync(manifestPath, JSON.stringify(Array.from(manifestMap.values()), null, 2), 'utf-8');
+      await new Promise((r) => setTimeout(r, 4100));
     } catch (geminiErr) {
       console.log(`\n❌ Gemini TTS API failed: ${geminiErr.message}`);
       throw geminiErr;
     }
   }
 
-  // Write manifest
-  fs.writeFileSync(path.join(OUTPUT_DIR, 'manifest.json'), JSON.stringify(manifest, null, 2), 'utf-8');
+  // Final manifest save
+  fs.writeFileSync(manifestPath, JSON.stringify(Array.from(manifestMap.values()), null, 2), 'utf-8');
 
   console.log(`\n🎉 Complete!`);
   console.log(`- Already existing: ${skippedCount}`);

@@ -3,577 +3,673 @@
     "capital": "Tirana",
     "normKey": "tirana",
     "file": "tirana_fenrir.wav",
-    "size": 61134
+    "size": 57954,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Andorra la Vella",
     "normKey": "andorra_la_vella",
     "file": "andorra_la_vella_fenrir.wav",
-    "size": 89934
+    "size": 84834,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Vienna",
     "normKey": "vienna",
     "file": "vienna_fenrir.wav",
-    "size": 46158
+    "size": 57954,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Minsk",
     "normKey": "minsk",
     "file": "minsk_fenrir.wav",
-    "size": 54222
+    "size": 67554,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Brussels",
     "normKey": "brussels",
     "file": "brussels_fenrir.wav",
-    "size": 59982
+    "size": 63714,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Sarajevo",
     "normKey": "sarajevo",
     "file": "sarajevo_fenrir.wav",
-    "size": 86478
+    "size": 67554,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Sofia",
     "normKey": "sofia",
     "file": "sofia_fenrir.wav",
-    "size": 59982
+    "size": 57954,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Zagreb",
     "normKey": "zagreb",
     "file": "zagreb_fenrir.wav",
-    "size": 59982
+    "size": 63714,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Nicosia",
     "normKey": "nicosia",
     "file": "nicosia_fenrir.wav",
-    "size": 72654
+    "size": 71394,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Prague",
     "normKey": "prague",
     "file": "prague_fenrir.wav",
-    "size": 51918
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Copenhagen",
     "normKey": "copenhagen",
     "file": "copenhagen_fenrir.wav",
-    "size": 77262
+    "size": 57954,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Tallinn",
     "normKey": "tallinn",
     "file": "tallinn_fenrir.wav",
-    "size": 51918
+    "size": 56034,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Helsinki",
     "normKey": "helsinki",
     "file": "helsinki_fenrir.wav",
-    "size": 63438
+    "size": 69474,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Paris",
     "normKey": "paris",
     "file": "paris_fenrir.wav",
-    "size": 61484
+    "size": 69474,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Berlin",
     "normKey": "berlin",
     "file": "berlin_fenrir.wav",
-    "size": 54222
+    "size": 59874,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Athens",
     "normKey": "athens",
     "file": "athens_fenrir.wav",
-    "size": 59982
+    "size": 59874,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Budapest",
     "normKey": "budapest",
     "file": "budapest_fenrir.wav",
-    "size": 66894
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Reykjavik",
     "normKey": "reykjavik",
     "file": "reykjavik_fenrir.wav",
-    "size": 71084
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Dublin",
     "normKey": "dublin",
     "file": "dublin_fenrir.wav",
-    "size": 54222
+    "size": 56034,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Rome",
     "normKey": "rome",
     "file": "rome_fenrir.wav",
-    "size": 42702
+    "size": 63714,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Riga",
     "normKey": "riga",
     "file": "riga_fenrir.wav",
-    "size": 49614
+    "size": 56034,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Vaduz",
     "normKey": "vaduz",
     "file": "vaduz_fenrir.wav",
-    "size": 55374
+    "size": 63714,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Vilnius",
     "normKey": "vilnius",
     "file": "vilnius_fenrir.wav",
-    "size": 63438
+    "size": 71394,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Luxembourg City",
     "normKey": "luxembourg_city",
     "file": "luxembourg_city_fenrir.wav",
-    "size": 86478
+    "size": 92514,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Valletta",
     "normKey": "valletta",
     "file": "valletta_fenrir.wav",
-    "size": 49614
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Chisinau",
     "normKey": "chisinau",
     "file": "chisinau_fenrir.wav",
-    "size": 63438
+    "size": 65634,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Monaco",
     "normKey": "monaco",
     "file": "monaco_fenrir.wav",
-    "size": 57678
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Podgorica",
     "normKey": "podgorica",
     "file": "podgorica_fenrir.wav",
-    "size": 77262
+    "size": 73314,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Amsterdam",
     "normKey": "amsterdam",
     "file": "amsterdam_fenrir.wav",
-    "size": 69198
+    "size": 67554,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Skopje",
     "normKey": "skopje",
     "file": "skopje_fenrir.wav",
-    "size": 61134
+    "size": 57954,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Oslo",
     "normKey": "oslo",
     "file": "oslo_fenrir.wav",
-    "size": 51918
+    "size": 57954,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Warsaw",
     "normKey": "warsaw",
     "file": "warsaw_fenrir.wav",
-    "size": 57678
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Lisbon",
     "normKey": "lisbon",
     "file": "lisbon_fenrir.wav",
-    "size": 55374
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Bucharest",
     "normKey": "bucharest",
     "file": "bucharest_fenrir.wav",
-    "size": 71502
+    "size": 67554,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Moscow",
     "normKey": "moscow",
     "file": "moscow_fenrir.wav",
-    "size": 54222
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "San Marino",
     "normKey": "san_marino",
     "file": "san_marino_fenrir.wav",
-    "size": 78414
+    "size": 84834,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Belgrade",
     "normKey": "belgrade",
     "file": "belgrade_fenrir.wav",
-    "size": 57678
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Bratislava",
     "normKey": "bratislava",
     "file": "bratislava_fenrir.wav",
-    "size": 72654
+    "size": 75234,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Ljubljana",
     "normKey": "ljubljana",
     "file": "ljubljana_fenrir.wav",
-    "size": 83022
+    "size": 71394,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Madrid",
     "normKey": "madrid",
     "file": "madrid_fenrir.wav",
-    "size": 49614
+    "size": 56034,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Stockholm",
     "normKey": "stockholm",
     "file": "stockholm_fenrir.wav",
-    "size": 71502
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Bern",
     "normKey": "bern",
     "file": "bern_fenrir.wav",
-    "size": 48462
+    "size": 54114,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Kyiv",
     "normKey": "kyiv",
     "file": "kyiv_fenrir.wav",
-    "size": 59982
+    "size": 54114,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "London",
     "normKey": "london",
     "file": "london_fenrir.wav",
-    "size": 49614
+    "size": 59874,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Vatican City",
     "normKey": "vatican_city",
     "file": "vatican_city_fenrir.wav",
-    "size": 83022
+    "size": 73314,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Kabul",
     "normKey": "kabul",
     "file": "kabul_fenrir.wav",
-    "size": 51918
+    "size": 59874,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Yerevan",
     "normKey": "yerevan",
     "file": "yerevan_fenrir.wav",
-    "size": 66894
+    "size": 69474,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Baku",
     "normKey": "baku",
     "file": "baku_fenrir.wav",
-    "size": 51918
+    "size": 57954,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Manama",
     "normKey": "manama",
     "file": "manama_fenrir.wav",
-    "size": 55374
+    "size": 59874,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Dhaka",
     "normKey": "dhaka",
     "file": "dhaka_fenrir.wav",
-    "size": 51918
+    "size": 54114,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Thimphu",
     "normKey": "thimphu",
     "file": "thimphu_fenrir.wav",
-    "size": 54222
+    "size": 63714,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Bandar Seri Begawan",
     "normKey": "bandar_seri_begawan",
     "file": "bandar_seri_begawan_fenrir.wav",
-    "size": 111822
+    "size": 111714,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Phnom Penh",
     "normKey": "phnom_penh",
     "file": "phnom_penh_fenrir.wav",
-    "size": 65742
+    "size": 79074,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Beijing",
     "normKey": "beijing",
     "file": "beijing_fenrir.wav",
-    "size": 57678
+    "size": 65634,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Tbilisi",
     "normKey": "tbilisi",
     "file": "tbilisi_fenrir.wav",
-    "size": 71502
+    "size": 63714,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "New Delhi",
     "normKey": "new_delhi",
     "file": "new_delhi_fenrir.wav",
-    "size": 63438
+    "size": 69474,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Jakarta",
     "normKey": "jakarta",
     "file": "jakarta_fenrir.wav",
-    "size": 59982
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Tehran",
     "normKey": "tehran",
     "file": "tehran_fenrir.wav",
-    "size": 55374
+    "size": 65634,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Baghdad",
     "normKey": "baghdad",
     "file": "baghdad_fenrir.wav",
-    "size": 55374
+    "size": 57954,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Jerusalem",
     "normKey": "jerusalem",
     "file": "jerusalem_fenrir.wav",
-    "size": 66894
+    "size": 67554,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Tokyo",
     "normKey": "tokyo",
     "file": "tokyo_fenrir.wav",
-    "size": 57954
+    "size": 59874,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Amman",
     "normKey": "amman",
     "file": "amman_fenrir.wav",
-    "size": 49614
+    "size": 52194,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Astana",
     "normKey": "astana",
     "file": "astana_fenrir.wav",
-    "size": 57678
+    "size": 56034,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Kuwait City",
     "normKey": "kuwait_city",
     "file": "kuwait_city_fenrir.wav",
-    "size": 77262
+    "size": 71394,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Bishkek",
     "normKey": "bishkek",
     "file": "bishkek_fenrir.wav",
-    "size": 57678
+    "size": 59874,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Vientiane",
     "normKey": "vientiane",
     "file": "vientiane_fenrir.wav",
-    "size": 65742
+    "size": 65634,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Beirut",
     "normKey": "beirut",
     "file": "beirut_fenrir.wav",
-    "size": 54222
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Kuala Lumpur",
     "normKey": "kuala_lumpur",
     "file": "kuala_lumpur_fenrir.wav",
-    "size": 84174
+    "size": 79074,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Male",
     "normKey": "male",
     "file": "male_fenrir.wav",
-    "size": 49614
+    "size": 59874,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Ulaanbaatar",
     "normKey": "ulaanbaatar",
     "file": "ulaanbaatar_fenrir.wav",
-    "size": 72654
+    "size": 79074,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Naypyidaw",
     "normKey": "naypyidaw",
     "file": "naypyidaw_fenrir.wav",
-    "size": 65742
+    "size": 69474,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Kathmandu",
     "normKey": "kathmandu",
     "file": "kathmandu_fenrir.wav",
-    "size": 72654
+    "size": 75234,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Pyongyang",
     "normKey": "pyongyang",
     "file": "pyongyang_fenrir.wav",
-    "size": 65742
+    "size": 77154,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Muscat",
     "normKey": "muscat",
     "file": "muscat_fenrir.wav",
-    "size": 59982
+    "size": 59874,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Islamabad",
     "normKey": "islamabad",
     "file": "islamabad_fenrir.wav",
-    "size": 72654
+    "size": 75234,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Ramallah",
     "normKey": "ramallah",
     "file": "ramallah_fenrir.wav",
-    "size": 54222
+    "size": 57954,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Manila",
     "normKey": "manila",
     "file": "manila_fenrir.wav",
-    "size": 49614
+    "size": 63714,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Doha",
     "normKey": "doha",
     "file": "doha_fenrir.wav",
-    "size": 48462
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Riyadh",
     "normKey": "riyadh",
     "file": "riyadh_fenrir.wav",
-    "size": 54222
+    "size": 65634,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Singapore",
     "normKey": "singapore",
     "file": "singapore_fenrir.wav",
-    "size": 61134
+    "size": 61794,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Seoul",
     "normKey": "seoul",
     "file": "seoul_fenrir.wav",
-    "size": 49614
+    "size": 56034,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Sri Jayawardenepura Kotte",
     "normKey": "sri_jayawardenepura_kotte",
     "file": "sri_jayawardenepura_kotte_fenrir.wav",
-    "size": 130254
+    "size": 136674,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Damascus",
     "normKey": "damascus",
     "file": "damascus_fenrir.wav",
-    "size": 66894
+    "size": 69474,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Taipei",
     "normKey": "taipei",
     "file": "taipei_fenrir.wav",
-    "size": 54222
+    "size": 59874,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Dushanbe",
     "normKey": "dushanbe",
     "file": "dushanbe_fenrir.wav",
-    "size": 69198
+    "size": 67554,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Bangkok",
     "normKey": "bangkok",
     "file": "bangkok_fenrir.wav",
-    "size": 57678
+    "size": 67554,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Dili",
     "normKey": "dili",
     "file": "dili_fenrir.wav",
-    "size": 46158
+    "size": 52194,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Ankara",
     "normKey": "ankara",
     "file": "ankara_fenrir.wav",
-    "size": 59982
+    "size": 59874,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Ashgabat",
     "normKey": "ashgabat",
     "file": "ashgabat_fenrir.wav",
-    "size": 66894
+    "size": 63714,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Abu Dhabi",
     "normKey": "abu_dhabi",
     "file": "abu_dhabi_fenrir.wav",
-    "size": 69198
+    "size": 82914,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Tashkent",
     "normKey": "tashkent",
     "file": "tashkent_fenrir.wav",
-    "size": 69198
+    "size": 63714,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Hanoi",
     "normKey": "hanoi",
     "file": "hanoi_fenrir.wav",
-    "size": 55374
+    "size": 59874,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Sana'a",
     "normKey": "sanaa",
     "file": "sanaa_fenrir.wav",
-    "size": 54222
+    "size": 65634,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Algiers",
     "normKey": "algiers",
     "file": "algiers_fenrir.wav",
-    "size": 61134
+    "size": 67554,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Luanda",
     "normKey": "luanda",
     "file": "luanda_fenrir.wav",
-    "size": 65742
+    "size": 65634,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Porto-Novo",
     "normKey": "porto_novo",
     "file": "porto_novo_fenrir.wav",
-    "size": 84174
+    "size": 65634,
+    "source": "gemini-3.8-flash-tts-fenrir"
   },
   {
     "capital": "Gaborone",
