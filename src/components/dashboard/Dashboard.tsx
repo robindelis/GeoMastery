@@ -12,11 +12,9 @@ import {
   Play,
   CheckCircle2,
   Target,
-  Award,
-  Mic,
-  X
+  Award
 } from 'lucide-react';
-import { Continent, TrainingCategory, MapViewMode, SRSItem, UserStats, AppSettings, TTSProvider } from '../../core/types';
+import { Continent, TrainingCategory, MapViewMode, SRSItem, UserStats, AppSettings } from '../../core/types';
 import { COUNTRIES } from '../../assets/data/countries';
 import { WATER_BODIES } from '../../assets/data/waterBodies';
 import { computeMasteryStats } from '../../core/srsEngine';
@@ -53,9 +51,6 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const [stats, setStats] = useState<UserStats>(() => StorageService.loadStats());
   const [settings, setSettings] = useState<AppSettings>(() => StorageService.loadSettings());
   const [selectedAttributeFilter, setSelectedAttributeFilter] = useState<string[]>(['capital', 'location']);
-  const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false);
-  const [testText, setTestText] = useState('Paris');
-  const [isTestingSpeech, setIsTestingSpeech] = useState(false);
 
   // Subscribe to storage updates (e.g. disk rehydration on launch)
   useEffect(() => {
@@ -143,39 +138,6 @@ export const Dashboard: React.FC<DashboardProps> = ({
     soundFx.setEnabled(next);
     speechEngine.setEnabled(next);
     if (next) soundFx.playClick();
-  };
-
-  const handleUpdateTTSProvider = (provider: TTSProvider) => {
-    const updated = { ...settings, ttsProvider: provider };
-    setSettings(updated);
-    StorageService.saveSettings(updated);
-    speechEngine.setProvider(provider);
-    soundFx.playClick();
-  };
-
-  const handleUpdateGeminiKey = (key: string) => {
-    const updated = { ...settings, geminiApiKey: key };
-    setSettings(updated);
-    StorageService.saveSettings(updated);
-    speechEngine.setGeminiApiKey(key);
-  };
-
-  const handleUpdateGeminiVoice = (voice: string) => {
-    const updated = { ...settings, geminiVoice: voice };
-    setSettings(updated);
-    StorageService.saveSettings(updated);
-    speechEngine.setGeminiVoice(voice);
-    soundFx.playClick();
-  };
-
-  const handleTestVoice = (customPhrase?: string) => {
-    const phrase = customPhrase || testText || 'Paris';
-    setIsTestingSpeech(true);
-    speechEngine.speak(phrase, {
-      onEnd: () => setIsTestingSpeech(false),
-      onError: () => setIsTestingSpeech(false)
-    });
-    setTimeout(() => setIsTestingSpeech(false), 2500);
   };
 
   const handleExportBackup = async () => {
@@ -301,15 +263,6 @@ export const Dashboard: React.FC<DashboardProps> = ({
               ) : (
                 <VolumeX className="w-4 h-4 text-slate-400" />
               )}
-            </button>
-
-            {/* Voice & TTS Settings */}
-            <button
-              onClick={() => setIsVoiceModalOpen(true)}
-              className="p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 text-sky-400 hover:text-sky-300 transition-colors shadow-md backdrop-blur-md flex items-center gap-1.5"
-              title="Voice & Speech Settings (Google Stream vs Gemini 3.8 Flash TTS)"
-            >
-              <Mic className="w-4 h-4" />
             </button>
 
             {/* Backup Export */}
@@ -685,225 +638,6 @@ export const Dashboard: React.FC<DashboardProps> = ({
         </div>
       </div>
     </div>
-
-    {/* Voice & Speech Synthesis Settings Modal */}
-    {isVoiceModalOpen && (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-        <div className="bg-slate-900/95 border border-slate-700/90 rounded-3xl max-w-xl w-full shadow-2xl p-6 sm:p-7 flex flex-col gap-5 text-left relative glass-card max-h-[90vh] overflow-y-auto">
-          {/* Header */}
-          <div className="flex items-center justify-between pb-4 border-b border-slate-800">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400/30 flex items-center justify-center text-sky-400">
-                <Mic className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-lg font-extrabold text-white tracking-tight">
-                  Voice & Speech Synthesis Settings
-                </h3>
-                <p className="text-xs text-slate-400">
-                  Vocal pronunciation for capital cities and map locations
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={() => setIsVoiceModalOpen(false)}
-              className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-
-          {/* Provider Options */}
-          <div className="flex flex-col gap-3">
-            <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
-              Select Speech Engine
-            </span>
-
-            {/* 1. Google Audio Stream */}
-            <label
-              className={`flex items-start gap-3.5 p-4 rounded-2xl border transition-all cursor-pointer ${
-                (settings.ttsProvider || 'google-stream') === 'google-stream'
-                  ? 'bg-sky-950/40 border-sky-500 ring-2 ring-sky-500/30 text-white'
-                  : 'bg-slate-800/40 border-slate-700/80 hover:bg-slate-800/70 text-slate-300'
-              }`}
-            >
-              <input
-                type="radio"
-                name="ttsProvider"
-                value="google-stream"
-                checked={(settings.ttsProvider || 'google-stream') === 'google-stream'}
-                onChange={() => handleUpdateTTSProvider('google-stream')}
-                className="mt-1 accent-sky-500"
-              />
-              <div className="flex-1 flex flex-col gap-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-bold text-white">Google Audio Stream</span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                    Recommended • Free
-                  </span>
-                </div>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Direct HTTP audio stream. Instant playback with zero setup or API keys required. Works seamlessly on Linux, Electron, macOS & Windows.
-                </p>
-              </div>
-            </label>
-
-            {/* 2. Google Gemini 3.8 Flash TTS */}
-            <label
-              className={`flex items-start gap-3.5 p-4 rounded-2xl border transition-all cursor-pointer ${
-                settings.ttsProvider === 'gemini-tts'
-                  ? 'bg-purple-950/40 border-purple-500 ring-2 ring-purple-500/30 text-white'
-                  : 'bg-slate-800/40 border-slate-700/80 hover:bg-slate-800/70 text-slate-300'
-              }`}
-            >
-              <input
-                type="radio"
-                name="ttsProvider"
-                value="gemini-tts"
-                checked={settings.ttsProvider === 'gemini-tts'}
-                onChange={() => handleUpdateTTSProvider('gemini-tts')}
-                className="mt-1 accent-purple-500"
-              />
-              <div className="flex-1 flex flex-col gap-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-bold text-white">Gemini 3.8 Flash TTS</span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                    New • Studio Quality
-                  </span>
-                </div>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Google's newest neural speech model (September 2026). Generates studio-fidelity pronunciation with natural inflection. (Auto-falls back to Google Stream if offline or invalid key).
-                </p>
-              </div>
-            </label>
-
-            {/* 3. System Web Speech */}
-            <label
-              className={`flex items-start gap-3.5 p-4 rounded-2xl border transition-all cursor-pointer ${
-                settings.ttsProvider === 'web-speech'
-                  ? 'bg-sky-950/40 border-sky-500 ring-2 ring-sky-500/30 text-white'
-                  : 'bg-slate-800/40 border-slate-700/80 hover:bg-slate-800/70 text-slate-300'
-              }`}
-            >
-              <input
-                type="radio"
-                name="ttsProvider"
-                value="web-speech"
-                checked={settings.ttsProvider === 'web-speech'}
-                onChange={() => handleUpdateTTSProvider('web-speech')}
-                className="mt-1 accent-sky-500"
-              />
-              <div className="flex-1 flex flex-col gap-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-bold text-white">System Web Speech API</span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-700 text-slate-300">
-                    OS Built-in
-                  </span>
-                </div>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Uses the platform's native synthesizer. Note: Chromium on Linux will produce no sound unless speech-dispatcher is installed on the host system.
-                </p>
-              </div>
-            </label>
-          </div>
-
-          {/* Gemini Configuration (visible if Gemini selected) */}
-          {settings.ttsProvider === 'gemini-tts' && (
-            <div className="p-4 rounded-2xl bg-purple-950/30 border border-purple-800/50 flex flex-col gap-3">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-purple-200">
-                  Gemini Voice Persona
-                </label>
-                <select
-                  value={settings.geminiVoice || 'Kore'}
-                  onChange={(e) => handleUpdateGeminiVoice(e.target.value)}
-                  className="w-full bg-slate-900 border border-purple-700/60 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
-                >
-                  <option value="Kore">Kore (Warm, clear, balanced - Recommended)</option>
-                  <option value="Aoede">Aoede (Brisk, bright)</option>
-                  <option value="Puck">Puck (Energetic, friendly)</option>
-                  <option value="Fenrir">Fenrir (Deep, resonant)</option>
-                  <option value="Charon">Charon (Calm, authoritative)</option>
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-purple-200 flex items-center justify-between">
-                  <span>Google Gemini API Key</span>
-                  <span className="text-[10px] text-purple-400/80 font-normal">Starts with AIzaSy...</span>
-                </label>
-                <input
-                  type="password"
-                  value={settings.geminiApiKey || ''}
-                  onChange={(e) => handleUpdateGeminiKey(e.target.value)}
-                  placeholder={speechEngine.getGeminiApiKey() ? '•••••••••••••••••••••••• (Key Detected)' : 'Paste API Key from Google AI Studio'}
-                  className="w-full bg-slate-900 border border-purple-700/60 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-400 font-mono"
-                />
-                <p className="text-[10px] text-slate-400">
-                  Keys in <code className="text-purple-300">.env</code> are automatically detected. If left blank or invalid, the engine transparently falls back to Google Audio Stream.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Test Voice Playground */}
-          <div className="p-4 rounded-2xl bg-slate-950/50 border border-slate-800 flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-300">Test Voice Pronunciation</span>
-              {speechEngine.hasLocalRecording(testText, settings.geminiVoice) && (
-                <span className="text-[10px] text-emerald-400 font-medium flex items-center gap-1 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                  <span>⚡</span> Local Studio Recording (0 API calls)
-                </span>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                value={testText}
-                onChange={(e) => setTestText(e.target.value)}
-                placeholder="e.g. Washington, D.C."
-                className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:ring-2 focus:ring-sky-400"
-              />
-              <button
-                onClick={() => handleTestVoice(testText)}
-                disabled={isTestingSpeech}
-                className="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 active:scale-95 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md transition-all disabled:opacity-50"
-              >
-                <Play className={`w-3.5 h-3.5 fill-slate-950 ${isTestingSpeech ? 'animate-pulse' : ''}`} />
-                <span>{isTestingSpeech ? 'Playing...' : 'Test Voice'}</span>
-              </button>
-            </div>
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-[10px] text-slate-500">Quick samples:</span>
-              {['Paris', 'Washington, D.C.', 'Buenos Aires', 'Tokyo', 'Reykjavik'].map((city) => (
-                <button
-                  key={city}
-                  onClick={() => {
-                    setTestText(city);
-                    handleTestVoice(city);
-                  }}
-                  className="px-2 py-0.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-[10px] font-medium transition-colors flex items-center gap-1"
-                >
-                  <span>{city}</span>
-                  <span className="text-[9px] text-emerald-400" title="Pre-recorded locally">⚡</span>
-                </button>
-              ))}
-            </div>
-            <p className="text-[10px] text-slate-400">
-              ⚡ Pre-recorded locally across all 5 voices — audio plays instantly from local disk with 0 network calls.
-            </p>
-          </div>
-
-          {/* Done Button */}
-          <button
-            onClick={() => setIsVoiceModalOpen(false)}
-            className="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold text-xs transition-colors"
-          >
-            Done
-          </button>
-        </div>
-      </div>
-    )}
   </div>
 </PlanetaryBackground>
 );

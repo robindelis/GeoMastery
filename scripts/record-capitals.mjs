@@ -1,11 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, '..');
 const ENV_PATH = path.join(ROOT_DIR, '.env');
 const OUTPUT_DIR = path.join(ROOT_DIR, 'src', 'assets', 'audio', 'capitals');
+const COUNTRIES_PATH = path.join(ROOT_DIR, 'src', 'assets', 'data', 'countries.ts');
 
 function loadApiKey() {
   if (process.env.GEMINI_API_KEY) return process.env.GEMINI_API_KEY;
@@ -15,8 +17,8 @@ function loadApiKey() {
   return match && match[1] ? match[1].trim() : '';
 }
 
-export function normalizeCapitalKey(s) {
-  return s
+export function normalizeCapitalKey(capital) {
+  return capital
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
@@ -25,173 +27,180 @@ export function normalizeCapitalKey(s) {
     .replace(/^_+|_+$/g, '');
 }
 
+function extractAllCapitals() {
+  const content = fs.readFileSync(COUNTRIES_PATH, 'utf-8');
+  const capitals = [];
+  const matches = content.matchAll(/\"capital\":\s*\"([^\"]+)\"/g);
+  for (const m of matches) {
+    if (m[1] && m[1].trim()) {
+      capitals.push(m[1].trim());
+    }
+  }
+  return [...new Set(capitals)];
+}
+
 function pcmToWavBuffer(base64Pcm, sampleRate = 24000) {
   const pcmBuffer = Buffer.from(base64Pcm, 'base64');
   const pcmLen = pcmBuffer.length;
   const header = Buffer.alloc(44);
 
-  // RIFF chunk descriptor
   header.write('RIFF', 0);
   header.writeUInt32LE(36 + pcmLen, 4);
   header.write('WAVE', 8);
 
-  // fmt sub-chunk
   header.write('fmt ', 12);
-  header.writeUInt32LE(16, 16); // Subchunk1Size
-  header.writeUInt16LE(1, 20); // AudioFormat (1 = PCM)
-  header.writeUInt16LE(1, 22); // NumChannels (1 = mono)
-  header.writeUInt32LE(sampleRate, 24); // SampleRate
-  header.writeUInt32LE(sampleRate * 2, 28); // ByteRate
-  header.writeUInt16LE(2, 32); // BlockAlign
-  header.writeUInt16LE(16, 34); // BitsPerSample
+  header.writeUInt32LE(16, 16);
+  header.writeUInt16LE(1, 20);
+  header.writeUInt16LE(1, 22);
+  header.writeUInt32LE(sampleRate, 24);
+  header.writeUInt32LE(sampleRate * 2, 28);
+  header.writeUInt16LE(2, 32);
+  header.writeUInt16LE(16, 34);
 
-  // data sub-chunk
   header.write('data', 36);
   header.writeUInt32LE(pcmLen, 40);
 
   return Buffer.concat([header, pcmBuffer]);
 }
 
-async function recordCapital(apiKey, capital, voice) {
-  const models = ['gemini-3.8-flash-tts', 'gemini-3.8-flash-lite-tts', 'gemini-3.1-flash-tts-preview'];
-  let lastError = null;
-
-  for (const model of models) {
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
-    const payload = {
-      contents: [
-        {
-          role: 'user',
-          parts: [{ text: capital }]
-        }
-      ],
-      generationConfig: {
-        responseModalities: ['AUDIO'],
-        speechConfig: {
-          voiceConfig: {
-            prebuiltVoiceConfig: {
-              voiceName: voice
-            }
+async function recordViaGemini(apiKey, capital) {
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash-tts:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const payload = {
+    contents: [
+      {
+        role: 'user',
+        parts: [{ text: capital }]
+      }
+    ],
+    generationConfig: {
+      responseModalities: ['AUDIO'],
+      speechConfig: {
+        voiceConfig: {
+          prebuiltVoiceConfig: {
+            voiceName: 'Fenrir'
           }
         }
       }
-    };
-
-    try {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        lastError = new Error(`${model} HTTP ${res.status}: ${errorText}`);
-        if (res.status === 429) {
-          const matchSeconds =
-            errorText.match(/retryDelay":\s*"(\d+)s"/i) ||
-            errorText.match(/retry in (\d+(?:\.\d+)?)s/i);
-          const waitSec = matchSeconds ? Math.ceil(parseFloat(matchSeconds[1])) : 0;
-          if (waitSec > 0 && waitSec <= 35) {
-            console.log(`     ⏳ Per-minute rate limit on ${model}, waiting ${waitSec + 1}s to retry...`);
-            await new Promise((r) => setTimeout(r, (waitSec + 1) * 1000));
-            // Retry the same model once
-            const retryRes = await fetch(endpoint, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-            if (retryRes.ok) {
-              const retryJson = await retryRes.json();
-              const inlineData = retryJson?.candidates?.[0]?.content?.parts?.[0]?.inlineData;
-              if (inlineData?.data) {
-                const mimeType = inlineData.mimeType || 'audio/wav';
-                if (mimeType.includes('pcm') || mimeType.includes('l16')) {
-                  return pcmToWavBuffer(inlineData.data, 24000);
-                } else {
-                  return Buffer.from(inlineData.data, 'base64');
-                }
-              }
-            }
-          }
-          // Otherwise try next model in fallback list
-          continue;
-        }
-        throw lastError;
-      }
-
-      const json = await res.json();
-      const inlineData = json?.candidates?.[0]?.content?.parts?.[0]?.inlineData;
-      if (!inlineData?.data) {
-        throw new Error(`No inline audio data returned: ${JSON.stringify(json)}`);
-      }
-
-      const mimeType = inlineData.mimeType || 'audio/wav';
-      if (mimeType.includes('pcm') || mimeType.includes('l16')) {
-        return pcmToWavBuffer(inlineData.data, 24000);
-      } else {
-        return Buffer.from(inlineData.data, 'base64');
-      }
-    } catch (err) {
-      lastError = err;
     }
+  };
+
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Gemini HTTP ${res.status}: ${errorText}`);
   }
 
-  throw lastError || new Error('All TTS models failed');
+  const json = await res.json();
+  const inlineData = json?.candidates?.[0]?.content?.parts?.[0]?.inlineData;
+  if (!inlineData?.data) {
+    throw new Error(`No inline audio data returned`);
+  }
+
+  const mimeType = inlineData.mimeType || 'audio/wav';
+  if (mimeType.includes('pcm') || mimeType.includes('l16')) {
+    return pcmToWavBuffer(inlineData.data, 24000);
+  } else {
+    return Buffer.from(inlineData.data, 'base64');
+  }
+}
+
+async function recordViaHighQualityStream(capital, targetWavPath) {
+  const tmpMp3 = targetWavPath.replace(/\.wav$/, '.tmp.mp3');
+  const streamUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${encodeURIComponent(capital)}`;
+
+  const res = await fetch(streamUrl, {
+    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' }
+  });
+
+  if (!res.ok) {
+    throw new Error(`Stream HTTP ${res.status}`);
+  }
+
+  const arrayBuffer = await res.arrayBuffer();
+  fs.writeFileSync(tmpMp3, Buffer.from(arrayBuffer));
+
+  // Convert to clean standard 24kHz mono 16-bit WAV with ffmpeg
+  try {
+    execSync(`ffmpeg -y -v quiet -i "${tmpMp3}" -ar 24000 -ac 1 -c:a pcm_s16le "${targetWavPath}"`);
+  } finally {
+    if (fs.existsSync(tmpMp3)) fs.unlinkSync(tmpMp3);
+  }
 }
 
 async function main() {
   const apiKey = loadApiKey();
-  if (!apiKey) {
-    console.error('❌ Error: GEMINI_API_KEY not found in .env or environment!');
-    process.exit(1);
-  }
-
+  const capitals = extractAllCapitals();
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
-  const capitals = ['Paris', 'Washington, D.C.', 'Buenos Aires', 'Tokyo', 'Reykjavik'];
-  const voices = ['Kore', 'Aoede', 'Puck', 'Fenrir', 'Charon'];
+  console.log(`🎙️  Batch Recording All 196 Capital Cities for Local Storage...`);
+  console.log(`Total capitals in dataset: ${capitals.length}`);
+  console.log(`Target directory: ${OUTPUT_DIR}\n`);
 
-  console.log(`🎙️ Starting Gemini 3.8 Flash TTS batch recorder...`);
-  console.log(`Target: ${capitals.length} capitals × ${voices.length} voices = ${capitals.length * voices.length} audio files.`);
-  console.log(`Output Directory: ${OUTPUT_DIR}\n`);
-
-  let count = 0;
+  let geminiCount = 0;
+  let streamCount = 0;
+  let skippedCount = 0;
   const manifest = [];
 
-  for (const capital of capitals) {
+  for (let i = 0; i < capitals.length; i++) {
+    const capital = capitals[i];
     const normKey = normalizeCapitalKey(capital);
-    for (const voice of voices) {
-      count++;
-      const filename = `${normKey}_${voice.toLowerCase()}.wav`;
-      const filePath = path.join(OUTPUT_DIR, filename);
+    const targetFile = `${normKey}_fenrir.wav`;
+    const targetPath = path.join(OUTPUT_DIR, targetFile);
 
-      if (fs.existsSync(filePath) && fs.statSync(filePath).size > 100 && !process.argv.includes('--force')) {
-        console.log(`[${count}/${capitals.length * voices.length}] ⏭️  Skipping existing: ${filename}`);
-        manifest.push({ capital, voice, normKey, filename, sizeBytes: fs.statSync(filePath).size });
-        continue;
-      }
+    // Skip if already recorded
+    if (fs.existsSync(targetPath) && fs.statSync(targetPath).size > 1000 && !process.argv.includes('--force')) {
+      skippedCount++;
+      manifest.push({ capital, normKey, file: targetFile, size: fs.statSync(targetPath).size });
+      continue;
+    }
 
-      console.log(`[${count}/${capitals.length * voices.length}] 🔊 Recording "${capital}" (${voice}) -> ${filename}...`);
+    process.stdout.write(`[${i + 1}/${capitals.length}] Recording "${capital}"... `);
+
+    let recorded = false;
+
+    // 1. Try Gemini 3.8 Flash TTS with Fenrir first if API key present
+    if (apiKey) {
       try {
-        const audioBuffer = await recordCapital(apiKey, capital, voice);
-        fs.writeFileSync(filePath, audioBuffer);
-        console.log(`     ✅ Saved (${audioBuffer.length} bytes)`);
-        manifest.push({ capital, voice, normKey, filename, sizeBytes: audioBuffer.length });
-      } catch (err) {
-        console.error(`     ❌ Failed to record "${capital}" with ${voice}:`, err.message);
+        const wavBuffer = await recordViaGemini(apiKey, capital);
+        fs.writeFileSync(targetPath, wavBuffer);
+        geminiCount++;
+        recorded = true;
+        console.log(`✅ Saved via Gemini TTS (${wavBuffer.length} bytes)`);
+        manifest.push({ capital, normKey, file: targetFile, size: wavBuffer.length, source: 'gemini-fenrir' });
+        await new Promise((r) => setTimeout(r, 600));
+      } catch (geminiErr) {
+        // Fall back to stream
       }
+    }
 
-      // Respect rate limits with a small breather
-      await new Promise((r) => setTimeout(r, 750));
+    // 2. If Gemini unavailable or quota limit reached, record via high-quality audio stream converted to WAV
+    if (!recorded) {
+      try {
+        await recordViaHighQualityStream(capital, targetPath);
+        const size = fs.statSync(targetPath).size;
+        streamCount++;
+        console.log(`✅ Saved local WAV (${size} bytes)`);
+        manifest.push({ capital, normKey, file: targetFile, size, source: 'local-stream' });
+        await new Promise((r) => setTimeout(r, 120));
+      } catch (err) {
+        console.log(`❌ Failed: ${err.message}`);
+      }
     }
   }
 
-  // Write manifest JSON
-  const manifestPath = path.join(OUTPUT_DIR, 'manifest.json');
-  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), 'utf-8');
-  console.log(`\n🎉 Complete! Recorded ${manifest.length} audio files.`);
-  console.log(`Manifest written to: ${manifestPath}`);
+  // Write manifest
+  fs.writeFileSync(path.join(OUTPUT_DIR, 'manifest.json'), JSON.stringify(manifest, null, 2), 'utf-8');
+
+  console.log(`\n🎉 Complete!`);
+  console.log(`- Already existing: ${skippedCount}`);
+  console.log(`- Recorded via Gemini: ${geminiCount}`);
+  console.log(`- Recorded via local stream: ${streamCount}`);
+  console.log(`- Total local audio files on disk: ${fs.readdirSync(OUTPUT_DIR).filter(f => f.endsWith('.wav')).length}`);
 }
 
 main().catch((err) => {

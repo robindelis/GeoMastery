@@ -76,60 +76,38 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
     expect(mockAudioPlay).not.toHaveBeenCalled();
   });
 
-  it('speaks via Google stream for unrecorded capitals and encodes multi-word capitals properly', () => {
-    const multiWord = 'Sri Jayawardenepura Kotte';
-    engine.speak(multiWord);
-
-    expect(createdAudios.length).toBe(1);
-    expect(createdAudios[0].src).toContain('translate.google.com/translate_tts');
-    expect(createdAudios[0].src).toContain(encodeURIComponent(multiWord));
-    expect(mockAudioPlay).toHaveBeenCalledTimes(1);
-  });
-
-  it('caches audio URLs to prevent redundant network string building', () => {
-    engine.speakViaGoogleStream('Port of Spain');
-    expect(createdAudios.length).toBe(1);
-
-    engine.speakViaGoogleStream('Port of Spain');
-    expect(createdAudios.length).toBe(2);
-    expect(createdAudios[0].src).toBe(createdAudios[1].src);
-  });
-
-  it('falls back to Google audio stream if Gemini TTS fails or lacks API key', async () => {
-    engine.setProvider('gemini-tts');
-    engine.setGeminiApiKey(''); // No key
-
-    globalThis.fetch = vi.fn().mockResolvedValue({ ok: false, status: 400, text: async () => 'Invalid Key' });
-
-    engine.speak('Kuala Lumpur');
-
-    // Wait microtask tick for async Gemini check
-    await new Promise((r) => setTimeout(r, 20));
-
-    expect(createdAudios.length).toBe(1);
-    expect(createdAudios[0].src).toContain('translate.google.com');
-    expect(createdAudios[0].src).toContain(encodeURIComponent('Kuala Lumpur'));
-    expect(mockAudioPlay).toHaveBeenCalled();
-  });
-
-  it('prefers local pre-recorded files for sample capitals with zero API calls', () => {
+  it('prefers local pre-recorded Fenrir files for all capitals with zero API calls', () => {
     const mockFetch = vi.fn();
     globalThis.fetch = mockFetch;
 
     expect(engine.hasLocalRecording('Paris')).toBe(true);
     expect(engine.hasLocalRecording('Washington, D.C.')).toBe(true);
-    expect(engine.hasLocalRecording('Tokyo', 'Fenrir')).toBe(true);
+    expect(engine.hasLocalRecording('Tokyo')).toBe(true);
+    expect(engine.hasLocalRecording('Sri Jayawardenepura Kotte')).toBe(true);
 
     engine.speak('Paris');
 
     expect(createdAudios.length).toBe(1);
-    expect(createdAudios[0].src).toContain('paris_');
+    expect(createdAudios[0].src).toContain('paris_fenrir');
     expect(mockFetch).not.toHaveBeenCalled();
     expect(mockAudioPlay).toHaveBeenCalledTimes(1);
+
+    engine.speak('Washington, D.C.');
+    expect(createdAudios.length).toBe(2);
+    expect(createdAudios[1].src).toContain('washington_dc_fenrir');
+    expect(mockFetch).not.toHaveBeenCalled();
   });
 
-  it('successfully invokes Gemini 3.8 Flash TTS when capital is not pre-recorded', async () => {
-    engine.setProvider('gemini-tts');
+  it('caches audio URLs to prevent redundant network string building in stream utility', () => {
+    engine.speakViaGoogleStream('Custom Place');
+    expect(createdAudios.length).toBe(1);
+
+    engine.speakViaGoogleStream('Custom Place');
+    expect(createdAudios.length).toBe(2);
+    expect(createdAudios[0].src).toBe(createdAudios[1].src);
+  });
+
+  it('invokes speakViaGeminiTTS with Fenrir voice configuration for custom phrases', async () => {
     engine.setGeminiApiKey('AIzaSyValidDummyKey');
 
     const mockWavBase64 = 'UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
@@ -154,16 +132,14 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
     });
     globalThis.fetch = mockFetch;
 
-    // Use unrecorded capital to trigger live Gemini TTS API call
-    engine.speak('Ulaanbaatar');
-
-    await new Promise((r) => setTimeout(r, 10));
+    // Use non-capital string so getLocalCapitalAudioUrl is bypassed
+    await engine.speakViaGeminiTTS('CustomUnrecordedPhrase');
 
     expect(mockFetch).toHaveBeenCalled();
     const fetchUrl = mockFetch.mock.calls[0][0];
     const fetchBody = JSON.parse(mockFetch.mock.calls[0][1].body);
     expect(fetchUrl).toContain('gemini-3.8-flash-tts:generateContent');
-    expect(fetchBody.generationConfig.speechConfig.voiceConfig.prebuiltVoiceConfig.voiceName).toBe('Kore');
+    expect(fetchBody.generationConfig.speechConfig.voiceConfig.prebuiltVoiceConfig.voiceName).toBe('Fenrir');
     expect(createdAudios.length).toBe(1);
     expect(createdAudios[0].src).toBe(`data:audio/wav;base64,${mockWavBase64}`);
     expect(mockAudioPlay).toHaveBeenCalled();

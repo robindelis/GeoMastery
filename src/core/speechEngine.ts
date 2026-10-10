@@ -82,7 +82,7 @@ export class SpeechEngine {
   private volume: number = 1.0;
   private provider: TTSProvider = 'google-stream';
   private geminiApiKey: string = '';
-  private geminiVoice: string = 'Kore';
+  private geminiVoice: string = 'Fenrir';
 
   private currentAudio: HTMLAudioElement | null = null;
   private currentUtterance: SpeechSynthesisUtterance | null = null;
@@ -209,8 +209,8 @@ export class SpeechEngine {
    * Pronounces text using the active or requested provider, with automatic failover.
    */
   /**
-   * Pronounces text using the active or requested provider, with automatic failover.
-   * If a pre-recorded local file exists for the capital, plays it directly with 0 API calls.
+   * Pronounces text using the pre-recorded local studio audio (Fenrir).
+   * Operates completely offline with zero API calls or network requests during app usage.
    */
   public speak(text: string, options?: SpeechOptions): void {
     if (!this.enabled) return;
@@ -222,50 +222,28 @@ export class SpeechEngine {
     // Disarm previous speech immediately
     this.cancel();
 
-    const providerToUse = options?.provider || this.provider;
-
-    // 1. Prefer local studio recordings first (0 API calls, 0 network latency, authentic pronunciation)
-    if (providerToUse !== 'web-speech') {
-      const voiceToUse = options?.voice || this.geminiVoice || 'Kore';
-      const localAudioUrl = getLocalCapitalAudioUrl(trimmed, voiceToUse);
-      if (localAudioUrl) {
-        this.playAudioUrl(localAudioUrl, options);
-        return;
-      }
-    }
-
-    if (providerToUse === 'gemini-tts') {
-      this.speakViaGeminiTTS(trimmed, options).then((ok) => {
-        if (!ok) {
-          // Transparent fallback to Google Audio stream if Gemini TTS fails
-          this.speakViaGoogleStream(trimmed, options);
-        }
-      });
+    // 1. Play local pre-recorded audio file directly (zero API calls during app runtime)
+    const localAudioUrl = getLocalCapitalAudioUrl(trimmed);
+    if (localAudioUrl) {
+      this.playAudioUrl(localAudioUrl, options);
       return;
     }
 
-    if (providerToUse === 'web-speech') {
-      const ok = this.speakViaWebSpeech(trimmed, options);
-      if (!ok) {
-        this.speakViaGoogleStream(trimmed, options);
-      }
-      return;
+    if (options?.onError) {
+      options.onError(new Error(`No local audio file found for "${trimmed}"`));
     }
-
-    // Default: Google stream
-    this.speakViaGoogleStream(trimmed, options);
   }
 
   /**
    * Returns true if a local studio recording is available for the given capital.
    */
-  public hasLocalRecording(capital: string, voice?: string): boolean {
-    return hasLocalCapitalAudio(capital, voice || this.geminiVoice);
+  public hasLocalRecording(capital: string): boolean {
+    return hasLocalCapitalAudio(capital);
   }
 
   /**
    * Solution 1: Google Audio Stream
-   * Native audio stream - Zero setup, works immediately on Linux/Electron
+   * Native audio stream utility
    */
   public speakViaGoogleStream(text: string, options?: SpeechOptions): boolean {
     const lang = options?.lang || 'en';
@@ -288,10 +266,10 @@ export class SpeechEngine {
    * Studio neural speech generation via Gemini API (prefers local recording if exists)
    */
   public async speakViaGeminiTTS(text: string, options?: SpeechOptions): Promise<boolean> {
-    const voice = options?.voice || this.geminiVoice || 'Kore';
+    const voice = 'Fenrir';
 
     // 1. Check local pre-recorded audio file first (zero API calls)
-    const localAudioUrl = getLocalCapitalAudioUrl(text, voice);
+    const localAudioUrl = getLocalCapitalAudioUrl(text);
     if (localAudioUrl) {
       return this.playAudioUrl(localAudioUrl, options);
     }

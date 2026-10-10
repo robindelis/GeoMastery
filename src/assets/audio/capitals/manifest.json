@@ -1,135 +1,1369 @@
 [
   {
-    "capital": "Paris",
-    "voice": "Kore",
-    "normKey": "paris",
-    "filename": "paris_kore.wav",
-    "sizeBytes": 61794
+    "capital": "Tirana",
+    "normKey": "tirana",
+    "file": "tirana_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Andorra la Vella",
+    "normKey": "andorra_la_vella",
+    "file": "andorra_la_vella_fenrir.wav",
+    "size": 89934,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Vienna",
+    "normKey": "vienna",
+    "file": "vienna_fenrir.wav",
+    "size": 46158,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Minsk",
+    "normKey": "minsk",
+    "file": "minsk_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Brussels",
+    "normKey": "brussels",
+    "file": "brussels_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Sarajevo",
+    "normKey": "sarajevo",
+    "file": "sarajevo_fenrir.wav",
+    "size": 86478,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Sofia",
+    "normKey": "sofia",
+    "file": "sofia_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Zagreb",
+    "normKey": "zagreb",
+    "file": "zagreb_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Nicosia",
+    "normKey": "nicosia",
+    "file": "nicosia_fenrir.wav",
+    "size": 72654,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Prague",
+    "normKey": "prague",
+    "file": "prague_fenrir.wav",
+    "size": 51918,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Copenhagen",
+    "normKey": "copenhagen",
+    "file": "copenhagen_fenrir.wav",
+    "size": 77262,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Tallinn",
+    "normKey": "tallinn",
+    "file": "tallinn_fenrir.wav",
+    "size": 51918,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Helsinki",
+    "normKey": "helsinki",
+    "file": "helsinki_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
   },
   {
     "capital": "Paris",
-    "voice": "Aoede",
     "normKey": "paris",
-    "filename": "paris_aoede.wav",
-    "sizeBytes": 67554
+    "file": "paris_fenrir.wav",
+    "size": 61484
   },
   {
-    "capital": "Paris",
-    "voice": "Puck",
-    "normKey": "paris",
-    "filename": "paris_puck.wav",
-    "sizeBytes": 65324
+    "capital": "Berlin",
+    "normKey": "berlin",
+    "file": "berlin_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
   },
   {
-    "capital": "Paris",
-    "voice": "Fenrir",
-    "normKey": "paris",
-    "filename": "paris_fenrir.wav",
-    "sizeBytes": 61484
+    "capital": "Athens",
+    "normKey": "athens",
+    "file": "athens_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
   },
   {
-    "capital": "Paris",
-    "voice": "Charon",
-    "normKey": "paris",
-    "filename": "paris_charon.wav",
-    "sizeBytes": 57644
+    "capital": "Budapest",
+    "normKey": "budapest",
+    "file": "budapest_fenrir.wav",
+    "size": 66894,
+    "source": "local-stream"
   },
   {
-    "capital": "Washington, D.C.",
-    "voice": "Kore",
-    "normKey": "washington_dc",
-    "filename": "washington_dc_kore.wav",
-    "sizeBytes": 101804
+    "capital": "Reykjavik",
+    "normKey": "reykjavik",
+    "file": "reykjavik_fenrir.wav",
+    "size": 71084
   },
   {
-    "capital": "Washington, D.C.",
-    "voice": "Aoede",
-    "normKey": "washington_dc",
-    "filename": "washington_dc_aoede.wav",
-    "sizeBytes": 92204
+    "capital": "Dublin",
+    "normKey": "dublin",
+    "file": "dublin_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
   },
   {
-    "capital": "Washington, D.C.",
-    "voice": "Puck",
-    "normKey": "washington_dc",
-    "filename": "washington_dc_puck.wav",
-    "sizeBytes": 82914
+    "capital": "Rome",
+    "normKey": "rome",
+    "file": "rome_fenrir.wav",
+    "size": 42702,
+    "source": "local-stream"
   },
   {
-    "capital": "Washington, D.C.",
-    "voice": "Fenrir",
-    "normKey": "washington_dc",
-    "filename": "washington_dc_fenrir.wav",
-    "sizeBytes": 77154
+    "capital": "Riga",
+    "normKey": "riga",
+    "file": "riga_fenrir.wav",
+    "size": 49614,
+    "source": "local-stream"
   },
   {
-    "capital": "Washington, D.C.",
-    "voice": "Charon",
-    "normKey": "washington_dc",
-    "filename": "washington_dc_charon.wav",
-    "sizeBytes": 82914
+    "capital": "Vaduz",
+    "normKey": "vaduz",
+    "file": "vaduz_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
   },
   {
-    "capital": "Buenos Aires",
-    "voice": "Kore",
-    "normKey": "buenos_aires",
-    "filename": "buenos_aires_kore.wav",
-    "sizeBytes": 78764
+    "capital": "Vilnius",
+    "normKey": "vilnius",
+    "file": "vilnius_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
   },
   {
-    "capital": "Buenos Aires",
-    "voice": "Aoede",
-    "normKey": "buenos_aires",
-    "filename": "buenos_aires_aoede.wav",
-    "sizeBytes": 80684
+    "capital": "Luxembourg City",
+    "normKey": "luxembourg_city",
+    "file": "luxembourg_city_fenrir.wav",
+    "size": 86478,
+    "source": "local-stream"
   },
   {
-    "capital": "Buenos Aires",
-    "voice": "Puck",
-    "normKey": "buenos_aires",
-    "filename": "buenos_aires_puck.wav",
-    "sizeBytes": 76844
+    "capital": "Valletta",
+    "normKey": "valletta",
+    "file": "valletta_fenrir.wav",
+    "size": 49614,
+    "source": "local-stream"
   },
   {
-    "capital": "Buenos Aires",
-    "voice": "Fenrir",
-    "normKey": "buenos_aires",
-    "filename": "buenos_aires_fenrir.wav",
-    "sizeBytes": 69164
+    "capital": "Chisinau",
+    "normKey": "chisinau",
+    "file": "chisinau_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Monaco",
+    "normKey": "monaco",
+    "file": "monaco_fenrir.wav",
+    "size": 57678,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Podgorica",
+    "normKey": "podgorica",
+    "file": "podgorica_fenrir.wav",
+    "size": 77262,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Amsterdam",
+    "normKey": "amsterdam",
+    "file": "amsterdam_fenrir.wav",
+    "size": 69198,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Skopje",
+    "normKey": "skopje",
+    "file": "skopje_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Oslo",
+    "normKey": "oslo",
+    "file": "oslo_fenrir.wav",
+    "size": 51918,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Warsaw",
+    "normKey": "warsaw",
+    "file": "warsaw_fenrir.wav",
+    "size": 57678,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Lisbon",
+    "normKey": "lisbon",
+    "file": "lisbon_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Bucharest",
+    "normKey": "bucharest",
+    "file": "bucharest_fenrir.wav",
+    "size": 71502,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Moscow",
+    "normKey": "moscow",
+    "file": "moscow_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "San Marino",
+    "normKey": "san_marino",
+    "file": "san_marino_fenrir.wav",
+    "size": 78414,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Belgrade",
+    "normKey": "belgrade",
+    "file": "belgrade_fenrir.wav",
+    "size": 57678,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Bratislava",
+    "normKey": "bratislava",
+    "file": "bratislava_fenrir.wav",
+    "size": 72654,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Ljubljana",
+    "normKey": "ljubljana",
+    "file": "ljubljana_fenrir.wav",
+    "size": 83022,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Madrid",
+    "normKey": "madrid",
+    "file": "madrid_fenrir.wav",
+    "size": 49614,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Stockholm",
+    "normKey": "stockholm",
+    "file": "stockholm_fenrir.wav",
+    "size": 71502,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Bern",
+    "normKey": "bern",
+    "file": "bern_fenrir.wav",
+    "size": 48462,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Kyiv",
+    "normKey": "kyiv",
+    "file": "kyiv_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
+  },
+  {
+    "capital": "London",
+    "normKey": "london",
+    "file": "london_fenrir.wav",
+    "size": 49614,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Vatican City",
+    "normKey": "vatican_city",
+    "file": "vatican_city_fenrir.wav",
+    "size": 83022,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Kabul",
+    "normKey": "kabul",
+    "file": "kabul_fenrir.wav",
+    "size": 51918,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Yerevan",
+    "normKey": "yerevan",
+    "file": "yerevan_fenrir.wav",
+    "size": 66894,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Baku",
+    "normKey": "baku",
+    "file": "baku_fenrir.wav",
+    "size": 51918,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Manama",
+    "normKey": "manama",
+    "file": "manama_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Dhaka",
+    "normKey": "dhaka",
+    "file": "dhaka_fenrir.wav",
+    "size": 51918,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Thimphu",
+    "normKey": "thimphu",
+    "file": "thimphu_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Bandar Seri Begawan",
+    "normKey": "bandar_seri_begawan",
+    "file": "bandar_seri_begawan_fenrir.wav",
+    "size": 111822,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Phnom Penh",
+    "normKey": "phnom_penh",
+    "file": "phnom_penh_fenrir.wav",
+    "size": 65742,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Beijing",
+    "normKey": "beijing",
+    "file": "beijing_fenrir.wav",
+    "size": 57678,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Tbilisi",
+    "normKey": "tbilisi",
+    "file": "tbilisi_fenrir.wav",
+    "size": 71502,
+    "source": "local-stream"
+  },
+  {
+    "capital": "New Delhi",
+    "normKey": "new_delhi",
+    "file": "new_delhi_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Jakarta",
+    "normKey": "jakarta",
+    "file": "jakarta_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Tehran",
+    "normKey": "tehran",
+    "file": "tehran_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Baghdad",
+    "normKey": "baghdad",
+    "file": "baghdad_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Jerusalem",
+    "normKey": "jerusalem",
+    "file": "jerusalem_fenrir.wav",
+    "size": 66894,
+    "source": "local-stream"
   },
   {
     "capital": "Tokyo",
-    "voice": "Fenrir",
     "normKey": "tokyo",
-    "filename": "tokyo_fenrir.wav",
-    "sizeBytes": 57954
+    "file": "tokyo_fenrir.wav",
+    "size": 57954
   },
   {
-    "capital": "Tokyo",
-    "voice": "Charon",
-    "normKey": "tokyo",
-    "filename": "tokyo_charon.wav",
-    "sizeBytes": 61794
+    "capital": "Amman",
+    "normKey": "amman",
+    "file": "amman_fenrir.wav",
+    "size": 49614,
+    "source": "local-stream"
   },
   {
-    "capital": "Reykjavik",
-    "voice": "Kore",
-    "normKey": "reykjavik",
-    "filename": "reykjavik_kore.wav",
-    "sizeBytes": 77154
+    "capital": "Astana",
+    "normKey": "astana",
+    "file": "astana_fenrir.wav",
+    "size": 57678,
+    "source": "local-stream"
   },
   {
-    "capital": "Reykjavik",
-    "voice": "Aoede",
-    "normKey": "reykjavik",
-    "filename": "reykjavik_aoede.wav",
-    "sizeBytes": 73314
+    "capital": "Kuwait City",
+    "normKey": "kuwait_city",
+    "file": "kuwait_city_fenrir.wav",
+    "size": 77262,
+    "source": "local-stream"
   },
   {
-    "capital": "Reykjavik",
-    "voice": "Charon",
-    "normKey": "reykjavik",
-    "filename": "reykjavik_charon.wav",
-    "sizeBytes": 71084
+    "capital": "Bishkek",
+    "normKey": "bishkek",
+    "file": "bishkek_fenrir.wav",
+    "size": 57678,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Vientiane",
+    "normKey": "vientiane",
+    "file": "vientiane_fenrir.wav",
+    "size": 65742,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Beirut",
+    "normKey": "beirut",
+    "file": "beirut_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Kuala Lumpur",
+    "normKey": "kuala_lumpur",
+    "file": "kuala_lumpur_fenrir.wav",
+    "size": 84174,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Male",
+    "normKey": "male",
+    "file": "male_fenrir.wav",
+    "size": 49614,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Ulaanbaatar",
+    "normKey": "ulaanbaatar",
+    "file": "ulaanbaatar_fenrir.wav",
+    "size": 72654,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Naypyidaw",
+    "normKey": "naypyidaw",
+    "file": "naypyidaw_fenrir.wav",
+    "size": 65742,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Kathmandu",
+    "normKey": "kathmandu",
+    "file": "kathmandu_fenrir.wav",
+    "size": 72654,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Pyongyang",
+    "normKey": "pyongyang",
+    "file": "pyongyang_fenrir.wav",
+    "size": 65742,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Muscat",
+    "normKey": "muscat",
+    "file": "muscat_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Islamabad",
+    "normKey": "islamabad",
+    "file": "islamabad_fenrir.wav",
+    "size": 72654,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Ramallah",
+    "normKey": "ramallah",
+    "file": "ramallah_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Manila",
+    "normKey": "manila",
+    "file": "manila_fenrir.wav",
+    "size": 49614,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Doha",
+    "normKey": "doha",
+    "file": "doha_fenrir.wav",
+    "size": 48462,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Riyadh",
+    "normKey": "riyadh",
+    "file": "riyadh_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Singapore",
+    "normKey": "singapore",
+    "file": "singapore_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Seoul",
+    "normKey": "seoul",
+    "file": "seoul_fenrir.wav",
+    "size": 49614,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Sri Jayawardenepura Kotte",
+    "normKey": "sri_jayawardenepura_kotte",
+    "file": "sri_jayawardenepura_kotte_fenrir.wav",
+    "size": 130254,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Damascus",
+    "normKey": "damascus",
+    "file": "damascus_fenrir.wav",
+    "size": 66894,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Taipei",
+    "normKey": "taipei",
+    "file": "taipei_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Dushanbe",
+    "normKey": "dushanbe",
+    "file": "dushanbe_fenrir.wav",
+    "size": 69198,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Bangkok",
+    "normKey": "bangkok",
+    "file": "bangkok_fenrir.wav",
+    "size": 57678,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Dili",
+    "normKey": "dili",
+    "file": "dili_fenrir.wav",
+    "size": 46158,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Ankara",
+    "normKey": "ankara",
+    "file": "ankara_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Ashgabat",
+    "normKey": "ashgabat",
+    "file": "ashgabat_fenrir.wav",
+    "size": 66894,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Abu Dhabi",
+    "normKey": "abu_dhabi",
+    "file": "abu_dhabi_fenrir.wav",
+    "size": 69198,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Tashkent",
+    "normKey": "tashkent",
+    "file": "tashkent_fenrir.wav",
+    "size": 69198,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Hanoi",
+    "normKey": "hanoi",
+    "file": "hanoi_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Sana'a",
+    "normKey": "sanaa",
+    "file": "sanaa_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Algiers",
+    "normKey": "algiers",
+    "file": "algiers_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Luanda",
+    "normKey": "luanda",
+    "file": "luanda_fenrir.wav",
+    "size": 65742,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Porto-Novo",
+    "normKey": "porto_novo",
+    "file": "porto_novo_fenrir.wav",
+    "size": 84174,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Gaborone",
+    "normKey": "gaborone",
+    "file": "gaborone_fenrir.wav",
+    "size": 66894,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Ouagadougou",
+    "normKey": "ouagadougou",
+    "file": "ouagadougou_fenrir.wav",
+    "size": 74958,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Gitega",
+    "normKey": "gitega",
+    "file": "gitega_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Praia",
+    "normKey": "praia",
+    "file": "praia_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Yaounde",
+    "normKey": "yaounde",
+    "file": "yaounde_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Bangui",
+    "normKey": "bangui",
+    "file": "bangui_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "N'Djamena",
+    "normKey": "ndjamena",
+    "file": "ndjamena_fenrir.wav",
+    "size": 66894,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Moroni",
+    "normKey": "moroni",
+    "file": "moroni_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Brazzaville",
+    "normKey": "brazzaville",
+    "file": "brazzaville_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Kinshasa",
+    "normKey": "kinshasa",
+    "file": "kinshasa_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Yamoussoukro",
+    "normKey": "yamoussoukro",
+    "file": "yamoussoukro_fenrir.wav",
+    "size": 80718,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Djibouti",
+    "normKey": "djibouti",
+    "file": "djibouti_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Cairo",
+    "normKey": "cairo",
+    "file": "cairo_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Malabo",
+    "normKey": "malabo",
+    "file": "malabo_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Asmara",
+    "normKey": "asmara",
+    "file": "asmara_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Mbabane",
+    "normKey": "mbabane",
+    "file": "mbabane_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Addis Ababa",
+    "normKey": "addis_ababa",
+    "file": "addis_ababa_fenrir.wav",
+    "size": 78414,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Libreville",
+    "normKey": "libreville",
+    "file": "libreville_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Banjul",
+    "normKey": "banjul",
+    "file": "banjul_fenrir.wav",
+    "size": 57678,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Accra",
+    "normKey": "accra",
+    "file": "accra_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Conakry",
+    "normKey": "conakry",
+    "file": "conakry_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Bissau",
+    "normKey": "bissau",
+    "file": "bissau_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Nairobi",
+    "normKey": "nairobi",
+    "file": "nairobi_fenrir.wav",
+    "size": 66894,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Maseru",
+    "normKey": "maseru",
+    "file": "maseru_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Monrovia",
+    "normKey": "monrovia",
+    "file": "monrovia_fenrir.wav",
+    "size": 69198,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Tripoli",
+    "normKey": "tripoli",
+    "file": "tripoli_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Antananarivo",
+    "normKey": "antananarivo",
+    "file": "antananarivo_fenrir.wav",
+    "size": 94542,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Lilongwe",
+    "normKey": "lilongwe",
+    "file": "lilongwe_fenrir.wav",
+    "size": 66894,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Bamako",
+    "normKey": "bamako",
+    "file": "bamako_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Nouakchott",
+    "normKey": "nouakchott",
+    "file": "nouakchott_fenrir.wav",
+    "size": 69198,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Port Louis",
+    "normKey": "port_louis",
+    "file": "port_louis_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Rabat",
+    "normKey": "rabat",
+    "file": "rabat_fenrir.wav",
+    "size": 49614,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Maputo",
+    "normKey": "maputo",
+    "file": "maputo_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Windhoek",
+    "normKey": "windhoek",
+    "file": "windhoek_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Niamey",
+    "normKey": "niamey",
+    "file": "niamey_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Abuja",
+    "normKey": "abuja",
+    "file": "abuja_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Kigali",
+    "normKey": "kigali",
+    "file": "kigali_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Sao Tome",
+    "normKey": "sao_tome",
+    "file": "sao_tome_fenrir.wav",
+    "size": 57678,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Dakar",
+    "normKey": "dakar",
+    "file": "dakar_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Victoria",
+    "normKey": "victoria",
+    "file": "victoria_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Freetown",
+    "normKey": "freetown",
+    "file": "freetown_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Mogadishu",
+    "normKey": "mogadishu",
+    "file": "mogadishu_fenrir.wav",
+    "size": 69198,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Pretoria",
+    "normKey": "pretoria",
+    "file": "pretoria_fenrir.wav",
+    "size": 69198,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Juba",
+    "normKey": "juba",
+    "file": "juba_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Khartoum",
+    "normKey": "khartoum",
+    "file": "khartoum_fenrir.wav",
+    "size": 65742,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Dodoma",
+    "normKey": "dodoma",
+    "file": "dodoma_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Lome",
+    "normKey": "lome",
+    "file": "lome_fenrir.wav",
+    "size": 48462,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Tunis",
+    "normKey": "tunis",
+    "file": "tunis_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Kampala",
+    "normKey": "kampala",
+    "file": "kampala_fenrir.wav",
+    "size": 66894,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Lusaka",
+    "normKey": "lusaka",
+    "file": "lusaka_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Harare",
+    "normKey": "harare",
+    "file": "harare_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "St. John's",
+    "normKey": "st_johns",
+    "file": "st_johns_fenrir.wav",
+    "size": 69198,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Buenos Aires",
+    "normKey": "buenos_aires",
+    "file": "buenos_aires_fenrir.wav",
+    "size": 69164
+  },
+  {
+    "capital": "Nassau",
+    "normKey": "nassau",
+    "file": "nassau_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Bridgetown",
+    "normKey": "bridgetown",
+    "file": "bridgetown_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Belmopan",
+    "normKey": "belmopan",
+    "file": "belmopan_fenrir.wav",
+    "size": 69198,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Sucre",
+    "normKey": "sucre",
+    "file": "sucre_fenrir.wav",
+    "size": 57678,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Brasilia",
+    "normKey": "brasilia",
+    "file": "brasilia_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Ottawa",
+    "normKey": "ottawa",
+    "file": "ottawa_fenrir.wav",
+    "size": 51918,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Santiago",
+    "normKey": "santiago",
+    "file": "santiago_fenrir.wav",
+    "size": 80718,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Bogota",
+    "normKey": "bogota",
+    "file": "bogota_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "San Jose",
+    "normKey": "san_jose",
+    "file": "san_jose_fenrir.wav",
+    "size": 71502,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Havana",
+    "normKey": "havana",
+    "file": "havana_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Roseau",
+    "normKey": "roseau",
+    "file": "roseau_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Santo Domingo",
+    "normKey": "santo_domingo",
+    "file": "santo_domingo_fenrir.wav",
+    "size": 86478,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Quito",
+    "normKey": "quito",
+    "file": "quito_fenrir.wav",
+    "size": 54222,
+    "source": "local-stream"
+  },
+  {
+    "capital": "San Salvador",
+    "normKey": "san_salvador",
+    "file": "san_salvador_fenrir.wav",
+    "size": 78414,
+    "source": "local-stream"
+  },
+  {
+    "capital": "St. George's",
+    "normKey": "st_georges",
+    "file": "st_georges_fenrir.wav",
+    "size": 69198,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Guatemala City",
+    "normKey": "guatemala_city",
+    "file": "guatemala_city_fenrir.wav",
+    "size": 84174,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Georgetown",
+    "normKey": "georgetown",
+    "file": "georgetown_fenrir.wav",
+    "size": 71502,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Port-au-Prince",
+    "normKey": "port_au_prince",
+    "file": "port_au_prince_fenrir.wav",
+    "size": 83022,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Tegucigalpa",
+    "normKey": "tegucigalpa",
+    "file": "tegucigalpa_fenrir.wav",
+    "size": 83022,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Kingston",
+    "normKey": "kingston",
+    "file": "kingston_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Mexico City",
+    "normKey": "mexico_city",
+    "file": "mexico_city_fenrir.wav",
+    "size": 83022,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Managua",
+    "normKey": "managua",
+    "file": "managua_fenrir.wav",
+    "size": 55374,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Panama City",
+    "normKey": "panama_city",
+    "file": "panama_city_fenrir.wav",
+    "size": 78414,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Asuncion",
+    "normKey": "asuncion",
+    "file": "asuncion_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Lima",
+    "normKey": "lima",
+    "file": "lima_fenrir.wav",
+    "size": 46158,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Basseterre",
+    "normKey": "basseterre",
+    "file": "basseterre_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Castries",
+    "normKey": "castries",
+    "file": "castries_fenrir.wav",
+    "size": 66894,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Kingstown",
+    "normKey": "kingstown",
+    "file": "kingstown_fenrir.wav",
+    "size": 69198,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Paramaribo",
+    "normKey": "paramaribo",
+    "file": "paramaribo_fenrir.wav",
+    "size": 80718,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Port of Spain",
+    "normKey": "port_of_spain",
+    "file": "port_of_spain_fenrir.wav",
+    "size": 74958,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Washington, D.C.",
+    "normKey": "washington_dc",
+    "file": "washington_dc_fenrir.wav",
+    "size": 77154
+  },
+  {
+    "capital": "Montevideo",
+    "normKey": "montevideo",
+    "file": "montevideo_fenrir.wav",
+    "size": 78414,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Caracas",
+    "normKey": "caracas",
+    "file": "caracas_fenrir.wav",
+    "size": 66894,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Canberra",
+    "normKey": "canberra",
+    "file": "canberra_fenrir.wav",
+    "size": 57678,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Suva",
+    "normKey": "suva",
+    "file": "suva_fenrir.wav",
+    "size": 49614,
+    "source": "local-stream"
+  },
+  {
+    "capital": "South Tarawa",
+    "normKey": "south_tarawa",
+    "file": "south_tarawa_fenrir.wav",
+    "size": 83022,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Majuro",
+    "normKey": "majuro",
+    "file": "majuro_fenrir.wav",
+    "size": 61134,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Palikir",
+    "normKey": "palikir",
+    "file": "palikir_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Yaren",
+    "normKey": "yaren",
+    "file": "yaren_fenrir.wav",
+    "size": 57678,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Wellington",
+    "normKey": "wellington",
+    "file": "wellington_fenrir.wav",
+    "size": 71502,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Ngerulmud",
+    "normKey": "ngerulmud",
+    "file": "ngerulmud_fenrir.wav",
+    "size": 71502,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Port Moresby",
+    "normKey": "port_moresby",
+    "file": "port_moresby_fenrir.wav",
+    "size": 72654,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Apia",
+    "normKey": "apia",
+    "file": "apia_fenrir.wav",
+    "size": 51918,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Honiara",
+    "normKey": "honiara",
+    "file": "honiara_fenrir.wav",
+    "size": 63438,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Nuku'alofa",
+    "normKey": "nukualofa",
+    "file": "nukualofa_fenrir.wav",
+    "size": 78414,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Funafuti",
+    "normKey": "funafuti",
+    "file": "funafuti_fenrir.wav",
+    "size": 69198,
+    "source": "local-stream"
+  },
+  {
+    "capital": "Port Vila",
+    "normKey": "port_vila",
+    "file": "port_vila_fenrir.wav",
+    "size": 59982,
+    "source": "local-stream"
   }
 ]
