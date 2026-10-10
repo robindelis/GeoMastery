@@ -1,0 +1,135 @@
+[
+  {
+    "capital": "Paris",
+    "voice": "Kore",
+    "normKey": "paris",
+    "filename": "paris_kore.wav",
+    "sizeBytes": 61794
+  },
+  {
+    "capital": "Paris",
+    "voice": "Aoede",
+    "normKey": "paris",
+    "filename": "paris_aoede.wav",
+    "sizeBytes": 67554
+  },
+  {
+    "capital": "Paris",
+    "voice": "Puck",
+    "normKey": "paris",
+    "filename": "paris_puck.wav",
+    "sizeBytes": 65324
+  },
+  {
+    "capital": "Paris",
+    "voice": "Fenrir",
+    "normKey": "paris",
+    "filename": "paris_fenrir.wav",
+    "sizeBytes": 61484
+  },
+  {
+    "capital": "Paris",
+    "voice": "Charon",
+    "normKey": "paris",
+    "filename": "paris_charon.wav",
+    "sizeBytes": 57644
+  },
+  {
+    "capital": "Washington, D.C.",
+    "voice": "Kore",
+    "normKey": "washington_dc",
+    "filename": "washington_dc_kore.wav",
+    "sizeBytes": 101804
+  },
+  {
+    "capital": "Washington, D.C.",
+    "voice": "Aoede",
+    "normKey": "washington_dc",
+    "filename": "washington_dc_aoede.wav",
+    "sizeBytes": 92204
+  },
+  {
+    "capital": "Washington, D.C.",
+    "voice": "Puck",
+    "normKey": "washington_dc",
+    "filename": "washington_dc_puck.wav",
+    "sizeBytes": 82914
+  },
+  {
+    "capital": "Washington, D.C.",
+    "voice": "Fenrir",
+    "normKey": "washington_dc",
+    "filename": "washington_dc_fenrir.wav",
+    "sizeBytes": 77154
+  },
+  {
+    "capital": "Washington, D.C.",
+    "voice": "Charon",
+    "normKey": "washington_dc",
+    "filename": "washington_dc_charon.wav",
+    "sizeBytes": 82914
+  },
+  {
+    "capital": "Buenos Aires",
+    "voice": "Kore",
+    "normKey": "buenos_aires",
+    "filename": "buenos_aires_kore.wav",
+    "sizeBytes": 78764
+  },
+  {
+    "capital": "Buenos Aires",
+    "voice": "Aoede",
+    "normKey": "buenos_aires",
+    "filename": "buenos_aires_aoede.wav",
+    "sizeBytes": 80684
+  },
+  {
+    "capital": "Buenos Aires",
+    "voice": "Puck",
+    "normKey": "buenos_aires",
+    "filename": "buenos_aires_puck.wav",
+    "sizeBytes": 76844
+  },
+  {
+    "capital": "Buenos Aires",
+    "voice": "Fenrir",
+    "normKey": "buenos_aires",
+    "filename": "buenos_aires_fenrir.wav",
+    "sizeBytes": 69164
+  },
+  {
+    "capital": "Tokyo",
+    "voice": "Fenrir",
+    "normKey": "tokyo",
+    "filename": "tokyo_fenrir.wav",
+    "sizeBytes": 57954
+  },
+  {
+    "capital": "Tokyo",
+    "voice": "Charon",
+    "normKey": "tokyo",
+    "filename": "tokyo_charon.wav",
+    "sizeBytes": 61794
+  },
+  {
+    "capital": "Reykjavik",
+    "voice": "Kore",
+    "normKey": "reykjavik",
+    "filename": "reykjavik_kore.wav",
+    "sizeBytes": 77154
+  },
+  {
+    "capital": "Reykjavik",
+    "voice": "Aoede",
+    "normKey": "reykjavik",
+    "filename": "reykjavik_aoede.wav",
+    "sizeBytes": 73314
+  },
+  {
+    "capital": "Reykjavik",
+    "voice": "Charon",
+    "normKey": "reykjavik",
+    "filename": "reykjavik_charon.wav",
+    "sizeBytes": 71084
+  }
+]

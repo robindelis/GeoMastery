@@ -76,8 +76,8 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
     expect(mockAudioPlay).not.toHaveBeenCalled();
   });
 
-  it('speaks via Google stream by default and encodes multi-word capitals properly', () => {
-    const multiWord = 'Washington, D.C.';
+  it('speaks via Google stream for unrecorded capitals and encodes multi-word capitals properly', () => {
+    const multiWord = 'Sri Jayawardenepura Kotte';
     engine.speak(multiWord);
 
     expect(createdAudios.length).toBe(1);
@@ -87,10 +87,10 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
   });
 
   it('caches audio URLs to prevent redundant network string building', () => {
-    engine.speak('Buenos Aires');
+    engine.speakViaGoogleStream('Port of Spain');
     expect(createdAudios.length).toBe(1);
 
-    engine.speak('Buenos Aires');
+    engine.speakViaGoogleStream('Port of Spain');
     expect(createdAudios.length).toBe(2);
     expect(createdAudios[0].src).toBe(createdAudios[1].src);
   });
@@ -112,7 +112,23 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
     expect(mockAudioPlay).toHaveBeenCalled();
   });
 
-  it('successfully invokes Gemini 3.8 Flash TTS when API returns valid audio', async () => {
+  it('prefers local pre-recorded files for sample capitals with zero API calls', () => {
+    const mockFetch = vi.fn();
+    globalThis.fetch = mockFetch;
+
+    expect(engine.hasLocalRecording('Paris')).toBe(true);
+    expect(engine.hasLocalRecording('Washington, D.C.')).toBe(true);
+    expect(engine.hasLocalRecording('Tokyo', 'Fenrir')).toBe(true);
+
+    engine.speak('Paris');
+
+    expect(createdAudios.length).toBe(1);
+    expect(createdAudios[0].src).toContain('paris_');
+    expect(mockFetch).not.toHaveBeenCalled();
+    expect(mockAudioPlay).toHaveBeenCalledTimes(1);
+  });
+
+  it('successfully invokes Gemini 3.8 Flash TTS when capital is not pre-recorded', async () => {
     engine.setProvider('gemini-tts');
     engine.setGeminiApiKey('AIzaSyValidDummyKey');
 
@@ -138,7 +154,8 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
     });
     globalThis.fetch = mockFetch;
 
-    engine.speak('Reykjavik');
+    // Use unrecorded capital to trigger live Gemini TTS API call
+    engine.speak('Ulaanbaatar');
 
     await new Promise((r) => setTimeout(r, 10));
 

@@ -848,7 +848,14 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
           {/* Test Voice Playground */}
           <div className="p-4 rounded-2xl bg-slate-950/50 border border-slate-800 flex flex-col gap-3">
-            <span className="text-xs font-semibold text-slate-300">Test Voice Pronunciation</span>
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-300">Test Voice Pronunciation</span>
+              {speechEngine.hasLocalRecording(testText, settings.geminiVoice) && (
+                <span className="text-[10px] text-emerald-400 font-medium flex items-center gap-1 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                  <span>⚡</span> Local Studio Recording (0 API calls)
+                </span>
+              )}
+            </div>
             <div className="flex items-center gap-2">
               <input
                 type="text"
@@ -875,12 +882,16 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     setTestText(city);
                     handleTestVoice(city);
                   }}
-                  className="px-2 py-0.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-[10px] font-medium transition-colors"
+                  className="px-2 py-0.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-[10px] font-medium transition-colors flex items-center gap-1"
                 >
-                  {city}
+                  <span>{city}</span>
+                  <span className="text-[9px] text-emerald-400" title="Pre-recorded locally">⚡</span>
                 </button>
               ))}
             </div>
+            <p className="text-[10px] text-slate-400">
+              ⚡ Pre-recorded locally across all 5 voices — audio plays instantly from local disk with 0 network calls.
+            </p>
           </div>
 
           {/* Done Button */}

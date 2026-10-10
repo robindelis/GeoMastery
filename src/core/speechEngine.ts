@@ -1,7 +1,11 @@
+import { getLocalCapitalAudioUrl, hasLocalCapitalAudio, normalizeCapitalKey } from '../assets/audio/capitalRecordings';
+export { normalizeCapitalKey };
+
 // Robust multi-provider Speech Synthesis Engine:
-// 1. Google Audio Stream: Native HTTP audio stream (Zero setup, free, instant, verified on Linux & Electron)
-// 2. Gemini 3.8 Flash TTS: Google's new state-of-the-art neural speech generation model (Studio quality)
-// 3. Web Speech API: Platform native fallback
+// 1. Local Pre-recorded Files: Instant, 0 API calls, high fidelity
+// 2. Google Audio Stream: Native HTTP audio stream (Zero setup, free, instant, verified on Linux & Electron)
+// 3. Gemini 3.8 Flash TTS: Google's new state-of-the-art neural speech generation model (Studio quality)
+// 4. Web Speech API: Platform native fallback
 
 export type TTSProvider = 'google-stream' | 'gemini-tts' | 'web-speech';
 
@@ -204,6 +208,10 @@ export class SpeechEngine {
   /**
    * Pronounces text using the active or requested provider, with automatic failover.
    */
+  /**
+   * Pronounces text using the active or requested provider, with automatic failover.
+   * If a pre-recorded local file exists for the capital, plays it directly with 0 API calls.
+   */
   public speak(text: string, options?: SpeechOptions): void {
     if (!this.enabled) return;
     if (!text || typeof text !== 'string') return;
@@ -215,6 +223,16 @@ export class SpeechEngine {
     this.cancel();
 
     const providerToUse = options?.provider || this.provider;
+
+    // 1. Prefer local studio recordings first (0 API calls, 0 network latency, authentic pronunciation)
+    if (providerToUse !== 'web-speech') {
+      const voiceToUse = options?.voice || this.geminiVoice || 'Kore';
+      const localAudioUrl = getLocalCapitalAudioUrl(trimmed, voiceToUse);
+      if (localAudioUrl) {
+        this.playAudioUrl(localAudioUrl, options);
+        return;
+      }
+    }
 
     if (providerToUse === 'gemini-tts') {
       this.speakViaGeminiTTS(trimmed, options).then((ok) => {
@@ -239,6 +257,13 @@ export class SpeechEngine {
   }
 
   /**
+   * Returns true if a local studio recording is available for the given capital.
+   */
+  public hasLocalRecording(capital: string, voice?: string): boolean {
+    return hasLocalCapitalAudio(capital, voice || this.geminiVoice);
+  }
+
+  /**
    * Solution 1: Google Audio Stream
    * Native audio stream - Zero setup, works immediately on Linux/Electron
    */
@@ -260,15 +285,22 @@ export class SpeechEngine {
 
   /**
    * Solution 2: Google Gemini 3.8 Flash TTS
-   * Studio neural speech generation via Gemini API
+   * Studio neural speech generation via Gemini API (prefers local recording if exists)
    */
   public async speakViaGeminiTTS(text: string, options?: SpeechOptions): Promise<boolean> {
+    const voice = options?.voice || this.geminiVoice || 'Kore';
+
+    // 1. Check local pre-recorded audio file first (zero API calls)
+    const localAudioUrl = getLocalCapitalAudioUrl(text, voice);
+    if (localAudioUrl) {
+      return this.playAudioUrl(localAudioUrl, options);
+    }
+
     const apiKey = this.getApiKey();
     if (!apiKey) {
       return false;
     }
 
-    const voice = options?.voice || this.geminiVoice || 'Kore';
     const cacheKey = `gemini-tts:${voice}:${text.toLowerCase()}`;
     const cachedDataUrl = this.audioCache.get(cacheKey);
 
