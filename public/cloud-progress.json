@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T23:09:46.232Z",
+  "exportedAt": "2026-10-11T23:09:55.491Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -5537,13 +5537,13 @@
         "countryId": "PNG",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1999999999999993,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 1.9999999999999993,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-08T17:49:04.218Z",
-        "nextDueAt": "2026-10-09T17:49:04.218Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-11T23:09:52.385Z",
+        "nextDueAt": "2026-10-11T23:09:52.385Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:26:24.417Z",
@@ -5572,9 +5572,16 @@
             "userAnswer": "Papua New Guinea",
             "isCorrect": true,
             "timeSpentMs": 3549
+          },
+          {
+            "timestamp": "2026-10-11T23:09:52.385Z",
+            "inputMode": "map_click",
+            "userAnswer": "Solomon Islands",
+            "isCorrect": false,
+            "timeSpentMs": 8274
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 0
       }
     ],
     [
@@ -15211,7 +15218,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1115,
+    "totalReviews": 1116,
     "totalCorrect": 829,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15244,7 +15251,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T23:09:42.952Z"
+    "updatedAt": "2026-10-11T23:09:52.387Z"
   },
   "settings": {
     "audioEnabled": true,
