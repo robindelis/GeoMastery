@@ -12,7 +12,9 @@ import {
   Play,
   CheckCircle2,
   Target,
-  Award
+  Award,
+  RefreshCw,
+  KeyRound
 } from 'lucide-react';
 import { Continent, TrainingCategory, MapViewMode, SRSItem, UserStats, AppSettings } from '../../core/types';
 import { COUNTRIES } from '../../assets/data/countries';
@@ -51,6 +53,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const [stats, setStats] = useState<UserStats>(() => StorageService.loadStats());
   const [settings, setSettings] = useState<AppSettings>(() => StorageService.loadSettings());
   const [selectedAttributeFilter, setSelectedAttributeFilter] = useState<string[]>(['capital', 'location']);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncStatusMessage, setSyncStatusMessage] = useState<string | null>(null);
+  const [showSyncSettings, setShowSyncSettings] = useState(false);
+  const [tokenDraft, setTokenDraft] = useState<string>(() => StorageService.loadSettings().githubSyncToken || '');
 
   // Subscribe to storage updates (e.g. disk rehydration on launch)
   useEffect(() => {
@@ -140,6 +146,37 @@ export const Dashboard: React.FC<DashboardProps> = ({
     if (next) soundFx.playClick();
   };
 
+  const handleGitHubSync = async () => {
+    if (isSyncing) return;
+    setIsSyncing(true);
+    setSyncStatusMessage('Syncing with GitHub...');
+    try {
+      const result = await StorageService.syncWithGitHub();
+      setSrsItemsMap(StorageService.loadSRSItems());
+      setStats(StorageService.loadStats());
+      if (result.success) {
+        soundFx.playLevelUp();
+      }
+      setSyncStatusMessage(result.message);
+    } catch {
+      setSyncStatusMessage('GitHub sync failed — check network');
+    } finally {
+      setIsSyncing(false);
+      setTimeout(() => {
+        setSyncStatusMessage(null);
+      }, 4500);
+    }
+  };
+
+  const handleSaveGithubToken = () => {
+    const updated = { ...settings, githubSyncToken: tokenDraft.trim() };
+    setSettings(updated);
+    StorageService.saveSettings(updated);
+    setShowSyncSettings(false);
+    setSyncStatusMessage(tokenDraft.trim() ? 'GitHub token saved for 2-way sync' : 'GitHub token cleared (Pull-only)');
+    setTimeout(() => setSyncStatusMessage(null), 3500);
+  };
+
   const handleExportBackup = async () => {
     const ok = await StorageService.exportBackupFile();
     if (ok) {
@@ -206,7 +243,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
     <PlanetaryBackground className="flex-1 flex flex-col h-full overflow-y-auto text-slate-100 p-4 sm:p-8 lg:p-10">
       <div className="max-w-[1600px] mx-auto w-full flex flex-col gap-6 sm:gap-8 pb-16">
         {/* Top Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative">
           <div className="flex items-center gap-3.5">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 via-teal-500 to-sky-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/25 text-2xl select-none">
               🌍
@@ -225,12 +262,36 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </div>
 
           {/* Quick Settings & Streak Bar */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2">
             {/* Streak Counter */}
             <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/80 border border-slate-700/80 text-amber-300 font-bold text-xs shadow-md backdrop-blur-md">
               <Flame className="w-4 h-4 fill-amber-400 text-amber-400" />
               <span>{stats.currentStreak} Day Streak</span>
             </div>
+
+            {/* GitHub Cloud Sync Button */}
+            <button
+              onClick={handleGitHubSync}
+              disabled={isSyncing}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 font-bold text-xs transition-all shadow-md backdrop-blur-md active:scale-95 disabled:opacity-60"
+              title="Pull & reconcile latest progress from GitHub (and push back if on Desktop or token configured)"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
+              <span>{isSyncing ? 'Syncing...' : 'GitHub Sync'}</span>
+            </button>
+
+            {/* Optional GitHub Token Toggle (for 2-way Android push) */}
+            <button
+              onClick={() => setShowSyncSettings((v) => !v)}
+              className={`p-2.5 rounded-xl border transition-colors shadow-md backdrop-blur-md ${
+                settings.githubSyncToken
+                  ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'
+                  : 'bg-slate-900/80 hover:bg-slate-800 border-slate-700/80 text-slate-300'
+              }`}
+              title="Configure optional GitHub Token for two-way push from Android"
+            >
+              <KeyRound className="w-4 h-4" />
+            </button>
 
             {/* Sound Toggle */}
             <button
@@ -260,6 +321,56 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <input type="file" accept=".json" onChange={handleImportBackup} className="hidden" />
             </label>
           </div>
+
+          {/* Sync Status Banner */}
+          {syncStatusMessage && (
+            <div className="sm:absolute sm:-bottom-8 sm:right-0 px-3 py-1 rounded-lg bg-slate-900/95 border border-emerald-500/40 text-emerald-300 text-xs font-semibold shadow-lg z-30">
+              {syncStatusMessage}
+            </div>
+          )}
+
+          {/* Optional GitHub Token Popover */}
+          {showSyncSettings && (
+            <div className="sm:absolute sm:top-16 sm:right-0 w-full sm:w-96 p-4 rounded-2xl bg-slate-900/95 border border-slate-700 shadow-2xl backdrop-blur-xl z-40 flex flex-col gap-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-white uppercase tracking-wider">
+                  GitHub Cloud Sync Config
+                </span>
+                <button
+                  onClick={() => setShowSyncSettings(false)}
+                  className="text-xs text-slate-400 hover:text-white"
+                >
+                  ✕
+                </button>
+              </div>
+              <p className="text-[11px] text-slate-300 leading-relaxed">
+                Pulling from GitHub works automatically with zero setup. To also push progress directly from Android to GitHub, paste a GitHub Personal Access Token (<code className="text-emerald-300">repo</code> / Contents write scope):
+              </p>
+              <input
+                type="password"
+                value={tokenDraft}
+                onChange={(e) => setTokenDraft(e.target.value)}
+                placeholder="ghp_... or github_pat_..."
+                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-400"
+              />
+              <div className="flex justify-end gap-2 pt-1">
+                <button
+                  onClick={() => {
+                    setTokenDraft('');
+                  }}
+                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+                >
+                  Clear
+                </button>
+                <button
+                  onClick={handleSaveGithubToken}
+                  className="px-3.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black"
+                >
+                  Save Token
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Main Dashboard Responsive Matrix */}

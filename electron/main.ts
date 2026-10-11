@@ -1,7 +1,11 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'path';
 import fs from 'fs';
+import { execFile } from 'child_process';
+import { promisify } from 'util';
 import { fileURLToPath } from 'url';
+
+const execFileAsync = promisify(execFile);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,7 +23,8 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
-      nodeIntegration: false
+      nodeIntegration: false,
+      sandbox: false
     }
   });
 
@@ -104,6 +109,20 @@ ipcMain.handle('load-storage-data', async () => {
   return { success: false };
 });
 
+function sanitizeCloudPayload(dataObj: any) {
+  const sanitized = {
+    ...dataObj,
+    settings: dataObj?.settings
+      ? {
+          ...dataObj.settings,
+          geminiApiKey: '',
+          githubSyncToken: ''
+        }
+      : undefined
+  };
+  return sanitized;
+}
+
 ipcMain.handle('save-storage-data', async (_event, dataObj: any) => {
   try {
     const userData = app.getPath('userData');
@@ -127,12 +146,52 @@ ipcMain.handle('save-storage-data', async (_event, dataObj: any) => {
       const backupTmpPath = `${backupFilePath}.tmp`;
       fs.writeFileSync(backupTmpPath, serialized, 'utf-8');
       fs.renameSync(backupTmpPath, backupFilePath);
+
+      // Mirror sanitized progress to repo public/cloud-progress.json if inside repo
+      const repoCloudPath = path.join(process.cwd(), 'public', 'cloud-progress.json');
+      if (fs.existsSync(path.dirname(repoCloudPath))) {
+        const cloudTmp = `${repoCloudPath}.tmp`;
+        fs.writeFileSync(cloudTmp, JSON.stringify(sanitizeCloudPayload(dataObj), null, 2), 'utf-8');
+        fs.renameSync(cloudTmp, repoCloudPath);
+      }
     }
 
     return { success: true };
   } catch (err) {
     console.error('Failed to save storage data to disk:', err);
     return { success: false, error: String(err) };
+  }
+});
+
+// IPC: Two-Way GitHub Cloud Progress Push from Desktop
+ipcMain.handle('sync-github-progress', async (_event, dataObj: any) => {
+  try {
+    const repoDir = process.cwd();
+    const repoCloudPath = path.join(repoDir, 'public', 'cloud-progress.json');
+    if (!fs.existsSync(path.dirname(repoCloudPath))) {
+      return { success: false, message: 'public/ directory not found in workspace' };
+    }
+
+    const sanitized = sanitizeCloudPayload(dataObj);
+    const cloudTmp = `${repoCloudPath}.tmp`;
+    fs.writeFileSync(cloudTmp, JSON.stringify(sanitized, null, 2), 'utf-8');
+    fs.renameSync(cloudTmp, repoCloudPath);
+
+    await execFileAsync('git', ['add', 'public/cloud-progress.json'], { cwd: repoDir });
+    const { stdout: statusOut } = await execFileAsync('git', ['status', '--porcelain', 'public/cloud-progress.json'], {
+      cwd: repoDir
+    });
+
+    if (statusOut.trim().length > 0) {
+      await execFileAsync('git', ['commit', '-m', 'Sync user progression data'], { cwd: repoDir });
+      await execFileAsync('git', ['push', 'origin', 'main'], { cwd: repoDir });
+      return { success: true, pushed: true, message: 'Pushed latest progress to GitHub!' };
+    }
+
+    return { success: true, pushed: false, message: 'GitHub is already up to date.' };
+  } catch (err) {
+    console.error('Failed to push cloud progress to GitHub:', err);
+    return { success: false, pushed: false, message: String(err) };
   }
 });
 

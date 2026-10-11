@@ -138,85 +138,295 @@ export class StorageService {
   }
 
   /**
-   * Initializes persistent sync between disk file (Electron or Android native storage) and LocalStorage.
-   * Ensures user progress is never lost even if LocalStorage partition changes.
+   * Reconciles an external progress payload (from disk, bundled cloud-progress.json, or GitHub)
+   * item-by-item with local storage, preserving whichever item or stat is more advanced.
+   */
+  public static reconcileExternalData(externalData: any): boolean {
+    if (!externalData || typeof externalData !== 'object') return false;
+
+    const localItems = this.loadSRSItems();
+    const extItems = Array.isArray(externalData.srsItems)
+      ? new Map<string, SRSItem>(externalData.srsItems)
+      : new Map<string, SRSItem>();
+
+    const extStats: UserStats | undefined = externalData.stats;
+    const localStats = this.loadStats();
+
+    if (extItems.size > 0 && localItems.size === 0) {
+      this.saveSRSItems(extItems);
+      if (extStats) this.saveStats(extStats);
+      if (externalData.settings) {
+        const currentSettings = this.loadSettings();
+        this.saveSettings({
+          ...externalData.settings,
+          geminiApiKey: currentSettings.geminiApiKey || externalData.settings.geminiApiKey || '',
+          githubSyncToken: currentSettings.githubSyncToken || externalData.settings.githubSyncToken || ''
+        });
+      }
+      this.notifySubscribers();
+      return true;
+    }
+
+    let changed = false;
+    const mergedItems = new Map<string, SRSItem>(localItems);
+
+    extItems.forEach((extItem, id) => {
+      if (!extItem || typeof extItem !== 'object' || !('stage' in extItem)) return;
+      const localItem = mergedItems.get(id);
+      if (!localItem) {
+        mergedItems.set(id, extItem);
+        changed = true;
+      } else {
+        const extTime = extItem.lastReviewedAt ? new Date(extItem.lastReviewedAt).getTime() : 0;
+        const localTime = localItem.lastReviewedAt ? new Date(localItem.lastReviewedAt).getTime() : 0;
+        if (
+          extTime > localTime ||
+          extItem.reps > localItem.reps ||
+          (extItem.reps === localItem.reps && extItem.stage > localItem.stage)
+        ) {
+          mergedItems.set(id, extItem);
+          changed = true;
+        }
+      }
+    });
+
+    if (extStats && typeof extStats.totalReviews === 'number') {
+      const extReviews = extStats.totalReviews || 0;
+      const localReviews = localStats.totalReviews || 0;
+      if (extReviews > localReviews) {
+        this.saveStats({
+          ...localStats,
+          ...extStats,
+          longestStreak: Math.max(localStats.longestStreak || 0, extStats.longestStreak || 0),
+          timeAttackRecords: {
+            ...(localStats.timeAttackRecords || {}),
+            ...(extStats.timeAttackRecords || {})
+          }
+        });
+        changed = true;
+      }
+    }
+
+    if (changed) {
+      this.saveSRSItems(mergedItems);
+      this.notifySubscribers();
+    }
+
+    return changed;
+  }
+
+  /**
+   * Initializes persistent sync between disk file (Electron or Android native storage),
+   * bundled cloud snapshot, and live GitHub cloud progress.
    */
   public static async initPersistentSync(): Promise<boolean> {
     if (typeof window === 'undefined') return false;
+
+    let anyChanged = false;
 
     if (this.hasNativeStorageBridge()) {
       try {
         const res = await this.loadNativeData();
         if (res.success && res.data) {
-          const diskData = res.data;
-          const localItems = this.loadSRSItems();
-          const diskItems = diskData.srsItems
-            ? new Map<string, SRSItem>(diskData.srsItems)
-            : new Map<string, SRSItem>();
-
-          const diskStats: UserStats | undefined = diskData.stats;
-          const localStats = this.loadStats();
-
-          // If disk has items but local is completely empty, restore from disk!
-          if (diskItems.size > 0 && localItems.size === 0) {
-            this.saveSRSItems(diskItems);
-            if (diskData.stats) this.saveStats(diskData.stats);
-            if (diskData.settings) this.saveSettings(diskData.settings);
-            this.notifySubscribers();
-            return true;
-          }
-
-          // If both have progress, reconcile item-by-item to preserve whichever is more advanced
-          if (diskItems.size > 0 && localItems.size > 0) {
-            let changed = false;
-            const mergedItems = new Map<string, SRSItem>(localItems);
-
-            diskItems.forEach((diskItem, id) => {
-              const localItem = mergedItems.get(id);
-              if (!localItem) {
-                mergedItems.set(id, diskItem);
-                changed = true;
-              } else {
-                const diskTime = diskItem.lastReviewedAt ? new Date(diskItem.lastReviewedAt).getTime() : 0;
-                const localTime = localItem.lastReviewedAt ? new Date(localItem.lastReviewedAt).getTime() : 0;
-                if (diskTime > localTime || diskItem.reps > localItem.reps) {
-                  mergedItems.set(id, diskItem);
-                  changed = true;
-                }
-              }
-            });
-
-            // Reconcile stats: pick higher review count
-            const diskReviews = diskStats?.totalReviews || 0;
-            const localReviews = localStats.totalReviews || 0;
-            if (diskReviews > localReviews && diskStats) {
-              this.saveStats(diskStats);
-              changed = true;
-            }
-
-            if (changed) {
-              this.saveSRSItems(mergedItems);
-              this.notifySubscribers();
-            }
-
-            // Sync reconciled state back to disk
-            this.syncToDiskNow();
-            return changed;
-          }
-
-          // If local has progress but disk is empty, push local to disk
-          if (localItems.size > 0 && diskItems.size === 0) {
-            this.syncToDiskNow();
-          }
+          const changed = this.reconcileExternalData(res.data);
+          if (changed) anyChanged = true;
+          this.syncToDiskNow();
         } else {
-          // If disk file doesn't exist yet, save current local state to disk
           this.syncToDiskNow();
         }
       } catch (err) {
         console.error('Failed to sync persistent disk storage:', err);
       }
     }
-    return false;
+
+    // In real browser / Android WebView / Electron environments, also reconcile with bundled
+    // ./cloud-progress.json (works offline) and live GitHub raw cloud-progress.json
+    if (typeof window.location?.href === 'string' && typeof fetch !== 'undefined') {
+      try {
+        const bundledRes = await fetch('./cloud-progress.json', { cache: 'no-store' });
+        if (bundledRes.ok) {
+          const bundledData = await bundledRes.json();
+          if (this.reconcileExternalData(bundledData)) {
+            anyChanged = true;
+          }
+        }
+      } catch {
+        // Ignore if offline or bundled file unavailable
+      }
+
+      // Non-blocking live GitHub pull on boot
+      this.syncWithGitHub({ pullOnly: true }).catch(() => {});
+    }
+
+    return anyChanged;
+  }
+
+  /**
+   * Pulls and reconciles the latest progression from GitHub (robindelis/GeoMastery/public/cloud-progress.json),
+   * and pushes merged changes back to GitHub if running on Desktop or if a GitHub token is configured.
+   */
+  public static async syncWithGitHub(options?: {
+    pullOnly?: boolean;
+    githubToken?: string;
+  }): Promise<{
+    success: boolean;
+    pulledChanged: boolean;
+    pushed: boolean;
+    totalItems: number;
+    totalReviews: number;
+    message: string;
+  }> {
+    const GITHUB_RAW_URL = `https://raw.githubusercontent.com/robindelis/GeoMastery/main/public/cloud-progress.json?t=${Date.now()}`;
+    const GITHUB_API_URL = 'https://api.github.com/repos/robindelis/GeoMastery/contents/public/cloud-progress.json';
+
+    let pulledChanged = false;
+    let remoteSha: string | undefined;
+    let pullSucceeded = false;
+
+    const settings = this.loadSettings();
+    const token = (options?.githubToken ?? settings.githubSyncToken ?? '').trim();
+
+    // 1. Pull latest from GitHub API (for fresh SHA + immediate consistency) or Raw URL fallback
+    try {
+      const headers: Record<string, string> = {
+        Accept: 'application/vnd.github.v3+json'
+      };
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+      const apiRes = await fetch(`${GITHUB_API_URL}?t=${Date.now()}`, {
+        headers,
+        cache: 'no-store'
+      });
+      if (apiRes.ok) {
+        const meta = await apiRes.json();
+        remoteSha = meta.sha;
+        if (typeof meta.content === 'string') {
+          const binary = atob(meta.content.replace(/\s/g, ''));
+          const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+          const jsonText = new TextDecoder('utf-8').decode(bytes);
+          const remoteData = JSON.parse(jsonText);
+          pulledChanged = this.reconcileExternalData(remoteData);
+          pullSucceeded = true;
+        }
+      }
+    } catch {
+      // Fallback to raw.githubusercontent.com below
+    }
+
+    if (!pullSucceeded) {
+      try {
+        const rawRes = await fetch(GITHUB_RAW_URL, { cache: 'no-store' });
+        if (rawRes.ok) {
+          const remoteData = await rawRes.json();
+          pulledChanged = this.reconcileExternalData(remoteData);
+          pullSucceeded = true;
+        }
+      } catch (err) {
+        console.warn('GitHub raw pull failed:', err);
+      }
+    }
+
+    const currentItems = this.loadSRSItems();
+    const currentStats = this.loadStats();
+
+    if (options?.pullOnly) {
+      return {
+        success: pullSucceeded,
+        pulledChanged,
+        pushed: false,
+        totalItems: currentItems.size,
+        totalReviews: currentStats.totalReviews,
+        message: pullSucceeded
+          ? `Synced with GitHub (${currentItems.size} items • ${currentStats.totalReviews} reviews)`
+          : 'Offline — using local progress'
+      };
+    }
+
+    const payload = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      srsItems: Array.from(currentItems.entries()),
+      stats: currentStats,
+      settings: {
+        ...this.loadSettings(),
+        geminiApiKey: '',
+        githubSyncToken: ''
+      }
+    };
+
+    // 2. Push back to GitHub if running on Desktop (Electron git bridge)
+    if (typeof window !== 'undefined' && window.electronAPI?.syncGitHubProgress) {
+      try {
+        const pushRes = await window.electronAPI.syncGitHubProgress(payload);
+        if (pushRes.success) {
+          return {
+            success: true,
+            pulledChanged,
+            pushed: Boolean(pushRes.pushed),
+            totalItems: currentItems.size,
+            totalReviews: currentStats.totalReviews,
+            message: pushRes.pushed
+              ? `Synced & pushed to GitHub (${currentItems.size} items • ${currentStats.totalReviews} reviews)`
+              : `Up to date with GitHub (${currentItems.size} items • ${currentStats.totalReviews} reviews)`
+          };
+        }
+      } catch (err) {
+        console.error('Electron GitHub push failed:', err);
+      }
+    }
+
+    // 3. Push back to GitHub via REST API if a GitHub Personal Access Token is configured (Android / Web)
+    if (token && remoteSha) {
+      try {
+        const jsonStr = JSON.stringify(payload, null, 2);
+        const utf8Bytes = new TextEncoder().encode(jsonStr);
+        let binary = '';
+        for (let i = 0; i < utf8Bytes.length; i++) {
+          binary += String.fromCharCode(utf8Bytes[i]);
+        }
+        const base64Content = btoa(binary);
+
+        const putRes = await fetch(GITHUB_API_URL, {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/vnd.github.v3+json',
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `Sync user progression data (${currentStats.totalReviews} reviews)`,
+            content: base64Content,
+            sha: remoteSha,
+            branch: 'main'
+          })
+        });
+
+        if (putRes.ok) {
+          return {
+            success: true,
+            pulledChanged,
+            pushed: true,
+            totalItems: currentItems.size,
+            totalReviews: currentStats.totalReviews,
+            message: `Synced & pushed to GitHub (${currentItems.size} items • ${currentStats.totalReviews} reviews)`
+          };
+        }
+      } catch (err) {
+        console.error('GitHub API push failed:', err);
+      }
+    }
+
+    return {
+      success: pullSucceeded,
+      pulledChanged,
+      pushed: false,
+      totalItems: currentItems.size,
+      totalReviews: currentStats.totalReviews,
+      message: pullSucceeded
+        ? `Pulled latest from GitHub (${currentItems.size} items • ${currentStats.totalReviews} reviews)`
+        : 'Could not reach GitHub — check internet connection'
+    };
   }
 
   private static syncToDiskNow(): void {

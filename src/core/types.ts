@@ -103,4 +103,5 @@ export interface AppSettings {
   ttsProvider?: TTSProvider;
   geminiApiKey?: string;
   geminiVoice?: string;
+  githubSyncToken?: string;
 }
