@@ -359,11 +359,167 @@ function drawOverlay(
   }
 }
 
+const EMPTY_HIGHLIGHTED_IDS: string[] = [];
+
+interface ProjectionGeometry {
+  countries: PolyItem[];
+  oceans: PolyItem[];
+  seas: PolyItem[];
+  straits: PolyItem[];
+  polyById: Map<string, PolyItem>;
+}
+
+interface CachedProjectionBundle {
+  key: string;
+  projection: d3.GeoProjection;
+  geometry: ProjectionGeometry;
+  microstateItems: BeaconItem[];
+  waterBodyItems: BeaconItem[];
+}
+
+const EMPTY_GEOMETRY: ProjectionGeometry = {
+  countries: [],
+  oceans: [],
+  seas: [],
+  straits: [],
+  polyById: new Map(),
+};
+
+let cachedGeoFeatures: any[] | null = null;
+export function getCachedGeoFeatures(): any[] {
+  if (!cachedGeoFeatures) {
+    try {
+      const geo = feature(worldData50m as any, (worldData50m as any).objects.countries) as any;
+      cachedGeoFeatures = (geo.features as any[]) || [];
+    } catch (e) {
+      console.error('Failed to parse TopoJSON:', e);
+      cachedGeoFeatures = [];
+    }
+  }
+  return cachedGeoFeatures;
+}
+
+let cachedWaterGeoFeatures: any[] | null = null;
+export function getCachedWaterGeoFeatures(): any[] {
+  if (!cachedWaterGeoFeatures) {
+    try {
+      const geo = feature(waterBodies50m as any, (waterBodies50m as any).objects.water_bodies) as any;
+      const rawFeatures = (geo.features as any[]) || [];
+      cachedWaterGeoFeatures = densifyGeoFeatures(rawFeatures);
+    } catch (e) {
+      console.error('Failed to parse water bodies TopoJSON:', e);
+      cachedWaterGeoFeatures = [];
+    }
+  }
+  return cachedWaterGeoFeatures;
+}
+
+let cachedBundle: CachedProjectionBundle | null = null;
+let lastKnownDimensions: { width: number; height: number } | null = null;
+
+function getOrBuildProjectionBundle(width: number, height: number): CachedProjectionBundle {
+  const key = `${width}x${height}`;
+  if (cachedBundle && cachedBundle.key === key) {
+    return cachedBundle;
+  }
+
+  const projection = d3
+    .geoNaturalEarth1()
+    .scale(Math.max(1, width) / 5.8)
+    .translate([width / 2, height / 2 + 10]);
+
+  if (width <= 0 || height <= 0 || typeof Path2D === 'undefined') {
+    return {
+      key,
+      projection,
+      geometry: EMPTY_GEOMETRY,
+      microstateItems: [],
+      waterBodyItems: [],
+    };
+  }
+
+  const geoFeatures = getCachedGeoFeatures();
+  const waterGeoFeatures = getCachedWaterGeoFeatures();
+
+  const boundsGen = d3.geoPath(projection);
+  const build = (feat: any, id: string, country?: Country, wb?: WaterBody): PolyItem | null => {
+    const b = boundsGen.bounds(feat);
+    if (!b || !isFinite(b[0][0]) || !isFinite(b[1][1])) return null;
+    const full = new Path2D();
+    d3.geoPath(projection, full as any)(feat);
+    const lod = new Path2D();
+    d3.geoPath(projection, new DecimatingContext(lod, LOD_MIN_SEGMENT_PX ** 2) as any)(feat);
+    return { id, country, wb, full, lod, bbox: [b[0][0], b[0][1], b[1][0], b[1][1]] };
+  };
+
+  const countries: PolyItem[] = [];
+  for (let i = 0; i < geoFeatures.length; i++) {
+    const feat = geoFeatures[i];
+    const country = COUNTRIES_BY_NUMERIC.get(String(feat.id));
+    const item = build(feat, country ? country.id : `__unmapped_${feat.id ?? i}`, country);
+    if (item) countries.push(item);
+  }
+
+  const oceans: PolyItem[] = [];
+  const seas: PolyItem[] = [];
+  const straits: PolyItem[] = [];
+  for (const feat of waterGeoFeatures) {
+    const wb = getWaterBodyById(feat.id);
+    if (!wb) continue;
+    const item = build(feat, wb.id, waterBodyToCountry(wb), wb);
+    if (!item) continue;
+    if (wb.type === 'ocean') oceans.push(item);
+    else if (wb.type === 'strait' || wb.type === 'channel') straits.push(item);
+    else seas.push(item);
+  }
+
+  const polyById = new Map<string, PolyItem>();
+  for (const p of [...oceans, ...seas, ...straits, ...countries]) polyById.set(p.id, p);
+
+  const microstateItems: BeaconItem[] = getMicrostateList()
+    .map((country) => {
+      const coords = projection(country.coordinates);
+      return { country, cx: coords ? coords[0] : NaN, cy: coords ? coords[1] : NaN };
+    })
+    .filter((item) => !isNaN(item.cx) && !isNaN(item.cy));
+
+  const waterBodyItems: BeaconItem[] = WATER_BODIES.map((wb) => {
+    const coords = projection(wb.coordinates);
+    return {
+      wb,
+      country: waterBodyToCountry(wb),
+      cx: coords ? coords[0] : NaN,
+      cy: coords ? coords[1] : NaN,
+    };
+  }).filter((item) => !isNaN(item.cx) && !isNaN(item.cy));
+
+  cachedBundle = {
+    key,
+    projection,
+    geometry: { countries, oceans, seas, straits, polyById },
+    microstateItems,
+    waterBodyItems,
+  };
+  return cachedBundle;
+}
+
+/**
+ * Prewarms the TopoJSON features and densified water body polygons so that
+ * mounting the map at the start of a session is instantaneous.
+ */
+export function prewarmVectorMap(): void {
+  getCachedGeoFeatures();
+  getCachedWaterGeoFeatures();
+  if (lastKnownDimensions && typeof Path2D !== 'undefined') {
+    getOrBuildProjectionBundle(lastKnownDimensions.width, lastKnownDimensions.height);
+  }
+}
+
 export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   selectedCountryId,
   targetCountryId,
   feedbackState,
-  highlightedCountryIds = [],
+  highlightedCountryIds = EMPTY_HIGHLIGHTED_IDS,
   srsItemsMap,
   showHeatmap = false,
   disableAutoZoom = false,
@@ -382,37 +538,17 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   const zoomTransformRef = useRef<d3.ZoomTransform>(d3.zoomIdentity);
   const hitCtxRef = useRef<CanvasRenderingContext2D | null>(null);
 
-  const [dimensions, setDimensions] = useState({ width: 960, height: 540 });
+  const [dimensions, setDimensions] = useState<{ width: number; height: number }>(
+    () => lastKnownDimensions ?? { width: 0, height: 0 }
+  );
 
-  // Convert TopoJSON to GeoJSON features once
-  const geoFeatures = useMemo(() => {
-    try {
-      const geo = feature(worldData50m as any, (worldData50m as any).objects.countries) as any;
-      return (geo.features as any[]) || [];
-    } catch (e) {
-      console.error('Failed to parse TopoJSON:', e);
-      return [];
-    }
-  }, []);
-
-  // Convert water bodies TopoJSON to GeoJSON features once
-  const waterGeoFeatures = useMemo(() => {
-    try {
-      const geo = feature(waterBodies50m as any, (waterBodies50m as any).objects.water_bodies) as any;
-      const rawFeatures = (geo.features as any[]) || [];
-      return densifyGeoFeatures(rawFeatures);
-    } catch (e) {
-      console.error('Failed to parse water bodies TopoJSON:', e);
-      return [];
-    }
-  }, []);
-
-  // Window resize observer
-  useEffect(() => {
+  // Measure container synchronously before first paint so the map never draws at a warped/fake aspect ratio
+  useLayoutEffect(() => {
     const updateSize = () => {
       if (containerRef.current) {
         const { clientWidth, clientHeight } = containerRef.current;
         if (clientWidth > 0 && clientHeight > 0) {
+          lastKnownDimensions = { width: clientWidth, height: clientHeight };
           setDimensions((prev) =>
             prev.width === clientWidth && prev.height === clientHeight
               ? prev
@@ -422,81 +558,25 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       }
     };
     updateSize();
+
+    const ro =
+      typeof ResizeObserver !== 'undefined' && containerRef.current
+        ? new ResizeObserver(updateSize)
+        : null;
+    if (ro && containerRef.current) {
+      ro.observe(containerRef.current);
+    }
     window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
+    return () => {
+      ro?.disconnect();
+      window.removeEventListener('resize', updateSize);
+    };
   }, []);
 
-  const projection = useMemo(
-    () =>
-      d3
-        .geoNaturalEarth1()
-        .scale(dimensions.width / 5.8)
-        .translate([dimensions.width / 2, dimensions.height / 2 + 10]),
-    [dimensions]
+  const { projection, geometry, microstateItems, waterBodyItems } = useMemo(
+    () => getOrBuildProjectionBundle(dimensions.width, dimensions.height),
+    [dimensions.width, dimensions.height]
   );
-
-  // Precompute Path2D geometry (full + decimated LOD) once per projection: zero path work while interacting
-  const geometry = useMemo(() => {
-    const boundsGen = d3.geoPath(projection);
-    const build = (feat: any, id: string, country?: Country, wb?: WaterBody): PolyItem | null => {
-      const b = boundsGen.bounds(feat);
-      if (!b || !isFinite(b[0][0]) || !isFinite(b[1][1])) return null;
-      const full = new Path2D();
-      d3.geoPath(projection, full as any)(feat);
-      const lod = new Path2D();
-      d3.geoPath(projection, new DecimatingContext(lod, LOD_MIN_SEGMENT_PX ** 2) as any)(feat);
-      return { id, country, wb, full, lod, bbox: [b[0][0], b[0][1], b[1][0], b[1][1]] };
-    };
-
-    const countries: PolyItem[] = [];
-    for (let i = 0; i < geoFeatures.length; i++) {
-      const feat = geoFeatures[i];
-      const country = COUNTRIES_BY_NUMERIC.get(String(feat.id));
-      const item = build(feat, country ? country.id : `__unmapped_${feat.id ?? i}`, country);
-      if (item) countries.push(item);
-    }
-
-    const oceans: PolyItem[] = [];
-    const seas: PolyItem[] = [];
-    const straits: PolyItem[] = [];
-    for (const feat of waterGeoFeatures) {
-      const wb = getWaterBodyById(feat.id);
-      if (!wb) continue;
-      const item = build(feat, wb.id, waterBodyToCountry(wb), wb);
-      if (!item) continue;
-      if (wb.type === 'ocean') oceans.push(item);
-      else if (wb.type === 'strait' || wb.type === 'channel') straits.push(item);
-      else seas.push(item);
-    }
-
-    const polyById = new Map<string, PolyItem>();
-    for (const p of [...oceans, ...seas, ...straits, ...countries]) polyById.set(p.id, p);
-
-    return { countries, oceans, seas, straits, polyById };
-  }, [geoFeatures, waterGeoFeatures, projection]);
-
-  // Projected microstate anchor points
-  const microstateItems = useMemo<BeaconItem[]>(() => {
-    return getMicrostateList()
-      .map((country) => {
-        const coords = projection(country.coordinates);
-        return { country, cx: coords ? coords[0] : NaN, cy: coords ? coords[1] : NaN };
-      })
-      .filter((item) => !isNaN(item.cx) && !isNaN(item.cy));
-  }, [projection]);
-
-  // Projected anchor points for all hydrographic bodies
-  const waterBodyItems = useMemo<BeaconItem[]>(() => {
-    return WATER_BODIES.map((wb) => {
-      const coords = projection(wb.coordinates);
-      return {
-        wb,
-        country: waterBodyToCountry(wb),
-        cx: coords ? coords[0] : NaN,
-        cy: coords ? coords[1] : NaN,
-      };
-    }).filter((item) => !isNaN(item.cx) && !isNaN(item.cy));
-  }, [projection]);
 
   const handleCountryHover = useCallback(
     (country?: Country) => {
@@ -542,6 +622,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   }, []);
 
   const highlightedSet = useMemo(() => new Set(highlightedCountryIds), [highlightedCountryIds]);
+  const heatmapItemsMap = showHeatmap ? srsItemsMap : undefined;
 
   const getCountryFill = useCallback(
     (country?: Country) => {
@@ -569,9 +650,9 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         return '#38bdf8';
       }
 
-      if (showHeatmap && srsItemsMap) {
-        const capItem = srsItemsMap.get(`${country.id}:capital`);
-        const locItem = srsItemsMap.get(`${country.id}:location`);
+      if (heatmapItemsMap) {
+        const capItem = heatmapItemsMap.get(`${country.id}:capital`);
+        const locItem = heatmapItemsMap.get(`${country.id}:location`);
         const score = (capItem?.stage || 0) + (locItem?.stage || 0);
         if (score >= 3) return '#059669';
         if (score === 2) return '#10b981';
@@ -581,7 +662,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
 
       return '#334155';
     },
-    [feedbackState, targetCountryId, selectedCountryId, highlightedSet, showHeatmap, srsItemsMap]
+    [feedbackState, targetCountryId, selectedCountryId, highlightedSet, heatmapItemsMap]
   );
 
   const getWaterBodyFill = useCallback(
@@ -605,8 +686,8 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         return 'rgba(56, 189, 248, 0.35)';
       }
 
-      if (showHeatmap && srsItemsMap) {
-        const item = srsItemsMap.get(`${wb.id}:location`);
+      if (heatmapItemsMap) {
+        const item = heatmapItemsMap.get(`${wb.id}:location`);
         if (item?.stage === 2) return 'rgba(16, 185, 129, 0.25)';
         if (item?.stage === 1) return 'rgba(217, 119, 6, 0.25)';
       }
@@ -619,7 +700,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       }
       return 'rgba(14, 165, 233, 0.09)';
     },
-    [selectedCountryId, targetCountryId, feedbackState, highlightedSet, showHeatmap, srsItemsMap]
+    [selectedCountryId, targetCountryId, feedbackState, highlightedSet, heatmapItemsMap]
   );
 
   const getWaterBodyStroke = useCallback(
@@ -677,45 +758,13 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   const hoverRafRef = useRef<number | null>(null);
 
   const stateRef = useRef<FrameState | null>(null);
-  useLayoutEffect(() => {
-    stateRef.current = {
-      W: dimensions.width,
-      H: dimensions.height,
-      dpr: Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2),
-      t: zoomTransformRef.current,
-      moving: movingRef.current,
-      oceans: geometry.oceans,
-      seas: geometry.seas,
-      straits: geometry.straits,
-      countries: geometry.countries,
-      ...styles,
-      micro: microstateItems,
-      waterBeacons: waterBodyItems,
-      polyById: geometry.polyById,
-      selectedId: selectedCountryId,
-      targetId: targetCountryId,
-      feedbackState,
-      hideHoverTooltip,
-    };
-  }, [
-    dimensions,
-    geometry,
-    styles,
-    microstateItems,
-    waterBodyItems,
-    selectedCountryId,
-    targetCountryId,
-    feedbackState,
-    hideHoverTooltip,
-  ]);
-
   const frameRef = useRef<(now: number) => void>(() => {});
   frameRef.current = (now: number) => {
     frameRafRef.current = null;
     const base = baseCanvasRef.current;
     const overlay = overlayCanvasRef.current;
     const s = stateRef.current;
-    if (!base || !overlay || !s) return;
+    if (!base || !overlay || !s || s.W <= 0 || s.H <= 0) return;
 
     s.t = zoomTransformRef.current;
     s.moving = movingRef.current;
@@ -756,9 +805,43 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     }
   }, []);
 
-  // Redraw whenever props/geometry/size change
-  useEffect(() => {
-    scheduleFrame(true);
+  useLayoutEffect(() => {
+    if (dimensions.width <= 0 || dimensions.height <= 0) return;
+    const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2);
+    stateRef.current = {
+      W: dimensions.width,
+      H: dimensions.height,
+      dpr,
+      t: zoomTransformRef.current,
+      moving: movingRef.current,
+      oceans: geometry.oceans,
+      seas: geometry.seas,
+      straits: geometry.straits,
+      countries: geometry.countries,
+      ...styles,
+      micro: microstateItems,
+      waterBeacons: waterBodyItems,
+      polyById: geometry.polyById,
+      selectedId: selectedCountryId,
+      targetId: targetCountryId,
+      feedbackState,
+      hideHoverTooltip,
+    };
+
+    const base = baseCanvasRef.current;
+    const pw = Math.round(dimensions.width * dpr);
+    const ph = Math.round(dimensions.height * dpr);
+    // Draw synchronously before paint on mount or resize so the canvas never flashes blank or warps
+    if (base && (base.width !== pw || base.height !== ph)) {
+      baseDirtyRef.current = true;
+      if (frameRafRef.current != null) {
+        cancelAnimationFrame(frameRafRef.current);
+        frameRafRef.current = null;
+      }
+      frameRef.current(performance.now());
+    } else {
+      scheduleFrame(true);
+    }
   }, [
     dimensions,
     geometry,

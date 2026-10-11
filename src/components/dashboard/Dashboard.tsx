@@ -25,6 +25,7 @@ import { soundFx } from '../../core/soundFx';
 import { speechEngine } from '../../core/speechEngine';
 import { PlanetaryBackground } from '../common/PlanetaryBackground';
 import { CartographerDossier } from './CartographerDossier';
+import { prewarmVectorMap } from '../map/VectorMap2D';
 
 interface DashboardProps {
   onStartSession: (continent: TrainingCategory, attributes: string[], practiceMode?: boolean) => void;
@@ -58,14 +59,20 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const [showSyncSettings, setShowSyncSettings] = useState(false);
   const [tokenDraft, setTokenDraft] = useState<string>(() => StorageService.loadSettings().githubSyncToken || '');
 
-  // Subscribe to storage updates (e.g. disk rehydration on launch)
+  // Subscribe to storage updates (e.g. disk rehydration on launch) & prewarm map features while idle
   useEffect(() => {
     const unsubscribe = StorageService.subscribe(() => {
       setSrsItemsMap(StorageService.loadSRSItems());
       setStats(StorageService.loadStats());
       setSettings(StorageService.loadSettings());
     });
-    return unsubscribe;
+    const idleTimer = setTimeout(() => {
+      prewarmVectorMap();
+    }, 50);
+    return () => {
+      unsubscribe();
+      clearTimeout(idleTimer);
+    };
   }, []);
 
   const mastery = useMemo(() => computeMasteryStats(srsItemsMap), [srsItemsMap]);
@@ -522,7 +529,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
             {/* Launch Daily World Review Button */}
             <button
-              onClick={() => onStartSession('All', selectedAttributeFilter, totalDueCount === 0)}
+              onClick={() => onStartSession('All', selectedAttributeFilter, isContinentCaughtUp('All'))}
               className="w-full sm:w-auto px-7 py-4.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-base shadow-xl shadow-emerald-500/25 flex flex-col items-center justify-center gap-0.5 transition-all transform active:scale-95"
             >
               <div className="flex items-center gap-2">

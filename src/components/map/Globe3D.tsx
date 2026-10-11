@@ -1,14 +1,14 @@
-import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState, useMemo, useCallback } from 'react';
 import * as d3 from 'd3';
-import { feature } from 'topojson-client';
-import worldData50m from '../../assets/geo/countries-50m.json';
-import waterBodies50m from '../../assets/geo/water-bodies-50m.json';
 import { Country, SRSItem } from '../../core/types';
 import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
 import { WATER_BODIES, getWaterBodyById, WaterBody } from '../../assets/data/waterBodies';
 import { waterBodyToCountry } from '../../core/srsEngine';
 import { getMicrostateList } from '../../core/microstates';
-import { densifyGeoFeatures } from '../../core/geoUtils';
+import { getCachedGeoFeatures, getCachedWaterGeoFeatures } from './VectorMap2D';
+
+const EMPTY_HIGHLIGHTED_IDS: string[] = [];
+let lastKnownGlobeDimensions: { width: number; height: number } | null = null;
 
 interface Globe3DProps {
   selectedCountryId?: string | null;
@@ -28,7 +28,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
   selectedCountryId,
   targetCountryId,
   feedbackState,
-  highlightedCountryIds = [],
+  highlightedCountryIds = EMPTY_HIGHLIGHTED_IDS,
   srsItemsMap,
   showHeatmap = false,
   autoRotate = false,
@@ -40,7 +40,9 @@ export const Globe3D: React.FC<Globe3DProps> = ({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
-  const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
+  const [dimensions, setDimensions] = useState<{ width: number; height: number }>(
+    () => lastKnownGlobeDimensions ?? { width: 0, height: 0 }
+  );
   const [hoveredCountry, setHoveredCountry] = useState<Country | null>(null);
 
   // Rotation angles: [yaw, pitch, roll]
@@ -57,16 +59,8 @@ export const Globe3D: React.FC<Globe3DProps> = ({
     }
   }, []);
 
-  // Convert TopoJSON to GeoJSON features
-  const geoFeatures = useMemo(() => {
-    try {
-      const geo = feature(worldData50m as any, (worldData50m as any).objects.countries) as any;
-      return geo.features as any[];
-    } catch (e) {
-      console.error('Failed to parse TopoJSON:', e);
-      return [];
-    }
-  }, []);
+  // Reuse module-cached GeoJSON features
+  const geoFeatures = useMemo(() => getCachedGeoFeatures(), []);
 
   const countryFeatureItems = useMemo(() => {
     return geoFeatures.map((feat) => {
@@ -85,16 +79,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
 
   const hoveredWaterIdRef = useRef<string | null>(null);
 
-  const waterGeoFeatures = useMemo(() => {
-    try {
-      const geo = feature(waterBodies50m as any, (waterBodies50m as any).objects.water_bodies) as any;
-      const rawFeatures = (geo.features as any[]) || [];
-      return densifyGeoFeatures(rawFeatures);
-    } catch (e) {
-      console.error('Failed to parse water bodies TopoJSON:', e);
-      return [];
-    }
-  }, []);
+  const waterGeoFeatures = useMemo(() => getCachedWaterGeoFeatures(), []);
 
   const waterFeatureItems = useMemo(() => {
     return waterGeoFeatures
@@ -134,24 +119,39 @@ export const Globe3D: React.FC<Globe3DProps> = ({
     });
   }, [waterFeatureItems]);
 
-  // Responsive sizing
-  useEffect(() => {
+  // Synchronous responsive sizing before first paint to prevent initial aspect ratio warping
+  useLayoutEffect(() => {
     const handleResize = () => {
       if (containerRef.current) {
         const { clientWidth, clientHeight } = containerRef.current;
         if (clientWidth > 0 && clientHeight > 0) {
-          setDimensions({ width: clientWidth, height: clientHeight });
+          lastKnownGlobeDimensions = { width: clientWidth, height: clientHeight };
+          setDimensions((prev) =>
+            prev.width === clientWidth && prev.height === clientHeight
+              ? prev
+              : { width: clientWidth, height: clientHeight }
+          );
         }
       }
     };
     handleResize();
+    const ro =
+      typeof ResizeObserver !== 'undefined' && containerRef.current
+        ? new ResizeObserver(handleResize)
+        : null;
+    if (ro && containerRef.current) {
+      ro.observe(containerRef.current);
+    }
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      ro?.disconnect();
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // Setup D3 Orthographic Projection
   const projection = useMemo(() => {
-    const radius = Math.min(dimensions.width, dimensions.height) / 2.3;
+    const radius = Math.max(1, Math.min(dimensions.width, dimensions.height)) / 2.3;
     return d3
       .geoOrthographic()
       .scale(radius)
@@ -233,7 +233,8 @@ export const Globe3D: React.FC<Globe3DProps> = ({
   }, [selectedCountryId, targetCountryId, disableAutoSpin, spinToCountry]);
 
   // Main Canvas Render Loop
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (dimensions.width <= 0 || dimensions.height <= 0) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');

@@ -33,6 +33,31 @@ interface TrainingSessionProps {
   onFinishSession: () => void;
 }
 
+function createInitialSessionQueue(
+  items: Map<string, SRSItem>,
+  continentFilter: TrainingCategory,
+  attributeFilter: string[],
+  isPracticeMode: boolean,
+  targetCountryId?: string | null
+): TrainingQuestion[] {
+  if (targetCountryId) {
+    const wb = getWaterBodyById(targetCountryId);
+    const c = wb ? waterBodyToCountry(wb) : COUNTRIES_BY_ID.get(targetCountryId);
+    if (c) {
+      const countryContext = [c];
+      const activeAttrs = attributeFilter.length > 0 ? attributeFilter : ['capital', 'location'];
+      const targetedQueue = activeAttrs.map((attrId) => {
+        const item = items.get(`${c.id}:${attrId}`) || createInitialSRSItem(c.id, attrId);
+        return buildQuestion(item, c, countryContext);
+      });
+      if (targetedQueue.length > 0) {
+        return targetedQueue;
+      }
+    }
+  }
+  return prepareSessionQueue(items, continentFilter, attributeFilter, 15, isPracticeMode);
+}
+
 export const TrainingSession: React.FC<TrainingSessionProps> = ({
   continentFilter,
   attributeFilter,
@@ -46,7 +71,13 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
   const isPracticeModeRef = useRef<boolean>(isPracticeMode);
   isPracticeModeRef.current = isPracticeMode;
 
-  const [queue, setQueue] = useState<TrainingQuestion[]>([]);
+  // Persistent SRS map loaded synchronously
+  const [srsItemsMap, setSrsItemsMap] = useState<Map<string, SRSItem>>(() => StorageService.loadSRSItems());
+
+  // Synchronously build initial session queue so the first render never flashes "All Caught Up!"
+  const [queue, setQueue] = useState<TrainingQuestion[]>(() =>
+    createInitialSessionQueue(srsItemsMap, continentFilter, attributeFilter, initialPracticeMode, targetCountryId)
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [userAnswer, setUserAnswer] = useState('');
@@ -64,43 +95,6 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
   const [finalDurationMs, setFinalDurationMs] = useState<number>(0);
   const [sessionAnswers, setSessionAnswers] = useState<SessionAnswerRecord[]>([]);
 
-  // Persistent SRS map
-  const [srsItemsMap, setSrsItemsMap] = useState<Map<string, SRSItem>>(() => StorageService.loadSRSItems());
-
-  // Initialize session queue
-  useEffect(() => {
-    const items = StorageService.loadSRSItems();
-    let newQueue: TrainingQuestion[] = [];
-
-    if (targetCountryId) {
-      const wb = getWaterBodyById(targetCountryId);
-      const c = wb ? waterBodyToCountry(wb) : COUNTRIES_BY_ID.get(targetCountryId);
-      if (c) {
-        const countryContext = [c];
-        const activeAttrs = attributeFilter.length > 0 ? attributeFilter : ['capital', 'location'];
-        newQueue = activeAttrs.map((attrId) => {
-          const item = items.get(`${c.id}:${attrId}`) || createInitialSRSItem(c.id, attrId);
-          return buildQuestion(item, c, countryContext);
-        });
-      }
-    }
-
-    if (newQueue.length === 0) {
-      newQueue = prepareSessionQueue(items, continentFilter, attributeFilter, 15, isPracticeMode);
-    }
-
-    setQueue(newQueue);
-    setCurrentIndex(0);
-    setCorrectCount(0);
-    setGraduatedCount(0);
-    setStreak(0);
-    setSessionAnswers([]);
-    setSessionStartTime(Date.now());
-    setFinalDurationMs(0);
-    setQuestionStartTime(Date.now());
-    questionStartTimeRef.current = Date.now();
-  }, [continentFilter, attributeFilter, isPracticeMode, targetCountryId]);
-
   const currentQuestion = queue[currentIndex];
   const currentQuestionRef = useRef<TrainingQuestion | undefined>(currentQuestion);
   currentQuestionRef.current = currentQuestion;
@@ -113,6 +107,85 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
   const questionStartTimeRef = useRef(questionStartTime);
   questionStartTimeRef.current = questionStartTime;
+
+  const attrKey = attributeFilter.join(',');
+  const prevConfigRef = useRef({
+    continentFilter,
+    attrKey,
+    initialPracticeMode,
+    targetCountryId
+  });
+
+  // Re-initialize session queue only when session filter props actually change after mount
+  useEffect(() => {
+    const prev = prevConfigRef.current;
+    if (
+      prev.continentFilter === continentFilter &&
+      prev.attrKey === attrKey &&
+      prev.initialPracticeMode === initialPracticeMode &&
+      prev.targetCountryId === targetCountryId
+    ) {
+      return;
+    }
+    prevConfigRef.current = {
+      continentFilter,
+      attrKey,
+      initialPracticeMode,
+      targetCountryId
+    };
+
+    const items = StorageService.loadSRSItems();
+    setSrsItemsMap(items);
+    setIsPracticeMode(initialPracticeMode);
+    isPracticeModeRef.current = initialPracticeMode;
+    const newQueue = createInitialSessionQueue(
+      items,
+      continentFilter,
+      attributeFilter,
+      initialPracticeMode,
+      targetCountryId
+    );
+
+    setQueue(newQueue);
+    setCurrentIndex(0);
+    setIsCompleted(false);
+    setIsSubmitted(false);
+    isSubmittedRef.current = false;
+    setUserAnswer('');
+    setIsCurrentCorrect(undefined);
+    setFeedbackState(null);
+    setSelectedMapCountry(null);
+    setCorrectCount(0);
+    setGraduatedCount(0);
+    setStreak(0);
+    setSessionAnswers([]);
+    setSessionStartTime(Date.now());
+    setFinalDurationMs(0);
+    setQuestionStartTime(Date.now());
+    questionStartTimeRef.current = Date.now();
+  }, [continentFilter, attrKey, attributeFilter, initialPracticeMode, targetCountryId]);
+
+  // If queue started empty while async disk/cloud storage was still rehydrating, auto-populate on storage update
+  useEffect(() => {
+    if (queue.length > 0 || isCompleted) return;
+    return StorageService.subscribe(() => {
+      const items = StorageService.loadSRSItems();
+      setSrsItemsMap(items);
+      const refreshedQueue = createInitialSessionQueue(
+        items,
+        continentFilter,
+        attributeFilter,
+        isPracticeModeRef.current,
+        targetCountryId
+      );
+      if (refreshedQueue.length > 0) {
+        setQueue(refreshedQueue);
+        setCurrentIndex(0);
+        setQuestionStartTime(Date.now());
+        questionStartTimeRef.current = Date.now();
+      }
+    });
+  }, [queue.length, isCompleted, continentFilter, attributeFilter, targetCountryId]);
 
   const speechTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
