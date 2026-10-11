@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T09:39:33.330177+00:00",
+  "exportedAt": "2026-10-11T22:23:21.003Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -10404,13 +10404,13 @@
         "countryId": "CIV",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3499999999999996,
+        "step": 2,
+        "easeFactor": 2.3999999999999995,
         "intervalDays": 1,
-        "reps": 1,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-06T11:49:44.284Z",
-        "nextDueAt": "2026-10-07T11:49:44.284Z",
+        "lastReviewedAt": "2026-10-11T22:23:17.805Z",
+        "nextDueAt": "2026-10-12T22:23:17.805Z",
         "history": [
           {
             "timestamp": "2026-10-06T11:48:18.913Z",
@@ -10425,9 +10425,16 @@
             "userAnswer": "Ivory Coast",
             "isCorrect": true,
             "timeSpentMs": 2918
+          },
+          {
+            "timestamp": "2026-10-11T22:23:17.805Z",
+            "inputMode": "map_click",
+            "userAnswer": "Ivory Coast",
+            "isCorrect": true,
+            "timeSpentMs": 5998
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -15036,39 +15043,40 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1090,
-    "totalCorrect": 810,
-    "currentStreak": 3,
+    "totalReviews": 1091,
+    "totalCorrect": 811,
+    "currentStreak": 1,
     "longestStreak": 3,
-    "lastReviewDate": "2026-10-10",
+    "lastReviewDate": "2026-10-12",
     "continentMastery": {
       "Africa": {
-        "total": 0,
-        "mastered": 0,
-        "learning": 0
+        "total": 108,
+        "mastered": 13,
+        "learning": 95
       },
       "Americas": {
-        "total": 0,
-        "mastered": 0,
-        "learning": 0
+        "total": 70,
+        "mastered": 10,
+        "learning": 22
       },
       "Asia": {
-        "total": 0,
-        "mastered": 0,
-        "learning": 0
+        "total": 96,
+        "mastered": 11,
+        "learning": 85
       },
       "Europe": {
-        "total": 0,
-        "mastered": 0,
-        "learning": 0
+        "total": 90,
+        "mastered": 51,
+        "learning": 39
       },
       "Oceania": {
-        "total": 0,
-        "mastered": 0,
-        "learning": 0
+        "total": 28,
+        "mastered": 4,
+        "learning": 24
       }
     },
-    "timeAttackRecords": {}
+    "timeAttackRecords": {},
+    "updatedAt": "2026-10-11T22:23:17.807Z"
   },
   "settings": {
     "audioEnabled": true,
@@ -15077,7 +15085,9 @@
     "autoRotateGlobe": false,
     "showMapCountryLabels": false,
     "typingFuzzyTolerance": 1,
-    "ttsProvider": "google-stream",
-    "geminiVoice": "Kore"
+    "ttsProvider": "gemini-tts",
+    "geminiApiKey": "",
+    "geminiVoice": "Fenrir",
+    "githubSyncToken": ""
   }
 }
