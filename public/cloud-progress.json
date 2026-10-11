@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T23:09:55.491Z",
+  "exportedAt": "2026-10-11T23:10:08.015Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -9045,13 +9045,13 @@
         "countryId": "WATER_SEA_SOUTH_CHINA",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 2.4499999999999993,
+        "intervalDays": 1,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:02:07.853Z",
-        "nextDueAt": "2026-10-08T20:02:07.853Z",
+        "lastReviewedAt": "2026-10-11T23:10:04.616Z",
+        "nextDueAt": "2026-10-12T23:10:04.616Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:47:42.478Z",
@@ -9073,9 +9073,16 @@
             "userAnswer": "Yellow Sea",
             "isCorrect": false,
             "timeSpentMs": 6606
+          },
+          {
+            "timestamp": "2026-10-11T23:10:04.616Z",
+            "inputMode": "map_click",
+            "userAnswer": "South China Sea",
+            "isCorrect": true,
+            "timeSpentMs": 6347
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -15218,8 +15225,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1116,
-    "totalCorrect": 829,
+    "totalReviews": 1117,
+    "totalCorrect": 830,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-12",
@@ -15251,7 +15258,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T23:09:52.387Z"
+    "updatedAt": "2026-10-11T23:10:04.618Z"
   },
   "settings": {
     "audioEnabled": true,
