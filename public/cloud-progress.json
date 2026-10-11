@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T22:55:25.383Z",
+  "exportedAt": "2026-10-11T23:08:53.788Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13195,13 +13195,13 @@
         "countryId": "KEN",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.3499999999999996,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-06T12:35:23.363Z",
-        "nextDueAt": "2026-10-07T12:35:23.363Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-11T23:08:50.528Z",
+        "nextDueAt": "2026-10-11T23:08:50.528Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:35:23.363Z",
@@ -13209,6 +13209,13 @@
             "userAnswer": "Nairobi",
             "isCorrect": true,
             "timeSpentMs": 6783
+          },
+          {
+            "timestamp": "2026-10-11T23:08:50.528Z",
+            "inputMode": "typing",
+            "userAnswer": "iu",
+            "isCorrect": false,
+            "timeSpentMs": 46724
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15141,7 +15148,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1105,
+    "totalReviews": 1106,
     "totalCorrect": 822,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15174,7 +15181,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T22:55:22.350Z"
+    "updatedAt": "2026-10-11T23:08:50.531Z"
   },
   "settings": {
     "audioEnabled": true,
