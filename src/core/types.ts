@@ -87,6 +87,7 @@ export interface UserStats {
   currentStreak: number;
   longestStreak: number;
   lastReviewDate: string | null;
+  updatedAt?: string;
   continentMastery: Record<Continent, { total: number; mastered: number; learning: number }>;
   timeAttackRecords: Record<string, { highStreak: number; bestTimeSeconds: number; date: string }>;
 }

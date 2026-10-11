@@ -146,14 +146,6 @@ ipcMain.handle('save-storage-data', async (_event, dataObj: any) => {
       const backupTmpPath = `${backupFilePath}.tmp`;
       fs.writeFileSync(backupTmpPath, serialized, 'utf-8');
       fs.renameSync(backupTmpPath, backupFilePath);
-
-      // Mirror sanitized progress to repo public/cloud-progress.json if inside repo
-      const repoCloudPath = path.join(process.cwd(), 'public', 'cloud-progress.json');
-      if (fs.existsSync(path.dirname(repoCloudPath))) {
-        const cloudTmp = `${repoCloudPath}.tmp`;
-        fs.writeFileSync(cloudTmp, JSON.stringify(sanitizeCloudPayload(dataObj), null, 2), 'utf-8');
-        fs.renameSync(cloudTmp, repoCloudPath);
-      }
     }
 
     return { success: true };
@@ -170,6 +162,15 @@ ipcMain.handle('sync-github-progress', async (_event, dataObj: any) => {
     const repoCloudPath = path.join(repoDir, 'public', 'cloud-progress.json');
     if (!fs.existsSync(path.dirname(repoCloudPath))) {
       return { success: false, message: 'public/ directory not found in workspace' };
+    }
+
+    // Fetch & rebase any remote commits pushed from Phone first so git push never conflicts
+    try {
+      await execFileAsync('git', ['pull', '--rebase', '--autostash', '-X', 'theirs', 'origin', 'main'], {
+        cwd: repoDir
+      });
+    } catch {
+      // Ignore if offline or nothing to rebase
     }
 
     const sanitized = sanitizeCloudPayload(dataObj);

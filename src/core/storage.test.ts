@@ -223,4 +223,143 @@ describe('StorageService Persistence & Schema Integrity', () => {
 
     delete (globalThis as any).window;
   });
+
+  it('strictly prioritizes more recent event timestamps even when a card regresses (1/2 -> 0/2 or Stage 2 -> Stage 1)', () => {
+    // Desktop state at t = 1000: FRA is 1/2 in recall, ESP is Stage 2 (Mastered)
+    const olderLocalMap = new Map<string, SRSItem>([
+      [
+        'FRA:capital',
+        {
+          id: 'FRA:capital',
+          countryId: 'FRA',
+          attributeId: 'capital',
+          stage: 1,
+          step: 2,
+          reps: 2,
+          lapses: 0,
+          easeFactor: 2.55,
+          intervalDays: 1,
+          consecutiveRecallCorrect: 1,
+          lastReviewedAt: new Date(1000).toISOString(),
+          nextDueAt: new Date(86401000).toISOString(),
+          history: []
+        }
+      ],
+      [
+        'ESP:capital',
+        {
+          id: 'ESP:capital',
+          countryId: 'ESP',
+          attributeId: 'capital',
+          stage: 2,
+          step: 3,
+          reps: 3,
+          lapses: 0,
+          easeFactor: 2.6,
+          intervalDays: 7,
+          consecutiveRecallCorrect: 2,
+          lastReviewedAt: new Date(1000).toISOString(),
+          nextDueAt: new Date(604801000).toISOString(),
+          history: []
+        }
+      ]
+    ]);
+    StorageService.saveSRSItems(olderLocalMap);
+
+    // Phone state at t = 5000: User failed both cards on phone, so FRA went 1/2 -> 0/2 and ESP went Stage 2 -> Stage 1 (0/2)
+    // Note that reps does NOT increase on failure, only lapses and lastReviewedAt!
+    const newerPhonePayload = {
+      srsItems: [
+        [
+          'FRA:capital',
+          {
+            id: 'FRA:capital',
+            countryId: 'FRA',
+            attributeId: 'capital',
+            stage: 1,
+            step: 0,
+            reps: 2,
+            lapses: 1,
+            easeFactor: 2.35,
+            intervalDays: 0,
+            consecutiveRecallCorrect: 0,
+            lastReviewedAt: new Date(5000).toISOString(),
+            nextDueAt: new Date(5000).toISOString(),
+            history: []
+          }
+        ],
+        [
+          'ESP:capital',
+          {
+            id: 'ESP:capital',
+            countryId: 'ESP',
+            attributeId: 'capital',
+            stage: 1,
+            step: 0,
+            reps: 3,
+            lapses: 1,
+            easeFactor: 2.4,
+            intervalDays: 0,
+            consecutiveRecallCorrect: 0,
+            lastReviewedAt: new Date(5000).toISOString(),
+            nextDueAt: new Date(5000).toISOString(),
+            history: []
+          }
+        ]
+      ],
+      stats: {
+        totalReviews: 7,
+        totalCorrect: 5,
+        currentStreak: 2,
+        longestStreak: 2,
+        lastReviewDate: '2026-10-11',
+        updatedAt: new Date(5000).toISOString(),
+        continentMastery: {},
+        timeAttackRecords: {}
+      }
+    };
+
+    const changed = StorageService.reconcileExternalData(newerPhonePayload);
+    expect(changed).toBe(true);
+
+    const afterPull = StorageService.loadSRSItems();
+    expect(afterPull.get('FRA:capital')?.consecutiveRecallCorrect).toBe(0);
+    expect(afterPull.get('ESP:capital')?.stage).toBe(1);
+    expect(afterPull.get('ESP:capital')?.consecutiveRecallCorrect).toBe(0);
+
+    // Continent mastery must also reflect that Europe now has 0 mastered and 2 learning
+    const statsAfterPull = StorageService.loadStats();
+    expect(statsAfterPull.continentMastery.Europe.mastered).toBe(0);
+    expect(statsAfterPull.continentMastery.Europe.learning).toBe(2);
+
+    // Conversely, if an OLDER external payload (t = 1000, where FRA was 1/2 and ESP was Stage 2)
+    // is reconciled against the NEWER local state (t = 5000, where both are 0/2),
+    // the older 1/2 or Stage 2 state must NEVER overwrite the newer 0/2 state!
+    const olderSnapshotPayload = {
+      srsItems: Array.from(olderLocalMap.entries()),
+      stats: {
+        totalReviews: 5,
+        totalCorrect: 5,
+        currentStreak: 1,
+        longestStreak: 1,
+        lastReviewDate: '2026-10-10',
+        updatedAt: new Date(1000).toISOString(),
+        continentMastery: {},
+        timeAttackRecords: {}
+      }
+    };
+
+    const overwrittenByOld = StorageService.reconcileExternalData(olderSnapshotPayload);
+    expect(overwrittenByOld).toBe(false);
+
+    const stillNewer = StorageService.loadSRSItems();
+    expect(stillNewer.get('FRA:capital')?.consecutiveRecallCorrect).toBe(0);
+    expect(stillNewer.get('ESP:capital')?.stage).toBe(1);
+    expect(stillNewer.get('ESP:capital')?.consecutiveRecallCorrect).toBe(0);
+
+    // And hasLocalNewerEvents must detect that local has newer events than the older remote snapshot so it pushes to GitHub
+    expect(StorageService.hasLocalNewerEvents(olderSnapshotPayload)).toBe(true);
+    expect(StorageService.hasLocalNewerEvents(newerPhonePayload)).toBe(false);
+  });
 });
+

@@ -2,6 +2,7 @@ import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { SRSItem, UserStats, AppSettings } from './types';
+import { computeMasteryStats } from './srsEngine';
 
 const STORAGE_KEYS = {
   SRS_ITEMS: 'geomastery_srs_items_v1',
@@ -40,6 +41,8 @@ const DEFAULT_STATS: UserStats = {
 export class StorageService {
   private static subscribers: Set<() => void> = new Set();
   private static syncTimeout: any = null;
+  private static cloudSyncTimeout: any = null;
+  private static focusListenerAttached = false;
 
   public static subscribe(callback: () => void): () => void {
     this.subscribers.add(callback);
@@ -61,6 +64,32 @@ export class StorageService {
   private static hasNativeStorageBridge(): boolean {
     if (typeof window === 'undefined') return false;
     return Boolean(window.electronAPI?.loadStorageData) || Capacitor.isNativePlatform();
+  }
+
+  /**
+   * Resolves the GitHub token from user settings or build-time obfuscated mask (.env.local)
+   * so both Phone -> Desktop and Desktop -> Phone two-way sync work out of the box.
+   */
+  private static getResolvedGitHubToken(overrideToken?: string): string {
+    const explicit = (overrideToken ?? this.loadSettings().githubSyncToken ?? '').trim();
+    if (explicit) return explicit;
+
+    try {
+      const mask = (import.meta as any)?.env?.VITE_GH_SYNC_MASK;
+      if (typeof mask === 'string' && mask.length > 0 && mask.length % 2 === 0) {
+        const key = 'geomastery-sync-2026';
+        let out = '';
+        for (let i = 0; i < mask.length; i += 2) {
+          const byte = parseInt(mask.slice(i, i + 2), 16);
+          const kChar = key.charCodeAt((i / 2) % key.length);
+          out += String.fromCharCode(byte ^ kChar);
+        }
+        return out.trim();
+      }
+    } catch {
+      // Ignore if env not present
+    }
+    return '';
   }
 
   private static async loadNativeData(): Promise<{ success: boolean; data?: any; recoveredFromBackup?: boolean }> {
@@ -138,8 +167,90 @@ export class StorageService {
   }
 
   /**
+   * Returns the exact millisecond timestamp of the most recent review event for an SRSItem.
+   * Uses both `lastReviewedAt` and the `history` log.
+   */
+  public static getItemEventTimestamp(item?: SRSItem): number {
+    if (!item) return 0;
+    let maxTs = 0;
+    if (item.lastReviewedAt) {
+      const parsed = Date.parse(item.lastReviewedAt);
+      if (!Number.isNaN(parsed) && parsed > maxTs) {
+        maxTs = parsed;
+      }
+    }
+    if (Array.isArray(item.history)) {
+      for (const entry of item.history) {
+        if (entry?.timestamp) {
+          const parsedHist = Date.parse(entry.timestamp);
+          if (!Number.isNaN(parsedHist) && parsedHist > maxTs) {
+            maxTs = parsedHist;
+          }
+        }
+      }
+    }
+    return maxTs;
+  }
+
+  /**
+   * Returns the latest event timestamp across an entire dataset (all SRS items + stats.updatedAt).
+   */
+  public static getDatasetEventTimestamp(itemsMap: Map<string, SRSItem>, stats?: UserStats): number {
+    let maxTs = 0;
+    if (stats?.updatedAt) {
+      const parsed = Date.parse(stats.updatedAt);
+      if (!Number.isNaN(parsed) && parsed > maxTs) {
+        maxTs = parsed;
+      }
+    }
+    itemsMap.forEach((item) => {
+      const ts = this.getItemEventTimestamp(item);
+      if (ts > maxTs) maxTs = ts;
+    });
+    return maxTs;
+  }
+
+  /**
+   * Recomputes continentMastery counts directly from the given SRS items map so that
+   * promotions AND demotions (e.g., 1/2 -> 0/2 or Stage 2 -> Stage 1) are always reflected accurately.
+   */
+  private static buildContinentMasteryFromItems(itemsMap: Map<string, SRSItem>): UserStats['continentMastery'] {
+    const mastery = computeMasteryStats(itemsMap);
+    return {
+      Africa: {
+        total: mastery.breakdown.Africa.total,
+        mastered: mastery.breakdown.Africa.stage2,
+        learning: mastery.breakdown.Africa.stage1
+      },
+      Americas: {
+        total: mastery.breakdown.Americas.total,
+        mastered: mastery.breakdown.Americas.stage2,
+        learning: mastery.breakdown.Americas.stage1
+      },
+      Asia: {
+        total: mastery.breakdown.Asia.total,
+        mastered: mastery.breakdown.Asia.stage2,
+        learning: mastery.breakdown.Asia.stage1
+      },
+      Europe: {
+        total: mastery.breakdown.Europe.total,
+        mastered: mastery.breakdown.Europe.stage2,
+        learning: mastery.breakdown.Europe.stage1
+      },
+      Oceania: {
+        total: mastery.breakdown.Oceania.total,
+        mastered: mastery.breakdown.Oceania.stage2,
+        learning: mastery.breakdown.Oceania.stage1
+      }
+    };
+  }
+
+  /**
    * Reconciles an external progress payload (from disk, bundled cloud-progress.json, or GitHub)
-   * item-by-item with local storage, preserving whichever item or stat is more advanced.
+   * item-by-item with local storage using STRICT EVENT TIMESTAMPS (Last-Write-Wins per card).
+   *
+   * Crucial rule: A more recent review event ALWAYS wins, even if it demoted a card's stage
+   * (Stage 2 -> 1) or reset `consecutiveRecallCorrect` from 1/2 back to 0/2.
    */
   public static reconcileExternalData(externalData: any): boolean {
     if (!externalData || typeof externalData !== 'object') return false;
@@ -154,7 +265,9 @@ export class StorageService {
 
     if (extItems.size > 0 && localItems.size === 0) {
       this.saveSRSItems(extItems);
-      if (extStats) this.saveStats(extStats);
+      const baseStats = extStats ? { ...localStats, ...extStats } : localStats;
+      baseStats.continentMastery = this.buildContinentMasteryFromItems(extItems);
+      this.saveStats(baseStats);
       if (externalData.settings) {
         const currentSettings = this.loadSettings();
         this.saveSettings({
@@ -167,6 +280,9 @@ export class StorageService {
       return true;
     }
 
+    const localDatasetTimeBefore = this.getDatasetEventTimestamp(localItems, localStats);
+    const extDatasetTime = this.getDatasetEventTimestamp(extItems, extStats);
+
     let changed = false;
     const mergedItems = new Map<string, SRSItem>(localItems);
 
@@ -176,14 +292,32 @@ export class StorageService {
       if (!localItem) {
         mergedItems.set(id, extItem);
         changed = true;
+        return;
+      }
+
+      const extTime = this.getItemEventTimestamp(extItem);
+      const localTime = this.getItemEventTimestamp(localItem);
+
+      if (extTime > 0 || localTime > 0) {
+        // Strict event-time comparison: most recent review event wins unconditionally
+        if (extTime > localTime) {
+          mergedItems.set(id, extItem);
+          changed = true;
+        } else if (extTime === localTime) {
+          // Tie-breaker only if millisecond timestamps are identical: total review events (reps + lapses)
+          const extEvents = (extItem.reps || 0) + (extItem.lapses || 0);
+          const localEvents = (localItem.reps || 0) + (localItem.lapses || 0);
+          if (extEvents > localEvents) {
+            mergedItems.set(id, extItem);
+            changed = true;
+          }
+        }
+        // When extTime < localTime, localItem is newer -> keep localItem untouched!
       } else {
-        const extTime = extItem.lastReviewedAt ? new Date(extItem.lastReviewedAt).getTime() : 0;
-        const localTime = localItem.lastReviewedAt ? new Date(localItem.lastReviewedAt).getTime() : 0;
-        if (
-          extTime > localTime ||
-          extItem.reps > localItem.reps ||
-          (extItem.reps === localItem.reps && extItem.stage > localItem.stage)
-        ) {
+        // Legacy fallback when neither item has any timestamp at all
+        const extEvents = (extItem.reps || 0) + (extItem.lapses || 0);
+        const localEvents = (localItem.reps || 0) + (localItem.lapses || 0);
+        if (extEvents > localEvents) {
           mergedItems.set(id, extItem);
           changed = true;
         }
@@ -193,18 +327,42 @@ export class StorageService {
     if (extStats && typeof extStats.totalReviews === 'number') {
       const extReviews = extStats.totalReviews || 0;
       const localReviews = localStats.totalReviews || 0;
-      if (extReviews > localReviews) {
-        this.saveStats({
+      const extIsMoreRecent = extDatasetTime > localDatasetTimeBefore;
+
+      if (extIsMoreRecent || extReviews > localReviews) {
+        const newerStats = extIsMoreRecent ? extStats : localStats;
+        const mergedTimeAttack = {
+          ...(localStats.timeAttackRecords || {}),
+          ...(extStats.timeAttackRecords || {})
+        };
+        const updatedStats: UserStats = {
           ...localStats,
           ...extStats,
+          currentStreak: newerStats.currentStreak ?? Math.max(localStats.currentStreak || 0, extStats.currentStreak || 0),
+          lastReviewDate: newerStats.lastReviewDate ?? localStats.lastReviewDate ?? extStats.lastReviewDate,
+          updatedAt:
+            extDatasetTime > localDatasetTimeBefore
+              ? extStats.updatedAt || new Date(extDatasetTime).toISOString()
+              : localStats.updatedAt,
+          totalReviews: Math.max(localReviews, extReviews),
+          totalCorrect: Math.max(localStats.totalCorrect || 0, extStats.totalCorrect || 0),
           longestStreak: Math.max(localStats.longestStreak || 0, extStats.longestStreak || 0),
-          timeAttackRecords: {
-            ...(localStats.timeAttackRecords || {}),
-            ...(extStats.timeAttackRecords || {})
-          }
-        });
+          continentMastery: this.buildContinentMasteryFromItems(mergedItems),
+          timeAttackRecords: mergedTimeAttack
+        };
+        this.saveStats(updatedStats);
         changed = true;
+      } else if (changed) {
+        this.saveStats({
+          ...localStats,
+          continentMastery: this.buildContinentMasteryFromItems(mergedItems)
+        });
       }
+    } else if (changed) {
+      this.saveStats({
+        ...localStats,
+        continentMastery: this.buildContinentMasteryFromItems(mergedItems)
+      });
     }
 
     if (changed) {
@@ -216,8 +374,43 @@ export class StorageService {
   }
 
   /**
+   * Determines whether local storage contains any item or stat event more recent than `remoteData`.
+   */
+  public static hasLocalNewerEvents(remoteData: any): boolean {
+    if (!remoteData || typeof remoteData !== 'object') return true;
+
+    const localItems = this.loadSRSItems();
+    const remoteItems = Array.isArray(remoteData.srsItems)
+      ? new Map<string, SRSItem>(remoteData.srsItems)
+      : new Map<string, SRSItem>();
+
+    if (localItems.size > remoteItems.size) return true;
+
+    for (const [id, localItem] of localItems.entries()) {
+      const rItem = remoteItems.get(id);
+      if (!rItem) return true;
+      const localTime = this.getItemEventTimestamp(localItem);
+      const remoteTime = this.getItemEventTimestamp(rItem);
+      if (localTime > remoteTime) return true;
+      if (localTime === remoteTime) {
+        const localEvents = (localItem.reps || 0) + (localItem.lapses || 0);
+        const remoteEvents = (rItem.reps || 0) + (rItem.lapses || 0);
+        if (localEvents > remoteEvents) return true;
+      }
+    }
+
+    const localStats = this.loadStats();
+    const remoteStats: UserStats | undefined = remoteData.stats;
+    if ((localStats.totalReviews || 0) > (remoteStats?.totalReviews || 0)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
    * Initializes persistent sync between disk file (Electron or Android native storage),
-   * bundled cloud snapshot, and live GitHub cloud progress.
+   * bundled offline seed, and live two-way GitHub cloud progress.
    */
   public static async initPersistentSync(): Promise<boolean> {
     if (typeof window === 'undefined') return false;
@@ -239,31 +432,50 @@ export class StorageService {
       }
     }
 
-    // In real browser / Android WebView / Electron environments, also reconcile with bundled
-    // ./cloud-progress.json (works offline) and live GitHub raw cloud-progress.json
+    // In real browser / Android WebView / Electron environments:
     if (typeof window.location?.href === 'string' && typeof fetch !== 'undefined') {
-      try {
-        const bundledRes = await fetch('./cloud-progress.json', { cache: 'no-store' });
-        if (bundledRes.ok) {
-          const bundledData = await bundledRes.json();
-          if (this.reconcileExternalData(bundledData)) {
-            anyChanged = true;
+      // Only load the static ./cloud-progress.json bundle as an initial offline seed if storage is completely empty
+      if (this.loadSRSItems().size === 0) {
+        try {
+          const bundledRes = await fetch('./cloud-progress.json', { cache: 'no-store' });
+          if (bundledRes.ok) {
+            const bundledData = await bundledRes.json();
+            if (this.reconcileExternalData(bundledData)) {
+              anyChanged = true;
+            }
           }
+        } catch {
+          // Ignore if offline or bundled file unavailable
         }
-      } catch {
-        // Ignore if offline or bundled file unavailable
       }
 
-      // Non-blocking live GitHub pull on boot
-      this.syncWithGitHub({ pullOnly: true }).catch(() => {});
+      // Live two-way GitHub sync on boot (pulls newer remote events AND pushes any newer local events)
+      this.syncWithGitHub().catch(() => {});
+
+      // Attach window focus / visibility listener once so switching between Phone and Desktop auto-syncs
+      if (!this.focusListenerAttached && typeof window.addEventListener === 'function') {
+        this.focusListenerAttached = true;
+        window.addEventListener('focus', () => {
+          this.syncWithGitHub().catch(() => {});
+        });
+        if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+          document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+              this.syncWithGitHub().catch(() => {});
+            }
+          });
+        }
+      }
     }
 
     return anyChanged;
   }
 
   /**
-   * Pulls and reconciles the latest progression from GitHub (robindelis/GeoMastery/public/cloud-progress.json),
-   * and pushes merged changes back to GitHub if running on Desktop or if a GitHub token is configured.
+   * Two-way time-based synchronization with GitHub (robindelis/GeoMastery/public/cloud-progress.json).
+   * 1. Pulls the latest remote progress via the real-time GitHub Contents API (zero CDN lag).
+   * 2. Reconciles item-by-item using strict event timestamps (`lastReviewedAt`).
+   * 3. If local storage has any newer review events than GitHub, pushes the merged state back to GitHub.
    */
   public static async syncWithGitHub(options?: {
     pullOnly?: boolean;
@@ -281,12 +493,12 @@ export class StorageService {
 
     let pulledChanged = false;
     let remoteSha: string | undefined;
+    let remoteData: any = null;
     let pullSucceeded = false;
 
-    const settings = this.loadSettings();
-    const token = (options?.githubToken ?? settings.githubSyncToken ?? '').trim();
+    const token = this.getResolvedGitHubToken(options?.githubToken);
 
-    // 1. Pull latest from GitHub API (for fresh SHA + immediate consistency) or Raw URL fallback
+    // 1. Pull latest from GitHub Contents API (real-time, no CDN cache lag)
     try {
       const headers: Record<string, string> = {
         Accept: 'application/vnd.github.v3+json'
@@ -305,7 +517,7 @@ export class StorageService {
           const binary = atob(meta.content.replace(/\s/g, ''));
           const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
           const jsonText = new TextDecoder('utf-8').decode(bytes);
-          const remoteData = JSON.parse(jsonText);
+          remoteData = JSON.parse(jsonText);
           pulledChanged = this.reconcileExternalData(remoteData);
           pullSucceeded = true;
         }
@@ -318,7 +530,7 @@ export class StorageService {
       try {
         const rawRes = await fetch(GITHUB_RAW_URL, { cache: 'no-store' });
         if (rawRes.ok) {
-          const remoteData = await rawRes.json();
+          remoteData = await rawRes.json();
           pulledChanged = this.reconcileExternalData(remoteData);
           pullSucceeded = true;
         }
@@ -343,6 +555,9 @@ export class StorageService {
       };
     }
 
+    // Check if our merged local state has any events newer than what was on GitHub
+    const localHasNewer = this.hasLocalNewerEvents(remoteData);
+
     const payload = {
       version: 1,
       exportedAt: new Date().toISOString(),
@@ -355,29 +570,8 @@ export class StorageService {
       }
     };
 
-    // 2. Push back to GitHub if running on Desktop (Electron git bridge)
-    if (typeof window !== 'undefined' && window.electronAPI?.syncGitHubProgress) {
-      try {
-        const pushRes = await window.electronAPI.syncGitHubProgress(payload);
-        if (pushRes.success) {
-          return {
-            success: true,
-            pulledChanged,
-            pushed: Boolean(pushRes.pushed),
-            totalItems: currentItems.size,
-            totalReviews: currentStats.totalReviews,
-            message: pushRes.pushed
-              ? `Synced & pushed to GitHub (${currentItems.size} items • ${currentStats.totalReviews} reviews)`
-              : `Up to date with GitHub (${currentItems.size} items • ${currentStats.totalReviews} reviews)`
-          };
-        }
-      } catch (err) {
-        console.error('Electron GitHub push failed:', err);
-      }
-    }
-
-    // 3. Push back to GitHub via REST API if a GitHub Personal Access Token is configured (Android / Web)
-    if (token && remoteSha) {
+    // 2. Push merged state to GitHub via REST Contents API (works on both Android Phone and Desktop!)
+    if (token && remoteSha && localHasNewer) {
       try {
         const jsonStr = JSON.stringify(payload, null, 2);
         const utf8Bytes = new TextEncoder().encode(jsonStr);
@@ -417,6 +611,27 @@ export class StorageService {
       }
     }
 
+    // 3. Fallback push via Electron git bridge on Desktop if REST push wasn't used
+    if (localHasNewer && typeof window !== 'undefined' && window.electronAPI?.syncGitHubProgress) {
+      try {
+        const pushRes = await window.electronAPI.syncGitHubProgress(payload);
+        if (pushRes.success) {
+          return {
+            success: true,
+            pulledChanged,
+            pushed: Boolean(pushRes.pushed),
+            totalItems: currentItems.size,
+            totalReviews: currentStats.totalReviews,
+            message: pushRes.pushed
+              ? `Synced & pushed to GitHub (${currentItems.size} items • ${currentStats.totalReviews} reviews)`
+              : `Up to date with GitHub (${currentItems.size} items • ${currentStats.totalReviews} reviews)`
+          };
+        }
+      } catch (err) {
+        console.error('Electron GitHub push failed:', err);
+      }
+    }
+
     return {
       success: pullSucceeded,
       pulledChanged,
@@ -424,7 +639,9 @@ export class StorageService {
       totalItems: currentItems.size,
       totalReviews: currentStats.totalReviews,
       message: pullSucceeded
-        ? `Pulled latest from GitHub (${currentItems.size} items • ${currentStats.totalReviews} reviews)`
+        ? pulledChanged
+          ? `Pulled latest from GitHub (${currentItems.size} items • ${currentStats.totalReviews} reviews)`
+          : `Up to date with GitHub (${currentItems.size} items • ${currentStats.totalReviews} reviews)`
         : 'Could not reach GitHub — check internet connection'
     };
   }
@@ -449,6 +666,14 @@ export class StorageService {
     this.syncTimeout = setTimeout(() => {
       this.syncToDiskNow();
     }, 200);
+  }
+
+  private static scheduleCloudSync(): void {
+    if (typeof window === 'undefined' || typeof window.location?.href !== 'string') return;
+    if (this.cloudSyncTimeout) clearTimeout(this.cloudSyncTimeout);
+    this.cloudSyncTimeout = setTimeout(() => {
+      this.syncWithGitHub().catch(() => {});
+    }, 2500);
   }
 
   /**
@@ -573,6 +798,8 @@ export class StorageService {
 
     stats.totalReviews += 1;
     if (isCorrect) stats.totalCorrect += 1;
+    stats.updatedAt = now.toISOString();
+    stats.continentMastery = this.buildContinentMasteryFromItems(this.loadSRSItems());
 
     if (lastDate !== today) {
       if (lastDate) {
@@ -594,6 +821,7 @@ export class StorageService {
     }
 
     this.saveStats(stats);
+    this.scheduleCloudSync();
     return stats;
   }
 
