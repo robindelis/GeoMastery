@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T23:09:01.449Z",
+  "exportedAt": "2026-10-11T23:09:09.265Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11828,13 +11828,13 @@
         "countryId": "BFA",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
+        "step": 2,
+        "easeFactor": 2.5999999999999996,
         "intervalDays": 1,
-        "reps": 1,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-06T12:22:59.921Z",
-        "nextDueAt": "2026-10-07T12:22:59.921Z",
+        "lastReviewedAt": "2026-10-11T23:09:06.004Z",
+        "nextDueAt": "2026-10-12T23:09:06.004Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:22:59.921Z",
@@ -11842,9 +11842,16 @@
             "userAnswer": "Ouagadougou",
             "isCorrect": true,
             "timeSpentMs": 9649
+          },
+          {
+            "timestamp": "2026-10-11T23:09:06.004Z",
+            "inputMode": "typing",
+            "userAnswer": "Ouagadougou",
+            "isCorrect": true,
+            "timeSpentMs": 5744
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -15162,8 +15169,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1108,
-    "totalCorrect": 824,
+    "totalReviews": 1109,
+    "totalCorrect": 825,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-12",
@@ -15195,7 +15202,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T23:08:58.399Z"
+    "updatedAt": "2026-10-11T23:09:06.006Z"
   },
   "settings": {
     "audioEnabled": true,
