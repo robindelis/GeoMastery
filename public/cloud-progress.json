@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T22:54:50.242Z",
+  "exportedAt": "2026-10-11T22:54:58.329Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -12202,14 +12202,14 @@
         "id": "BEN:location",
         "countryId": "BEN",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:14:31.905Z",
-        "nextDueAt": "2026-10-09T20:14:31.905Z",
+        "lastReviewedAt": "2026-10-11T22:54:55.292Z",
+        "nextDueAt": "2026-10-18T22:54:55.292Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:28:47.276Z",
@@ -12224,9 +12224,16 @@
             "userAnswer": "Benin",
             "isCorrect": true,
             "timeSpentMs": 2995
+          },
+          {
+            "timestamp": "2026-10-11T22:54:55.292Z",
+            "inputMode": "map_click",
+            "userAnswer": "Benin",
+            "isCorrect": true,
+            "timeSpentMs": 7116
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -15113,16 +15120,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1101,
-    "totalCorrect": 820,
+    "totalReviews": 1102,
+    "totalCorrect": 821,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-12",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 14,
-        "learning": 94
+        "mastered": 15,
+        "learning": 93
       },
       "Americas": {
         "total": 70,
@@ -15146,7 +15153,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T22:54:47.142Z"
+    "updatedAt": "2026-10-11T22:54:55.295Z"
   },
   "settings": {
     "audioEnabled": true,
