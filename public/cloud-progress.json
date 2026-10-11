@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T23:09:12.960Z",
+  "exportedAt": "2026-10-11T23:09:18.893Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13634,14 +13634,14 @@
         "id": "TUN:capital",
         "countryId": "TUN",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-09T19:15:42.317Z",
-        "nextDueAt": "2026-10-10T19:15:42.317Z",
+        "lastReviewedAt": "2026-10-11T23:09:15.869Z",
+        "nextDueAt": "2026-10-18T23:09:15.869Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:36:33.296Z",
@@ -13656,9 +13656,16 @@
             "userAnswer": "Tunis",
             "isCorrect": true,
             "timeSpentMs": 2208
+          },
+          {
+            "timestamp": "2026-10-11T23:09:15.869Z",
+            "inputMode": "typing",
+            "userAnswer": "Tunis",
+            "isCorrect": true,
+            "timeSpentMs": 2265
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -15183,16 +15190,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1111,
-    "totalCorrect": 827,
+    "totalReviews": 1112,
+    "totalCorrect": 828,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-12",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 16,
-        "learning": 92
+        "mastered": 17,
+        "learning": 91
       },
       "Americas": {
         "total": 70,
@@ -15216,7 +15223,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T23:09:12.506Z"
+    "updatedAt": "2026-10-11T23:09:15.872Z"
   },
   "settings": {
     "audioEnabled": true,
