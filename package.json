@@ -13,6 +13,7 @@
     "android:sync": "npm run build && npx cap sync android",
     "android:open": "npx cap open android",
     "android:run": "npm run build && npx cap run android",
+    "android:apk": "npm run android:sync && cd android && JAVA_HOME=/home/robin/.local/share/PrismLauncher/java/java-runtime-delta ./gradlew assembleDebug -Dorg.gradle.java.home=/home/robin/.local/share/PrismLauncher/java/java-runtime-delta",
     "test": "vitest run"
   },
   "dependencies": {
