@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T22:23:21.003Z",
+  "exportedAt": "2026-10-11T22:23:28.198Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6909,13 +6909,13 @@
         "countryId": "LAO",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
+        "step": 2,
+        "easeFactor": 2.5999999999999996,
         "intervalDays": 1,
-        "reps": 1,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-04T20:26:07.614Z",
-        "nextDueAt": "2026-10-05T20:26:07.614Z",
+        "lastReviewedAt": "2026-10-11T22:23:28.106Z",
+        "nextDueAt": "2026-10-12T22:23:28.106Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:26:07.614Z",
@@ -6923,9 +6923,16 @@
             "userAnswer": "Vientiane",
             "isCorrect": true,
             "timeSpentMs": 5662
+          },
+          {
+            "timestamp": "2026-10-11T22:23:28.106Z",
+            "inputMode": "typing",
+            "userAnswer": "Vientane",
+            "isCorrect": true,
+            "timeSpentMs": 2509
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -7828,13 +7835,13 @@
         "countryId": "KOR",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
+        "step": 2,
+        "easeFactor": 2.5999999999999996,
         "intervalDays": 1,
-        "reps": 1,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-04T20:32:01.229Z",
-        "nextDueAt": "2026-10-05T20:32:01.229Z",
+        "lastReviewedAt": "2026-10-11T22:23:25.070Z",
+        "nextDueAt": "2026-10-12T22:23:25.070Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:32:01.229Z",
@@ -7842,9 +7849,16 @@
             "userAnswer": "Seoul",
             "isCorrect": true,
             "timeSpentMs": 3342
+          },
+          {
+            "timestamp": "2026-10-11T22:23:25.070Z",
+            "inputMode": "typing",
+            "userAnswer": "Seoul",
+            "isCorrect": true,
+            "timeSpentMs": 5685
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -15043,8 +15057,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1091,
-    "totalCorrect": 811,
+    "totalReviews": 1093,
+    "totalCorrect": 813,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-12",
@@ -15076,7 +15090,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T22:23:17.807Z"
+    "updatedAt": "2026-10-11T22:23:28.108Z"
   },
   "settings": {
     "audioEnabled": true,
