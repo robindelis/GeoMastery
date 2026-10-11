@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T22:24:16.328Z",
+  "exportedAt": "2026-10-11T22:54:40.658Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6618,14 +6618,14 @@
         "id": "BGD:location",
         "countryId": "BGD",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T10:36:26.438Z",
-        "nextDueAt": "2026-10-11T10:36:26.438Z",
+        "lastReviewedAt": "2026-10-11T22:54:37.620Z",
+        "nextDueAt": "2026-10-18T22:54:37.620Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:24:44.364Z",
@@ -6640,9 +6640,16 @@
             "userAnswer": "Bangladesh",
             "isCorrect": true,
             "timeSpentMs": 4903
+          },
+          {
+            "timestamp": "2026-10-11T22:54:37.620Z",
+            "inputMode": "map_click",
+            "userAnswer": "Bangladesh",
+            "isCorrect": true,
+            "timeSpentMs": 1823721
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -15092,8 +15099,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1098,
-    "totalCorrect": 817,
+    "totalReviews": 1099,
+    "totalCorrect": 818,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-12",
@@ -15110,8 +15117,8 @@
       },
       "Asia": {
         "total": 96,
-        "mastered": 12,
-        "learning": 84
+        "mastered": 13,
+        "learning": 83
       },
       "Europe": {
         "total": 90,
@@ -15125,7 +15132,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T22:24:13.007Z"
+    "updatedAt": "2026-10-11T22:54:37.623Z"
   },
   "settings": {
     "audioEnabled": true,
