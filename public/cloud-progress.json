@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T22:55:13.068Z",
+  "exportedAt": "2026-10-11T22:55:19.943Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -5456,12 +5456,12 @@
         "attributeId": "capital",
         "stage": 1,
         "step": 0,
-        "easeFactor": 1.7999999999999994,
+        "easeFactor": 1.5999999999999994,
         "intervalDays": 0,
         "reps": 2,
-        "lapses": 4,
-        "lastReviewedAt": "2026-10-08T20:12:40.824Z",
-        "nextDueAt": "2026-10-08T20:12:40.824Z",
+        "lapses": 5,
+        "lastReviewedAt": "2026-10-11T22:55:16.827Z",
+        "nextDueAt": "2026-10-11T22:55:16.827Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:26:14.234Z",
@@ -5504,6 +5504,13 @@
             "userAnswer": "Kiribati",
             "isCorrect": false,
             "timeSpentMs": 5601
+          },
+          {
+            "timestamp": "2026-10-11T22:55:16.827Z",
+            "inputMode": "typing",
+            "userAnswer": "u",
+            "isCorrect": false,
+            "timeSpentMs": 5555
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15127,7 +15134,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1103,
+    "totalReviews": 1104,
     "totalCorrect": 821,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15160,7 +15167,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T22:55:09.986Z"
+    "updatedAt": "2026-10-11T22:55:16.829Z"
   },
   "settings": {
     "audioEnabled": true,
