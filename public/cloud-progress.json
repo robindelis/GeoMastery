@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T22:54:40.658Z",
+  "exportedAt": "2026-10-11T22:54:45.827Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11215,14 +11215,14 @@
         "id": "CPV:location",
         "countryId": "CPV",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:03:37.214Z",
-        "nextDueAt": "2026-10-09T20:03:37.214Z",
+        "lastReviewedAt": "2026-10-11T22:54:42.859Z",
+        "nextDueAt": "2026-10-18T22:54:42.859Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:15:41.264Z",
@@ -11237,9 +11237,16 @@
             "userAnswer": "Cabo Verde",
             "isCorrect": true,
             "timeSpentMs": 4656
+          },
+          {
+            "timestamp": "2026-10-11T22:54:42.859Z",
+            "inputMode": "map_click",
+            "userAnswer": "Cabo Verde",
+            "isCorrect": true,
+            "timeSpentMs": 3626
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -15099,16 +15106,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1099,
-    "totalCorrect": 818,
+    "totalReviews": 1100,
+    "totalCorrect": 819,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-12",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 13,
-        "learning": 95
+        "mastered": 14,
+        "learning": 94
       },
       "Americas": {
         "total": 70,
@@ -15132,7 +15139,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T22:54:37.623Z"
+    "updatedAt": "2026-10-11T22:54:42.862Z"
   },
   "settings": {
     "audioEnabled": true,
