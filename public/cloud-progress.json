@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T22:23:52.703Z",
+  "exportedAt": "2026-10-11T22:24:01.222Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11122,13 +11122,13 @@
         "countryId": "UGA",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3499999999999996,
+        "step": 2,
+        "easeFactor": 2.3999999999999995,
         "intervalDays": 1,
-        "reps": 1,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-06T12:19:27.124Z",
-        "nextDueAt": "2026-10-07T12:19:27.124Z",
+        "lastReviewedAt": "2026-10-11T22:23:58.166Z",
+        "nextDueAt": "2026-10-12T22:23:58.166Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:15:10.598Z",
@@ -11143,9 +11143,16 @@
             "userAnswer": "Uganda",
             "isCorrect": true,
             "timeSpentMs": 17739
+          },
+          {
+            "timestamp": "2026-10-11T22:23:58.166Z",
+            "inputMode": "map_click",
+            "userAnswer": "Uganda",
+            "isCorrect": true,
+            "timeSpentMs": 7396
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -15071,8 +15078,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1095,
-    "totalCorrect": 815,
+    "totalReviews": 1096,
+    "totalCorrect": 816,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-12",
@@ -15104,7 +15111,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T22:23:49.691Z"
+    "updatedAt": "2026-10-11T22:23:58.167Z"
   },
   "settings": {
     "audioEnabled": true,
