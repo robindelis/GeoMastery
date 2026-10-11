@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T22:23:48.937Z",
+  "exportedAt": "2026-10-11T22:23:52.703Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -2447,14 +2447,14 @@
         "id": "ITA:location",
         "countryId": "ITA",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.4499999999999993,
-        "intervalDays": 1,
-        "reps": 3,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.499999999999999,
+        "intervalDays": 7,
+        "reps": 4,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:18:51.153Z",
-        "nextDueAt": "2026-10-09T20:18:51.153Z",
+        "lastReviewedAt": "2026-10-11T22:23:49.688Z",
+        "nextDueAt": "2026-10-18T22:23:49.688Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:59:51.491Z",
@@ -2483,9 +2483,16 @@
             "userAnswer": "Italy",
             "isCorrect": true,
             "timeSpentMs": 3747
+          },
+          {
+            "timestamp": "2026-10-11T22:23:49.688Z",
+            "inputMode": "map_click",
+            "userAnswer": "Italy",
+            "isCorrect": true,
+            "timeSpentMs": 2360
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -15064,8 +15071,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1094,
-    "totalCorrect": 814,
+    "totalReviews": 1095,
+    "totalCorrect": 815,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-12",
@@ -15087,8 +15094,8 @@
       },
       "Europe": {
         "total": 90,
-        "mastered": 51,
-        "learning": 39
+        "mastered": 52,
+        "learning": 38
       },
       "Oceania": {
         "total": 28,
@@ -15097,7 +15104,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T22:23:45.605Z"
+    "updatedAt": "2026-10-11T22:23:49.691Z"
   },
   "settings": {
     "audioEnabled": true,
