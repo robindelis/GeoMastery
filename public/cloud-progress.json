@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T23:09:18.893Z",
+  "exportedAt": "2026-10-11T23:09:25.793Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8169,13 +8169,13 @@
         "countryId": "BTN",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1499999999999995,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 1.9499999999999995,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-04T20:33:46.615Z",
-        "nextDueAt": "2026-10-05T20:33:46.615Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-11T23:09:22.781Z",
+        "nextDueAt": "2026-10-11T23:09:22.781Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:33:00.533Z",
@@ -8197,6 +8197,13 @@
             "userAnswer": "Bhutan",
             "isCorrect": true,
             "timeSpentMs": 4312
+          },
+          {
+            "timestamp": "2026-10-11T23:09:22.781Z",
+            "inputMode": "map_click",
+            "userAnswer": "Brunei",
+            "isCorrect": false,
+            "timeSpentMs": 6234
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15190,7 +15197,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1112,
+    "totalReviews": 1113,
     "totalCorrect": 828,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15223,7 +15230,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T23:09:15.872Z"
+    "updatedAt": "2026-10-11T23:09:22.783Z"
   },
   "settings": {
     "audioEnabled": true,
