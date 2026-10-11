@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T23:09:09.265Z",
+  "exportedAt": "2026-10-11T23:09:12.960Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -4469,13 +4469,13 @@
         "countryId": "IRN",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 2.4499999999999993,
+        "intervalDays": 1,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-09T20:11:25.409Z",
-        "nextDueAt": "2026-10-09T20:11:25.409Z",
+        "lastReviewedAt": "2026-10-11T23:09:09.857Z",
+        "nextDueAt": "2026-10-12T23:09:09.857Z",
         "history": [
           {
             "timestamp": "2026-10-04T18:42:17.315Z",
@@ -4497,9 +4497,16 @@
             "userAnswer": "Saudi Arabia",
             "isCorrect": false,
             "timeSpentMs": 3416
+          },
+          {
+            "timestamp": "2026-10-11T23:09:09.857Z",
+            "inputMode": "map_click",
+            "userAnswer": "Iran",
+            "isCorrect": true,
+            "timeSpentMs": 2632
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -7982,14 +7989,14 @@
         "id": "CHN:location",
         "countryId": "CHN",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.4499999999999993,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:28:34.371Z",
-        "nextDueAt": "2026-10-09T20:28:34.371Z",
+        "lastReviewedAt": "2026-10-11T23:09:12.504Z",
+        "nextDueAt": "2026-10-18T23:09:12.504Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:32:18.179Z",
@@ -8011,9 +8018,16 @@
             "userAnswer": "China",
             "isCorrect": true,
             "timeSpentMs": 1797
+          },
+          {
+            "timestamp": "2026-10-11T23:09:12.504Z",
+            "inputMode": "map_click",
+            "userAnswer": "China",
+            "isCorrect": true,
+            "timeSpentMs": 1643
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -15169,8 +15183,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1109,
-    "totalCorrect": 825,
+    "totalReviews": 1111,
+    "totalCorrect": 827,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-12",
@@ -15187,8 +15201,8 @@
       },
       "Asia": {
         "total": 96,
-        "mastered": 14,
-        "learning": 82
+        "mastered": 15,
+        "learning": 81
       },
       "Europe": {
         "total": 90,
@@ -15202,7 +15216,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T23:09:06.006Z"
+    "updatedAt": "2026-10-11T23:09:12.506Z"
   },
   "settings": {
     "audioEnabled": true,
