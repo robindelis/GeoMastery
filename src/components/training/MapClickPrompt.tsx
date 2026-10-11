@@ -43,18 +43,18 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-3 w-full max-w-xl mx-auto">
+    <div className="flex flex-col gap-2 sm:gap-3 w-full max-w-xl mx-auto">
       {/* Target Card */}
-      <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-5 shadow-2xl backdrop-blur-md flex flex-col items-center text-center gap-2">
+      <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-3.5 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col items-center text-center gap-1.5 sm:gap-2">
         <div className="flex items-center gap-2">
-          <span className="text-3xl">{country.flagEmoji}</span>
-          <span className="text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700">
+          <span className="text-2xl sm:text-3xl">{country.flagEmoji}</span>
+          <span className="text-[11px] sm:text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700">
             {isWater ? `🌊 Oceans & Straits • ${country.subregion}` : `${country.continent} • ${country.subregion}`}
           </span>
         </div>
 
         <div className="flex items-baseline gap-2">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h2 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
             {country.name}
           </h2>
         </div>
@@ -83,12 +83,12 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
           </div>
         )}
 
-        <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium mt-1">
-          {isWater ? <Waves className="w-3.5 h-3.5 text-sky-400" /> : <MapPin className="w-3.5 h-3.5" />}
+        <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-emerald-400 font-medium mt-0.5 sm:mt-1">
+          {isWater ? <Waves className="w-3.5 h-3.5 text-sky-400 shrink-0" /> : <MapPin className="w-3.5 h-3.5 shrink-0" />}
           <span>
             {isWater
-              ? 'Click this strait or body of water on the map or globe above'
-              : 'Click this country on the map or globe above'}
+              ? 'Tap this strait or body of water on the map above'
+              : 'Tap this country on the map above'}
           </span>
         </div>
       </div>

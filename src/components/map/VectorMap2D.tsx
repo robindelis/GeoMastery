@@ -781,6 +781,11 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   }, []);
 
   // --- Hit testing ------------------------------------------------------------------------------
+  const isCoarsePointer = useMemo(
+    () => typeof window !== 'undefined' && Boolean(window.matchMedia?.('(pointer: coarse)')?.matches),
+    []
+  );
+
   const hitTest = useCallback(
     (px: number, py: number): HoverState | null => {
       const t = zoomTransformRef.current;
@@ -788,9 +793,10 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       const wx = (px - t.x) / k;
       const wy = (py - t.y) / k;
 
-      // 1. Microstates first (small 16px interactive beacons)
+      // 1. Microstates first (16px desktop / 24px coarse touch interactive beacons)
+      const microHitRadius = isCoarsePointer ? 24 : 16;
       for (const m of microstateItems) {
-        if (Math.hypot((wx - m.cx) * k, (wy - m.cy) * k) <= 16) return { country: m.country };
+        if (Math.hypot((wx - m.cx) * k, (wy - m.cy) * k) <= microHitRadius) return { country: m.country };
       }
 
       if (!hitCtxRef.current) {
@@ -824,20 +830,22 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       if (seaHit) return seaHit;
 
       // 4. Water body beacons (dots for straits/seas/oceans)
+      const waterHitScale = isCoarsePointer ? 1.35 : 1;
       for (const w of waterBodyItems) {
         if (!w.wb) continue;
-        const hit = waterBeaconRadii(w.wb).hit;
+        const hit = waterBeaconRadii(w.wb).hit * waterHitScale;
         if (Math.hypot((wx - w.cx) * k, (wy - w.cy) * k) <= hit) return { country: w.country };
       }
 
       // 5. Broad ocean polygons
       return test(geometry.oceans);
     },
-    [geometry, microstateItems, waterBodyItems]
+    [geometry, microstateItems, waterBodyItems, isCoarsePointer]
   );
 
   const updateHover = useCallback(() => {
     hoverRafRef.current = null;
+    if (isCoarsePointer) return;
     const p = lastPointerRef.current;
     if (!p || movingRef.current) return;
     const hit = p ? hitTest(p.x, p.y) : null;
@@ -848,7 +856,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     else handleCountryLeave();
     if (overlayCanvasRef.current) overlayCanvasRef.current.style.cursor = hit ? 'pointer' : '';
     scheduleFrame(false);
-  }, [hitTest, handleCountryHover, handleCountryLeave, scheduleFrame]);
+  }, [hitTest, handleCountryHover, handleCountryLeave, scheduleFrame, isCoarsePointer]);
 
   const requestHoverUpdate = useCallback(() => {
     if (hoverRafRef.current == null) {
@@ -954,19 +962,24 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   }, [selectedCountryId, targetCountryId, disableAutoZoom, projection, dimensions]);
 
   // High-performance direct DOM tooltip tracking (Zero React re-renders during mouse movements)
-  const handleContainerMouseMove = useCallback((e: React.MouseEvent) => {
-    if (tooltipRef.current) {
-      tooltipRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY - 12}px, 0)`;
-    }
-  }, []);
+  const handleContainerMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (isCoarsePointer) return;
+      if (tooltipRef.current) {
+        tooltipRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY - 12}px, 0)`;
+      }
+    },
+    [isCoarsePointer]
+  );
 
   const handleCanvasMouseMove = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
+      if (isCoarsePointer) return;
       const rect = e.currentTarget.getBoundingClientRect();
       lastPointerRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
       if (!movingRef.current) requestHoverUpdate();
     },
-    [requestHoverUpdate]
+    [requestHoverUpdate, isCoarsePointer]
   );
 
   const handleCanvasMouseLeave = useCallback(() => {
@@ -1006,7 +1019,8 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
           nearestCountry = m.country;
         }
       }
-      if (minScreenDist <= 28 && nearestCountry) {
+      const microSnapThreshold = isCoarsePointer ? 38 : 28;
+      if (minScreenDist <= microSnapThreshold && nearestCountry) {
         handleCountrySelect(nearestCountry);
         return;
       }
@@ -1047,14 +1061,14 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         }
       }
     },
-    [hitTest, microstateItems, waterBodyItems, handleCountrySelect, targetCountryId]
+    [hitTest, microstateItems, waterBodyItems, handleCountrySelect, targetCountryId, isCoarsePointer]
   );
 
   return (
     <div
       ref={containerRef}
       onMouseMove={handleContainerMouseMove}
-      className={`relative w-full h-full overflow-hidden bg-[#090e1a] select-none ${className}`}
+      className={`relative w-full h-full overflow-hidden bg-[#090e1a] select-none touch-none ${className}`}
     >
       {/* Background soft ambient radial gradient */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(20,32,54,0.6)_0%,rgba(9,14,26,1)_100%)]" />
@@ -1071,7 +1085,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         onMouseMove={handleCanvasMouseMove}
         onMouseLeave={handleCanvasMouseLeave}
         onClick={handleCanvasClick}
-        className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing block"
+        className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing block touch-none"
       />
 
       {/* High-Performance Direct Tooltip (Zero React re-renders during cursor movements) */}

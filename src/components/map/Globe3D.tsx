@@ -658,6 +658,37 @@ export const Globe3D: React.FC<Globe3DProps> = ({
     lastMousePosRef.current = null;
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      isDraggingRef.current = true;
+      lastMousePosRef.current = { x: touch.clientX, y: touch.clientY };
+      velocityRef.current = { x: 0, y: 0 };
+      scheduleRender();
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (isDraggingRef.current && lastMousePosRef.current && e.touches.length === 1) {
+      const touch = e.touches[0];
+      const dx = touch.clientX - lastMousePosRef.current.x;
+      const dy = touch.clientY - lastMousePosRef.current.y;
+
+      const sensitivity = 0.35;
+      rotationRef.current[0] += dx * sensitivity;
+      rotationRef.current[1] = Math.max(-80, Math.min(80, rotationRef.current[1] - dy * sensitivity));
+
+      velocityRef.current = { x: dx * 0.15, y: -dy * 0.15 };
+      lastMousePosRef.current = { x: touch.clientX, y: touch.clientY };
+      scheduleRender();
+    }
+  };
+
+  const handleTouchEnd = () => {
+    isDraggingRef.current = false;
+    lastMousePosRef.current = null;
+  };
+
   const handleMouseLeave = () => {
     isDraggingRef.current = false;
     lastMousePosRef.current = null;
@@ -678,17 +709,19 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       const rect = containerRef.current.getBoundingClientRect();
       const mx = e.clientX - rect.left;
       const my = e.clientY - rect.top;
+      const isCoarse = typeof window !== 'undefined' && Boolean(window.matchMedia?.('(pointer: coarse)')?.matches);
 
       // Check proximity to microstates first
       const center = [-rotationRef.current[0], -rotationRef.current[1]];
       let nearestMicrostate: Country | null = null;
       let minMicroDist = Infinity;
+      const microThresh = isCoarse ? 28 : 22;
       for (const m of microstateList) {
         if (d3.geoDistance(m.coordinates, center as any) < Math.PI / 2) {
           const p = projection(m.coordinates);
           if (p) {
             const d = Math.hypot(mx - p[0], my - p[1]);
-            if (d <= 22 && d < minMicroDist) {
+            if (d <= microThresh && d < minMicroDist) {
               minMicroDist = d;
               nearestMicrostate = m;
             }
@@ -757,14 +790,17 @@ export const Globe3D: React.FC<Globe3DProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-full overflow-hidden bg-[#090e1a] select-none ${className}`}
+      className={`relative w-full h-full overflow-hidden bg-[#090e1a] select-none touch-none ${className}`}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
       onClick={handleClick}
     >
-      <canvas ref={canvasRef} className="w-full h-full cursor-grab active:cursor-grabbing block" />
+      <canvas ref={canvasRef} className="w-full h-full cursor-grab active:cursor-grabbing block touch-none" />
 
       {/* Floating Hover Tooltip */}
       {!hideHoverTooltip && hoveredCountry && (

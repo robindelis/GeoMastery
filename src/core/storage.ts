@@ -1,3 +1,6 @@
+import { Capacitor } from '@capacitor/core';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 import { SRSItem, UserStats, AppSettings } from './types';
 
 const STORAGE_KEYS = {
@@ -55,16 +58,95 @@ export class StorageService {
     });
   }
 
+  private static hasNativeStorageBridge(): boolean {
+    if (typeof window === 'undefined') return false;
+    return Boolean(window.electronAPI?.loadStorageData) || Capacitor.isNativePlatform();
+  }
+
+  private static async loadNativeData(): Promise<{ success: boolean; data?: any; recoveredFromBackup?: boolean }> {
+    if (typeof window === 'undefined') return { success: false };
+
+    if (window.electronAPI?.loadStorageData) {
+      return window.electronAPI.loadStorageData();
+    }
+
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const res = await Filesystem.readFile({
+          path: 'geomastery_data.json',
+          directory: Directory.Data,
+          encoding: Encoding.UTF8
+        });
+        if (typeof res.data === 'string' && res.data.trim()) {
+          return { success: true, data: JSON.parse(res.data) };
+        }
+      } catch {
+        // Primary file may not exist yet or was unreadable; fall back to safeguard backup
+      }
+
+      try {
+        const backupRes = await Filesystem.readFile({
+          path: 'user_progress_backup.json',
+          directory: Directory.Data,
+          encoding: Encoding.UTF8
+        });
+        if (typeof backupRes.data === 'string' && backupRes.data.trim()) {
+          return {
+            success: true,
+            data: JSON.parse(backupRes.data),
+            recoveredFromBackup: true
+          };
+        }
+      } catch {
+        // Backup also does not exist yet
+      }
+    }
+
+    return { success: false };
+  }
+
+  private static async saveNativeData(payload: any): Promise<void> {
+    if (typeof window === 'undefined') return;
+
+    if (window.electronAPI?.saveStorageData) {
+      await window.electronAPI.saveStorageData(payload);
+      return;
+    }
+
+    if (Capacitor.isNativePlatform()) {
+      const serialized = JSON.stringify(payload, null, 2);
+      await Filesystem.writeFile({
+        path: 'geomastery_data.json',
+        data: serialized,
+        directory: Directory.Data,
+        encoding: Encoding.UTF8
+      });
+
+      const hasProgress =
+        (Array.isArray(payload?.srsItems) && payload.srsItems.length > 0) ||
+        (payload?.stats && payload.stats.totalReviews > 0);
+
+      if (hasProgress) {
+        await Filesystem.writeFile({
+          path: 'user_progress_backup.json',
+          data: serialized,
+          directory: Directory.Data,
+          encoding: Encoding.UTF8
+        });
+      }
+    }
+  }
+
   /**
-   * Initializes persistent sync between disk file and LocalStorage.
+   * Initializes persistent sync between disk file (Electron or Android native storage) and LocalStorage.
    * Ensures user progress is never lost even if LocalStorage partition changes.
    */
   public static async initPersistentSync(): Promise<boolean> {
     if (typeof window === 'undefined') return false;
 
-    if (window.electronAPI?.loadStorageData) {
+    if (this.hasNativeStorageBridge()) {
       try {
-        const res = await window.electronAPI.loadStorageData();
+        const res = await this.loadNativeData();
         if (res.success && res.data) {
           const diskData = res.data;
           const localItems = this.loadSRSItems();
@@ -138,7 +220,7 @@ export class StorageService {
   }
 
   private static syncToDiskNow(): void {
-    if (typeof window !== 'undefined' && window.electronAPI?.saveStorageData) {
+    if (this.hasNativeStorageBridge()) {
       const payload = {
         version: 1,
         exportedAt: new Date().toISOString(),
@@ -146,8 +228,8 @@ export class StorageService {
         stats: this.loadStats(),
         settings: this.loadSettings()
       };
-      window.electronAPI.saveStorageData(payload).catch((err) => {
-        console.error('Error writing to disk storage:', err);
+      this.saveNativeData(payload).catch((err) => {
+        console.error('Error writing to native disk storage:', err);
       });
     }
   }
@@ -319,6 +401,56 @@ export class StorageService {
       stats,
       settings
     }, null, 2);
+  }
+
+  /**
+   * Exports user backup via native dialog (Electron), native share sheet (Android), or browser download (Web).
+   */
+  public static async exportBackupFile(): Promise<boolean> {
+    const jsonStr = this.exportBackupJSON();
+    const fileName = `geomastery-backup-${new Date().toISOString().split('T')[0]}.json`;
+
+    if (typeof window !== 'undefined' && window.electronAPI?.saveBackup) {
+      try {
+        const res = await window.electronAPI.saveBackup(jsonStr);
+        return Boolean(res.success);
+      } catch (err) {
+        console.error('Electron save dialog error, falling back to download:', err);
+      }
+    }
+
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const writeRes = await Filesystem.writeFile({
+          path: fileName,
+          data: jsonStr,
+          directory: Directory.Cache,
+          encoding: Encoding.UTF8
+        });
+        await Share.share({
+          title: 'GeoMastery Backup',
+          text: 'GeoMastery Spaced Repetition Progress Backup',
+          url: writeRes.uri,
+          dialogTitle: 'Save or Share GeoMastery Backup'
+        });
+        return true;
+      } catch (err) {
+        console.error('Android native share error, falling back to web download:', err);
+      }
+    }
+
+    if (typeof document !== 'undefined') {
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      URL.revokeObjectURL(url);
+      return true;
+    }
+
+    return false;
   }
 
   /**

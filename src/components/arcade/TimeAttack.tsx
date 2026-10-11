@@ -141,39 +141,39 @@ export const TimeAttack: React.FC<TimeAttackProps> = ({
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#0f172a]">
       {/* Top Header */}
-      <div className="h-16 border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md px-6 flex items-center justify-between z-30">
-        <div className="flex items-center gap-3">
+      <div className="h-12 sm:h-16 border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md px-3 sm:px-6 flex items-center justify-between z-30 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={onExit}
             className="text-xs text-slate-400 hover:text-white px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 transition-colors"
           >
-            ← Exit Arcade
+            ← Exit<span className="hidden sm:inline"> Arcade</span>
           </button>
-          <div className="flex items-center gap-1.5 text-amber-400 font-bold text-sm">
-            <Zap className="w-4 h-4 fill-amber-400" />
-            <span>Time-Attack Blitz</span>
+          <div className="flex items-center gap-1.5 text-amber-400 font-bold text-xs sm:text-sm">
+            <Zap className="w-4 h-4 fill-amber-400 shrink-0" />
+            <span className="truncate">Time-Attack<span className="hidden sm:inline"> Blitz</span></span>
           </div>
         </div>
 
         {isPlaying && (
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2.5 sm:gap-6">
             {/* Timer */}
-            <div className="flex items-center gap-2 bg-slate-900 px-3.5 py-1.5 rounded-xl border border-slate-700">
-              <Timer className="w-4 h-4 text-rose-400 animate-pulse" />
-              <span className={`font-mono text-base font-bold ${timeLeft <= 10 ? 'text-rose-400 animate-ping' : 'text-white'}`}>
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-slate-900 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl border border-slate-700">
+              <Timer className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-400 animate-pulse" />
+              <span className={`font-mono text-sm sm:text-base font-bold ${timeLeft <= 10 ? 'text-rose-400 animate-ping' : 'text-white'}`}>
                 {timeLeft}s
               </span>
             </div>
 
             {/* Multiplier */}
-            <div className="flex items-center gap-1.5 bg-amber-950/60 border border-amber-700/60 px-3 py-1 rounded-xl text-amber-300 font-bold text-sm">
-              <Flame className="w-4 h-4 fill-amber-400" />
+            <div className="flex items-center gap-1 bg-amber-950/60 border border-amber-700/60 px-2.5 sm:px-3 py-1 rounded-xl text-amber-300 font-bold text-xs sm:text-sm">
+              <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-400" />
               <span>x{multiplier}</span>
             </div>
 
             {/* Score */}
-            <div className="text-xl font-black font-mono text-emerald-400">
-              {score} pts
+            <div className="text-base sm:text-xl font-black font-mono text-emerald-400">
+              {score}<span className="hidden sm:inline"> pts</span>
             </div>
           </div>
         )}
@@ -191,14 +191,14 @@ export const TimeAttack: React.FC<TimeAttackProps> = ({
 
         {/* Start Game Modal */}
         {!isPlaying && !isGameOver && (
-          <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-6 z-40">
-            <div className="bg-slate-900 border border-slate-700/80 p-8 rounded-3xl max-w-md w-full shadow-2xl flex flex-col items-center text-center gap-6">
-              <div className="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400">
-                <Zap className="w-8 h-8 fill-amber-400" />
+          <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 z-40">
+            <div className="bg-slate-900 border border-slate-700/80 p-6 sm:p-8 rounded-3xl max-w-md w-full shadow-2xl flex flex-col items-center text-center gap-5 sm:gap-6">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400">
+                <Zap className="w-7 h-7 sm:w-8 sm:h-8 fill-amber-400" />
               </div>
 
               <div>
-                <h2 className="text-2xl font-black text-white">60-Second Capital Sprint</h2>
+                <h2 className="text-xl sm:text-2xl font-black text-white">60-Second Capital Sprint</h2>
                 <p className="text-xs text-slate-400 mt-1">
                   Answer as many capitals as you can before the clock runs out! Build streaks to unlock 4x point multipliers.
                 </p>
@@ -226,7 +226,7 @@ export const TimeAttack: React.FC<TimeAttackProps> = ({
 
               <button
                 onClick={startGame}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-emerald-500 hover:from-amber-400 hover:to-emerald-400 text-slate-950 font-black text-base shadow-xl transition-all"
+                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-emerald-500 hover:from-amber-400 hover:to-emerald-400 text-slate-950 font-black text-base shadow-xl transition-all active:scale-95"
               >
                 START CHALLENGE
               </button>
@@ -236,12 +236,12 @@ export const TimeAttack: React.FC<TimeAttackProps> = ({
 
         {/* Game Over Modal */}
         {isGameOver && (
-          <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-6 z-40">
-            <div className="bg-slate-900 border border-slate-700/80 p-8 rounded-3xl max-w-md w-full shadow-2xl flex flex-col items-center text-center gap-6">
-              <Trophy className="w-16 h-16 text-amber-400" />
+          <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 z-40">
+            <div className="bg-slate-900 border border-slate-700/80 p-6 sm:p-8 rounded-3xl max-w-md w-full shadow-2xl flex flex-col items-center text-center gap-5 sm:gap-6">
+              <Trophy className="w-14 h-14 sm:w-16 sm:h-16 text-amber-400" />
               <div>
-                <h2 className="text-2xl font-black text-white">Time's Up!</h2>
-                <div className="text-4xl font-extrabold font-mono text-emerald-400 mt-2">
+                <h2 className="text-xl sm:text-2xl font-black text-white">Time's Up!</h2>
+                <div className="text-3xl sm:text-4xl font-extrabold font-mono text-emerald-400 mt-2">
                   {score} pts
                 </div>
                 <p className="text-xs text-slate-400 mt-1">Region: {selectedContinent}</p>
@@ -269,25 +269,25 @@ export const TimeAttack: React.FC<TimeAttackProps> = ({
 
         {/* Active Question Floating Card */}
         {isPlaying && currentCountry && (
-          <div className="absolute bottom-8 inset-x-4 z-40 flex justify-center pointer-events-none">
-            <div className="pointer-events-auto w-full max-w-lg bg-slate-900/95 border border-slate-700/90 rounded-2xl p-5 shadow-2xl backdrop-blur-md flex flex-col gap-4">
+          <div className="absolute bottom-3 sm:bottom-8 inset-x-3 sm:inset-x-4 z-40 flex justify-center pointer-events-none">
+            <div className="pointer-events-auto w-full max-w-lg bg-slate-900/95 border border-slate-700/90 rounded-2xl p-4 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col gap-3 sm:gap-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-3xl">{currentCountry.flagEmoji}</span>
-                  <span className="text-xl font-bold text-white tracking-tight">{currentCountry.name}</span>
+                  <span className="text-2xl sm:text-3xl">{currentCountry.flagEmoji}</span>
+                  <span className="text-lg sm:text-xl font-bold text-white tracking-tight">{currentCountry.name}</span>
                 </div>
-                <span className="text-xs text-slate-400 font-mono">Keys: 1-4</span>
+                <span className="text-xs text-slate-400 font-mono hidden sm:inline">Keys: 1-4</span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
                 {options.map((opt, idx) => (
                   <button
                     key={opt}
                     onClick={() => handleAnswer(opt)}
-                    className="p-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-semibold text-sm flex items-center justify-between text-left transition-all active:scale-95"
+                    className="p-3 sm:p-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-semibold text-xs sm:text-sm flex items-center justify-between text-left transition-all active:scale-95"
                   >
                     <span className="truncate pr-1">{opt}</span>
-                    <span className="w-5 h-5 rounded bg-slate-700 text-slate-400 text-xs font-mono font-bold flex items-center justify-center">
+                    <span className="hidden sm:flex w-5 h-5 rounded bg-slate-700 text-slate-400 text-xs font-mono font-bold items-center justify-center shrink-0">
                       {idx + 1}
                     </span>
                   </button>

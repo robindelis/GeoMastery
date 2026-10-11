@@ -47,3 +47,13 @@ release/
 # Testing & Coverage
 coverage/
 .nyc_output/
+
+# Android / Capacitor build outputs
+android/.gradle/
+android/build/
+android/app/build/
+android/capacitor-cordova-android-plugins/build/
+android/local.properties
+*.apk
+*.aab
+

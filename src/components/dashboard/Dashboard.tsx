@@ -141,30 +141,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
   };
 
   const handleExportBackup = async () => {
-    const jsonStr = StorageService.exportBackupJSON();
-
-    // Use native OS save dialog when running inside Electron desktop app
-    if (window.electronAPI?.saveBackup) {
-      try {
-        const res = await window.electronAPI.saveBackup(jsonStr);
-        if (res.success) {
-          soundFx.playLevelUp();
-        }
-        return;
-      } catch (err) {
-        console.error('Electron save dialog error, falling back to web download:', err);
-      }
+    const ok = await StorageService.exportBackupFile();
+    if (ok) {
+      soundFx.playLevelUp();
     }
-
-    // Web browser fallback: blob download
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `geomastery-backup-${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    soundFx.playClick();
   };
 
   const handleImportBackup = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -223,8 +203,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const masteryOffset = dialCircumference - (mastery.masteryPercentage / 100) * dialCircumference;
 
   return (
-    <PlanetaryBackground className="flex-1 flex flex-col h-full overflow-y-auto text-slate-100 p-5 sm:p-8 lg:p-10">
-      <div className="max-w-[1600px] mx-auto w-full flex flex-col gap-8 pb-16">
+    <PlanetaryBackground className="flex-1 flex flex-col h-full overflow-y-auto text-slate-100 p-4 sm:p-8 lg:p-10">
+      <div className="max-w-[1600px] mx-auto w-full flex flex-col gap-6 sm:gap-8 pb-16">
         {/* Top Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
@@ -235,7 +215,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-2">
                 GeoMastery
                 <span className="text-[10px] tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/35 font-bold">
-                  Desktop
+                  {typeof window !== 'undefined' && (window as any).Capacitor?.isNativePlatform?.() ? 'Android' : 'Pro'}
                 </span>
               </h1>
               <p className="text-xs text-slate-300 font-medium mt-0.5">

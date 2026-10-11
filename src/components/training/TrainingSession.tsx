@@ -501,13 +501,13 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#0f172a]">
       {/* Top Session Progress Bar */}
-      <div className="h-14 border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md px-6 flex items-center justify-between z-30">
-        <div className="flex items-center gap-3">
+      <div className="h-12 sm:h-14 border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md px-3 sm:px-6 flex items-center justify-between z-30 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={onFinishSession}
             className="text-xs text-slate-400 hover:text-white px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 transition-colors"
           >
-            ← Exit Session
+            ← Exit<span className="hidden sm:inline"> Session</span>
           </button>
           <span className="text-xs text-slate-400 font-medium hidden sm:inline">
             Focus: <span className="text-slate-200 font-semibold">{continentFilter}</span>
@@ -515,7 +515,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
         </div>
 
         {/* Progress bar */}
-        <div className="flex items-center gap-3 max-w-xs w-full mx-4">
+        <div className="flex items-center gap-2 sm:gap-3 max-w-xs w-full mx-2 sm:mx-4">
           <div className="flex-1 h-2 rounded-full bg-slate-800 overflow-hidden">
             <div
               className="h-full bg-emerald-500 transition-all duration-300 rounded-full"
@@ -528,41 +528,46 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
         </div>
 
         {/* Streak & Stage badge */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           {streak > 1 && (
-            <div className="flex items-center gap-1 text-xs font-bold text-amber-400 bg-amber-950/60 border border-amber-800/60 px-2.5 py-1 rounded-full animate-bounce">
+            <div className="flex items-center gap-1 text-xs font-bold text-amber-400 bg-amber-950/60 border border-amber-800/60 px-2 sm:px-2.5 py-1 rounded-full animate-bounce">
               <Flame className="w-3.5 h-3.5 fill-amber-400" />
               <span>x{streak}</span>
             </div>
           )}
           {isPracticeMode ? (
-            <span className="text-[10px] font-bold tracking-wider px-3 py-1 rounded-full border bg-violet-950/60 border-violet-700/60 text-violet-300 flex items-center gap-1.5 shadow-sm">
+            <span className="text-[10px] font-bold tracking-wider px-2 sm:px-3 py-1 rounded-full border bg-violet-950/60 border-violet-700/60 text-violet-300 flex items-center gap-1 shadow-sm">
               <Zap className="w-3 h-3 fill-violet-400 text-violet-400" />
-              <span>PRACTICE DRILL</span>
+              <span className="hidden xs:inline">PRACTICE</span>
               <span className="text-[9px] text-violet-300/80 font-normal hidden sm:inline">(SRS Paused)</span>
             </span>
           ) : (() => {
             const item = srsItemsMap.get(currentQuestion.srsItemId);
             if (currentQuestion.stage === 0) {
               return (
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border bg-amber-950/50 border-amber-700/50 text-amber-300">
-                  {currentQuestion.expectedInputMode === 'map_click' ? 'L0 Recognition (Map)' : 'L0 Recognition (MCQ)'}
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 sm:px-2.5 py-1 rounded-full border bg-amber-950/50 border-amber-700/50 text-amber-300">
+                  <span className="sm:hidden">L0</span>
+                  <span className="hidden sm:inline">
+                    {currentQuestion.expectedInputMode === 'map_click' ? 'L0 Recognition (Map)' : 'L0 Recognition (MCQ)'}
+                  </span>
                 </span>
               );
             }
             if (currentQuestion.stage === 2) {
               return (
-                <span className="text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-full border bg-emerald-950/50 border-emerald-700/50 text-emerald-300 flex items-center gap-1">
+                <span className="text-[10px] font-bold tracking-wider px-2 sm:px-2.5 py-1 rounded-full border bg-emerald-950/50 border-emerald-700/50 text-emerald-300 flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
-                  <span>MASTERED</span>
+                  <span className="hidden sm:inline">MASTERED</span>
+                  <span className="sm:hidden">L2</span>
                 </span>
               );
             }
             const recallStreak = item?.consecutiveRecallCorrect || 0;
             return (
-              <span className="text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-full border bg-sky-950/50 border-sky-700/50 text-sky-300 flex items-center gap-1">
-                <span>L1 Active Recall</span>
-                <span className="text-emerald-400 font-mono">({recallStreak}/2 to Master)</span>
+              <span className="text-[10px] font-bold tracking-wider px-2 sm:px-2.5 py-1 rounded-full border bg-sky-950/50 border-sky-700/50 text-sky-300 flex items-center gap-1">
+                <span className="hidden sm:inline">L1 Active Recall</span>
+                <span className="sm:hidden">L1</span>
+                <span className="text-emerald-400 font-mono">({recallStreak}/2<span className="hidden sm:inline"> to Master</span>)</span>
               </span>
             );
           })()}
@@ -585,7 +590,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
         />
 
         {/* Floating Question UI Panel */}
-        <div className="absolute bottom-6 inset-x-4 z-40 flex justify-center pointer-events-none">
+        <div className="absolute bottom-3 sm:bottom-6 inset-x-3 sm:inset-x-4 z-40 flex justify-center pointer-events-none">
           <div className="pointer-events-auto w-full max-w-xl">
             {currentQuestion.expectedInputMode === 'multiple_choice' ? (
               <MultipleChoicePrompt

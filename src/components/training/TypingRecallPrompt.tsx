@@ -77,25 +77,25 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full max-w-xl mx-auto">
+    <div className="flex flex-col gap-2.5 sm:gap-4 w-full max-w-xl mx-auto">
       {/* Header Card */}
-      <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-5 shadow-2xl backdrop-blur-md flex flex-col items-center text-center gap-2">
+      <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-3.5 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col items-center text-center gap-1.5 sm:gap-2">
         <div className="flex items-center gap-2">
-          <span className="text-3xl">{country.flagEmoji}</span>
-          <span className="text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 font-semibold border border-cyan-800/60">
+          <span className="text-2xl sm:text-3xl">{country.flagEmoji}</span>
+          <span className="text-[11px] sm:text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 font-semibold border border-cyan-800/60">
             {country.continent} • {country.subregion}
           </span>
         </div>
-        <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight mt-1">
+        <h2 className="text-lg sm:text-2xl font-bold text-white tracking-tight mt-0.5 sm:mt-1">
           {promptText}
         </h2>
-        <div className="flex items-center gap-1.5 text-xs text-sky-400 font-medium">
+        <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-sky-400 font-medium">
           <span>Level 1: Active Recall (Direct Memory Retrieval)</span>
         </div>
       </div>
 
       {/* Typing Form */}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2.5 sm:gap-3">
         <div className="relative">
           <input
             ref={inputRef}
@@ -108,7 +108,7 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
                 ? `Did not know (Answer: ${correctAnswer})`
                 : 'Type answer here...'
             }
-            className={`w-full px-5 py-4 rounded-xl text-lg font-medium bg-slate-900/90 border transition-all outline-none shadow-xl ${
+            className={`w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl text-base sm:text-lg font-medium bg-slate-900/90 border transition-all outline-none shadow-xl ${
               isSubmitted
                 ? isCorrect
                   ? 'border-emerald-500 text-emerald-300 bg-emerald-950/30'
@@ -188,7 +188,7 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
                   </button>
                 )}
               </div>
-              <span className="text-slate-400">Press Enter or Space for next</span>
+              <span className="text-slate-400 hidden sm:inline">Press Enter or Space for next</span>
             </div>
           )}
         </div>

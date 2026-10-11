@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">GeoMastery</string>
+    <string name="title_activity_main">GeoMastery</string>
+    <string name="package_name">com.geomastery.app</string>
+    <string name="custom_url_scheme">com.geomastery.app</string>
+</resources>

@@ -82,9 +82,9 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#0f172a]">
       {/* Top Search & Filter Bar */}
-      <div className="h-16 border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md px-6 flex items-center justify-between z-30 gap-4">
+      <div className="py-2.5 sm:py-0 sm:h-16 border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md px-4 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between z-30 gap-2.5 sm:gap-4 shrink-0">
         {/* Search Input */}
-        <div className="relative flex-1 max-w-md">
+        <div className="relative flex-1 max-w-md w-full">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
@@ -119,13 +119,13 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
           )}
         </div>
 
-        {/* Continent Pills */}
-        <div className="hidden lg:flex items-center gap-1.5 bg-slate-900/80 p-1 rounded-xl border border-slate-800">
+        {/* Continent Pills (Horizontally scrollable on mobile) */}
+        <div className="flex overflow-x-auto no-scrollbar items-center gap-1.5 bg-slate-900/80 p-1 rounded-xl border border-slate-800 w-full sm:w-auto">
           {(['All', 'Europe', 'Asia', 'Africa', 'Americas', 'Oceania'] as const).map((cont) => (
             <button
               key={cont}
               onClick={() => setSelectedContinent(cont)}
-              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all shrink-0 ${
                 selectedContinent === cont
                   ? 'bg-emerald-500 text-slate-950 font-bold shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
@@ -137,7 +137,7 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
         </div>
       </div>
 
-      {/* Main Workspace (Map + Slide-over Country Dossier Drawer) */}
+      {/* Main Workspace (Map + Slide-over / Bottom-sheet Country Dossier Drawer) */}
       <div className="relative flex-1 w-full h-full overflow-hidden flex">
         {/* Map View */}
         <div className="flex-1 h-full">
@@ -156,10 +156,10 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
           />
         </div>
 
-        {/* Slide-Over Country Dossier */}
+        {/* Slide-Over (Tablet/Desktop) & Bottom-Sheet (Mobile) Country Dossier */}
         {selectedCountry && (
-          <div className="absolute right-0 top-0 bottom-0 w-80 sm:w-96 bg-slate-900/95 border-l border-slate-800/80 backdrop-blur-xl z-40 p-6 flex flex-col justify-between shadow-2xl overflow-y-auto">
-            <div className="flex flex-col gap-5">
+          <div className="absolute inset-x-0 bottom-0 top-auto w-full max-h-[55dvh] rounded-t-3xl border-t sm:rounded-none sm:border-t-0 sm:inset-y-0 sm:right-0 sm:left-auto sm:w-96 sm:max-h-none bg-slate-900/95 sm:border-l border-slate-800/80 backdrop-blur-xl z-40 p-5 sm:p-6 flex flex-col justify-between shadow-2xl overflow-y-auto">
+            <div className="flex flex-col gap-4 sm:gap-5">
               {/* Header with Close */}
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">

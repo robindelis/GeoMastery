@@ -125,4 +125,102 @@ describe('StorageService Persistence & Schema Integrity', () => {
     const loaded = StorageService.loadSRSItems();
     expect(loaded.has('DEU:capital')).toBe(true);
   });
+
+  it('reconciles native disk storage and localStorage by preserving whichever item has more advanced progress', async () => {
+    const localMap = new Map<string, SRSItem>([
+      [
+        'FRA:capital',
+        {
+          id: 'FRA:capital',
+          countryId: 'FRA',
+          attributeId: 'capital',
+          stage: 1,
+          step: 1,
+          reps: 2,
+          lapses: 0,
+          easeFactor: 2.5,
+          intervalDays: 1,
+          consecutiveRecallCorrect: 1,
+          lastReviewedAt: new Date(1000).toISOString(),
+          nextDueAt: new Date(2000).toISOString(),
+          history: []
+        }
+      ]
+    ]);
+    StorageService.saveSRSItems(localMap);
+
+    // Mock window.electronAPI with more advanced progress for FRA:capital and a new item JPN:capital
+    const mockSavedPayloads: any[] = [];
+    (globalThis as any).window = {
+      electronAPI: {
+        loadStorageData: async () => ({
+          success: true,
+          data: {
+            srsItems: [
+              [
+                'FRA:capital',
+                {
+                  id: 'FRA:capital',
+                  countryId: 'FRA',
+                  attributeId: 'capital',
+                  stage: 2,
+                  step: 2,
+                  reps: 5,
+                  lapses: 0,
+                  easeFactor: 2.6,
+                  intervalDays: 7,
+                  consecutiveRecallCorrect: 2,
+                  lastReviewedAt: new Date(5000).toISOString(),
+                  nextDueAt: new Date(9000).toISOString(),
+                  history: []
+                }
+              ],
+              [
+                'JPN:capital',
+                {
+                  id: 'JPN:capital',
+                  countryId: 'JPN',
+                  attributeId: 'capital',
+                  stage: 1,
+                  step: 1,
+                  reps: 1,
+                  lapses: 0,
+                  easeFactor: 2.5,
+                  intervalDays: 1,
+                  consecutiveRecallCorrect: 0,
+                  lastReviewedAt: new Date(3000).toISOString(),
+                  nextDueAt: new Date(6000).toISOString(),
+                  history: []
+                }
+              ]
+            ],
+            stats: {
+              totalReviews: 25,
+              totalCorrect: 23,
+              currentStreak: 4,
+              longestStreak: 4,
+              lastReviewDate: '2026-10-11',
+              continentMastery: {},
+              timeAttackRecords: {}
+            }
+          }
+        }),
+        saveStorageData: async (payload: any) => {
+          mockSavedPayloads.push(payload);
+          return { success: true };
+        }
+      }
+    };
+
+    const changed = await StorageService.initPersistentSync();
+    expect(changed).toBe(true);
+
+    const reconciled = StorageService.loadSRSItems();
+    expect(reconciled.get('FRA:capital')?.stage).toBe(2);
+    expect(reconciled.get('FRA:capital')?.reps).toBe(5);
+    expect(reconciled.has('JPN:capital')).toBe(true);
+    expect(StorageService.loadStats().totalReviews).toBe(25);
+
+    delete (globalThis as any).window;
+  });
 });
