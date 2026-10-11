@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T23:09:42.891Z",
+  "exportedAt": "2026-10-11T23:09:46.232Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13524,13 +13524,13 @@
         "countryId": "ETH",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.3499999999999996,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-06T12:36:09.957Z",
-        "nextDueAt": "2026-10-07T12:36:09.957Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-11T23:09:42.951Z",
+        "nextDueAt": "2026-10-11T23:09:42.951Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:36:09.957Z",
@@ -13538,6 +13538,13 @@
             "userAnswer": "Addis Ababa",
             "isCorrect": true,
             "timeSpentMs": 6813
+          },
+          {
+            "timestamp": "2026-10-11T23:09:42.951Z",
+            "inputMode": "typing",
+            "userAnswer": "Asmara",
+            "isCorrect": false,
+            "timeSpentMs": 2747
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15204,7 +15211,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1114,
+    "totalReviews": 1115,
     "totalCorrect": 829,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15237,7 +15244,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T23:09:39.373Z"
+    "updatedAt": "2026-10-11T23:09:42.952Z"
   },
   "settings": {
     "audioEnabled": true,
