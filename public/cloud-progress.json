@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T23:08:56.983Z",
+  "exportedAt": "2026-10-11T23:09:01.449Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11283,14 +11283,14 @@
         "id": "SWZ:location",
         "countryId": "SWZ",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:22:11.555Z",
-        "nextDueAt": "2026-10-09T20:22:11.555Z",
+        "lastReviewedAt": "2026-10-11T23:08:58.396Z",
+        "nextDueAt": "2026-10-18T23:08:58.396Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:15:46.618Z",
@@ -11305,9 +11305,16 @@
             "userAnswer": "Eswatini",
             "isCorrect": true,
             "timeSpentMs": 2657
+          },
+          {
+            "timestamp": "2026-10-11T23:08:58.396Z",
+            "inputMode": "map_click",
+            "userAnswer": "Eswatini",
+            "isCorrect": true,
+            "timeSpentMs": 3841
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -15155,16 +15162,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1107,
-    "totalCorrect": 823,
+    "totalReviews": 1108,
+    "totalCorrect": 824,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-12",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 15,
-        "learning": 93
+        "mastered": 16,
+        "learning": 92
       },
       "Americas": {
         "total": 70,
@@ -15188,7 +15195,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T23:08:53.899Z"
+    "updatedAt": "2026-10-11T23:08:58.399Z"
   },
   "settings": {
     "audioEnabled": true,
