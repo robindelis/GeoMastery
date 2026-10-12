@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@theme {
+  /* Display faces used by the home-page templates */
+  --font-display: 'Archivo', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-black: 'Archivo Black', 'Archivo', system-ui, sans-serif;
+  --font-fraunces: 'Fraunces', Georgia, 'Times New Roman', serif;
+}
+
 @layer base {
   :root {
     --color-map-ocean: #0d172a;
@@ -72,4 +79,54 @@
 
 .animate-float-slow {
   animation: float-slow 14s ease-in-out infinite;
+}
+
+/* Template motion primitives (home page) */
+@keyframes gm-sweep {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(220%); }
+}
+
+.animate-gm-sweep {
+  animation: gm-sweep 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes gm-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(2%, -3%, 0) scale(1.06); }
+}
+
+.animate-gm-drift {
+  animation: gm-drift 16s ease-in-out infinite;
+}
+
+@keyframes gm-pop {
+  0% { transform: scale(0.86); opacity: 0; }
+  60% { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-gm-pop {
+  animation: gm-pop 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes gm-trace {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -240; }
+}
+
+.animate-gm-trace {
+  animation: gm-trace 6s linear infinite;
+}
+
+/* Accessibility: honour the user's motion preference everywhere */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
