@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-12T17:18:06.924Z",
+  "exportedAt": "2026-10-12T19:54:34.874Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8654,13 +8654,13 @@
         "countryId": "MMR",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1499999999999995,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 1.9499999999999995,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-04T20:36:09.001Z",
-        "nextDueAt": "2026-10-05T20:36:09.001Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-12T17:18:07.496Z",
+        "nextDueAt": "2026-10-12T17:18:07.496Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:35:28.078Z",
@@ -8682,6 +8682,13 @@
             "userAnswer": "Naypyidaw",
             "isCorrect": true,
             "timeSpentMs": 4860
+          },
+          {
+            "timestamp": "2026-10-12T17:18:07.496Z",
+            "inputMode": "typing",
+            "userAnswer": "u",
+            "isCorrect": false,
+            "timeSpentMs": 2416
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15267,7 +15274,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1123,
+    "totalReviews": 1124,
     "totalCorrect": 835,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15300,7 +15307,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-12T17:18:03.748Z"
+    "updatedAt": "2026-10-12T17:18:07.498Z"
   },
   "settings": {
     "audioEnabled": true,
