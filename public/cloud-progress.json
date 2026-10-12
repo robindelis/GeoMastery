@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-11T23:11:03.428Z",
+  "exportedAt": "2026-10-12T17:17:58.286Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7846,13 +7846,13 @@
         "countryId": "PRK",
         "attributeId": "capital",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2.3999999999999995,
+        "intervalDays": 1,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:12:29.334Z",
-        "nextDueAt": "2026-10-08T20:12:29.334Z",
+        "lastReviewedAt": "2026-10-12T17:17:55.373Z",
+        "nextDueAt": "2026-10-13T17:17:55.373Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:31:35.093Z",
@@ -7867,9 +7867,16 @@
             "userAnswer": "u",
             "isCorrect": false,
             "timeSpentMs": 35266
+          },
+          {
+            "timestamp": "2026-10-12T17:17:55.373Z",
+            "inputMode": "typing",
+            "userAnswer": "Pyongyang",
+            "isCorrect": true,
+            "timeSpentMs": 5511
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -15246,8 +15253,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1120,
-    "totalCorrect": 832,
+    "totalReviews": 1121,
+    "totalCorrect": 833,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-12",
@@ -15279,7 +15286,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-11T23:10:59.623Z"
+    "updatedAt": "2026-10-12T17:17:55.374Z"
   },
   "settings": {
     "audioEnabled": true,
