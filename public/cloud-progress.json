@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:15:27.997Z",
+  "exportedAt": "2026-10-14T21:15:42.135Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15813,11 +15813,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "KNA:capital",
+      {
+        "id": "KNA:capital",
+        "countryId": "KNA",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T21:15:39.146Z",
+        "nextDueAt": "2026-10-15T21:15:39.146Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:15:39.146Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Basseterre",
+            "isCorrect": true,
+            "timeSpentMs": 4207
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1177,
-    "totalCorrect": 867,
+    "totalReviews": 1178,
+    "totalCorrect": 868,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15830,7 +15856,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 24
+        "learning": 25
       },
       "Asia": {
         "total": 96,
@@ -15849,7 +15875,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:15:24.681Z"
+    "updatedAt": "2026-10-14T21:15:39.150Z"
   },
   "settings": {
     "audioEnabled": true,
