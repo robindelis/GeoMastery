@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:33:31.814Z",
+  "exportedAt": "2026-10-14T19:33:37.061Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -9310,13 +9310,13 @@
         "countryId": "WATER_OCEAN_INDIAN",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.6999999999999993,
+        "intervalDays": 19,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:17:25.259Z",
-        "nextDueAt": "2026-10-15T20:17:25.259Z",
+        "lastReviewedAt": "2026-10-14T19:33:33.810Z",
+        "nextDueAt": "2026-11-02T19:33:33.810Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:49:08.241Z",
@@ -9338,9 +9338,16 @@
             "userAnswer": "Indian Ocean",
             "isCorrect": true,
             "timeSpentMs": 2255
+          },
+          {
+            "timestamp": "2026-10-14T19:33:33.810Z",
+            "inputMode": "map_click",
+            "userAnswer": "Indian Ocean",
+            "isCorrect": true,
+            "timeSpentMs": 3201
           }
         ],
-        "consecutiveRecallCorrect": 2
+        "consecutiveRecallCorrect": 3
       }
     ],
     [
@@ -15534,8 +15541,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1153,
-    "totalCorrect": 854,
+    "totalReviews": 1154,
+    "totalCorrect": 855,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15567,7 +15574,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:33:28.697Z"
+    "updatedAt": "2026-10-14T19:33:33.813Z"
   },
   "settings": {
     "audioEnabled": true,
