@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:36:37.328Z",
+  "exportedAt": "2026-10-14T19:36:48.701Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -10717,13 +10717,13 @@
         "countryId": "LBR",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.1499999999999995,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-06T11:49:52.096Z",
-        "nextDueAt": "2026-10-07T11:49:52.096Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-14T19:36:45.665Z",
+        "nextDueAt": "2026-10-14T19:36:45.665Z",
         "history": [
           {
             "timestamp": "2026-10-06T11:48:26.444Z",
@@ -10738,6 +10738,13 @@
             "userAnswer": "Monrovia",
             "isCorrect": true,
             "timeSpentMs": 5386
+          },
+          {
+            "timestamp": "2026-10-14T19:36:45.665Z",
+            "inputMode": "typing",
+            "userAnswer": "Freetown",
+            "isCorrect": false,
+            "timeSpentMs": 5478
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15713,7 +15720,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1165,
+    "totalReviews": 1166,
     "totalCorrect": 862,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15746,7 +15753,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:36:34.222Z"
+    "updatedAt": "2026-10-14T19:36:45.667Z"
   },
   "settings": {
     "audioEnabled": true,
