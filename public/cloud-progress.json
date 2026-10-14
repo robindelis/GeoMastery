@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:37:13.888Z",
+  "exportedAt": "2026-10-14T19:37:17.473Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15674,14 +15674,14 @@
         "id": "GTM:capital",
         "countryId": "GTM",
         "attributeId": "capital",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.3499999999999996,
+        "intervalDays": 1,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-14T19:33:56.353Z",
-        "nextDueAt": "2026-10-14T19:33:56.353Z",
+        "lastReviewedAt": "2026-10-14T19:37:14.475Z",
+        "nextDueAt": "2026-10-15T19:37:14.475Z",
         "history": [
           {
             "timestamp": "2026-10-14T19:33:56.353Z",
@@ -15689,6 +15689,13 @@
             "userAnswer": "Montevideo",
             "isCorrect": false,
             "timeSpentMs": 2497
+          },
+          {
+            "timestamp": "2026-10-14T19:37:14.475Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Guatemala City",
+            "isCorrect": true,
+            "timeSpentMs": 2410
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15748,8 +15755,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1170,
-    "totalCorrect": 863,
+    "totalReviews": 1171,
+    "totalCorrect": 864,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15762,7 +15769,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 22
+        "learning": 23
       },
       "Asia": {
         "total": 96,
@@ -15781,7 +15788,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:37:10.844Z"
+    "updatedAt": "2026-10-14T19:37:14.478Z"
   },
   "settings": {
     "audioEnabled": true,
