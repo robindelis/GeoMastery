@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:37:17.473Z",
+  "exportedAt": "2026-10-14T19:37:21.244Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15752,10 +15752,36 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "VEN:location",
+      {
+        "id": "VEN:location",
+        "countryId": "VEN",
+        "attributeId": "location",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-14T19:37:17.977Z",
+        "nextDueAt": "2026-10-14T19:37:17.977Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T19:37:17.977Z",
+            "inputMode": "map_click",
+            "userAnswer": "Colombia",
+            "isCorrect": false,
+            "timeSpentMs": 2558
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1171,
+    "totalReviews": 1172,
     "totalCorrect": 864,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15788,7 +15814,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:37:14.478Z"
+    "updatedAt": "2026-10-14T19:37:17.979Z"
   },
   "settings": {
     "audioEnabled": true,
