@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:33:56.429Z",
+  "exportedAt": "2026-10-14T19:35:57.715Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15552,14 +15552,14 @@
         "id": "SLV:location",
         "countryId": "SLV",
         "attributeId": "location",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.3499999999999996,
+        "intervalDays": 1,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-14T19:33:41.212Z",
-        "nextDueAt": "2026-10-14T19:33:41.212Z",
+        "lastReviewedAt": "2026-10-14T19:35:54.510Z",
+        "nextDueAt": "2026-10-15T19:35:54.510Z",
         "history": [
           {
             "timestamp": "2026-10-14T19:33:41.212Z",
@@ -15567,6 +15567,13 @@
             "userAnswer": "Costa Rica",
             "isCorrect": false,
             "timeSpentMs": 6177
+          },
+          {
+            "timestamp": "2026-10-14T19:35:54.510Z",
+            "inputMode": "map_click",
+            "userAnswer": "El Salvador",
+            "isCorrect": true,
+            "timeSpentMs": 2894
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15626,8 +15633,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1158,
-    "totalCorrect": 856,
+    "totalReviews": 1159,
+    "totalCorrect": 857,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15640,7 +15647,7 @@
       "Americas": {
         "total": 70,
         "mastered": 14,
-        "learning": 21
+        "learning": 22
       },
       "Asia": {
         "total": 96,
@@ -15659,7 +15666,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:33:56.357Z"
+    "updatedAt": "2026-10-14T19:35:54.514Z"
   },
   "settings": {
     "audioEnabled": true,
