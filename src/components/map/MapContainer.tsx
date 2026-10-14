@@ -73,27 +73,27 @@ export const MapContainer: React.FC<MapContainerProps> = ({
         )}
 
         {/* Floating Cartographic Controls Bar */}
-        <div className={`absolute top-4 z-40 flex items-center gap-2 bg-slate-900/85 backdrop-blur-md border border-slate-700/60 p-1.5 rounded-xl shadow-xl transition-all duration-300 ${controlsClassName}`}>
+        <div className={`absolute top-4 z-40 flex items-center gap-2 bg-[#162938]/92 backdrop-blur-md border border-[#e9c46a]/30 p-1.5 rounded-2xl shadow-2xl transition-all duration-300 ${controlsClassName}`}>
           {/* 2D / 3D Switcher */}
-          <div className="flex items-center bg-slate-800/80 p-0.5 rounded-lg border border-slate-700/50">
+          <div className="flex items-center bg-[#0f1e2a] p-0.5 rounded-xl border border-white/10">
             <button
               onClick={() => onToggleMapMode('2d')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 mapMode === '2d'
-                  ? 'bg-emerald-500 text-slate-950 shadow-md font-bold'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-[#f6efe2] text-[#162938] shadow-md'
+                  : 'text-[#d8cfc0] hover:text-white'
               }`}
               title="Switch to 2D Flat Vector Map"
             >
               <Map className="w-3.5 h-3.5" />
-              <span>2D Map</span>
+              <span>2D Atlas</span>
             </button>
             <button
               onClick={() => onToggleMapMode('3d')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 mapMode === '3d'
-                  ? 'bg-emerald-500 text-slate-950 shadow-md font-bold'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-[#f6efe2] text-[#162938] shadow-md'
+                  : 'text-[#d8cfc0] hover:text-white'
               }`}
               title="Switch to 3D Rotating Globe"
             >
@@ -106,10 +106,10 @@ export const MapContainer: React.FC<MapContainerProps> = ({
           {mapMode === '3d' && onToggleAutoRotate && (
             <button
               onClick={onToggleAutoRotate}
-              className={`p-1.5 rounded-lg border text-xs transition-all ${
+              className={`p-1.5 rounded-xl border text-xs transition-all ${
                 autoRotate
-                  ? 'bg-sky-500/20 border-sky-400/50 text-sky-300'
-                  : 'bg-slate-800/70 border-slate-700/50 text-slate-400 hover:text-white'
+                  ? 'bg-[#e9c46a]/20 border-[#e9c46a]/50 text-[#e9c46a]'
+                  : 'bg-[#0f1e2a] border-white/10 text-[#d8cfc0] hover:text-white'
               }`}
               title="Toggle Globe Auto-Rotation"
             >
@@ -121,15 +121,15 @@ export const MapContainer: React.FC<MapContainerProps> = ({
           {onToggleHeatmap && (
             <button
               onClick={onToggleHeatmap}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-medium transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
                 showHeatmap
-                  ? 'bg-amber-500/20 border-amber-400/50 text-amber-300'
-                  : 'bg-slate-800/70 border-slate-700/50 text-slate-400 hover:text-white'
+                  ? 'bg-[#e9c46a] border-[#e9c46a] text-[#162938]'
+                  : 'bg-[#0f1e2a] border-white/10 text-[#d8cfc0] hover:text-white'
               }`}
               title="Toggle Spaced Repetition Mastery Heatmap"
             >
               <Layers className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Heatmap</span>
+              <span className="hidden sm:inline">Mastery Tint</span>
             </button>
           )}
         </div>

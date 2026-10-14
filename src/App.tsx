@@ -75,9 +75,9 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-dvh w-dvw overflow-hidden bg-[#0f172a] text-slate-100 font-sans select-none pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
+    <div className="flex flex-col h-dvh w-dvw overflow-hidden bg-[#0F2536] text-[#F6EFE2] font-sans select-none pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
       {/* Top Application Navbar */}
-      <header className="h-14 border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between z-50 shrink-0">
+      <header className="h-14 border-b border-[#F6EFE2]/12 bg-[#0B1C2A]/95 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between z-50 shrink-0">
         <div className="flex items-center gap-6">
           {/* Logo */}
           <button
@@ -88,29 +88,31 @@ export const App: React.FC = () => {
             className="flex items-center gap-2.5 text-left group"
           >
             <span className="text-2xl group-hover:scale-110 transition-transform">🌍</span>
-            <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-white text-base tracking-tight">GeoMastery</span>
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                PRO
+            <div className="flex items-center gap-2">
+              <span className="font-[family-name:var(--font-fraunces)] font-black text-[#F6EFE2] text-lg tracking-tight">
+                GeoMastery
+              </span>
+              <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#E9C46A]/20 text-[#E9C46A] border border-[#E9C46A]/40 uppercase tracking-wider">
+                Atlas
               </span>
             </div>
           </button>
 
           {/* Navigation Items (Tablet & Desktop) */}
-          <nav className="hidden sm:flex items-center gap-1">
+          <nav className="hidden sm:flex items-center gap-1.5">
             <button
               onClick={() => {
                 setCurrentView('dashboard');
                 soundFx.playClick();
               }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
                 currentView === 'dashboard'
-                  ? 'bg-slate-800 text-white border border-slate-700'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-[#F6EFE2] text-[#142534] shadow-sm'
+                  : 'text-[#D6CBB9] hover:text-white'
               }`}
             >
               <LayoutDashboard className="w-3.5 h-3.5" />
-              <span>Dashboard</span>
+              <span>Atelier</span>
             </button>
 
             <button
@@ -118,14 +120,14 @@ export const App: React.FC = () => {
                 setCurrentView('atlas');
                 soundFx.playClick();
               }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
                 currentView === 'atlas'
-                  ? 'bg-slate-800 text-white border border-slate-700'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-[#F6EFE2] text-[#142534] shadow-sm'
+                  : 'text-[#D6CBB9] hover:text-white'
               }`}
             >
               <Compass className="w-3.5 h-3.5" />
-              <span>Atlas</span>
+              <span>World Map</span>
             </button>
 
             <button
@@ -133,13 +135,13 @@ export const App: React.FC = () => {
                 setCurrentView('arcade');
                 soundFx.playClick();
               }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
                 currentView === 'arcade'
-                  ? 'bg-slate-800 text-white border border-slate-700'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-[#F6EFE2] text-[#142534] shadow-sm'
+                  : 'text-[#D6CBB9] hover:text-white'
               }`}
             >
-              <Zap className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+              <Zap className="w-3.5 h-3.5 fill-[#E9C46A] text-[#E9C46A]" />
               <span>Arcade</span>
             </button>
           </nav>
@@ -149,21 +151,21 @@ export const App: React.FC = () => {
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={() => handleStartSession('All', ['capital', 'location'])}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-md shadow-emerald-500/20 transition-all active:scale-95"
+            className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#D94E34] hover:bg-[#C54128] text-[#FFF8E7] font-extrabold text-xs shadow-md transition-all active:scale-95"
           >
-            <Play className="w-3.5 h-3.5 fill-slate-950" />
-            <span>Quick Train</span>
+            <Play className="w-3.5 h-3.5 fill-current" />
+            <span>Quick Study</span>
           </button>
 
           <button
             onClick={handleToggleSound}
-            className="p-1.5 rounded-lg border border-slate-800 bg-slate-900 text-slate-400 hover:text-white transition-colors"
+            className="p-2 rounded-full border border-[#F6EFE2]/15 bg-[#143146] text-[#D6CBB9] hover:text-white transition-colors"
             title={soundEnabled ? 'Mute Audio' : 'Unmute Audio'}
           >
             {soundEnabled ? (
-              <Volume2 className="w-4 h-4 text-emerald-400" />
+              <Volume2 className="w-4 h-4 text-[#E9C46A]" />
             ) : (
-              <VolumeX className="w-4 h-4 text-slate-500" />
+              <VolumeX className="w-4 h-4 text-slate-400" />
             )}
           </button>
         </div>
@@ -231,18 +233,18 @@ export const App: React.FC = () => {
 
       {/* Mobile Bottom Navigation Bar (< 640px) */}
       {currentView !== 'training' && (
-        <nav className="flex sm:hidden h-14 border-t border-slate-800/80 bg-slate-900/95 backdrop-blur-md items-center justify-around px-2 z-50 shrink-0">
+        <nav className="flex sm:hidden h-14 border-t border-[#F6EFE2]/12 bg-[#0B1C2A]/95 backdrop-blur-md items-center justify-around px-2 z-50 shrink-0">
           <button
             onClick={() => {
               setCurrentView('dashboard');
               soundFx.playClick();
             }}
-            className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-xl text-[11px] font-semibold transition-all ${
-              currentView === 'dashboard' ? 'text-emerald-400' : 'text-slate-400'
+            className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-xl text-[11px] font-bold transition-all ${
+              currentView === 'dashboard' ? 'text-[#E9C46A]' : 'text-[#D6CBB9]'
             }`}
           >
             <LayoutDashboard className="w-4 h-4" />
-            <span>Dashboard</span>
+            <span>Atelier</span>
           </button>
 
           <button
@@ -250,12 +252,12 @@ export const App: React.FC = () => {
               setCurrentView('atlas');
               soundFx.playClick();
             }}
-            className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-xl text-[11px] font-semibold transition-all ${
-              currentView === 'atlas' ? 'text-sky-400' : 'text-slate-400'
+            className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-xl text-[11px] font-bold transition-all ${
+              currentView === 'atlas' ? 'text-[#E9C46A]' : 'text-[#D6CBB9]'
             }`}
           >
             <Compass className="w-4 h-4" />
-            <span>Atlas</span>
+            <span>World Map</span>
           </button>
 
           <button
@@ -263,8 +265,8 @@ export const App: React.FC = () => {
               setCurrentView('arcade');
               soundFx.playClick();
             }}
-            className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-xl text-[11px] font-semibold transition-all ${
-              currentView === 'arcade' ? 'text-amber-400' : 'text-slate-400'
+            className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 rounded-xl text-[11px] font-bold transition-all ${
+              currentView === 'arcade' ? 'text-[#E9C46A]' : 'text-[#D6CBB9]'
             }`}
           >
             <Zap className="w-4 h-4 fill-current" />

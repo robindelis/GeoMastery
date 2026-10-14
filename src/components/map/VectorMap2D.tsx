@@ -52,6 +52,8 @@ interface FrameState {
   dpr: number;
   t: d3.ZoomTransform;
   moving: boolean;
+  sphereOutline: Path2D | null;
+  graticulePath: Path2D | null;
   oceans: PolyItem[];
   seas: PolyItem[];
   straits: PolyItem[];
@@ -71,6 +73,25 @@ interface FrameState {
   targetId?: string | null;
   feedbackState?: 'correct' | 'incorrect' | 'neutral' | null;
   hideHoverTooltip?: boolean;
+}
+
+// Curated 6-tone warm vintage political atlas palette
+export const ATLAS_LAND_PALETTE = [
+  '#E8D8BC', // Sunlit Parchment Sand
+  '#DF9A84', // Warm Terracotta Apricot
+  '#A5BEA0', // Sage Olive
+  '#E8C67A', // Golden Saffron Ochre
+  '#D9A5A0', // Dusty Coral Rose
+  '#CBB592', // Travertine Buff
+];
+
+export function getAtlasCountryColor(countryId: string): string {
+  let h = 2166136261;
+  for (let i = 0; i < countryId.length; i++) {
+    h ^= countryId.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return ATLAS_LAND_PALETTE[(h >>> 0) % ATLAS_LAND_PALETTE.length];
 }
 
 // Polygons below this zoom level are drawn with a decimated outline while the camera is moving
@@ -105,12 +126,12 @@ class DecimatingContext {
 }
 
 const pulseEmerald = {
-  fill: d3.interpolateRgb('#10b981', '#059669'),
-  stroke: d3.interpolateRgb('#34d399', '#6ee7b7'),
+  fill: d3.interpolateRgb('#2a9d8f', '#10b981'),
+  stroke: d3.interpolateRgb('#a7f3d0', '#ecfdf5'),
 };
 const pulseRose = {
-  fill: d3.interpolateRgb('#f43f5e', '#e11d48'),
-  stroke: d3.interpolateRgb('#fb7185', '#fda4af'),
+  fill: d3.interpolateRgb('#e63946', '#f43f5e'),
+  stroke: d3.interpolateRgb('#fecdd3', '#fff1f2'),
 };
 
 const isVisible = (b: BBox, x0: number, y0: number, x1: number, y1: number) =>
@@ -135,17 +156,17 @@ const waterBeaconColors = (
   const { isStrait, isOcean } = waterBeaconRadii(wb);
   const isSelected = wb.id === s.selectedId;
   const isTarget = wb.id === s.targetId;
-  let fill = isStrait ? '#06b6d4' : isOcean ? '#38bdf8' : '#0ea5e9';
-  let stroke = isSelected || isTarget ? '#ffffff' : '#e0f2fe';
+  let fill = isStrait ? '#48cae4' : isOcean ? '#90e0ef' : '#00b4d8';
+  let stroke = isSelected || isTarget ? '#fff8e7' : '#14293a';
   if (s.feedbackState === 'correct' && (isSelected || isTarget)) {
     fill = '#10b981';
-    stroke = '#ffffff';
+    stroke = '#fff8e7';
   } else if (s.feedbackState === 'incorrect' && isSelected) {
-    fill = '#f43f5e';
-    stroke = '#ffffff';
+    fill = '#e63946';
+    stroke = '#fff8e7';
   } else if (s.feedbackState === 'incorrect' && isTarget) {
     fill = '#10b981';
-    stroke = '#ffffff';
+    stroke = '#fff8e7';
   }
   return { fill, stroke };
 };
@@ -163,6 +184,20 @@ function drawBase(ctx: CanvasRenderingContext2D, s: FrameState) {
   const vx1 = (W - t.x) / k;
   const vy1 = (H - t.y) / k;
   const lod = moving && k < LOD_MAX_ZOOM;
+
+  // Cartographic sphere ocean basin & warm ivory graticule
+  if (s.sphereOutline) {
+    ctx.fillStyle = '#174059';
+    ctx.fill(s.sphereOutline);
+    ctx.lineWidth = 1.4 / k;
+    ctx.strokeStyle = 'rgba(233, 196, 106, 0.38)';
+    ctx.stroke(s.sphereOutline);
+  }
+  if (!moving && s.graticulePath) {
+    ctx.lineWidth = 0.55 / k;
+    ctx.strokeStyle = 'rgba(245, 237, 224, 0.09)';
+    ctx.stroke(s.graticulePath);
+  }
 
   const drawWater = (items: PolyItem[], fills: string[], strokes: string[], width: number) => {
     for (let i = 0; i < items.length; i++) {
@@ -189,20 +224,20 @@ function drawBase(ctx: CanvasRenderingContext2D, s: FrameState) {
     ctx.fill(path);
     const active = it.country && (it.country.id === s.selectedId || it.country.id === s.targetId);
     ctx.lineWidth = (active ? 1.5 : 0.8) / k;
-    ctx.strokeStyle = active ? '#38bdf8' : '#64748b';
+    ctx.strokeStyle = active ? '#fff8e7' : '#14293a';
     ctx.stroke(path);
   }
 
   // Microstate beacons
-  ctx.lineWidth = 1 / k;
+  ctx.lineWidth = 1.1 / k;
   for (let i = 0; i < s.micro.length; i++) {
     const m = s.micro[i];
     if (m.cx < vx0 - 20 / k || m.cx > vx1 + 20 / k || m.cy < vy0 - 20 / k || m.cy > vy1 + 20 / k) continue;
     const active = m.country.id === s.selectedId || m.country.id === s.targetId;
     ctx.beginPath();
-    ctx.arc(m.cx, m.cy, 3.5 / k, 0, Math.PI * 2);
+    ctx.arc(m.cx, m.cy, 3.6 / k, 0, Math.PI * 2);
     ctx.fillStyle = s.microFills[i];
-    ctx.strokeStyle = active ? '#ffffff' : '#38bdf8';
+    ctx.strokeStyle = active ? '#fff8e7' : '#14293a';
     ctx.fill();
     ctx.stroke();
   }
@@ -249,25 +284,25 @@ function drawOverlay(
 
     if (poly.wb) {
       let fill: string | null = null;
-      let stroke = '#38bdf8';
+      let stroke = '#e9c46a';
       let width = 1.5;
       if (fb === 'correct' && (isSelected || isTarget)) {
-        fill = 'rgba(16, 185, 129, 0.5)';
+        fill = 'rgba(42, 157, 143, 0.55)';
         stroke = '#10b981';
         width = 2;
       } else if (fb === 'incorrect' && isTarget) {
-        fill = 'rgba(16, 185, 129, 0.5)';
+        fill = 'rgba(42, 157, 143, 0.55)';
         stroke = '#10b981';
         width = 2;
       } else if (fb === 'incorrect' && isSelected) {
-        fill = 'rgba(244, 63, 94, 0.5)';
-        stroke = '#f43f5e';
+        fill = 'rgba(230, 57, 70, 0.55)';
+        stroke = '#e63946';
         width = 2;
       } else if (isSelected || isTarget) {
-        fill = 'rgba(2, 132, 199, 0.45)';
+        fill = 'rgba(233, 196, 106, 0.38)';
         width = 1.8;
       } else if (isHovered) {
-        fill = 'rgba(14, 165, 233, 0.4)';
+        fill = 'rgba(72, 202, 228, 0.34)';
       }
       if (!fill) return;
       ctx.fillStyle = fill;
@@ -287,14 +322,14 @@ function drawOverlay(
       ctx.strokeStyle = pulseRose.stroke(pulse);
       ctx.lineWidth = (2 + 2 * pulse) / k;
     } else if (isHovered) {
-      ctx.fillStyle = '#0284c7';
-      ctx.strokeStyle = isSelected || isTarget ? '#38bdf8' : '#64748b';
-      ctx.lineWidth = (isSelected || isTarget ? 1.5 : 0.8) / k;
+      ctx.fillStyle = '#fff3b0';
+      ctx.strokeStyle = isSelected || isTarget ? '#d94e34' : '#14293a';
+      ctx.lineWidth = (isSelected || isTarget ? 1.8 : 1.3) / k;
     } else if (isSelected || isTarget) {
       const idx = s.countries.indexOf(poly);
-      ctx.fillStyle = idx >= 0 ? s.countryFills[idx] : '#334155';
-      ctx.strokeStyle = '#38bdf8';
-      ctx.lineWidth = 1.5 / k;
+      ctx.fillStyle = idx >= 0 ? s.countryFills[idx] : '#f4a261';
+      ctx.strokeStyle = '#fff8e7';
+      ctx.lineWidth = 1.6 / k;
     } else {
       return;
     }
@@ -325,11 +360,11 @@ function drawOverlay(
       fb === 'correct'
         ? '#10b981'
         : fb === 'incorrect' && isSelected
-        ? '#f43f5e'
-        : '#38bdf8';
+        ? '#e63946'
+        : '#e9c46a';
     ctx.beginPath();
     ctx.arc(b.cx, b.cy, (baseR / k) * (1 + eased), 0, Math.PI * 2);
-    ctx.globalAlpha = 0.75 * (1 - eased);
+    ctx.globalAlpha = 0.8 * (1 - eased);
     ctx.strokeStyle = color;
     ctx.lineWidth = width / k;
     ctx.stroke();
@@ -340,12 +375,12 @@ function drawOverlay(
 
   // Labels live in screen space so text stays crisp and constant-size
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.font = 'bold 11px sans-serif';
+  ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
   ctx.textAlign = 'center';
   ctx.lineJoin = 'round';
-  ctx.lineWidth = 3;
-  ctx.strokeStyle = '#090e1a';
-  ctx.fillStyle = '#ffffff';
+  ctx.lineWidth = 3.2;
+  ctx.strokeStyle = '#0e2433';
+  ctx.fillStyle = '#fff8e7';
   for (const w of s.waterBeacons) {
     if (!w.wb) continue;
     const { isStrait, dot } = waterBeaconRadii(w.wb);
@@ -362,6 +397,8 @@ function drawOverlay(
 const EMPTY_HIGHLIGHTED_IDS: string[] = [];
 
 interface ProjectionGeometry {
+  sphereOutline: Path2D | null;
+  graticulePath: Path2D | null;
   countries: PolyItem[];
   oceans: PolyItem[];
   seas: PolyItem[];
@@ -378,6 +415,8 @@ interface CachedProjectionBundle {
 }
 
 const EMPTY_GEOMETRY: ProjectionGeometry = {
+  sphereOutline: null,
+  graticulePath: null,
   countries: [],
   oceans: [],
   seas: [],
@@ -442,6 +481,11 @@ function getOrBuildProjectionBundle(width: number, height: number): CachedProjec
   const waterGeoFeatures = getCachedWaterGeoFeatures();
 
   const boundsGen = d3.geoPath(projection);
+  const sphereOutline = new Path2D();
+  d3.geoPath(projection, sphereOutline as any)({ type: 'Sphere' } as any);
+  const graticulePath = new Path2D();
+  d3.geoPath(projection, graticulePath as any)(d3.geoGraticule10());
+
   const build = (feat: any, id: string, country?: Country, wb?: WaterBody): PolyItem | null => {
     const b = boundsGen.bounds(feat);
     if (!b || !isFinite(b[0][0]) || !isFinite(b[1][1])) return null;
@@ -496,7 +540,7 @@ function getOrBuildProjectionBundle(width: number, height: number): CachedProjec
   cachedBundle = {
     key,
     projection,
-    geometry: { countries, oceans, seas, straits, polyById },
+    geometry: { sphereOutline, graticulePath, countries, oceans, seas, straits, polyById },
     microstateItems,
     waterBodyItems,
   };
@@ -626,7 +670,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
 
   const getCountryFill = useCallback(
     (country?: Country) => {
-      if (!country) return '#334155';
+      if (!country) return highlightedSet.size > 0 ? '#2b4355' : '#c6bba5';
 
       if (feedbackState === 'correct') {
         if (country.id === targetCountryId || country.id === selectedCountryId) {
@@ -638,29 +682,29 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
           return '#10b981';
         }
         if (country.id === selectedCountryId) {
-          return '#f43f5e';
+          return '#e63946';
         }
       }
 
       if (country.id === selectedCountryId) {
-        return '#0284c7';
-      }
-
-      if (highlightedSet.has(country.id)) {
-        return '#38bdf8';
+        return '#f4a261';
       }
 
       if (heatmapItemsMap) {
         const capItem = heatmapItemsMap.get(`${country.id}:capital`);
         const locItem = heatmapItemsMap.get(`${country.id}:location`);
         const score = (capItem?.stage || 0) + (locItem?.stage || 0);
-        if (score >= 3) return '#059669';
-        if (score === 2) return '#10b981';
-        if (score === 1) return '#d97706';
-        return '#334155';
+        if (score >= 3) return '#2a9d8f';
+        if (score === 2) return '#52b788';
+        if (score === 1) return '#e9c46a';
+        return '#2f495c';
       }
 
-      return '#334155';
+      if (highlightedSet.size > 0) {
+        return highlightedSet.has(country.id) ? getAtlasCountryColor(country.id) : '#263f52';
+      }
+
+      return getAtlasCountryColor(country.id);
     },
     [feedbackState, targetCountryId, selectedCountryId, highlightedSet, heatmapItemsMap]
   );
@@ -671,34 +715,34 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       const isTarget = wb.id === targetCountryId;
 
       if (feedbackState === 'correct' && (isSelected || isTarget)) {
-        return 'rgba(16, 185, 129, 0.45)';
+        return 'rgba(16, 185, 129, 0.48)';
       }
       if (feedbackState === 'incorrect') {
-        if (isTarget) return 'rgba(16, 185, 129, 0.45)';
-        if (isSelected) return 'rgba(244, 63, 94, 0.45)';
+        if (isTarget) return 'rgba(16, 185, 129, 0.48)';
+        if (isSelected) return 'rgba(230, 57, 70, 0.48)';
       }
 
       if (isSelected || isTarget) {
-        return 'rgba(2, 132, 199, 0.45)';
+        return 'rgba(233, 196, 106, 0.36)';
       }
 
       if (highlightedSet.has(wb.id)) {
-        return 'rgba(56, 189, 248, 0.35)';
+        return 'rgba(72, 202, 228, 0.34)';
       }
 
       if (heatmapItemsMap) {
         const item = heatmapItemsMap.get(`${wb.id}:location`);
-        if (item?.stage === 2) return 'rgba(16, 185, 129, 0.25)';
-        if (item?.stage === 1) return 'rgba(217, 119, 6, 0.25)';
+        if (item?.stage === 2) return 'rgba(42, 157, 143, 0.3)';
+        if (item?.stage === 1) return 'rgba(233, 196, 106, 0.28)';
       }
 
       if (wb.type === 'strait' || wb.type === 'channel') {
-        return 'rgba(14, 165, 233, 0.18)';
+        return 'rgba(72, 202, 228, 0.2)';
       }
       if (wb.type === 'ocean') {
-        return 'rgba(3, 105, 161, 0.05)';
+        return 'rgba(29, 78, 107, 0.12)';
       }
-      return 'rgba(14, 165, 233, 0.09)';
+      return 'rgba(56, 163, 195, 0.13)';
     },
     [selectedCountryId, targetCountryId, feedbackState, highlightedSet, heatmapItemsMap]
   );
@@ -713,20 +757,20 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       }
       if (feedbackState === 'incorrect') {
         if (isTarget) return '#10b981';
-        if (isSelected) return '#f43f5e';
+        if (isSelected) return '#e63946';
       }
 
       if (isSelected || isTarget) {
-        return '#38bdf8';
+        return '#e9c46a';
       }
 
       if (wb.type === 'strait' || wb.type === 'channel') {
-        return 'rgba(56, 189, 248, 0.35)';
+        return 'rgba(144, 224, 239, 0.38)';
       }
       if (wb.type === 'ocean') {
         return 'none';
       }
-      return 'rgba(56, 189, 248, 0.18)';
+      return 'rgba(144, 224, 239, 0.2)';
     },
     [selectedCountryId, targetCountryId, feedbackState]
   );
@@ -814,6 +858,8 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       dpr,
       t: zoomTransformRef.current,
       moving: movingRef.current,
+      sphereOutline: geometry.sphereOutline,
+      graticulePath: geometry.graticulePath,
       oceans: geometry.oceans,
       seas: geometry.seas,
       straits: geometry.straits,
@@ -1151,10 +1197,10 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     <div
       ref={containerRef}
       onMouseMove={handleContainerMouseMove}
-      className={`relative w-full h-full overflow-hidden bg-[#090e1a] select-none touch-none ${className}`}
+      className={`relative w-full h-full overflow-hidden bg-[#102a3c] select-none touch-none ${className}`}
     >
-      {/* Background soft ambient radial gradient */}
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(20,32,54,0.6)_0%,rgba(9,14,26,1)_100%)]" />
+      {/* Background warm Aegean-Prussian radial depth */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,#1b4662_0%,#0f293b_65%,#0a1d2b_100%)]" />
 
       {/* Static map layer: water bodies, countries, beacons */}
       <canvas
@@ -1174,13 +1220,13 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       {/* High-Performance Direct Tooltip (Zero React re-renders during cursor movements) */}
       <div
         ref={tooltipRef}
-        className="fixed pointer-events-none z-50 px-3 py-1.5 rounded-lg bg-slate-900/95 border border-slate-700/90 shadow-2xl backdrop-blur-md -translate-x-1/2 -translate-y-full text-xs flex items-center gap-2 transition-opacity duration-150 opacity-0"
+        className="fixed pointer-events-none z-50 px-3.5 py-2 rounded-xl bg-[#f6efe2] border-2 border-[#162938] shadow-2xl -translate-x-1/2 -translate-y-full text-xs flex items-center gap-2.5 transition-opacity duration-150 opacity-0"
         style={{ left: 0, top: 0, willChange: 'transform' }}
       >
-        <span ref={flagRef} className="text-base" />
+        <span ref={flagRef} className="text-lg" />
         <div>
-          <div ref={nameRef} className="font-bold text-white tracking-wide" />
-          <div ref={capRef} className="text-[10px] text-emerald-400" />
+          <div ref={nameRef} className="font-extrabold text-[#162938] tracking-tight" />
+          <div ref={capRef} className="text-[10px] font-bold text-[#c84b31]" />
         </div>
       </div>
     </div>

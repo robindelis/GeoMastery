@@ -5,7 +5,7 @@ import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countri
 import { WATER_BODIES, getWaterBodyById, WaterBody } from '../../assets/data/waterBodies';
 import { waterBodyToCountry } from '../../core/srsEngine';
 import { getMicrostateList } from '../../core/microstates';
-import { getCachedGeoFeatures, getCachedWaterGeoFeatures } from './VectorMap2D';
+import { getCachedGeoFeatures, getCachedWaterGeoFeatures, getAtlasCountryColor } from './VectorMap2D';
 
 const EMPTY_HIGHLIGHTED_IDS: string[] = [];
 let lastKnownGlobeDimensions: { width: number; height: number } | null = null;
@@ -159,37 +159,41 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       .clipAngle(90);
   }, [dimensions]);
 
-  // Determine country fill color (Elevated base fill #334155 for high contrast against deep ocean)
+  // Determine country fill color using the warm Grand Atelier political atlas palette
   const getCountryFill = useCallback(
     (country?: Country) => {
-      if (!country) return '#334155';
+      if (!country) return highlightedCountryIds.length > 0 ? '#2b4355' : '#c6bba5';
 
       if (feedbackState === 'correct') {
         if (country.id === targetCountryId || country.id === selectedCountryId) {
-          return '#10b981'; // Emerald
+          return '#10b981';
         }
       }
       if (feedbackState === 'incorrect') {
-        if (country.id === targetCountryId) return '#10b981'; // Correct answer in Emerald
-        if (country.id === selectedCountryId) return '#f43f5e'; // Rose for wrong pick
+        if (country.id === targetCountryId) return '#10b981';
+        if (country.id === selectedCountryId) return '#e63946';
       }
 
-      if (country.id === selectedCountryId) return '#0284c7';
-      if (highlightedCountryIds.includes(country.id)) return '#38bdf8';
+      if (country.id === selectedCountryId) return '#f4a261';
+      if (hoveredCountry?.id === country.id) return '#fff3b0';
 
       if (showHeatmap && srsItemsMap) {
         const cap = srsItemsMap.get(`${country.id}:capital`);
         const loc = srsItemsMap.get(`${country.id}:location`);
         const score = (cap?.stage || 0) + (loc?.stage || 0);
-        if (score >= 3) return '#059669';
-        if (score === 2) return '#10b981';
-        if (score === 1) return '#d97706';
-        return '#334155';
+        if (score >= 3) return '#2a9d8f';
+        if (score === 2) return '#52b788';
+        if (score === 1) return '#e9c46a';
+        return '#2f495c';
       }
 
-      return '#334155';
+      if (highlightedCountryIds.length > 0) {
+        return highlightedCountryIds.includes(country.id) ? getAtlasCountryColor(country.id) : '#263f52';
+      }
+
+      return getAtlasCountryColor(country.id);
     },
-    [feedbackState, targetCountryId, selectedCountryId, highlightedCountryIds, showHeatmap, srsItemsMap]
+    [feedbackState, targetCountryId, selectedCountryId, hoveredCountry?.id, highlightedCountryIds, showHeatmap, srsItemsMap]
   );
 
   // Smooth spin to focus country coordinates
@@ -277,28 +281,29 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       const radius = Math.min(dimensions.width, dimensions.height) / 2.3;
       const [cx, cy] = [dimensions.width / 2, dimensions.height / 2];
 
-      // Atmospheric outer glow
-      const outerGlow = ctx.createRadialGradient(cx, cy, radius * 0.92, cx, cy, radius * 1.15);
-      outerGlow.addColorStop(0, 'rgba(14, 165, 233, 0.25)');
-      outerGlow.addColorStop(0.5, 'rgba(6, 182, 212, 0.08)');
+      // Warm golden-ivory atmospheric outer limb glow
+      const outerGlow = ctx.createRadialGradient(cx, cy, radius * 0.92, cx, cy, radius * 1.18);
+      outerGlow.addColorStop(0, 'rgba(233, 196, 106, 0.24)');
+      outerGlow.addColorStop(0.5, 'rgba(72, 202, 228, 0.09)');
       outerGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = outerGlow;
       ctx.beginPath();
-      ctx.arc(cx, cy, radius * 1.15, 0, 2 * Math.PI);
+      ctx.arc(cx, cy, radius * 1.18, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Globe sphere ocean (Deep bathymetric gradient for high contrast)
+      // Globe sphere ocean (Warm Aegean Cerulean to deep Prussian)
       const oceanGrad = ctx.createRadialGradient(cx - radius * 0.3, cy - radius * 0.3, radius * 0.1, cx, cy, radius);
-      oceanGrad.addColorStop(0, '#142036');
-      oceanGrad.addColorStop(1, '#090e1a');
+      oceanGrad.addColorStop(0, '#1f5373');
+      oceanGrad.addColorStop(0.65, '#153b52');
+      oceanGrad.addColorStop(1, '#0d2636');
       ctx.fillStyle = oceanGrad;
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Graticules (Latitude / Longitude grid)
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
-      ctx.lineWidth = 0.5;
+      // Graticules (Warm ivory latitude / longitude meridians)
+      ctx.strokeStyle = 'rgba(245, 237, 224, 0.1)';
+      ctx.lineWidth = 0.55;
       ctx.beginPath();
       path(graticule);
       ctx.stroke();
@@ -316,49 +321,48 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         const isOcean = wb.type === 'ocean';
         const isActive = isSelected || isTarget || isHovered || isFeedback || isHighlighted;
 
-        // Performance standard: Inactive oceans blend into the dark navy ocean sphere.
-        // Skipping invisible full-ocean path renders at 60fps delivers zero-lag rotation!
+        // Performance standard: Inactive oceans blend into the ocean sphere.
         if (isOcean && !isActive) continue;
 
         let fillStyle =
           wb.type === 'strait' || wb.type === 'channel'
-            ? 'rgba(14, 165, 233, 0.18)'
+            ? 'rgba(72, 202, 228, 0.22)'
             : wb.type === 'ocean'
-            ? 'rgba(3, 105, 161, 0.05)'
-            : 'rgba(14, 165, 233, 0.09)';
+            ? 'rgba(29, 78, 107, 0.1)'
+            : 'rgba(56, 163, 195, 0.14)';
         let strokeStyle =
           wb.type === 'strait' || wb.type === 'channel'
-            ? 'rgba(56, 189, 248, 0.35)'
+            ? 'rgba(144, 224, 239, 0.4)'
             : wb.type === 'ocean'
             ? 'transparent'
-            : 'rgba(56, 189, 248, 0.15)';
+            : 'rgba(144, 224, 239, 0.2)';
         let lineWidth = 0.8;
 
         if (feedbackState === 'correct' && (isSelected || isTarget)) {
-          fillStyle = 'rgba(16, 185, 129, 0.45)';
+          fillStyle = 'rgba(16, 185, 129, 0.5)';
           strokeStyle = '#10b981';
           lineWidth = 1.6;
         } else if (feedbackState === 'incorrect') {
           if (isTarget) {
-            fillStyle = 'rgba(16, 185, 129, 0.45)';
+            fillStyle = 'rgba(16, 185, 129, 0.5)';
             strokeStyle = '#10b981';
             lineWidth = 1.6;
           } else if (isSelected) {
-            fillStyle = 'rgba(244, 63, 94, 0.45)';
-            strokeStyle = '#f43f5e';
+            fillStyle = 'rgba(230, 57, 70, 0.5)';
+            strokeStyle = '#e63946';
             lineWidth = 1.6;
           }
         } else if (isHovered) {
-          fillStyle = 'rgba(14, 165, 233, 0.45)';
-          strokeStyle = '#38bdf8';
+          fillStyle = 'rgba(233, 196, 106, 0.38)';
+          strokeStyle = '#e9c46a';
           lineWidth = 1.6;
         } else if (isSelected || isTarget) {
-          fillStyle = 'rgba(2, 132, 199, 0.4)';
-          strokeStyle = '#38bdf8';
+          fillStyle = 'rgba(233, 196, 106, 0.35)';
+          strokeStyle = '#fff8e7';
           lineWidth = 1.4;
         } else if (highlightedCountryIds.includes(wb.id)) {
-          fillStyle = 'rgba(56, 189, 248, 0.35)';
-          strokeStyle = '#38bdf8';
+          fillStyle = 'rgba(72, 202, 228, 0.35)';
+          strokeStyle = '#90e0ef';
           lineWidth = 1.2;
         }
 
@@ -373,12 +377,14 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         }
       }
 
-      // Draw countries (Elevated fill & hairline borders)
+      // Draw countries (Warm political atlas fill & deep Prussian-sepia ink borders)
       for (const feat of geoFeatures) {
         const country = COUNTRIES_BY_NUMERIC.get(String(feat.id));
+        const isHovered = country && hoveredCountry?.id === country.id;
+        const isActive = country && (country.id === selectedCountryId || country.id === targetCountryId);
         ctx.fillStyle = getCountryFill(country);
-        ctx.strokeStyle = '#64748b';
-        ctx.lineWidth = 0.8;
+        ctx.strokeStyle = isActive ? '#fff8e7' : isHovered ? '#d94e34' : '#14293a';
+        ctx.lineWidth = isActive || isHovered ? 1.3 : 0.8;
 
         ctx.beginPath();
         path(feat);
@@ -404,21 +410,21 @@ export const Globe3D: React.FC<Globe3DProps> = ({
                 feedbackState === 'correct'
                   ? '#10b981'
                   : feedbackState === 'incorrect'
-                  ? '#f43f5e'
-                  : '#38bdf8';
-              ctx.lineWidth = 1.4;
+                  ? '#e63946'
+                  : '#e9c46a';
+              ctx.lineWidth = 1.5;
               ctx.beginPath();
               ctx.arc(px, py, isOcean ? 14 : 9, 0, 2 * Math.PI);
               ctx.stroke();
             }
 
-            ctx.fillStyle = isStrait ? '#06b6d4' : isOcean ? '#38bdf8' : '#0ea5e9';
+            ctx.fillStyle = isStrait ? '#48cae4' : isOcean ? '#90e0ef' : '#00b4d8';
             if (feedbackState === 'correct' && (isSelected || isTarget)) ctx.fillStyle = '#10b981';
-            else if (feedbackState === 'incorrect' && isSelected) ctx.fillStyle = '#f43f5e';
+            else if (feedbackState === 'incorrect' && isSelected) ctx.fillStyle = '#e63946';
             else if (feedbackState === 'incorrect' && isTarget) ctx.fillStyle = '#10b981';
 
-            ctx.strokeStyle = isSelected || isTarget ? '#ffffff' : '#e0f2fe';
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = isSelected || isTarget ? '#fff8e7' : '#14293a';
+            ctx.lineWidth = 1.1;
             ctx.beginPath();
             ctx.arc(px, py, isOcean ? 5.5 : isStrait ? 4 : 4.5, 0, 2 * Math.PI);
             ctx.fill();
@@ -437,29 +443,28 @@ export const Globe3D: React.FC<Globe3DProps> = ({
             const isSelected = country.id === selectedCountryId;
             const isTarget = country.id === targetCountryId;
 
-            // Subtle pulsing beacon ring for selected/target microstates
             if (isSelected || isTarget) {
-              ctx.strokeStyle = '#38bdf8';
-              ctx.lineWidth = 1.2;
+              ctx.strokeStyle = '#e9c46a';
+              ctx.lineWidth = 1.3;
               ctx.beginPath();
-              ctx.arc(px, py, 7, 0, 2 * Math.PI);
+              ctx.arc(px, py, 7.5, 0, 2 * Math.PI);
               ctx.stroke();
             }
 
             ctx.fillStyle = getCountryFill(country);
-            ctx.strokeStyle = isSelected || isTarget ? '#ffffff' : '#38bdf8';
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = isSelected || isTarget ? '#fff8e7' : '#14293a';
+            ctx.lineWidth = 1.1;
             ctx.beginPath();
-            ctx.arc(px, py, 3.5, 0, 2 * Math.PI);
+            ctx.arc(px, py, 3.6, 0, 2 * Math.PI);
             ctx.fill();
             ctx.stroke();
           }
         }
       }
 
-      // Globe rim highlight
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
-      ctx.lineWidth = 1.5;
+      // Globe brass meridian rim highlight
+      ctx.strokeStyle = 'rgba(233, 196, 106, 0.5)';
+      ctx.lineWidth = 1.8;
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
       ctx.stroke();
@@ -791,7 +796,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-full overflow-hidden bg-[#090e1a] select-none touch-none ${className}`}
+      className={`relative w-full h-full overflow-hidden bg-[#0e2636] bg-[radial-gradient(ellipse_at_center,#1a4460_0%,#0e2636_65%,#091924_100%)] select-none touch-none ${className}`}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -807,15 +812,15 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       {!hideHoverTooltip && hoveredCountry && (
         <div
           ref={tooltipRef}
-          className="fixed pointer-events-none z-50 px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-700/80 shadow-2xl backdrop-blur-md transform -translate-x-1/2 -translate-y-full mb-3 text-xs flex items-center gap-2 will-change-transform"
+          className="fixed pointer-events-none z-50 px-3.5 py-2 rounded-xl bg-[#f6efe2] border-2 border-[#162938] shadow-2xl transform -translate-x-1/2 -translate-y-full mb-3 text-xs flex items-center gap-2.5 will-change-transform"
           style={{ left: 0, top: 0 }}
         >
-          <span className="text-base">{hoveredCountry.flagEmoji}</span>
+          <span className="text-lg">{hoveredCountry.flagEmoji}</span>
           <div>
-            <div className="font-bold text-white tracking-wide">
+            <div className="font-extrabold text-[#162938] tracking-tight">
               {hoveredCountry.officialName || hoveredCountry.name}
             </div>
-            <div className="text-[10px] text-emerald-400">
+            <div className="text-[10px] font-bold text-[#c84b31]">
               {hoveredCountry.id.startsWith('WATER_')
                 ? `${hoveredCountry.subregion} • ${hoveredCountry.facts?.significance || ''}`
                 : `Capital: ${hoveredCountry.capital}`}
