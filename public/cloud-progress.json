@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:21:32.103Z",
+  "exportedAt": "2026-10-14T21:21:39.247Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16333,11 +16333,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "SUR:capital",
+      {
+        "id": "SUR:capital",
+        "countryId": "SUR",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T21:21:35.847Z",
+        "nextDueAt": "2026-10-15T21:21:35.847Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:21:35.847Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Paramaribo",
+            "isCorrect": true,
+            "timeSpentMs": 4309
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1216,
-    "totalCorrect": 893,
+    "totalReviews": 1217,
+    "totalCorrect": 894,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -16350,7 +16376,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 38
+        "learning": 39
       },
       "Asia": {
         "total": 96,
@@ -16369,7 +16395,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:21:28.594Z"
+    "updatedAt": "2026-10-14T21:21:35.851Z"
   },
   "settings": {
     "audioEnabled": true,
