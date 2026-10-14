@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T10:18:16.198Z",
+  "exportedAt": "2026-10-14T14:00:47.794Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15365,13 +15365,13 @@
         "countryId": "COL",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
+        "step": 2,
+        "easeFactor": 2.5999999999999996,
         "intervalDays": 1,
-        "reps": 1,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T13:54:16.116Z",
-        "nextDueAt": "2026-10-11T13:54:16.116Z",
+        "lastReviewedAt": "2026-10-14T14:00:44.752Z",
+        "nextDueAt": "2026-10-15T14:00:44.752Z",
         "history": [
           {
             "timestamp": "2026-10-10T13:54:16.116Z",
@@ -15379,15 +15379,22 @@
             "userAnswer": "Bogota",
             "isCorrect": true,
             "timeSpentMs": 2991
+          },
+          {
+            "timestamp": "2026-10-14T14:00:44.752Z",
+            "inputMode": "typing",
+            "userAnswer": "Bogota",
+            "isCorrect": true,
+            "timeSpentMs": 13351176
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ]
   ],
   "stats": {
-    "totalReviews": 1140,
-    "totalCorrect": 847,
+    "totalReviews": 1141,
+    "totalCorrect": 848,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15419,7 +15426,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T10:18:12.477Z"
+    "updatedAt": "2026-10-14T14:00:44.756Z"
   },
   "settings": {
     "audioEnabled": true,
