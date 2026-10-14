@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:22:29.298Z",
+  "exportedAt": "2026-10-14T21:22:33.759Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13101,13 +13101,13 @@
         "countryId": "STP",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.3499999999999996,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-06T12:31:30.841Z",
-        "nextDueAt": "2026-10-07T12:31:30.841Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-14T21:22:30.711Z",
+        "nextDueAt": "2026-10-14T21:22:30.711Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:31:30.841Z",
@@ -13115,6 +13115,13 @@
             "userAnswer": "Sao Tome",
             "isCorrect": true,
             "timeSpentMs": 16306
+          },
+          {
+            "timestamp": "2026-10-14T21:22:30.711Z",
+            "inputMode": "typing",
+            "userAnswer": "Port of spain",
+            "isCorrect": false,
+            "timeSpentMs": 4863
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -16421,7 +16428,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1220,
+    "totalReviews": 1221,
     "totalCorrect": 897,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -16454,7 +16461,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:22:25.082Z"
+    "updatedAt": "2026-10-14T21:22:30.714Z"
   },
   "settings": {
     "audioEnabled": true,
