@@ -245,5 +245,90 @@ describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
     // Original array must be unchanged
     expect(original).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   });
+
+  it('actively includes unseen Americas cards in global sessions instead of starving them behind hundreds of due Stage 1 cards', () => {
+    const itemsMap = new Map();
+    const pastDate = new Date(Date.now() - 86400000).toISOString();
+
+    // Populate 200+ due Stage 1 cards in Europe, Asia, and Africa
+    const otherCountries = COUNTRIES.filter((c) => c.continent === 'Europe' || c.continent === 'Asia' || c.continent === 'Africa');
+    for (const c of otherCountries) {
+      for (const attr of ['capital', 'location']) {
+        const item = createInitialSRSItem(c.id, attr);
+        item.stage = 1;
+        item.consecutiveRecallCorrect = 1;
+        item.nextDueAt = pastDate;
+        item.intervalDays = 1;
+        itemsMap.set(item.id, item);
+      }
+    }
+
+    // Leave Americas countries completely unseen (!itemsMap.has(c.id))
+    const americasCountries = COUNTRIES.filter((c) => c.continent === 'Americas');
+    expect(americasCountries.length).toBeGreaterThanOrEqual(30);
+
+    // Run 5 sessions of 15 cards
+    let totalAmericasCardsDrawn = 0;
+    for (let i = 0; i < 5; i++) {
+      const queue = prepareSessionQueue(itemsMap, 'All', ['capital', 'location'], 15, false);
+      expect(queue.length).toBe(15);
+      const americasCount = queue.filter((q) => q.country.continent === 'Americas').length;
+      totalAmericasCardsDrawn += americasCount;
+    }
+
+    // Unseen Americas cards must NOT be starved (should average several per session)
+    expect(totalAmericasCardsDrawn).toBeGreaterThanOrEqual(10);
+  });
+
+  it('includes 1-2 Mastered cards for retention checking even when scheduled in the future, and demotes upon incorrect answer', () => {
+    const itemsMap = new Map();
+    const pastDate = new Date(Date.now() - 86400000).toISOString();
+    const futureDate = new Date(Date.now() + 14 * 86400000).toISOString();
+
+    // Create 15 Mastered (2/2) cards scheduled in the future
+    const masteredCountries = COUNTRIES.slice(0, 15);
+    for (const c of masteredCountries) {
+      const item = createInitialSRSItem(c.id, 'capital');
+      item.stage = 2;
+      item.consecutiveRecallCorrect = 2;
+      item.intervalDays = 14;
+      item.nextDueAt = futureDate;
+      item.lastReviewedAt = new Date(Date.now() - 3 * 86400000).toISOString();
+      itemsMap.set(item.id, item);
+    }
+
+    // Add some due Stage 1 cards
+    const dueCountries = COUNTRIES.slice(15, 30);
+    for (const c of dueCountries) {
+      const item = createInitialSRSItem(c.id, 'capital');
+      item.stage = 1;
+      item.consecutiveRecallCorrect = 0;
+      item.intervalDays = 1;
+      item.nextDueAt = pastDate;
+      itemsMap.set(item.id, item);
+    }
+
+    const queue = prepareSessionQueue(itemsMap, 'All', ['capital'], 15, false);
+    expect(queue.length).toBe(15);
+
+    // Verify retention check: at least 1-2 Mastered cards should appear in the queue
+    const masteredInQueue = queue.filter((q) => {
+      const item = itemsMap.get(q.srsItemId);
+      return item && item.stage === 2;
+    });
+    expect(masteredInQueue.length).toBeGreaterThanOrEqual(1);
+    expect(masteredInQueue.length).toBeLessThanOrEqual(2);
+
+    // Verify that answering a Mastered card incorrectly demotes it to Stage 1 with 0 recall streak
+    const masteredCard = itemsMap.get(masteredInQueue[0].srsItemId)!;
+    expect(masteredCard.stage).toBe(2);
+    expect(masteredCard.consecutiveRecallCorrect).toBe(2);
+
+    const { updatedItem } = processAnswer(masteredCard, false, 'typing', 'WrongAnswer', 2000);
+    expect(updatedItem.stage).toBe(1);
+    expect(updatedItem.consecutiveRecallCorrect).toBe(0);
+    expect(updatedItem.intervalDays).toBe(0);
+  });
 });
+
 

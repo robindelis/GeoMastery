@@ -40,8 +40,64 @@ const isDue = (item: SRSItem | undefined, now: string): boolean => {
 };
 
 /**
+ * 10-Tier Cartographic Progression System with dynamic high-level scaling.
+ */
+export function calculateCartographerRank(xp: number): {
+  title: string;
+  level: number;
+  xp: number;
+  nextXP: number;
+  progress: number;
+} {
+  const TIERS = [
+    { level: 1, minXP: 0, nextXP: 200, title: 'Cadet Cartographer' },
+    { level: 2, minXP: 200, nextXP: 600, title: 'Apprentice Surveyor' },
+    { level: 3, minXP: 600, nextXP: 1500, title: 'Field Topographer' },
+    { level: 4, minXP: 1500, nextXP: 3000, title: 'Senior Navigator' },
+    { level: 5, minXP: 3000, nextXP: 6000, title: 'Master Mariner' },
+    { level: 6, minXP: 6000, nextXP: 10000, title: 'Royal Geographer' },
+    { level: 7, minXP: 10000, nextXP: 15000, title: 'Grand Cartographer' },
+    { level: 8, minXP: 15000, nextXP: 22500, title: 'Imperial Cosmographer' },
+    { level: 9, minXP: 22500, nextXP: 32000, title: 'Arch-Atlas Laureate' }
+  ];
+
+  for (const tier of TIERS) {
+    if (xp < tier.nextXP) {
+      const progress = Math.min(
+        100,
+        Math.max(4, Math.round(((xp - tier.minXP) / (tier.nextXP - tier.minXP)) * 100))
+      );
+      return {
+        title: tier.title,
+        level: tier.level,
+        xp,
+        nextXP: tier.nextXP,
+        progress
+      };
+    }
+  }
+
+  // Level 10+: Above 32,000 XP scale dynamically every 15,000 XP
+  const overflow = xp - 32000;
+  const extraLevels = Math.floor(overflow / 15000);
+  const level = 10 + extraLevels;
+  const minXP = 32000 + extraLevels * 15000;
+  const nextXP = minXP + 15000;
+  const progress = Math.min(100, Math.max(4, Math.round(((xp - minXP) / 15000) * 100)));
+
+  return {
+    title: 'Sovereign of the Meridian',
+    level,
+    xp,
+    nextXP,
+    progress
+  };
+}
+
+/**
  * Splits the due queue by card attribute — used by templates that show a
  * "12 capitals · 6 locations" style breakdown under the launch button.
+ * Matches regional due count calculations by inspecting all eligible entities.
  */
 export const useDueBreakdown = (
   srsItemsMap: Map<string, SRSItem>,
@@ -51,12 +107,30 @@ export const useDueBreakdown = (
     const now = new Date().toISOString();
     let capital = 0;
     let location = 0;
-    srsItemsMap.forEach((item) => {
-      if (!selectedAttributes.includes(item.attributeId)) return;
-      if (!(item.nextDueAt <= now || item.intervalDays === 0)) return;
-      if (item.attributeId === 'capital') capital++;
-      else if (item.attributeId === 'location') location++;
-    });
+
+    for (const country of COUNTRIES) {
+      if (
+        selectedAttributes.includes('capital') &&
+        isDue(srsItemsMap.get(`${country.id}:capital`), now)
+      ) {
+        capital++;
+      }
+      if (
+        selectedAttributes.includes('location') &&
+        isDue(srsItemsMap.get(`${country.id}:location`), now)
+      ) {
+        location++;
+      }
+    }
+
+    if (selectedAttributes.includes('location')) {
+      for (const wb of WATER_BODIES) {
+        if (isDue(srsItemsMap.get(`${wb.id}:location`), now)) {
+          location++;
+        }
+      }
+    }
+
     return { capital, location, total: capital + location };
   }, [srsItemsMap, selectedAttributes]);
 };
@@ -78,9 +152,16 @@ export const useHomeData = (
     const dueCountFor = (category: TrainingCategory): number => {
       if (category === 'All') {
         let due = 0;
-        srsItemsMap.forEach((item) => {
-          if (selectedAttributes.includes(item.attributeId) && isDue(item, now)) due++;
-        });
+        for (const country of COUNTRIES) {
+          for (const attrId of selectedAttributes) {
+            if (isDue(srsItemsMap.get(`${country.id}:${attrId}`), now)) due++;
+          }
+        }
+        if (selectedAttributes.includes('location')) {
+          for (const wb of WATER_BODIES) {
+            if (isDue(srsItemsMap.get(`${wb.id}:location`), now)) due++;
+          }
+        }
         return due;
       }
       if (category === 'Oceans') {
@@ -111,12 +192,20 @@ export const useHomeData = (
       subtitle: string,
       shortSubtitle: string,
       counts: { total: number; stage0: number; stage1: number; stage2: number },
-      isWater: boolean
+      isWater: boolean,
+      granular: {
+        unseenCards: number;
+        stage0Cards: number;
+        recall0Cards: number;
+        recall1Cards: number;
+      }
     ): RegionModel => {
       const mastered = counts.stage2;
       const recall = counts.stage1;
       const fresh = counts.stage0;
       const pct = (n: number) => (counts.total > 0 ? Math.round((n / counts.total) * 100) : 0);
+      const unlearnedCount = granular.unseenCards + granular.stage0Cards + granular.recall0Cards;
+
       return {
         id,
         name,
@@ -132,14 +221,43 @@ export const useHomeData = (
         recallPct: pct(recall),
         isWater,
         caughtUp: isCaughtUp(id),
-        dueCount: dueCountFor(id)
+        dueCount: dueCountFor(id),
+        unseenCards: granular.unseenCards,
+        stage0Cards: granular.stage0Cards,
+        recall0Cards: granular.recall0Cards,
+        recall1Cards: granular.recall1Cards,
+        unlearnedCount
       };
     };
 
     const regions: RegionModel[] = [
       ...CONTINENT_ORDER.map((continent) => {
         const b = mastery.breakdown[continent];
-        const nations = COUNTRIES.filter((c) => c.continent === continent).length;
+        const continentCountries = COUNTRIES.filter((c) => c.continent === continent);
+        const nations = continentCountries.length;
+
+        let unseenCards = 0;
+        let stage0Cards = 0;
+        let recall0Cards = 0;
+        let recall1Cards = 0;
+
+        for (const country of continentCountries) {
+          for (const attrId of ['capital', 'location']) {
+            const item = srsItemsMap.get(`${country.id}:${attrId}`);
+            if (!item) {
+              unseenCards++;
+            } else if (item.stage === 0) {
+              stage0Cards++;
+            } else if (item.stage === 1) {
+              if ((item.consecutiveRecallCorrect || 0) === 0) {
+                recall0Cards++;
+              } else {
+                recall1Cards++;
+              }
+            }
+          }
+        }
+
         return buildRegion(
           continent,
           continent,
@@ -148,25 +266,59 @@ export const useHomeData = (
           `${nations} nations · ${b.total} cards`,
           `${nations} nations`,
           b,
-          false
+          false,
+          { unseenCards, stage0Cards, recall0Cards, recall1Cards }
         );
       }),
-      buildRegion(
-        'Oceans',
-        'Oceans & Straits',
-        'Oceans',
-        '🌊',
-        `${WATER_BODIES.length} maritime bodies`,
-        `${WATER_BODIES.length} seas`,
-        mastery.waterBreakdown || {
-          total: WATER_BODIES.length,
-          stage0: WATER_BODIES.length,
-          stage1: 0,
-          stage2: 0
-        },
-        true
-      )
+      (() => {
+        let unseenCards = 0;
+        let stage0Cards = 0;
+        let recall0Cards = 0;
+        let recall1Cards = 0;
+
+        for (const wb of WATER_BODIES) {
+          const item = srsItemsMap.get(`${wb.id}:location`);
+          if (!item) {
+            unseenCards++;
+          } else if (item.stage === 0) {
+            stage0Cards++;
+          } else if (item.stage === 1) {
+            if ((item.consecutiveRecallCorrect || 0) === 0) {
+              recall0Cards++;
+            } else {
+              recall1Cards++;
+            }
+          }
+        }
+
+        return buildRegion(
+          'Oceans',
+          'Oceans & Straits',
+          'Oceans',
+          '🌊',
+          `${WATER_BODIES.length} maritime bodies`,
+          `${WATER_BODIES.length} seas`,
+          mastery.waterBreakdown || {
+            total: WATER_BODIES.length,
+            stage0: WATER_BODIES.length,
+            stage1: 0,
+            stage2: 0
+          },
+          true,
+          { unseenCards, stage0Cards, recall0Cards, recall1Cards }
+        );
+      })()
     ];
+
+    // Priority Region: Find region with most unlearned cards (or lowest mastery %)
+    let priorityRegion = regions[0];
+    let highestDeficit = -1;
+    for (const reg of regions) {
+      if (reg.unlearnedCount > highestDeficit) {
+        highestDeficit = reg.unlearnedCount;
+        priorityRegion = reg;
+      }
+    }
 
     // ── Memory pipeline (unique entities by best stage) ───────────────────────
     const entityStages = new Map<string, number>();
@@ -214,16 +366,7 @@ export const useHomeData = (
 
     // ── Rank & XP ────────────────────────────────────────────────────────────
     const xp = stats.totalCorrect * 15 + stats.totalReviews * 5;
-    const rank =
-      xp > 2500
-        ? { title: 'Grand Cartographer', level: 5, nextXP: 5000 }
-        : xp > 1200
-        ? { title: 'Senior Navigator', level: 4, nextXP: 2500 }
-        : xp > 600
-        ? { title: 'Lead Explorer', level: 3, nextXP: 1200 }
-        : xp > 200
-        ? { title: 'Apprentice Surveyor', level: 2, nextXP: 600 }
-        : { title: 'Cadet Cartographer', level: 1, nextXP: 200 };
+    const rank = calculateCartographerRank(xp);
 
     // ── Cards reviewed in the last 24h ───────────────────────────────────────
     const dayAgo = new Date(Date.now() - 86400000).toISOString();
@@ -241,6 +384,7 @@ export const useHomeData = (
       totalDueCount,
       isCaughtUp,
       dueCountFor,
+      priorityRegion,
       pipeline: {
         mastered: pipMastered,
         recall: pipRecall,
@@ -253,14 +397,9 @@ export const useHomeData = (
       totalWorldEntities: TOTAL_WORLD_ENTITIES,
       entitiesInMemory,
       accuracy,
-      rank: {
-        title: rank.title,
-        level: rank.level,
-        xp,
-        nextXP: rank.nextXP,
-        progress: Math.min(100, Math.round((xp / rank.nextXP) * 100))
-      },
+      rank,
       reviewsToday
     };
   }, [srsItemsMap, stats, selectedAttributes]);
 };
+

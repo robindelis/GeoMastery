@@ -34,7 +34,7 @@ import { getAtlasCountryColor } from '../map/VectorMap2D';
 import { useHomeData, useDueBreakdown } from './homeData';
 import { useCountUp } from './useCountUp';
 import type { HomeViewProps } from './homeTypes';
-import type { TrainingCategory } from '../../core/types';
+import type { TrainingCategory, SRSItem } from '../../core/types';
 import { soundFx } from '../../core/soundFx';
 import { speechEngine } from '../../core/speechEngine';
 import { formatCoordinates } from '../../core/geoUtils';
@@ -155,7 +155,7 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
     const update = () => {
       if (!wrapperRef.current) return;
       const { clientWidth, clientHeight } = wrapperRef.current;
-      const next = Math.max(160, Math.min(clientWidth - 16, clientHeight - 8, 300));
+      const next = Math.max(180, Math.min(clientWidth - 20, clientHeight - 16, 520));
       setCanvasSize((prev) => (Math.abs(prev - next) > 2 ? next : prev));
     };
     update();
@@ -550,9 +550,64 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const masteryValue = useCountUp(data.mastery.masteryPercentage);
   const dueValue = useCountUp(data.totalDueCount, 650);
 
-  const ringRadius = 32;
+  const ringRadius = 28;
   const ringCircumference = 2 * Math.PI * ringRadius;
   const ringOffset = ringCircumference - (masteryValue / 100) * ringCircumference;
+
+  const cardTelemetry = useMemo(() => {
+    let mastered = data.mastery.globalStage2;
+    let recall = 0;
+    let learning = 0;
+    let unseen = 0;
+    for (const r of data.regions) {
+      recall += r.recall1Cards;
+      learning += r.stage0Cards + r.recall0Cards;
+      unseen += r.unseenCards;
+    }
+    const total = data.mastery.grandTotal;
+    return {
+      mastered,
+      recall,
+      learning,
+      unseen,
+      total
+    };
+  }, [data.mastery, data.regions]);
+
+  const spotlightCapItem = srsItemsMap.get(`${data.spotlight.id}:capital`);
+  const spotlightLocItem = srsItemsMap.get(`${data.spotlight.id}:location`);
+
+  const getSpotlightCardBadge = (item?: SRSItem) => {
+    if (!item) {
+      return {
+        label: 'Unseen',
+        cls: 'border-[#38BDF8]/30 bg-[#38BDF8]/10 text-[#38BDF8]'
+      };
+    }
+    if (item.stage === 0) {
+      return {
+        label: 'L0 Recognition',
+        cls: 'border-[#F4A261]/30 bg-[#F4A261]/10 text-[#F4A261]'
+      };
+    }
+    if (item.stage === 2) {
+      return {
+        label: '2/2 Mastered',
+        cls: 'border-[#10B981]/30 bg-[#10B981]/15 text-[#10B981]'
+      };
+    }
+    const recall = item.consecutiveRecallCorrect || 0;
+    return {
+      label: `${recall}/2 Recall`,
+      cls:
+        recall === 0
+          ? 'border-[#F4A261]/30 bg-[#F4A261]/10 text-[#F4A261]'
+          : 'border-[#E9C46A]/30 bg-[#E9C46A]/15 text-[#E9C46A]'
+    };
+  };
+
+  const capBadge = getSpotlightCardBadge(spotlightCapItem);
+  const locBadge = getSpotlightCardBadge(spotlightLocItem);
 
   const focusOptions = [
     {
@@ -583,7 +638,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       />
 
       {/* ══ LOCKED VIEWPORT CONTAINER (Zero Vertical Scroll) ══════════════ */}
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1600px] flex-col justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4 overflow-hidden">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1840px] flex-col justify-between gap-2.5 px-4 py-2.5 sm:px-6 overflow-hidden">
         {/* ── 1. TOP ATELIER RIBBON (Shrink-0) ─────────────────────────── */}
         <header className="relative shrink-0 flex items-center justify-between gap-3 rounded-2xl border border-[#F6EFE2]/15 bg-[#153348] px-4 py-2 shadow-md">
           <div className="flex items-center gap-3 sm:gap-4">
@@ -601,7 +656,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 Rank {data.rank.level} · {data.rank.title}
               </span>
               <div className="hidden items-center gap-2 md:flex">
-                <div className="h-2 w-24 overflow-hidden rounded-full bg-[#0C1F2D]">
+                <div className="h-2 w-28 overflow-hidden rounded-full bg-[#0C1F2D]">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-[#E9C46A] to-[#D94E34] transition-all duration-700"
                     style={{ width: `${data.rank.progress}%` }}
@@ -679,19 +734,6 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             </button>
 
             <button
-              onClick={onToggleSound}
-              title={settings.audioEnabled ? 'Mute sound' : 'Enable sound'}
-              aria-label="Toggle sound"
-              className={`flex h-7 w-7 items-center justify-center rounded-full border transition-colors ${
-                settings.audioEnabled
-                  ? 'border-[#2A9D8F] bg-[#2A9D8F]/25 text-[#A7F3D0]'
-                  : 'border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] hover:text-white'
-              }`}
-            >
-              {settings.audioEnabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
-            </button>
-
-            <button
               onClick={onExportBackup}
               title="Export backup (JSON)"
               aria-label="Export backup"
@@ -760,189 +802,263 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
         {/* ── 2. MAIN 12-COLUMN BENTO GRID (Fits 100% in Remaining Height) ═ */}
         <div className="flex-1 min-h-0 grid grid-cols-12 gap-3.5 overflow-hidden">
-          {/* ══ LEFT COLUMN (5 Cols): VELLUM HERO FOLIO + TELEMETRY STRIP ══ */}
-          <div className="col-span-12 lg:col-span-5 flex flex-col justify-between gap-3 min-h-0 overflow-hidden">
-            {/* Sunlit Vellum Hero Card */}
-            <div className="relative flex-1 min-h-0 flex flex-col justify-between overflow-hidden rounded-[1.75rem] border-2 border-[#E2D5BE] bg-[#F6EFE2] p-5 sm:p-6 text-[#142534] shadow-2xl">
-              <div className="pointer-events-none absolute inset-2.5 rounded-[1.3rem] border border-[#142534]/10" />
+          {/* ══ LEFT COLUMN (5 Cols): 3 PURPOSEFUL STACKED SECTIONS ══ */}
+          <div className="col-span-12 lg:col-span-5 flex flex-col justify-between gap-2.5 min-h-0 overflow-hidden">
+            {/* Section 1: Expedition Launch Deck (Shrink-0) */}
+            <div className="relative shrink-0 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
+              {/* Eyebrow badge */}
+              <div className="inline-flex items-center gap-1.5 rounded-full border border-[#D94E34]/35 bg-[#D94E34]/15 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#F4A261]">
+                <Sparkles className="h-3 w-3 text-[#E9C46A]" />
+                <span>
+                  {data.totalDueCount > 0
+                    ? `${dueValue} Unlearned & Due Cards Ready · Smart SRS Active`
+                    : 'Spaced Queue Caught Up · Free Practice Active'}
+                </span>
+              </div>
 
-              <div className="relative">
-                <div className="inline-flex items-center gap-1.5 rounded-full border border-[#D94E34]/30 bg-[#D94E34]/10 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#C84228]">
-                  <Sparkles className="h-3 w-3" />
-                  <span>
-                    {data.totalDueCount > 0
-                      ? `${dueValue} Cards Ready for Today’s Expedition`
-                      : 'All Cards Scheduled · Free Practice Ready'}
-                  </span>
-                </div>
+              {/* Title */}
+              <h1 className={`${serifDisplay} mt-2 text-2xl xl:text-[1.75rem] font-black leading-tight tracking-tight text-[#F6EFE2]`}>
+                Learn the World <span className="italic font-bold text-[#E9C46A]">by Heart.</span>
+              </h1>
 
-                <h1
-                  className={`${serifDisplay} mt-3 text-[2.2rem] xl:text-[2.75rem] font-black leading-[0.96] tracking-[-0.03em] text-[#142534]`}
-                >
-                  Learn the World{' '}
-                  <span className="italic font-bold text-[#D94E34]">by Heart.</span>
-                </h1>
+              {/* Subtitle */}
+              <p className="mt-1 text-xs font-medium leading-relaxed text-[#9FB3C4]">
+                Smart SRS prioritizes unlearned & 0/2 active recall cards while weaving in rare 2/2 retention checks to guarantee lifelong mastery.
+              </p>
 
-                <p className="mt-2.5 text-xs sm:text-[13px] font-medium leading-relaxed text-[#334A5E]">
-                  {data.totalDueCount > 0 ? (
-                    <>
-                      Master <strong className="font-extrabold text-[#142534]">196 sovereign nations</strong> and{' '}
-                      <strong className="font-extrabold text-[#142534]">40 oceans & straits</strong>. Two consecutive
-                      active-recall answers graduate each card into long-term memory.
-                    </>
-                  ) : (
-                    <>
-                      Your spaced-repetition queue is caught up. Launch an ungraded practice voyage across any region
-                      or test your speed in 60s Time Attack.
-                    </>
-                  )}
-                </p>
-
-                {/* Study Focus Toggles */}
-                <div className="mt-4 flex flex-wrap items-center gap-2">
-                  <span className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#5B7083]">
-                    Focus:
-                  </span>
-                  {focusOptions.map((opt) => {
-                    const active = selectedAttributes.includes(opt.attr);
-                    return (
-                      <button
-                        key={opt.attr}
-                        onClick={() => {
-                          soundFx.playClick();
-                          onToggleAttribute(opt.attr);
-                        }}
-                        aria-pressed={active}
-                        className={`flex items-center gap-2 rounded-full border-2 px-3.5 py-1.5 text-xs font-extrabold transition-all active:scale-95 ${
-                          active
-                            ? 'border-[#142534] bg-[#142534] text-[#F6EFE2]'
-                            : 'border-[#D5C7B0] bg-[#EDE3D0]/70 text-[#495E70] hover:border-[#142534]/50'
+              {/* Study Focus Toggles */}
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <span className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#8FA6B8]">
+                  Focus:
+                </span>
+                {focusOptions.map((opt) => {
+                  const active = selectedAttributes.includes(opt.attr);
+                  return (
+                    <button
+                      key={opt.attr}
+                      onClick={() => {
+                        soundFx.playClick();
+                        onToggleAttribute(opt.attr);
+                      }}
+                      aria-pressed={active}
+                      className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold transition-all active:scale-95 ${
+                        active
+                          ? 'border-[#E9C46A] bg-[#E9C46A]/20 text-[#F6EFE2] shadow-sm'
+                          : 'border-[#F6EFE2]/15 bg-[#0C1D2B] text-[#9FB3C4] hover:border-[#F6EFE2]/40'
+                      }`}
+                    >
+                      <span>{opt.glyph}</span>
+                      <span>{opt.label}</span>
+                      <span
+                        className={`rounded-full px-1.5 py-0.2 font-mono text-[10px] font-bold ${
+                          active ? 'bg-[#E9C46A] text-[#142534]' : 'bg-[#153247] text-[#9FB3C4]'
                         }`}
                       >
-                        <span>{opt.glyph}</span>
-                        <span>{opt.label}</span>
-                        <span
-                          className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] ${
-                            active ? 'bg-[#E9C46A] text-[#142534]' : 'bg-[#DDD1BC] text-[#495E70]'
-                          }`}
-                        >
-                          {opt.detail}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
+                        {opt.detail}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
 
-                {/* Primary Launch & Mode Buttons */}
-                <div className="mt-4 flex flex-wrap items-center gap-2.5">
+              {/* Action Row */}
+              <div className="mt-3.5 flex flex-wrap items-center gap-2">
+                <button
+                  onClick={() => {
+                    soundFx.playClick();
+                    onStartSession('All', selectedAttributes, data.isCaughtUp('All'));
+                  }}
+                  className="group flex items-center gap-2 rounded-xl bg-[#D94E34] px-4 py-2 text-xs font-black uppercase tracking-[0.05em] text-[#FFF8E7] shadow-md transition-all hover:bg-[#C54128] active:scale-[0.98]"
+                >
+                  <Play className="h-3.5 w-3.5 fill-current" />
+                  <span>{data.isCaughtUp('All') ? 'Practice World' : 'Begin Expedition'}</span>
+                  <span className="rounded-full bg-black/25 px-2 py-0.5 font-mono text-[10px] font-bold">
+                    {data.isCaughtUp('All') ? '236' : dueValue}
+                  </span>
+                </button>
+
+                {data.priorityRegion && data.priorityRegion.unlearnedCount > 0 && (
                   <button
                     onClick={() => {
                       soundFx.playClick();
-                      onStartSession('All', selectedAttributes, data.isCaughtUp('All'));
+                      onStartSession(
+                        data.priorityRegion.id,
+                        data.priorityRegion.isWater ? ['location'] : selectedAttributes,
+                        false
+                      );
                     }}
-                    className="group flex items-center gap-2.5 rounded-2xl bg-[#D94E34] px-5 py-3 text-xs sm:text-sm font-black uppercase tracking-[0.05em] text-[#FFF8E7] shadow-md transition-all hover:bg-[#C54128] active:scale-[0.98]"
+                    className="flex items-center gap-1.5 rounded-xl border border-[#E9C46A]/50 bg-[#E9C46A]/15 px-3 py-2 text-xs font-black uppercase tracking-[0.05em] text-[#E9C46A] hover:bg-[#E9C46A]/25 transition-all active:scale-95 shadow-sm"
                   >
-                    <Play className="h-4 w-4 fill-current" />
-                    <span>{data.isCaughtUp('All') ? 'Practice World' : 'Begin Expedition'}</span>
-                    <span className="rounded-full bg-black/20 px-2 py-0.5 font-mono text-[11px] font-bold">
-                      {data.isCaughtUp('All') ? '236' : dueValue}
+                    <Compass className="h-3 w-3" />
+                    <span>
+                      Focus {data.priorityRegion.shortName} (
+                      {data.priorityRegion.unseenCards > 0
+                        ? `${data.priorityRegion.unseenCards} unseen`
+                        : `${data.priorityRegion.dueCount} due`}
+                      )
                     </span>
                   </button>
+                )}
 
-                  <button
-                    onClick={onOpenAtlas}
-                    className="flex items-center gap-1.5 rounded-2xl border-2 border-[#142534] px-4 py-2.5 text-xs font-extrabold uppercase tracking-[0.05em] text-[#142534] transition-colors hover:bg-[#142534] hover:text-[#F6EFE2]"
-                  >
-                    <Compass className="h-3.5 w-3.5" />
-                    <span>Atlas</span>
-                  </button>
+                <button
+                  onClick={onOpenAtlas}
+                  className="flex items-center gap-1 rounded-xl border border-[#F6EFE2]/15 bg-[#0C1D2B] px-3 py-2 text-xs font-extrabold uppercase tracking-[0.05em] text-[#F6EFE2] transition-colors hover:border-[#E9C46A] hover:text-[#E9C46A]"
+                >
+                  <Compass className="h-3 w-3" />
+                  <span>Atlas</span>
+                </button>
 
-                  <button
-                    onClick={onOpenArcade}
-                    className="flex items-center gap-1.5 rounded-2xl border-2 border-[#D49B27] bg-[#E9C46A]/40 px-4 py-2.5 text-xs font-extrabold uppercase tracking-[0.05em] text-[#142534] transition-colors hover:bg-[#E9C46A]/70"
-                  >
-                    <Zap className="h-3.5 w-3.5 fill-[#D94E34] text-[#D94E34]" />
-                    <span>Arcade</span>
-                  </button>
+                <button
+                  onClick={onOpenArcade}
+                  className="flex items-center gap-1 rounded-xl border border-[#D94E34]/40 bg-[#D94E34]/15 px-3 py-2 text-xs font-extrabold uppercase tracking-[0.05em] text-[#F6EFE2] transition-colors hover:bg-[#D94E34]/30"
+                >
+                  <Zap className="h-3 w-3 fill-[#D94E34] text-[#D94E34]" />
+                  <span>Arcade</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Section 2: Memory Horizon & Smart Queue Intelligence Card (Flex-1) */}
+            <div className="relative flex-1 min-h-0 flex flex-col justify-between overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
+              {/* Header + Mastery Ring */}
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  {/* Compact SVG Ring */}
+                  <div className="relative flex h-13 w-13 shrink-0 items-center justify-center">
+                    <svg className="h-13 w-13 -rotate-90" viewBox="0 0 68 68">
+                      <circle cx="34" cy="34" r={ringRadius} stroke="#0C1D2B" strokeWidth="6" fill="transparent" />
+                      <circle
+                        cx="34"
+                        cy="34"
+                        r={ringRadius}
+                        stroke="#10B981"
+                        strokeWidth="6"
+                        strokeDasharray={ringCircumference}
+                        strokeDashoffset={ringOffset}
+                        strokeLinecap="round"
+                        fill="transparent"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="font-mono text-xs font-extrabold leading-none text-[#F6EFE2]">
+                        {masteryValue}%
+                      </span>
+                      <span className="text-[7px] font-extrabold uppercase tracking-wider text-[#10B981]">
+                        Mastery
+                      </span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <span className="text-xs font-black uppercase tracking-wider text-[#F6EFE2] flex items-center gap-1.5">
+                      <Target className="h-3.5 w-3.5 text-[#10B981]" />
+                      Global Memory Horizon
+                    </span>
+                    <p className="text-[11px] font-medium text-[#9FB3C4]">
+                      {cardTelemetry.mastered} of {cardTelemetry.total} cards mastered in long-term memory
+                    </p>
+                  </div>
+                </div>
+
+                <span className="font-mono text-xs font-bold text-[#10B981] px-2.5 py-1 rounded-full bg-[#10B981]/15 border border-[#10B981]/30">
+                  {cardTelemetry.mastered + cardTelemetry.recall}/{cardTelemetry.total}
+                </span>
+              </div>
+
+              {/* 4-Stage Segmented Progress Bar */}
+              <div className="my-2 flex flex-col gap-1.5">
+                <div className="flex h-2.5 overflow-hidden rounded-full bg-[#0C1D2B] p-0.5 shadow-inner">
+                  <div
+                    className="h-full rounded-l-full bg-[#10B981] transition-all duration-500"
+                    style={{ width: `${(cardTelemetry.mastered / cardTelemetry.total) * 100}%` }}
+                    title={`Mastered: ${cardTelemetry.mastered}`}
+                  />
+                  <div
+                    className="h-full bg-[#E9C46A] transition-all duration-500"
+                    style={{ width: `${(cardTelemetry.recall / cardTelemetry.total) * 100}%` }}
+                    title={`Recall (1/2): ${cardTelemetry.recall}`}
+                  />
+                  <div
+                    className="h-full bg-[#F4A261] transition-all duration-500"
+                    style={{ width: `${(cardTelemetry.learning / cardTelemetry.total) * 100}%` }}
+                    title={`Learning (0/2): ${cardTelemetry.learning}`}
+                  />
+                  <div
+                    className="h-full rounded-r-full bg-[#38BDF8]/40 transition-all duration-500"
+                    style={{ width: `${(cardTelemetry.unseen / cardTelemetry.total) * 100}%` }}
+                    title={`Unseen: ${cardTelemetry.unseen}`}
+                  />
+                </div>
+
+                {/* 4 Mini-Tiles Breakdown */}
+                <div className="grid grid-cols-4 gap-1.5">
+                  <div className="rounded-xl bg-[#0C1D2B]/85 border border-[#10B981]/30 p-2 flex flex-col justify-between">
+                    <span className="text-[10px] font-bold text-[#10B981] flex items-center gap-1">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]" />
+                      Mastered
+                    </span>
+                    <span className="font-mono text-base font-black text-[#F6EFE2] mt-0.5">
+                      {cardTelemetry.mastered}
+                    </span>
+                    <span className="text-[9px] text-[#9FB3C4]">2/2 Retention</span>
+                  </div>
+
+                  <div className="rounded-xl bg-[#0C1D2B]/85 border border-[#E9C46A]/30 p-2 flex flex-col justify-between">
+                    <span className="text-[10px] font-bold text-[#E9C46A] flex items-center gap-1">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#E9C46A]" />
+                      Recall
+                    </span>
+                    <span className="font-mono text-base font-black text-[#F6EFE2] mt-0.5">
+                      {cardTelemetry.recall}
+                    </span>
+                    <span className="text-[9px] text-[#9FB3C4]">1/2 to Master</span>
+                  </div>
+
+                  <div className="rounded-xl bg-[#0C1D2B]/85 border border-[#F4A261]/30 p-2 flex flex-col justify-between">
+                    <span className="text-[10px] font-bold text-[#F4A261] flex items-center gap-1">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#F4A261]" />
+                      Learning
+                    </span>
+                    <span className="font-mono text-base font-black text-[#F6EFE2] mt-0.5">
+                      {cardTelemetry.learning}
+                    </span>
+                    <span className="text-[9px] text-[#9FB3C4]">0/2 Recall</span>
+                  </div>
+
+                  <div className="rounded-xl bg-[#0C1D2B]/85 border border-[#38BDF8]/30 p-2 flex flex-col justify-between">
+                    <span className="text-[10px] font-bold text-[#38BDF8] flex items-center gap-1">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#38BDF8]" />
+                      Unseen
+                    </span>
+                    <span className="font-mono text-base font-black text-[#F6EFE2] mt-0.5">
+                      {cardTelemetry.unseen}
+                    </span>
+                    <span className="text-[9px] text-[#38BDF8]/80">Fresh Cards</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Integrated Mastery Ring & 4-Stage Memory Horizon */}
-              <div className="relative mt-4 grid grid-cols-[auto_1fr] items-center gap-4 rounded-2xl border border-[#D8CBB5] bg-[#ECE2CE]/85 p-3">
-                <div className="relative flex h-16 w-16 shrink-0 items-center justify-center border-r border-[#D0C2AA] pr-3">
-                  <svg className="h-16 w-16 -rotate-90" viewBox="0 0 76 76">
-                    <circle cx="38" cy="38" r={ringRadius} stroke="#D5C7B0" strokeWidth="6.5" fill="transparent" />
-                    <circle
-                      cx="38"
-                      cy="38"
-                      r={ringRadius}
-                      stroke={JADE}
-                      strokeWidth="6.5"
-                      strokeDasharray={ringCircumference}
-                      strokeDashoffset={ringOffset}
-                      strokeLinecap="round"
-                      fill="transparent"
-                    />
-                  </svg>
-                  <div className="absolute inset-0 pr-3 flex flex-col items-center justify-center">
-                    <span className="font-mono text-sm font-extrabold leading-none text-[#142534]">
-                      {masteryValue}%
-                    </span>
-                    <span className="text-[7px] font-extrabold uppercase tracking-wider text-[#2A9D8F]">
-                      Mastery
-                    </span>
-                  </div>
-                </div>
-
-                <div className="min-w-0">
-                  <div className="flex items-center justify-between text-[11px]">
-                    <span className="font-extrabold uppercase tracking-wider text-[#142534]">
-                      Memory Horizon
-                    </span>
-                    <span className="font-mono font-bold text-[#2A9D8F]">
-                      {data.pipeline.mastered + data.pipeline.recall}/{data.pipeline.total}
-                    </span>
-                  </div>
-
-                  <div className="mt-1.5 flex h-2.5 overflow-hidden rounded-full bg-[#D5C7B0] p-0.5">
-                    <div
-                      className="h-full rounded-l-full bg-[#2A9D8F]"
-                      style={{ width: `${(data.pipeline.mastered / data.pipeline.total) * 100}%` }}
-                    />
-                    <div
-                      className="h-full bg-[#E07A3C]"
-                      style={{ width: `${(data.pipeline.recall / data.pipeline.total) * 100}%` }}
-                    />
-                    <div
-                      className="h-full rounded-r-full bg-[#3B8EA5]"
-                      style={{ width: `${(data.pipeline.recognition / data.pipeline.total) * 100}%` }}
-                    />
-                  </div>
-
-                  <div className="mt-2 grid grid-cols-4 gap-1.5">
-                    {[
-                      { label: 'Master', val: data.pipeline.mastered, dot: 'bg-[#2A9D8F]' },
-                      { label: 'Recall', val: data.pipeline.recall, dot: 'bg-[#E07A3C]' },
-                      { label: 'Seen', val: data.pipeline.recognition, dot: 'bg-[#3B8EA5]' },
-                      { label: 'Unseen', val: data.pipeline.uncharted, dot: 'bg-[#948875]' }
-                    ].map((item) => (
-                      <div
-                        key={item.label}
-                        className="flex items-center justify-between rounded-md bg-[#F6EFE2]/80 px-1.5 py-0.5 text-[10px] font-bold text-[#142534]"
-                      >
-                        <span className="flex items-center gap-1 text-[#495E70]">
-                          <span className={`h-1.5 w-1.5 rounded-full ${item.dot}`} />
-                          {item.label}
-                        </span>
-                        <span className="font-mono font-extrabold">{item.val}</span>
-                      </div>
-                    ))}
-                  </div>
+              {/* Smart Queue Algorithm Breakdown Strip */}
+              <div className="pt-2 border-t border-[#F6EFE2]/10 flex items-center justify-between text-[10px]">
+                <span className="font-extrabold uppercase tracking-wider text-[#9FB3C4] flex items-center gap-1">
+                  <Target className="h-3 w-3 text-[#E9C46A]" />
+                  Next 15-Card Mix:
+                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="px-2 py-0.5 rounded-full bg-[#38BDF8]/15 border border-[#38BDF8]/30 font-bold text-[#38BDF8]">
+                    🎯 ~6 Unseen
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full bg-[#F4A261]/15 border border-[#F4A261]/30 font-bold text-[#F4A261]">
+                    🧠 ~7 Recall (0/2 & 1/2)
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full bg-[#10B981]/15 border border-[#10B981]/30 font-bold text-[#10B981]">
+                    🛡️ 1–2 Mastered
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* 4-Card Lifetime Telemetry Strip (Shrink-0) */}
+            {/* Section 3: 4-Card Lifetime Telemetry Strip (Shrink-0) */}
             <div className="shrink-0 grid grid-cols-4 gap-2.5">
               <div className="rounded-2xl border border-[#F6EFE2]/15 bg-[#143146] p-3 shadow-md">
                 <span className="flex items-center gap-1 text-[10px] font-bold text-[#D6CBB9]">
@@ -991,10 +1107,10 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             </div>
           </div>
 
-          {/* ══ CENTER COLUMN (4 Cols): 3D POLITICAL GLOBE + SPOTLIGHT ══════ */}
-          <div className="col-span-12 lg:col-span-4 flex flex-col justify-between gap-3 min-h-0 overflow-hidden">
+          {/* ══ CENTER COLUMN (4 Cols): 3D POLITICAL GLOBE + DARK DOSSIER ══════ */}
+          <div className="col-span-12 lg:col-span-4 flex flex-col justify-between gap-2.5 min-h-0 overflow-hidden">
             {/* Interactive 3D Political Globe Dome */}
-            <div className="relative flex-1 min-h-0 flex flex-col items-center justify-between overflow-hidden rounded-[1.75rem] border-2 border-[#E9C46A]/35 bg-gradient-to-b from-[#173A52] via-[#112C3F] to-[#0C202E] p-3.5 shadow-2xl">
+            <div className="relative flex-1 min-h-0 flex flex-col items-center justify-between overflow-hidden rounded-[1.4rem] border-2 border-[#E9C46A]/35 bg-gradient-to-b from-[#173A52] via-[#112C3F] to-[#0C202E] p-3.5 shadow-2xl">
               <InteractiveAtelierGlobe
                 targetCoords={activeRegionLock ? activeRegionLock.coords : null}
                 targetLabel={activeRegionLock ? activeRegionLock.label : data.spotlight.name}
@@ -1051,40 +1167,47 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               </div>
             </div>
 
-            {/* Spotlight Nation Archival Postcard (Shrink-0) */}
-            <div className="shrink-0 rounded-[1.75rem] border-2 border-[#E2D5BE] bg-[#F6EFE2] p-4 text-[#142534] shadow-xl">
-              <div className="flex items-center justify-between border-b border-[#D8CBB5] pb-2">
-                <span className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#C84228]">
-                  <span className="h-2 w-2 rounded-full bg-[#D94E34]" />
+            {/* Country in Focus Dossier (Shrink-0, Dark Naval Theme) */}
+            <div className="shrink-0 rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-3.5 text-[#F6EFE2] shadow-xl">
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-[#F6EFE2]/10 pb-2">
+                <span className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#E9C46A]">
+                  <span className="h-2 w-2 rounded-full bg-[#D94E34] animate-pulse" />
                   Country in Focus · #{data.spotlight.numericId}
                 </span>
-                <span className="font-mono text-[10px] font-bold text-[#495E70]">
-                  {formatCoordinates(data.spotlight.coordinates)}
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${capBadge.cls}`}>
+                    Cap: {capBadge.label}
+                  </span>
+                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${locBadge.cls}`}>
+                    Loc: {locBadge.label}
+                  </span>
+                </div>
               </div>
 
+              {/* Identification & Capital Reveal */}
               <div className="mt-2.5 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-[#D8CBB5] bg-[#ECE2CE] text-3xl">
+                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-[#F6EFE2]/15 bg-[#0C1D2B] text-2xl shadow-inner select-none">
                     {data.spotlight.flagEmoji}
                   </div>
                   <div className="min-w-0">
-                    <h3 className={`${serifDisplay} truncate text-xl font-black leading-tight text-[#142534]`}>
+                    <h3 className={`${serifDisplay} truncate text-base font-black leading-tight text-[#F6EFE2]`}>
                       {data.spotlight.name}
                     </h3>
-                    <p className="truncate text-[10px] font-bold uppercase tracking-wider text-[#5B7083]">
-                      {data.spotlight.subregion} · {data.spotlightStatus.label}
+                    <p className="truncate text-[10px] font-bold uppercase tracking-wider text-[#9FB3C4]">
+                      {data.spotlight.subregion} · {formatCoordinates(data.spotlight.coordinates)}
                     </p>
                   </div>
                 </div>
 
                 {/* Capital Reveal + Audio */}
-                <div className="flex items-center gap-1.5 rounded-xl border border-[#D8CBB5] bg-[#ECE2CE] px-2.5 py-1.5 shrink-0">
+                <div className="flex items-center gap-1.5 rounded-xl border border-[#F6EFE2]/15 bg-[#0C1D2B]/90 px-2.5 py-1.5 shrink-0">
                   <div className="pr-1">
-                    <span className="block text-[8px] font-extrabold uppercase tracking-wider text-[#5B7083]">
+                    <span className="block text-[8px] font-extrabold uppercase tracking-wider text-[#9FB3C4]">
                       Capital
                     </span>
-                    <span className={`${serifDisplay} block text-sm font-black text-[#142534]`}>
+                    <span className={`${serifDisplay} block text-sm font-black text-[#F6EFE2]`}>
                       {revealCapital ? data.spotlight.capital : '• • • • • •'}
                     </span>
                   </div>
@@ -1093,14 +1216,15 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       setRevealCapital((v) => !v);
                       soundFx.playClick();
                     }}
-                    className="rounded-lg bg-[#142534] px-2 py-1 text-[10px] font-extrabold text-[#F6EFE2] hover:bg-[#223B52]"
+                    className="rounded-lg bg-[#143146] px-2 py-1 text-[10px] font-extrabold text-[#F6EFE2] hover:bg-[#1A3E58]"
+                    title={revealCapital ? 'Hide Capital' : 'Reveal Capital'}
                   >
                     {revealCapital ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
                   </button>
                   <button
                     onClick={handlePronounceSpotlightCapital}
                     title="Pronounce capital"
-                    className="rounded-lg border border-[#142534]/20 bg-[#F6EFE2] p-1 text-[#142534] hover:bg-[#D94E34] hover:text-white"
+                    className="rounded-lg border border-[#F6EFE2]/15 bg-[#143146] p-1 text-[#F6EFE2] hover:bg-[#D94E34] transition-colors"
                   >
                     <Volume2 className="h-3 w-3" />
                   </button>
@@ -1110,34 +1234,35 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               {/* 2x2 Field Notes */}
               {data.spotlight.facts && (
                 <div className="mt-2.5 grid grid-cols-2 gap-1.5 text-[11px]">
-                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#ECE2CE]/80 px-2.5 py-1">
-                    <Scale className="h-3 w-3 shrink-0 text-[#D94E34]" />
-                    <span className="truncate font-bold text-[#142534]">
+                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2.5 py-1">
+                    <Scale className="h-3 w-3 shrink-0 text-[#E07A5F]" />
+                    <span className="truncate font-bold text-[#F6EFE2]">
                       {data.spotlight.facts.politicalRegime || 'Republic'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#ECE2CE]/80 px-2.5 py-1">
-                    <UserCheck className="h-3 w-3 shrink-0 text-[#2A9D8F]" />
-                    <span className="truncate font-bold text-[#142534]">
+                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2.5 py-1">
+                    <UserCheck className="h-3 w-3 shrink-0 text-[#10B981]" />
+                    <span className="truncate font-bold text-[#F6EFE2]">
                       {data.spotlight.facts.leader || 'Head of State'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#ECE2CE]/80 px-2.5 py-1">
-                    <Utensils className="h-3 w-3 shrink-0 text-[#D48C1C]" />
-                    <span className="truncate font-bold text-[#142534]">
+                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2.5 py-1">
+                    <Utensils className="h-3 w-3 shrink-0 text-[#E9C46A]" />
+                    <span className="truncate font-bold text-[#F6EFE2]">
                       {data.spotlight.facts.cuisine || 'Cuisine'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#ECE2CE]/80 px-2.5 py-1">
-                    <Coins className="h-3 w-3 shrink-0 text-[#1E6B7B]" />
-                    <span className="truncate font-bold text-[#142534]">
+                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2.5 py-1">
+                    <Coins className="h-3 w-3 shrink-0 text-[#38BDF8]" />
+                    <span className="truncate font-bold text-[#F6EFE2]">
                       {data.spotlight.facts.currency || 'Currency'}
                     </span>
                   </div>
                 </div>
               )}
 
-              <div className="mt-2.5 flex items-center justify-between pt-1">
+              {/* Footer buttons */}
+              <div className="mt-2.5 flex items-center justify-between pt-1 border-t border-[#F6EFE2]/10">
                 <button
                   onClick={() => {
                     soundFx.playClick();
@@ -1147,15 +1272,21 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       coords: data.spotlight.coordinates
                     });
                   }}
-                  className="flex items-center gap-1 text-[11px] font-extrabold text-[#142534] hover:text-[#D94E34]"
+                  className="flex items-center gap-1 text-[11px] font-extrabold text-[#D6CBB9] hover:text-[#E9C46A] transition-colors"
                 >
                   <Crosshair className="h-3 w-3" />
                   <span>Center on Globe</span>
                 </button>
 
                 <button
-                  onClick={() => onStartSession(data.spotlight.continent, ['capital', 'location'], true)}
-                  className="flex items-center gap-1 rounded-lg bg-[#D94E34] px-3 py-1 text-[11px] font-extrabold text-white hover:bg-[#C54128]"
+                  onClick={() =>
+                    onStartSession(
+                      data.spotlight.continent,
+                      ['capital', 'location'],
+                      data.isCaughtUp(data.spotlight.continent)
+                    )
+                  }
+                  className="flex items-center gap-1 rounded-lg bg-[#D94E34] px-3 py-1 text-[11px] font-extrabold text-white hover:bg-[#C54128] transition-colors shadow-sm"
                 >
                   <span>Drill {data.spotlight.continent}</span>
                   <ChevronRight className="h-3 w-3" />
@@ -1164,13 +1295,13 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             </div>
           </div>
 
-          {/* ══ RIGHT COLUMN (3 Cols): 6 REGIONAL FOLIO PLATES ══════════════ */}
+          {/* ══ RIGHT COLUMN (3 Cols): 6 REGIONAL FOLIOS WITH RICH 3-ROW CARDS ══ */}
           <div className="col-span-12 lg:col-span-3 flex flex-col justify-between gap-2 min-h-0 overflow-hidden">
             <div className="shrink-0 flex items-center justify-between px-1">
               <span className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#E9C46A]">
                 Regional Folios ({data.regions.length})
               </span>
-              <span className="text-[10px] font-semibold text-[#D6CBB9]">Hover to turn globe</span>
+              <span className="text-[10px] font-semibold text-[#8FA6B8]">Hover to turn globe</span>
             </div>
 
             <div className="flex-1 min-h-0 grid grid-rows-6 gap-2">
@@ -1197,7 +1328,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         region.caughtUp
                       );
                     }}
-                    className={`group relative min-h-0 flex flex-col justify-between overflow-hidden rounded-2xl border-2 px-3.5 py-2.5 text-left transition-all ${
+                    className={`group relative min-h-0 flex flex-col justify-between overflow-hidden rounded-2xl border px-3.5 py-2 text-left transition-all ${
                       isHovered
                         ? 'border-[#E9C46A] bg-[#1A3E58] shadow-lg'
                         : 'border-[#F6EFE2]/15 bg-[#143146] hover:border-[#E9C46A]/65 hover:bg-[#193B54]'
@@ -1210,42 +1341,56 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       style={{ background: meta.accent }}
                     />
 
+                    {/* Row 1: Header */}
                     <div className="flex items-center justify-between gap-2 pl-1">
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[#F6EFE2]/15 bg-[#0E2231] text-base">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-[#F6EFE2]/15 bg-[#0C1D2B] text-sm">
                           {region.emblem}
                         </span>
                         <div className="min-w-0">
                           <div className="flex items-center gap-1.5">
-                            <span className={`${serifDisplay} truncate text-base font-black leading-none text-[#F6EFE2]`}>
+                            <span className={`${serifDisplay} truncate text-sm font-black leading-none text-[#F6EFE2]`}>
                               {region.shortName}
                             </span>
                             <span className="font-mono text-[9px] font-bold text-[#8FA6B8]">
                               {meta.coordLabel}
                             </span>
                           </div>
-                          <span className="mt-0.5 block text-[10px] font-semibold text-[#D6CBB9]">
-                            {region.shortSubtitle} · <strong className="text-[#F6EFE2]">{region.mastered}</strong>/{region.total} mastered
-                          </span>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 shrink-0">
+                      <div className="flex items-center gap-1.5 shrink-0">
                         <span
-                          className={`${serifDisplay} text-lg font-black leading-none`}
+                          className={`${serifDisplay} text-base font-black leading-none`}
                           style={{ color: meta.accent }}
                         >
                           {region.masteredPct}%
                         </span>
-                        <span className="flex items-center gap-1 rounded-lg bg-[#0E2231] px-2.5 py-1 text-[10px] font-extrabold text-[#F6EFE2] transition-colors group-hover:bg-[#F6EFE2] group-hover:text-[#142534]">
-                          <Play className="h-2.5 w-2.5 fill-current" />
+                        <span className="flex items-center gap-1 rounded-md bg-[#0C1D2B] px-2 py-0.5 text-[9px] font-extrabold text-[#F6EFE2] transition-colors group-hover:bg-[#F6EFE2] group-hover:text-[#142534]">
+                          <Play className="h-2 w-2 fill-current" />
                           {region.caughtUp ? 'Practice' : `${region.dueCount} due`}
                         </span>
                       </div>
                     </div>
 
-                    {/* Progress Bar */}
-                    <div className="mt-1.5 ml-1 flex h-1.5 overflow-hidden rounded-full bg-[#0C1D2B]">
+                    {/* Row 2: Stage Breakdown Pills (Fills Middle) */}
+                    <div className="my-1 flex items-center gap-1.5 pl-1 text-[9px]">
+                      <span className="flex items-center gap-1 rounded-md bg-[#10B981]/15 border border-[#10B981]/30 px-1.5 py-0.5 font-bold text-[#10B981]">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]" />
+                        {region.mastered} Mastered
+                      </span>
+                      <span className="flex items-center gap-1 rounded-md bg-[#E9C46A]/15 border border-[#E9C46A]/30 px-1.5 py-0.5 font-bold text-[#E9C46A]">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#E9C46A]" />
+                        {region.recall0Cards + region.recall1Cards} Recall
+                      </span>
+                      <span className="flex items-center gap-1 rounded-md bg-[#38BDF8]/15 border border-[#38BDF8]/30 px-1.5 py-0.5 font-bold text-[#38BDF8]">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#38BDF8]" />
+                        {region.unseenCards + region.stage0Cards} Unseen
+                      </span>
+                    </div>
+
+                    {/* Row 3: Segmented Progress Bar */}
+                    <div className="ml-1 flex h-1.5 overflow-hidden rounded-full bg-[#0C1D2B]">
                       <span
                         className="h-full rounded-l-full transition-all duration-500"
                         style={{ width: `${region.masteredPct}%`, background: meta.accent }}

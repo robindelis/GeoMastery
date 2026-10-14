@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Search, Compass, MapPin, Building2, Scale, UserCheck, Utensils, Coins, Sparkles, X } from 'lucide-react';
 import { Country, Continent, MapViewMode, SRSItem } from '../../core/types';
 import { COUNTRIES, COUNTRIES_BY_ID } from '../../assets/data/countries';
@@ -21,9 +21,15 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedContinent, setSelectedContinent] = useState<'All' | Continent>('All');
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(() => COUNTRIES_BY_ID.get('FRA') || COUNTRIES[0]);
-  const [srsItemsMap] = useState<Map<string, SRSItem>>(() => StorageService.loadSRSItems());
+  const [srsItemsMap, setSrsItemsMap] = useState<Map<string, SRSItem>>(() => StorageService.loadSRSItems());
   const [showHeatmap, setShowHeatmap] = useState(false);
   const [autoRotate, setAutoRotate] = useState(false);
+
+  useEffect(() => {
+    return StorageService.subscribe(() => {
+      setSrsItemsMap(StorageService.loadSRSItems());
+    });
+  }, []);
 
   // Filter countries for search dropdown based on search query and selected continent
   const filteredCountries = useMemo(() => {

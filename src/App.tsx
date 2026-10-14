@@ -30,7 +30,7 @@ export const App: React.FC = () => {
     if (settings.geminiVoice) speechEngine.setGeminiVoice(settings.geminiVoice);
   }, [soundEnabled]);
 
-  // Initialize persistent disk sync on boot
+  // Initialize persistent disk sync on boot & subscribe to storage changes
   useEffect(() => {
     StorageService.initPersistentSync().then((restored) => {
       if (restored) {
@@ -41,6 +41,15 @@ export const App: React.FC = () => {
         if (s.geminiApiKey) speechEngine.setGeminiApiKey(s.geminiApiKey);
         if (s.geminiVoice) speechEngine.setGeminiVoice(s.geminiVoice);
       }
+    });
+
+    return StorageService.subscribe(() => {
+      const s = StorageService.loadSettings();
+      setMapMode(s.mapMode);
+      setSoundEnabled(s.audioEnabled);
+      if (s.ttsProvider) speechEngine.setProvider(s.ttsProvider);
+      if (s.geminiApiKey) speechEngine.setGeminiApiKey(s.geminiApiKey);
+      if (s.geminiVoice) speechEngine.setGeminiVoice(s.geminiVoice);
     });
   }, []);
 
@@ -212,7 +221,7 @@ export const App: React.FC = () => {
             onStartSpecificDrill={(country: Country) => {
               setSelectedContinent(country.continent);
               setTargetCountryId(country.id);
-              setInitialPracticeMode(true);
+              setInitialPracticeMode(false);
               setCurrentView('training');
               soundFx.playClick();
             }}

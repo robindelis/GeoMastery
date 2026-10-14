@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import confetti from 'canvas-confetti';
 import { Country, Continent, TrainingCategory, SRSItem, MapViewMode } from '../../core/types';
-import { COUNTRIES_BY_ID } from '../../assets/data/countries';
+import { COUNTRIES, COUNTRIES_BY_ID } from '../../assets/data/countries';
 import {
   TrainingQuestion,
   prepareSessionQueue,
@@ -44,7 +44,7 @@ function createInitialSessionQueue(
     const wb = getWaterBodyById(targetCountryId);
     const c = wb ? waterBodyToCountry(wb) : COUNTRIES_BY_ID.get(targetCountryId);
     if (c) {
-      const countryContext = [c];
+      const countryContext = COUNTRIES;
       const activeAttrs = attributeFilter.length > 0 ? attributeFilter : ['capital', 'location'];
       const targetedQueue = activeAttrs.map((attrId) => {
         const item = items.get(`${c.id}:${attrId}`) || createInitialSRSItem(c.id, attrId);
@@ -344,7 +344,13 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       setQueue((prevQueue) => {
         const retryCount = prevQueue.filter((q) => q.srsItemId === question.srsItemId && q.isRetry).length;
         if (retryCount < 2) {
-          return [...prevQueue, { ...question, isRetry: true }];
+          const liveItem = srsItemsMap.get(question.srsItemId) || {
+            ...createInitialSRSItem(question.country.id, question.attributeId),
+            stage: 1,
+            consecutiveRecallCorrect: 0
+          };
+          const freshRetry = buildQuestion(liveItem, question.country, COUNTRIES);
+          return [...prevQueue, { ...freshRetry, isRetry: true }];
         }
         return prevQueue;
       });
@@ -448,9 +454,19 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     }
     speechEngine.cancel();
 
-    // Deduplicate by srsItemId
+    // Reload latest persistent items to guarantee accurate stage & recall streak
+    const items = StorageService.loadSRSItems();
+
+    // Deduplicate by srsItemId and rebuild each question fresh with isRetry: false
     const uniqueMap = new Map<string, TrainingQuestion>();
-    missedQuestions.forEach((q) => uniqueMap.set(q.srsItemId, q));
+    missedQuestions.forEach((q) => {
+      if (!uniqueMap.has(q.srsItemId)) {
+        const srsItem = items.get(q.srsItemId) || createInitialSRSItem(q.country.id, q.attributeId);
+        const freshQ = buildQuestion(srsItem, q.country, COUNTRIES);
+        freshQ.isRetry = false;
+        uniqueMap.set(q.srsItemId, freshQ);
+      }
+    });
     const retryQueue = Array.from(uniqueMap.values());
 
     setQueue(retryQueue);
@@ -616,7 +632,8 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
             </span>
           ) : (() => {
             const item = srsItemsMap.get(currentQuestion.srsItemId);
-            if (currentQuestion.stage === 0) {
+            const liveStage = item ? item.stage : currentQuestion.stage;
+            if (liveStage === 0) {
               return (
                 <span className="text-[10px] font-bold uppercase tracking-wider px-2 sm:px-2.5 py-1 rounded-full border bg-amber-950/50 border-amber-700/50 text-amber-300">
                   <span className="sm:hidden">L0</span>
@@ -626,7 +643,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
                 </span>
               );
             }
-            if (currentQuestion.stage === 2) {
+            if (liveStage === 2) {
               return (
                 <span className="text-[10px] font-bold tracking-wider px-2 sm:px-2.5 py-1 rounded-full border bg-emerald-950/50 border-emerald-700/50 text-emerald-300 flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
@@ -657,7 +674,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
           selectedCountryId={selectedMapCountry?.id || null}
           feedbackState={feedbackState}
           disableAutoZoom={!isSubmitted}
-          hideHoverTooltip={!isSubmitted && currentQuestion?.expectedInputMode === 'map_click'}
+          hideHoverTooltip={!isSubmitted}
           srsItemsMap={srsItemsMap}
           onSelectCountry={handleMapCountrySelect}
         />

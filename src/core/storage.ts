@@ -780,6 +780,7 @@ export class StorageService {
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
       }
+      this.notifySubscribers();
       this.scheduleDiskSync();
     } catch (e) {
       console.error('Failed to save settings:', e);

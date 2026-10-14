@@ -18,6 +18,7 @@ import { Continent, TrainingCategory, SRSItem, UserStats, Country } from '../../
 import { COUNTRIES } from '../../assets/data/countries';
 import { WATER_BODIES } from '../../assets/data/waterBodies';
 import { soundFx } from '../../core/soundFx';
+import { calculateCartographerRank } from './homeData';
 
 interface CartographerDossierProps {
   srsItemsMap: Map<string, SRSItem>;
@@ -104,15 +105,20 @@ export const CartographerDossier: React.FC<CartographerDossierProps> = ({
 
   // User Rank & XP calculated from stats
   const cartographerXP = stats.totalCorrect * 15 + stats.totalReviews * 5;
-  const rank = useMemo(() => {
-    if (cartographerXP > 2500) return { title: 'Grand Cartographer', level: 5, nextXP: 5000 };
-    if (cartographerXP > 1200) return { title: 'Senior Navigator', level: 4, nextXP: 2500 };
-    if (cartographerXP > 600) return { title: 'Lead Explorer', level: 3, nextXP: 1200 };
-    if (cartographerXP > 200) return { title: 'Apprentice Surveyor', level: 2, nextXP: 600 };
-    return { title: 'Cadet Cartographer', level: 1, nextXP: 200 };
-  }, [cartographerXP]);
+  const rank = useMemo(() => calculateCartographerRank(cartographerXP), [cartographerXP]);
+  const levelProgress = rank.progress;
 
-  const levelProgress = Math.min(100, Math.round((cartographerXP / rank.nextXP) * 100));
+  const isSpotlightContinentCaughtUp = useMemo(() => {
+    const now = new Date().toISOString();
+    for (const c of COUNTRIES) {
+      if (c.continent !== spotlightCountry.continent) continue;
+      for (const attr of ['capital', 'location']) {
+        const item = srsItemsMap.get(`${c.id}:${attr}`);
+        if (!item || item.nextDueAt <= now || item.intervalDays === 0) return false;
+      }
+    }
+    return true;
+  }, [spotlightCountry.continent, srsItemsMap]);
 
   const handleToggleAnswer = () => {
     setShowAnswer((prev) => {
@@ -193,7 +199,7 @@ export const CartographerDossier: React.FC<CartographerDossierProps> = ({
             <span>Atlas Dossier</span>
           </button>
           <button
-            onClick={() => onStartSession(spotlightCountry.continent, ['capital', 'location'], true)}
+            onClick={() => onStartSession(spotlightCountry.continent, ['capital', 'location'], isSpotlightContinentCaughtUp)}
             className="py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-600/80 to-teal-600/80 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold transition-all border border-emerald-500/50 flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
           >
             <Zap className="w-3.5 h-3.5 fill-emerald-300" />

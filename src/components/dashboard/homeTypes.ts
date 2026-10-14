@@ -55,6 +55,12 @@ export interface RegionModel {
   /** True when nothing is due — the template should offer a practice drill instead */
   caughtUp: boolean;
   dueCount: number;
+  /** Granular card counts for rich status pills */
+  unseenCards: number;
+  stage0Cards: number;
+  recall0Cards: number;
+  recall1Cards: number;
+  unlearnedCount: number;
 }
 
 export type SpotlightTone = 'mastered' | 'recall' | 'recognition' | 'uncharted';
@@ -65,6 +71,7 @@ export interface HomeData {
   totalDueCount: number;
   isCaughtUp: (category: TrainingCategory) => boolean;
   dueCountFor: (category: TrainingCategory) => number;
+  priorityRegion: RegionModel;
   pipeline: {
     mastered: number;
     recall: number;
@@ -87,3 +94,4 @@ export interface HomeData {
   };
   reviewsToday: number;
 }
+

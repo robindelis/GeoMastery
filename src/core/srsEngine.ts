@@ -278,9 +278,68 @@ export function buildQuestion(
 }
 
 /**
+ * Performs weighted random sampling without replacement by region.
+ */
+export function selectWeightedByRegion<T>(
+  pool: T[],
+  count: number,
+  getRegion: (item: T) => string,
+  regionWeights: Map<string, number>,
+  getCustomWeight?: (item: T) => number
+): T[] {
+  if (pool.length <= count) {
+    return shuffleArray(pool);
+  }
+
+  const remaining = [...pool];
+  const selected: T[] = [];
+
+  for (let step = 0; step < count; step++) {
+    if (remaining.length === 0) break;
+
+    let totalWeight = 0;
+    const weights: number[] = new Array(remaining.length);
+    for (let i = 0; i < remaining.length; i++) {
+      const item = remaining[i];
+      const w = getCustomWeight
+        ? getCustomWeight(item)
+        : Math.max(0.15, regionWeights.get(getRegion(item)) ?? 1);
+      weights[i] = w;
+      totalWeight += w;
+    }
+
+    if (totalWeight <= 0) {
+      const idx = Math.floor(Math.random() * remaining.length);
+      selected.push(remaining.splice(idx, 1)[0]);
+      continue;
+    }
+
+    let r = Math.random() * totalWeight;
+    let chosenIdx = 0;
+    for (let i = 0; i < remaining.length; i++) {
+      r -= weights[i];
+      if (r <= 0) {
+        chosenIdx = i;
+        break;
+      }
+    }
+    selected.push(remaining.splice(chosenIdx, 1)[0]);
+  }
+
+  return selected;
+}
+
+type QueueCandidate = {
+  country: Country;
+  attributeId: string;
+  existing?: SRSItem;
+};
+
+/**
  * Selects a session queue of questions based on filters:
- * - Prioritizes due review items
- * - Fills remainder with new items from selected continent & attributes
+ * - Prioritizes due review items and balances 0/2 vs 1/2 recall
+ * - Prioritizes unlearned/unseen cards so regions like the Americas are not starved
+ * - Injects rare Mastered (2/2) retention checks
  */
 export function prepareSessionQueue(
   existingItemsMap: Map<string, SRSItem>,
@@ -291,157 +350,274 @@ export function prepareSessionQueue(
 ): TrainingQuestion[] {
   const now = new Date().toISOString();
   const activeAttrIds = attributeFilter.length > 0 ? attributeFilter : ['capital', 'location'];
-  const includeWater = (continentFilter === 'All' || continentFilter === 'Oceans') && activeAttrIds.includes('location');
-
-  // If drilling Oceans, Seas & Straits exclusively:
-  if (continentFilter === 'Oceans') {
-    const waterCountries = WATER_BODIES.map(waterBodyToCountry);
-    if (practiceMode) {
-      const candidates = WATER_BODIES.map((wb) => {
-        const id = `${wb.id}:location`;
-        const existing = existingItemsMap.get(id);
-        const itemToUse = existing || createInitialSRSItem(wb.id, 'location');
-        return buildQuestion(itemToUse, waterBodyToCountry(wb), waterCountries);
-      });
-      return shuffleArray(candidates).slice(0, batchSize);
-    }
-
-    const dueItems: SRSItem[] = [];
-    const newCandidates: WaterBody[] = [];
-    for (const wb of WATER_BODIES) {
-      const id = `${wb.id}:location`;
-      const existing = existingItemsMap.get(id);
-      if (existing) {
-        if (existing.nextDueAt <= now || existing.intervalDays === 0) {
-          dueItems.push(existing);
-        }
-      } else {
-        newCandidates.push(wb);
-      }
-    }
-
-    // Fully randomized sampling from due pool
-    const shuffledDue = shuffleArray(dueItems);
-    const sessionQueue: TrainingQuestion[] = [];
-    for (const srsItem of shuffledDue.slice(0, batchSize)) {
-      const wb = getWaterBodyById(srsItem.countryId);
-      if (wb) {
-        sessionQueue.push(buildQuestion(srsItem, waterBodyToCountry(wb), waterCountries));
-      }
-    }
-
-    const remainingSlots = batchSize - sessionQueue.length;
-    if (remainingSlots > 0 && newCandidates.length > 0) {
-      const shuffledNew = shuffleArray(newCandidates).slice(0, remainingSlots);
-      for (const cand of shuffledNew) {
-        const initItem = createInitialSRSItem(cand.id, 'location');
-        sessionQueue.push(buildQuestion(initItem, waterBodyToCountry(cand), waterCountries));
-      }
-    }
-    return shuffleArray(sessionQueue);
-  }
-
-  // Continental or Global World Training:
-  const eligibleCountries = continentFilter === 'All'
-    ? COUNTRIES
-    : COUNTRIES.filter((c) => c.continent === continentFilter);
+  const includeWater =
+    (continentFilter === 'All' || continentFilter === 'Oceans') && activeAttrIds.includes('location');
 
   const waterCountries = WATER_BODIES.map(waterBodyToCountry);
   const allContextCountries = includeWater ? [...COUNTRIES, ...waterCountries] : COUNTRIES;
 
-  // If in Free Practice Drill Mode:
-  if (practiceMode) {
-    const practiceCandidates: TrainingQuestion[] = [];
+  const eligibleCandidates: QueueCandidate[] = [];
+
+  if (continentFilter === 'Oceans') {
+    for (const wb of WATER_BODIES) {
+      const id = `${wb.id}:location`;
+      eligibleCandidates.push({
+        country: waterBodyToCountry(wb),
+        attributeId: 'location',
+        existing: existingItemsMap.get(id)
+      });
+    }
+  } else {
+    const eligibleCountries =
+      continentFilter === 'All'
+        ? COUNTRIES
+        : COUNTRIES.filter((c) => c.continent === continentFilter);
+
     for (const country of eligibleCountries) {
       for (const attrId of activeAttrIds) {
         const id = `${country.id}:${attrId}`;
-        const existing = existingItemsMap.get(id);
-        const itemToUse = existing || createInitialSRSItem(country.id, attrId);
-        practiceCandidates.push(buildQuestion(itemToUse, country, allContextCountries));
+        eligibleCandidates.push({
+          country,
+          attributeId: attrId,
+          existing: existingItemsMap.get(id)
+        });
       }
     }
 
-    // Include water bodies if training World with location enabled
     if (includeWater) {
       for (const wb of WATER_BODIES) {
         const id = `${wb.id}:location`;
-        const existing = existingItemsMap.get(id);
-        const itemToUse = existing || createInitialSRSItem(wb.id, 'location');
-        practiceCandidates.push(buildQuestion(itemToUse, waterBodyToCountry(wb), allContextCountries));
+        eligibleCandidates.push({
+          country: waterBodyToCountry(wb),
+          attributeId: 'location',
+          existing: existingItemsMap.get(id)
+        });
       }
     }
+  }
 
-    // Unbiased Fisher-Yates shuffle
-    return shuffleArray(practiceCandidates).slice(0, batchSize);
+  // If in Free Practice Drill Mode:
+  if (practiceMode) {
+    const practiceQuestions = eligibleCandidates.map((cand) => {
+      const itemToUse = cand.existing || createInitialSRSItem(cand.country.id, cand.attributeId);
+      return buildQuestion(itemToUse, cand.country, allContextCountries);
+    });
+    return shuffleArray(practiceQuestions).slice(0, batchSize);
   }
 
   // Standard Spaced Repetition Review Mode:
-  const dueItems: SRSItem[] = [];
-  type NewCandidate = { country: Country; attributeId: string };
-  const newCandidates: NewCandidate[] = [];
+  const regionsList = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania', 'Oceans'];
+  const regionTotals = new Map<string, number>();
+  const regionUnseen = new Map<string, number>();
+  const regionMastered = new Map<string, number>();
 
-  for (const country of eligibleCountries) {
-    for (const attrId of activeAttrIds) {
-      const id = `${country.id}:${attrId}`;
-      const existing = existingItemsMap.get(id);
+  for (const cand of eligibleCandidates) {
+    const reg = cand.country.continent || 'Oceans';
+    regionTotals.set(reg, (regionTotals.get(reg) || 0) + 1);
+    if (!cand.existing) {
+      regionUnseen.set(reg, (regionUnseen.get(reg) || 0) + 1);
+    } else if (cand.existing.stage === 2) {
+      regionMastered.set(reg, (regionMastered.get(reg) || 0) + 1);
+    }
+  }
 
-      if (existing) {
-        if (existing.nextDueAt <= now || existing.intervalDays === 0) {
-          dueItems.push(existing);
+  const regionWeights = new Map<string, number>();
+  for (const reg of regionsList) {
+    const total = regionTotals.get(reg) || 0;
+    if (total === 0) {
+      regionWeights.set(reg, 1);
+      continue;
+    }
+    const unseenRatio = (regionUnseen.get(reg) || 0) / total;
+    const unmasteredRatio = (total - (regionMastered.get(reg) || 0)) / total;
+    const weight = 1 + unseenRatio * 3.0 + unmasteredRatio * 1.5;
+    regionWeights.set(reg, weight);
+  }
+
+  const dueStage0Pool: QueueCandidate[] = [];
+  const unseenPool: QueueCandidate[] = [];
+  const dueRecallZeroPool: QueueCandidate[] = [];
+  const dueRecallOnePool: QueueCandidate[] = [];
+  const dueMasteredPool: QueueCandidate[] = [];
+  const retentionMasteredPool: QueueCandidate[] = [];
+
+  for (const cand of eligibleCandidates) {
+    const item = cand.existing;
+    if (!item) {
+      unseenPool.push(cand);
+    } else if (item.stage === 0) {
+      if (item.nextDueAt <= now || item.intervalDays === 0) {
+        dueStage0Pool.push(cand);
+      }
+    } else if (item.stage === 1) {
+      if (item.nextDueAt <= now || item.intervalDays === 0) {
+        if ((item.consecutiveRecallCorrect || 0) === 0) {
+          dueRecallZeroPool.push(cand);
+        } else {
+          dueRecallOnePool.push(cand);
         }
+      }
+    } else if (item.stage === 2) {
+      if (item.nextDueAt <= now || item.intervalDays === 0) {
+        dueMasteredPool.push(cand);
       } else {
-        newCandidates.push({ country, attributeId: attrId });
+        retentionMasteredPool.push(cand);
       }
     }
   }
 
-  // Include water bodies in dueItems & newCandidates if training World with location active
-  if (includeWater) {
-    for (const wb of WATER_BODIES) {
-      const id = `${wb.id}:location`;
-      const existing = existingItemsMap.get(id);
+  retentionMasteredPool.sort((a, b) => {
+    const aRev = a.existing?.lastReviewedAt ? new Date(a.existing.lastReviewedAt).getTime() : 0;
+    const bRev = b.existing?.lastReviewedAt ? new Date(b.existing.lastReviewedAt).getTime() : 0;
+    if (aRev !== bRev) return aRev - bRev;
+    const aDue = a.existing?.nextDueAt ? new Date(a.existing.nextDueAt).getTime() : 0;
+    const bDue = b.existing?.nextDueAt ? new Date(b.existing.nextDueAt).getTime() : 0;
+    return aDue - bDue;
+  });
 
-      if (existing) {
-        if (existing.nextDueAt <= now || existing.intervalDays === 0) {
-          dueItems.push(existing);
-        }
-      } else {
-        newCandidates.push({ country: waterBodyToCountry(wb), attributeId: 'location' });
+  // All-Caught-Up Guard:
+  const totalActiveDueOrUnseen =
+    dueStage0Pool.length +
+    unseenPool.length +
+    dueRecallZeroPool.length +
+    dueRecallOnePool.length +
+    dueMasteredPool.length;
+
+  if (totalActiveDueOrUnseen === 0) {
+    return [];
+  }
+
+  // Step A — Mastered Retention Slots (1-2 cards)
+  const selectedMastered: QueueCandidate[] = [];
+  const nonMasteredActiveCount =
+    dueStage0Pool.length +
+    unseenPool.length +
+    dueRecallZeroPool.length +
+    dueRecallOnePool.length;
+
+  if (nonMasteredActiveCount === 0) {
+    selectedMastered.push(...shuffleArray(dueMasteredPool).slice(0, batchSize));
+  } else {
+    const totalMasteredCount = dueMasteredPool.length + retentionMasteredPool.length;
+    if (totalMasteredCount > 0) {
+      const targetMasteredCount =
+        totalMasteredCount >= 8
+          ? Math.max(1, Math.min(2, Math.round(batchSize * 0.13)))
+          : 1;
+
+      // Pick from dueMasteredPool first
+      const pickedDue = shuffleArray(dueMasteredPool).slice(0, targetMasteredCount);
+      selectedMastered.push(...pickedDue);
+
+      const neededRetention = targetMasteredCount - selectedMastered.length;
+      if (neededRetention > 0 && retentionMasteredPool.length > 0) {
+        const halfSliceCount = Math.max(neededRetention, Math.ceil(retentionMasteredPool.length * 0.5));
+        const poolSlice = retentionMasteredPool.slice(0, halfSliceCount);
+        const pickedRetention = shuffleArray(poolSlice).slice(0, neededRetention);
+        selectedMastered.push(...pickedRetention);
       }
     }
   }
 
-  // Unbiased Fisher-Yates shuffle across ALL due items globally:
-  // Eliminates chronological/geographic clustering (prevents getting stuck in any single continent like Oceania)
-  const shuffledDue = shuffleArray(dueItems);
-  const sessionQueue: TrainingQuestion[] = [];
+  // Step B — Learning & Unlearned Slots
+  const learningBudget = batchSize - selectedMastered.length;
+  const selectedLearning: QueueCandidate[] = [];
+  const selectedKeys = new Set<string>(
+    selectedMastered.map((c) => `${c.country.id}:${c.attributeId}`)
+  );
 
-  // Add due reviews first
-  for (const srsItem of shuffledDue.slice(0, batchSize)) {
-    if (srsItem.countryId.startsWith('WATER_')) {
-      const wb = getWaterBodyById(srsItem.countryId);
-      if (wb) {
-        sessionQueue.push(buildQuestion(srsItem, waterBodyToCountry(wb), allContextCountries));
-      }
-    } else {
-      const country = COUNTRIES_BY_ID.get(srsItem.countryId);
-      if (country) {
-        sessionQueue.push(buildQuestion(srsItem, country, allContextCountries));
-      }
+  const getRegion = (c: QueueCandidate) => c.country.continent || 'Oceans';
+
+  // 1. Stage 0 Due: target up to ceil(learningBudget * 0.45)
+  const targetStage0 = Math.ceil(learningBudget * 0.45);
+  const pickedStage0 = selectWeightedByRegion(
+    dueStage0Pool,
+    targetStage0,
+    getRegion,
+    regionWeights
+  );
+  for (const c of pickedStage0) {
+    selectedLearning.push(c);
+    selectedKeys.add(`${c.country.id}:${c.attributeId}`);
+  }
+
+  // 2. Unseen Pool: target Math.max(0, Math.ceil(learningBudget * 0.45) - pickedStage0.length)
+  const targetUnseen = Math.max(0, Math.ceil(learningBudget * 0.45) - pickedStage0.length);
+  if (targetUnseen > 0) {
+    const pickedUnseen = selectWeightedByRegion(
+      unseenPool,
+      targetUnseen,
+      getRegion,
+      regionWeights
+    );
+    for (const c of pickedUnseen) {
+      selectedLearning.push(c);
+      selectedKeys.add(`${c.country.id}:${c.attributeId}`);
     }
   }
 
-  // If room left, introduce new items
-  const remainingSlots = batchSize - sessionQueue.length;
-  if (remainingSlots > 0 && newCandidates.length > 0) {
-    const shuffledNew = shuffleArray(newCandidates).slice(0, remainingSlots);
-    for (const cand of shuffledNew) {
-      const initItem = createInitialSRSItem(cand.country.id, cand.attributeId);
-      sessionQueue.push(buildQuestion(initItem, cand.country, allContextCountries));
+  // 3. Due Recall 0/2 Pool: target ceil(learningBudget * 0.35)
+  const targetRecallZero = Math.ceil(learningBudget * 0.35);
+  const pickedRecallZero = selectWeightedByRegion(
+    dueRecallZeroPool,
+    targetRecallZero,
+    getRegion,
+    regionWeights,
+    (item) => {
+      const base = Math.max(0.15, regionWeights.get(getRegion(item)) ?? 1);
+      return item.existing && item.existing.lapses > 0
+        ? base * (1 + Math.min(item.existing.lapses, 3) * 0.5)
+        : base;
+    }
+  );
+  for (const c of pickedRecallZero) {
+    selectedLearning.push(c);
+    selectedKeys.add(`${c.country.id}:${c.attributeId}`);
+  }
+
+  // 4. Due Recall 1/2 Pool: target remaining slots
+  const targetRecallOne = Math.max(0, learningBudget - selectedLearning.length);
+  if (targetRecallOne > 0) {
+    const pickedRecallOne = selectWeightedByRegion(
+      dueRecallOnePool,
+      targetRecallOne,
+      getRegion,
+      regionWeights
+    );
+    for (const c of pickedRecallOne) {
+      selectedLearning.push(c);
+      selectedKeys.add(`${c.country.id}:${c.attributeId}`);
     }
   }
 
-  // Final uniform shuffle to randomize order of due and new items
+  // Step C — Rollover if any pool had fewer items than its target
+  if (selectedLearning.length < learningBudget) {
+    const fillFrom = (pool: QueueCandidate[]) => {
+      const remainingInPool = pool.filter(
+        (c) => !selectedKeys.has(`${c.country.id}:${c.attributeId}`)
+      );
+      const needed = learningBudget - selectedLearning.length;
+      if (needed <= 0 || remainingInPool.length === 0) return;
+      const picked = selectWeightedByRegion(remainingInPool, needed, getRegion, regionWeights);
+      for (const c of picked) {
+        selectedLearning.push(c);
+        selectedKeys.add(`${c.country.id}:${c.attributeId}`);
+      }
+    };
+
+    fillFrom(dueStage0Pool);
+    fillFrom(unseenPool);
+    fillFrom(dueRecallZeroPool);
+    fillFrom(dueRecallOnePool);
+    fillFrom(dueMasteredPool);
+  }
+
+  const allSelected = [...selectedMastered, ...selectedLearning];
+  const sessionQueue: TrainingQuestion[] = allSelected.map((cand) => {
+    const itemToUse = cand.existing || createInitialSRSItem(cand.country.id, cand.attributeId);
+    return buildQuestion(itemToUse, cand.country, allContextCountries);
+  });
+
   return shuffleArray(sessionQueue);
 }
 
