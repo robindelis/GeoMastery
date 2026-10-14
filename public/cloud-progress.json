@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:32:53.140Z",
+  "exportedAt": "2026-10-14T19:33:08.866Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -1039,13 +1039,13 @@
         "countryId": "HUN",
         "attributeId": "capital",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.6999999999999993,
+        "intervalDays": 19,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:08:07.758Z",
-        "nextDueAt": "2026-10-15T20:08:07.758Z",
+        "lastReviewedAt": "2026-10-14T19:33:05.467Z",
+        "nextDueAt": "2026-11-02T19:33:05.467Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:05:59.010Z",
@@ -1067,9 +1067,16 @@
             "userAnswer": "Budapest",
             "isCorrect": true,
             "timeSpentMs": 3240
+          },
+          {
+            "timestamp": "2026-10-14T19:33:05.467Z",
+            "inputMode": "typing",
+            "userAnswer": "Budapest",
+            "isCorrect": true,
+            "timeSpentMs": 5313
           }
         ],
-        "consecutiveRecallCorrect": 2
+        "consecutiveRecallCorrect": 3
       }
     ],
     [
@@ -15451,11 +15458,63 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "LCA:capital",
+      {
+        "id": "LCA:capital",
+        "countryId": "LCA",
+        "attributeId": "capital",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-14T19:32:53.251Z",
+        "nextDueAt": "2026-10-14T19:32:53.251Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T19:32:53.251Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "St. John's",
+            "isCorrect": false,
+            "timeSpentMs": 3544
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
+    ],
+    [
+      "JAM:location",
+      {
+        "id": "JAM:location",
+        "countryId": "JAM",
+        "attributeId": "location",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T19:32:58.764Z",
+        "nextDueAt": "2026-10-15T19:32:58.764Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T19:32:58.764Z",
+            "inputMode": "map_click",
+            "userAnswer": "Jamaica",
+            "isCorrect": true,
+            "timeSpentMs": 3913
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1147,
-    "totalCorrect": 851,
+    "totalReviews": 1150,
+    "totalCorrect": 853,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15468,7 +15527,7 @@
       "Americas": {
         "total": 70,
         "mastered": 13,
-        "learning": 20
+        "learning": 21
       },
       "Asia": {
         "total": 96,
@@ -15487,7 +15546,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:32:48.519Z"
+    "updatedAt": "2026-10-14T19:33:05.472Z"
   },
   "settings": {
     "audioEnabled": true,
