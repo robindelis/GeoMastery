@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:32:43.282Z",
+  "exportedAt": "2026-10-14T19:32:53.140Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15425,11 +15425,37 @@
         ],
         "consecutiveRecallCorrect": 1
       }
+    ],
+    [
+      "HTI:capital",
+      {
+        "id": "HTI:capital",
+        "countryId": "HTI",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T19:32:48.512Z",
+        "nextDueAt": "2026-10-15T19:32:48.512Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T19:32:48.512Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Port-au-Prince",
+            "isCorrect": true,
+            "timeSpentMs": 6411
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1146,
-    "totalCorrect": 850,
+    "totalReviews": 1147,
+    "totalCorrect": 851,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15442,7 +15468,7 @@
       "Americas": {
         "total": 70,
         "mastered": 13,
-        "learning": 19
+        "learning": 20
       },
       "Asia": {
         "total": 96,
@@ -15461,7 +15487,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:32:39.839Z"
+    "updatedAt": "2026-10-14T19:32:48.519Z"
   },
   "settings": {
     "audioEnabled": true,
