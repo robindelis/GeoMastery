@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:36:05.330Z",
+  "exportedAt": "2026-10-14T19:36:12.814Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6632,13 +6632,13 @@
         "countryId": "SLB",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2.3999999999999995,
+        "intervalDays": 1,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:11:06.249Z",
-        "nextDueAt": "2026-10-08T20:11:06.249Z",
+        "lastReviewedAt": "2026-10-14T19:36:09.816Z",
+        "nextDueAt": "2026-10-15T19:36:09.816Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:59:00.489Z",
@@ -6653,9 +6653,16 @@
             "userAnswer": "Palau",
             "isCorrect": false,
             "timeSpentMs": 12499
+          },
+          {
+            "timestamp": "2026-10-14T19:36:09.816Z",
+            "inputMode": "map_click",
+            "userAnswer": "Solomon Islands",
+            "isCorrect": true,
+            "timeSpentMs": 7256
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -15647,8 +15654,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1161,
-    "totalCorrect": 859,
+    "totalReviews": 1162,
+    "totalCorrect": 860,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15680,7 +15687,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:36:02.159Z"
+    "updatedAt": "2026-10-14T19:36:09.818Z"
   },
   "settings": {
     "audioEnabled": true,
