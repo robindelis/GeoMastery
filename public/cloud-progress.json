@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T09:56:13.230Z",
+  "exportedAt": "2026-10-14T10:16:42.077Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -12666,13 +12666,13 @@
         "countryId": "DJI",
         "attributeId": "capital",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2.3999999999999995,
+        "intervalDays": 1,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:08:58.105Z",
-        "nextDueAt": "2026-10-08T20:08:58.105Z",
+        "lastReviewedAt": "2026-10-14T10:16:38.983Z",
+        "nextDueAt": "2026-10-15T10:16:38.983Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:30:58.336Z",
@@ -12687,9 +12687,16 @@
             "userAnswer": "oeu",
             "isCorrect": false,
             "timeSpentMs": 2663
+          },
+          {
+            "timestamp": "2026-10-14T10:16:38.983Z",
+            "inputMode": "typing",
+            "userAnswer": "Djibouti",
+            "isCorrect": true,
+            "timeSpentMs": 36003
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -15302,8 +15309,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1128,
-    "totalCorrect": 839,
+    "totalReviews": 1129,
+    "totalCorrect": 840,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15335,7 +15342,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T09:56:10.059Z"
+    "updatedAt": "2026-10-14T10:16:38.985Z"
   },
   "settings": {
     "audioEnabled": true,
