@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T14:01:00.611Z",
+  "exportedAt": "2026-10-14T19:32:29.327Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11271,13 +11271,13 @@
         "countryId": "TGO",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.1999999999999993,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:10:39.919Z",
-        "nextDueAt": "2026-10-09T20:10:39.919Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-14T19:32:25.772Z",
+        "nextDueAt": "2026-10-14T19:32:25.772Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:14:53.930Z",
@@ -11299,9 +11299,16 @@
             "userAnswer": "Lome",
             "isCorrect": true,
             "timeSpentMs": 3071
+          },
+          {
+            "timestamp": "2026-10-14T19:32:25.772Z",
+            "inputMode": "typing",
+            "userAnswer": "u",
+            "isCorrect": false,
+            "timeSpentMs": 9409580
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 0
       }
     ],
     [
@@ -15407,7 +15414,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1143,
+    "totalReviews": 1144,
     "totalCorrect": 849,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15440,7 +15447,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T14:00:57.572Z"
+    "updatedAt": "2026-10-14T19:32:25.776Z"
   },
   "settings": {
     "audioEnabled": true,
