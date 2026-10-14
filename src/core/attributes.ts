@@ -119,27 +119,58 @@ export const LocationAttribute: AttributeDefinition<string> = {
  */
 export const LeaderAttribute: AttributeDefinition<string> = {
   id: 'leader',
-  label: 'Head of State / Leader',
+  label: 'Head of State',
   category: 'politics',
   icon: 'UserCheck',
-  description: 'Current presidents, prime ministers, monarchs, or heads of government.',
+  description: 'Current heads of state (monarchs, presidents) and executive leaders.',
   activeByDefault: false,
   supportsMultipleChoice: true,
   supportsTypingRecall: true,
   supportsMapClick: false,
-  promptTemplate: (country: Country) => `Who is the leader / head of state of ${country.name}?`,
-  getValue: (c: Country) => c.facts.leader || 'Unknown',
+  promptTemplate: (country: Country) => `Who is the head of state of ${country.name}?`,
+  getValue: (c: Country) => c.facts.headOfState || c.facts.leader || 'Unknown',
   renderValue: (val: string) => val,
   generateDistractors: (target: Country, all: Country[], count: number = 3) => {
-    return getRegionalDistractors(target, all, (c) => c.facts.leader || '', count);
+    return getRegionalDistractors(target, all, (c) => c.facts.headOfState || c.facts.leader || '', count);
   },
-  validateAnswer: (userAnswer: string, correctValue: string, _targetCountry?: Country, tolerance: number = 2): AttributeValidationResult => {
-    const res = fuzzyMatch(userAnswer, correctValue, tolerance);
+  validateAnswer: (userAnswer: string, correctValue: string, targetCountry?: Country, tolerance: number = 2): AttributeValidationResult => {
+    // Generate natural candidate forms: e.g. "King Charles III" -> ["King Charles III", "Charles III"]
+    const candidates = [correctValue];
+    const stripped = correctValue.replace(/^(King|Queen|Emperor|Pope|Prince|Sultan|President|Prime Minister)\s+/i, '').trim();
+    if (stripped && stripped !== correctValue) {
+      candidates.push(stripped);
+    }
+
+    const res = fuzzyMatch(userAnswer, candidates, tolerance);
+    if (res.isMatch) {
+      return {
+        isCorrect: true,
+        score: 1,
+        matchedText: res.bestMatch,
+        feedback: res.distance > 0 ? `Accepted (close spelling: ${correctValue})` : 'Correct head of state!'
+      };
+    }
+    // Also accept headOfGovernment if provided!
+    if (targetCountry?.facts?.headOfGovernment) {
+      const govCandidates = [targetCountry.facts.headOfGovernment];
+      const strippedGov = targetCountry.facts.headOfGovernment.replace(/^(Prime Minister|Chancellor|President)\s+/i, '').trim();
+      if (strippedGov && strippedGov !== targetCountry.facts.headOfGovernment) {
+        govCandidates.push(strippedGov);
+      }
+      const govRes = fuzzyMatch(userAnswer, govCandidates, tolerance);
+      if (govRes.isMatch) {
+        return {
+          isCorrect: true,
+          score: 1,
+          matchedText: govRes.bestMatch,
+          feedback: `Correct! (${targetCountry.facts.headOfGovernment} is Head of Government; Head of State is ${correctValue})`
+        };
+      }
+    }
     return {
-      isCorrect: res.isMatch,
-      score: res.isMatch ? 1 : 0,
-      matchedText: res.bestMatch,
-      feedback: res.isMatch ? 'Correct leader!' : `The leader is ${correctValue}`
+      isCorrect: false,
+      score: 0,
+      feedback: `The head of state is ${correctValue}`
     };
   }
 };

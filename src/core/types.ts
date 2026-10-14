@@ -18,6 +18,8 @@ export interface Country {
   facts: {
     politicalRegime?: string;
     leader?: string;
+    headOfState?: string;
+    headOfGovernment?: string;
     cuisine?: string;
     currency?: string;
     languages?: string[];

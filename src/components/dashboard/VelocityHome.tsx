@@ -1240,10 +1240,17 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       {data.spotlight.facts.politicalRegime || 'Republic'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2.5 py-1">
+                  <div
+                    className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2.5 py-1"
+                    title={
+                      data.spotlight.facts.headOfGovernment && data.spotlight.facts.headOfGovernment !== (data.spotlight.facts.headOfState || data.spotlight.facts.leader)
+                        ? `Head of State: ${data.spotlight.facts.headOfState || data.spotlight.facts.leader} | Head of Govt: ${data.spotlight.facts.headOfGovernment}`
+                        : (data.spotlight.facts.headOfState || data.spotlight.facts.leader || 'Head of State')
+                    }
+                  >
                     <UserCheck className="h-3 w-3 shrink-0 text-[#10B981]" />
                     <span className="truncate font-bold text-[#F6EFE2]">
-                      {data.spotlight.facts.leader || 'Head of State'}
+                      {data.spotlight.facts.headOfState || data.spotlight.facts.leader || 'Head of State'}
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2.5 py-1">

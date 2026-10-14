@@ -26,6 +26,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇦🇱",
     "facts": {
       "politicalRegime": "Parliamentary republic",
+      "headOfState": "Bajram Begaj",
+      "headOfGovernment": "Edi Rama",
       "leader": "Bajram Begaj",
       "cuisine": "Tavë Kosi",
       "currency": "Albanian Lek (ALL)"
@@ -51,7 +53,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇦🇩",
     "facts": {
       "politicalRegime": "Parliamentary co-principality",
-      "leader": "Xavier Espot Zamora",
+      "headOfState": "Josep-Lluís Serrano Pentinat & Emmanuel Macron",
+      "headOfGovernment": "Xavier Espot Zamora",
+      "leader": "Josep-Lluís Serrano Pentinat & Emmanuel Macron",
       "cuisine": "Escudella",
       "currency": "Euro (EUR)"
     }
@@ -76,7 +80,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇦🇹",
     "facts": {
       "politicalRegime": "Federal parliamentary republic",
-      "leader": "Karl Nehammer",
+      "headOfState": "Alexander Van der Bellen",
+      "headOfGovernment": "Christian Stocker",
+      "leader": "Alexander Van der Bellen",
       "cuisine": "Wiener Schnitzel",
       "currency": "Euro (EUR)"
     }
@@ -101,6 +107,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇾",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Aleksandr Lukashenko",
       "leader": "Aleksandr Lukashenko",
       "cuisine": "Draniki",
       "currency": "Belarusian Ruble (BYN)"
@@ -126,7 +133,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇪",
     "facts": {
       "politicalRegime": "Federal parliamentary constitutional monarchy",
-      "leader": "Alexander De Croo",
+      "headOfState": "King Philippe",
+      "headOfGovernment": "Bart De Wever",
+      "leader": "King Philippe",
       "cuisine": "Moules-Frites",
       "currency": "Euro (EUR)"
     }
@@ -150,8 +159,10 @@ export const COUNTRIES: Country[] = [
     ],
     "flagEmoji": "🇧🇦",
     "facts": {
-      "politicalRegime": "Parliamentary directorial republic",
-      "leader": "Denis Bećirović",
+      "politicalRegime": "Directorial parliamentary republic",
+      "headOfState": "Presidency of Bosnia and Herzegovina",
+      "headOfGovernment": "Borjana Krišto",
+      "leader": "Presidency of Bosnia and Herzegovina",
       "cuisine": "Ćevapi",
       "currency": "Convertible Mark (BAM)"
     }
@@ -176,7 +187,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇬",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Rumen Radev",
+      "headOfState": "Iliana Iotova",
+      "headOfGovernment": "Rumen Radev",
+      "leader": "Iliana Iotova",
       "cuisine": "Banitsa",
       "currency": "Bulgarian Lev (BGN)"
     }
@@ -201,7 +214,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇭🇷",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Andrej Plenković",
+      "headOfState": "Zoran Milanović",
+      "headOfGovernment": "Andrej Plenković",
+      "leader": "Zoran Milanović",
       "cuisine": "Peka",
       "currency": "Euro (EUR)"
     }
@@ -226,6 +241,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇾",
     "facts": {
       "politicalRegime": "Unitary presidential republic",
+      "headOfState": "Nikos Christodoulides",
       "leader": "Nikos Christodoulides",
       "cuisine": "Souvla",
       "currency": "Euro (EUR)"
@@ -251,7 +267,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇿",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Petr Fiala",
+      "headOfState": "Petr Pavel",
+      "headOfGovernment": "Andrej Babiš",
+      "leader": "Petr Pavel",
       "cuisine": "Vepřo Knedlo Zelo",
       "currency": "Czech Koruna (CZK)"
     }
@@ -276,7 +294,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇩🇰",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Mette Frederiksen",
+      "headOfState": "King Frederik X",
+      "headOfGovernment": "Mette Frederiksen",
+      "leader": "King Frederik X",
       "cuisine": "Smørrebrød",
       "currency": "Danish Krone (DKK)"
     }
@@ -301,7 +321,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇪🇪",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Kristen Michal",
+      "headOfState": "Ülle Madise",
+      "headOfGovernment": "Kristen Michal",
+      "leader": "Ülle Madise",
       "cuisine": "Verivorst",
       "currency": "Euro (EUR)"
     }
@@ -326,7 +348,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇫🇮",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Petteri Orpo",
+      "headOfState": "Alexander Stubb",
+      "headOfGovernment": "Petteri Orpo",
+      "leader": "Alexander Stubb",
       "cuisine": "Karjalanpiirakka",
       "currency": "Euro (EUR)"
     }
@@ -351,6 +375,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇫🇷",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Emmanuel Macron",
+      "headOfGovernment": "Sébastien Lecornu",
       "leader": "Emmanuel Macron",
       "cuisine": "Boeuf Bourguignon",
       "currency": "Euro (EUR)"
@@ -376,7 +402,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇩🇪",
     "facts": {
       "politicalRegime": "Federal parliamentary republic",
-      "leader": "Olaf Scholz",
+      "headOfState": "Frank-Walter Steinmeier",
+      "headOfGovernment": "Friedrich Merz",
+      "leader": "Frank-Walter Steinmeier",
       "cuisine": "Sauerbraten",
       "currency": "Euro (EUR)"
     }
@@ -401,7 +429,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇬🇷",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Kyriakos Mitsotakis",
+      "headOfState": "Konstantinos Tasoulas",
+      "headOfGovernment": "Kyriakos Mitsotakis",
+      "leader": "Konstantinos Tasoulas",
       "cuisine": "Moussaka",
       "currency": "Euro (EUR)"
     }
@@ -426,7 +456,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇭🇺",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Viktor Orbán",
+      "headOfState": "András Baka",
+      "headOfGovernment": "Péter Magyar",
+      "leader": "András Baka",
       "cuisine": "Goulash",
       "currency": "Hungarian Forint (HUF)"
     }
@@ -451,7 +483,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇮🇸",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Bjarni Benediktsson",
+      "headOfState": "Halla Tómasdóttir",
+      "headOfGovernment": "Kristrún Frostadóttir",
+      "leader": "Halla Tómasdóttir",
       "cuisine": "Kjötsúpa",
       "currency": "Icelandic Króna (ISK)"
     }
@@ -476,7 +510,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇮🇪",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Simon Harris",
+      "headOfState": "Catherine Connolly",
+      "headOfGovernment": "Micheál Martin",
+      "leader": "Catherine Connolly",
       "cuisine": "Irish Stew",
       "currency": "Euro (EUR)"
     }
@@ -501,8 +537,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇮🇹",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Giorgia Meloni",
-      "cuisine": "Tagliatelle al Ragù",
+      "headOfState": "Sergio Mattarella",
+      "headOfGovernment": "Giorgia Meloni",
+      "leader": "Sergio Mattarella",
+      "cuisine": "Pizza Napoletana & Pasta",
       "currency": "Euro (EUR)"
     }
   },
@@ -526,7 +564,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇱🇻",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Evika Siliņa",
+      "headOfState": "Edgars Rinkēvičs",
+      "headOfGovernment": "Andris Kulbergs",
+      "leader": "Edgars Rinkēvičs",
       "cuisine": "Grey Peas with Speck",
       "currency": "Euro (EUR)"
     }
@@ -551,7 +591,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇱🇮",
     "facts": {
       "politicalRegime": "Constitutional monarchy",
-      "leader": "Daniel Risch",
+      "headOfState": "Prince Hans-Adam II",
+      "headOfGovernment": "Brigitte Haas",
+      "leader": "Prince Hans-Adam II",
       "cuisine": "Käsknöpfle",
       "currency": "Swiss Franc (CHF)"
     }
@@ -576,7 +618,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇱🇹",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
-      "leader": "Ingrida Šimonytė",
+      "headOfState": "Gitanas Nausėda",
+      "headOfGovernment": "Mindaugas Sinkevičius",
+      "leader": "Gitanas Nausėda",
       "cuisine": "Cepelinai",
       "currency": "Euro (EUR)"
     }
@@ -601,7 +645,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇱🇺",
     "facts": {
       "politicalRegime": "Constitutional monarchy",
-      "leader": "Luc Frieden",
+      "headOfState": "Grand Duke Guillaume V",
+      "headOfGovernment": "Luc Frieden",
+      "leader": "Grand Duke Guillaume V",
       "cuisine": "Judd mat Gaardebounen",
       "currency": "Euro (EUR)"
     }
@@ -626,7 +672,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇹",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Robert Abela",
+      "headOfState": "Myriam Spiteri Debono",
+      "headOfGovernment": "Robert Abela",
+      "leader": "Myriam Spiteri Debono",
       "cuisine": "Stuffat tal-Fenek",
       "currency": "Euro (EUR)"
     }
@@ -651,7 +699,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇩",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Dorin Recean",
+      "headOfState": "Maia Sandu",
+      "headOfGovernment": "Vasile Tofan",
+      "leader": "Maia Sandu",
       "cuisine": "Mămăligă",
       "currency": "Moldovan Leu (MDL)"
     }
@@ -676,7 +726,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇨",
     "facts": {
       "politicalRegime": "Constitutional monarchy",
-      "leader": "Pierre Dartout",
+      "headOfState": "Prince Albert II",
+      "headOfGovernment": "Christophe Mirmand",
+      "leader": "Prince Albert II",
       "cuisine": "Barbagiuan",
       "currency": "Euro (EUR)"
     }
@@ -701,8 +753,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇪",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Milojko Spajić",
-      "cuisine": "Njeguški pršut",
+      "headOfState": "Jakov Milatović",
+      "headOfGovernment": "Milojko Spajić",
+      "leader": "Jakov Milatović",
+      "cuisine": "Kačamak",
       "currency": "Euro (EUR)"
     }
   },
@@ -726,7 +780,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇳🇱",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Dick Schoof",
+      "headOfState": "King Willem-Alexander",
+      "headOfGovernment": "Rob Jetten",
+      "leader": "King Willem-Alexander",
       "cuisine": "Stamppot",
       "currency": "Euro (EUR)"
     }
@@ -751,7 +807,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇰",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Hristijan Mickoski",
+      "headOfState": "Gordana Siljanovska-Davkova",
+      "headOfGovernment": "Hristijan Mickoski",
+      "leader": "Gordana Siljanovska-Davkova",
       "cuisine": "Tavče Gravče",
       "currency": "Macedonian Denar (MKD)"
     }
@@ -776,7 +834,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇳🇴",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Jonas Gahr Støre",
+      "headOfState": "King Haakon VIII",
+      "headOfGovernment": "Jonas Gahr Støre",
+      "leader": "King Haakon VIII",
       "cuisine": "Fårikål",
       "currency": "Norwegian Krone (NOK)"
     }
@@ -801,8 +861,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇵🇱",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Donald Tusk",
-      "cuisine": "Bigos",
+      "headOfState": "Karol Nawrocki",
+      "headOfGovernment": "Donald Tusk",
+      "leader": "Karol Nawrocki",
+      "cuisine": "Pierogi",
       "currency": "Polish Złoty (PLN)"
     }
   },
@@ -826,7 +888,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇵🇹",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
-      "leader": "Luís Montenegro",
+      "headOfState": "António José Seguro",
+      "headOfGovernment": "Luís Montenegro",
+      "leader": "António José Seguro",
       "cuisine": "Bacalhau à Brás",
       "currency": "Euro (EUR)"
     }
@@ -851,7 +915,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇷🇴",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
-      "leader": "Marcel Ciolacu",
+      "headOfState": "Nicușor Dan",
+      "headOfGovernment": "Ilie Bolojan",
+      "leader": "Nicușor Dan",
       "cuisine": "Sarmale",
       "currency": "Romanian Leu (RON)"
     }
@@ -876,8 +942,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇷🇺",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Vladimir Putin",
+      "headOfGovernment": "Mikhail Mishustin",
       "leader": "Vladimir Putin",
-      "cuisine": "Pelmeni",
+      "cuisine": "Borscht & Pelmeni",
       "currency": "Russian Ruble (RUB)"
     }
   },
@@ -900,7 +968,9 @@ export const COUNTRIES: Country[] = [
     ],
     "flagEmoji": "🇸🇲",
     "facts": {
-      "politicalRegime": "Parliamentary directorial republic",
+      "politicalRegime": "Directorial parliamentary republic",
+      "headOfState": "Captains Regent (Gerardo Giovagnoli & William Casali)",
+      "headOfGovernment": "Congress of State",
       "leader": "Captains Regent",
       "cuisine": "Torta Tre Monti",
       "currency": "Euro (EUR)"
@@ -926,8 +996,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇷🇸",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Miloš Vučević",
-      "cuisine": "Ćevapčići",
+      "headOfState": "Aleksandar Vučić",
+      "headOfGovernment": "Miloš Vučević",
+      "leader": "Aleksandar Vučić",
+      "cuisine": "Pljeskavica",
       "currency": "Serbian Dinar (RSD)"
     }
   },
@@ -951,7 +1023,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇰",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Robert Fico",
+      "headOfState": "Peter Pellegrini",
+      "headOfGovernment": "Robert Fico",
+      "leader": "Peter Pellegrini",
       "cuisine": "Bryndzové Halušky",
       "currency": "Euro (EUR)"
     }
@@ -976,7 +1050,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇮",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Robert Golob",
+      "headOfState": "Nataša Pirc Musar",
+      "headOfGovernment": "Janez Janša",
+      "leader": "Nataša Pirc Musar",
       "cuisine": "Kranjska Klobasa",
       "currency": "Euro (EUR)"
     }
@@ -1001,7 +1077,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇪🇸",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Pedro Sánchez",
+      "headOfState": "King Felipe VI",
+      "headOfGovernment": "Pedro Sánchez",
+      "leader": "King Felipe VI",
       "cuisine": "Paella Valenciana",
       "currency": "Euro (EUR)"
     }
@@ -1026,7 +1104,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇪",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Ulf Kristersson",
+      "headOfState": "King Carl XVI Gustaf",
+      "headOfGovernment": "Ulf Kristersson",
+      "leader": "King Carl XVI Gustaf",
       "cuisine": "Köttbullar",
       "currency": "Swedish Krona (SEK)"
     }
@@ -1050,9 +1130,11 @@ export const COUNTRIES: Country[] = [
     ],
     "flagEmoji": "🇨🇭",
     "facts": {
-      "politicalRegime": "Federal directorial republic",
+      "politicalRegime": "Directorial federal republic",
+      "headOfState": "Federal Council",
+      "headOfGovernment": "Federal Council",
       "leader": "Federal Council",
-      "cuisine": "Fondue",
+      "cuisine": "Fondue & Raclette",
       "currency": "Swiss Franc (CHF)"
     }
   },
@@ -1076,8 +1158,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇺🇦",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Volodymyr Zelenskyy",
+      "headOfGovernment": "Serhii Koretskyi",
       "leader": "Volodymyr Zelenskyy",
-      "cuisine": "Borscht",
+      "cuisine": "Varenyky & Borscht",
       "currency": "Ukrainian Hryvnia (UAH)"
     }
   },
@@ -1101,9 +1185,11 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇬🇧",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Keir Starmer",
-      "cuisine": "Sunday Roast",
-      "currency": "Pound Sterling (GBP)"
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Andy Burnham",
+      "leader": "King Charles III",
+      "cuisine": "Roast Beef & Yorkshire Pudding",
+      "currency": "British Pound (GBP)"
     }
   },
   {
@@ -1125,9 +1211,11 @@ export const COUNTRIES: Country[] = [
     ],
     "flagEmoji": "🇻🇦",
     "facts": {
-      "politicalRegime": "Ecclesiastical elective monarchy",
-      "leader": "Pope Francis",
-      "cuisine": "Fettuccine alla Papalina",
+      "politicalRegime": "Ecclesiastical elective absolute monarchy",
+      "headOfState": "Pope Leo XIV",
+      "headOfGovernment": "Raffaella Petrini",
+      "leader": "Pope Leo XIV",
+      "cuisine": "Carciofi alla Giudia",
       "currency": "Euro (EUR)"
     }
   },
@@ -1151,6 +1239,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇦🇫",
     "facts": {
       "politicalRegime": "Theocracy",
+      "headOfState": "Hibatullah Akhundzada",
+      "headOfGovernment": "Hasan Akhund",
       "leader": "Hibatullah Akhundzada",
       "cuisine": "Kabuli Palaw",
       "currency": "Afghan Afghani (AFN)"
@@ -1176,7 +1266,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇦🇲",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Nikol Pashinyan",
+      "headOfState": "Vahagn Khachaturyan",
+      "headOfGovernment": "Nikol Pashinyan",
+      "leader": "Vahagn Khachaturyan",
       "cuisine": "Khorovats",
       "currency": "Armenian Dram (AMD)"
     }
@@ -1201,8 +1293,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇦🇿",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Ilham Aliyev",
+      "headOfGovernment": "Ali Asadov",
       "leader": "Ilham Aliyev",
-      "cuisine": "Plov",
+      "cuisine": "Shah Pilaf",
       "currency": "Azerbaijani Manat (AZN)"
     }
   },
@@ -1226,7 +1320,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇭",
     "facts": {
       "politicalRegime": "Constitutional monarchy",
-      "leader": "Hamad bin Isa Al Khalifa",
+      "headOfState": "King Hamad bin Isa Al Khalifa",
+      "headOfGovernment": "Salman bin Hamad Al Khalifa",
+      "leader": "King Hamad bin Isa Al Khalifa",
       "cuisine": "Machboos",
       "currency": "Bahraini Dinar (BHD)"
     }
@@ -1251,8 +1347,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇩",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Muhammad Yunus",
-      "cuisine": "Hilsa Curry",
+      "headOfState": "Mirza Fakhrul Islam Alamgir",
+      "headOfGovernment": "Tarique Rahman",
+      "leader": "Mirza Fakhrul Islam Alamgir",
+      "cuisine": "Ilish Fish Curry & Biryani",
       "currency": "Bangladeshi Taka (BDT)"
     }
   },
@@ -1276,7 +1374,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇹",
     "facts": {
       "politicalRegime": "Constitutional monarchy",
-      "leader": "Tshering Tobgay",
+      "headOfState": "King Jigme Khesar Namgyel Wangchuck",
+      "headOfGovernment": "Tshering Tobgay",
+      "leader": "King Jigme Khesar Namgyel Wangchuck",
       "cuisine": "Ema Datshi",
       "currency": "Bhutanese Ngultrum (BTN)"
     }
@@ -1301,7 +1401,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇳",
     "facts": {
       "politicalRegime": "Absolute monarchy",
-      "leader": "Hassanal Bolkiah",
+      "headOfState": "Sultan Hassanal Bolkiah",
+      "leader": "Sultan Hassanal Bolkiah",
       "cuisine": "Ambuyat",
       "currency": "Brunei Dollar (BND)"
     }
@@ -1326,7 +1427,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇰🇭",
     "facts": {
       "politicalRegime": "Constitutional monarchy",
-      "leader": "Hun Manet",
+      "headOfState": "King Norodom Sihamoni",
+      "headOfGovernment": "Hun Manet",
+      "leader": "King Norodom Sihamoni",
       "cuisine": "Fish Amok",
       "currency": "Cambodian Riel (KHR)"
     }
@@ -1351,8 +1454,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇳",
     "facts": {
       "politicalRegime": "Socialist one-party state",
+      "headOfState": "Xi Jinping",
+      "headOfGovernment": "Li Qiang",
       "leader": "Xi Jinping",
-      "cuisine": "Peking Duck",
+      "cuisine": "Peking Duck & Dim Sum",
       "currency": "Chinese Yuan (CNY)"
     }
   },
@@ -1376,8 +1481,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇬🇪",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Irakli Kobakhidze",
-      "cuisine": "Khachapuri",
+      "headOfState": "Mikheil Kavelashvili",
+      "headOfGovernment": "Irakli Kobakhidze",
+      "leader": "Mikheil Kavelashvili",
+      "cuisine": "Khachapuri & Khinkali",
       "currency": "Georgian Lari (GEL)"
     }
   },
@@ -1401,8 +1508,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇮🇳",
     "facts": {
       "politicalRegime": "Federal parliamentary republic",
-      "leader": "Narendra Modi",
-      "cuisine": "Biryani",
+      "headOfState": "Droupadi Murmu",
+      "headOfGovernment": "Narendra Modi",
+      "leader": "Droupadi Murmu",
+      "cuisine": "Biryani & Curry",
       "currency": "Indian Rupee (INR)"
     }
   },
@@ -1426,8 +1535,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇮🇩",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Prabowo Subianto",
       "leader": "Prabowo Subianto",
-      "cuisine": "Nasi Goreng",
+      "cuisine": "Nasi Goreng & Rendang",
       "currency": "Indonesian Rupiah (IDR)"
     }
   },
@@ -1451,7 +1561,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇮🇷",
     "facts": {
       "politicalRegime": "Islamic republic",
-      "leader": "Masoud Pezeshkian",
+      "headOfState": "Mojtaba Khamenei",
+      "headOfGovernment": "Masoud Pezeshkian",
+      "leader": "Mojtaba Khamenei",
       "cuisine": "Ghormeh Sabzi",
       "currency": "Iranian Rial (IRR)"
     }
@@ -1476,7 +1588,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇮🇶",
     "facts": {
       "politicalRegime": "Federal parliamentary republic",
-      "leader": "Mohammed Shia' Al Sudani",
+      "headOfState": "Nizar Amidi",
+      "headOfGovernment": "Ali al-Zaidi",
+      "leader": "Nizar Amidi",
       "cuisine": "Masgouf",
       "currency": "Iraqi Dinar (IQD)"
     }
@@ -1501,8 +1615,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇮🇱",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Benjamin Netanyahu",
-      "cuisine": "Falafel",
+      "headOfState": "Isaac Herzog",
+      "headOfGovernment": "Benjamin Netanyahu",
+      "leader": "Isaac Herzog",
+      "cuisine": "Shakshuka & Falafel",
       "currency": "Israeli New Shekel (ILS)"
     }
   },
@@ -1526,8 +1642,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇯🇵",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Shigeru Ishiba",
-      "cuisine": "Sushi",
+      "headOfState": "Emperor Naruhito",
+      "headOfGovernment": "Sanae Takaichi",
+      "leader": "Emperor Naruhito",
+      "cuisine": "Sushi & Ramen",
       "currency": "Japanese Yen (JPY)"
     }
   },
@@ -1551,7 +1669,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇯🇴",
     "facts": {
       "politicalRegime": "Constitutional monarchy",
-      "leader": "Abdullah II",
+      "headOfState": "King Abdullah II",
+      "headOfGovernment": "Jafar Hassan",
+      "leader": "King Abdullah II",
       "cuisine": "Mansaf",
       "currency": "Jordanian Dinar (JOD)"
     }
@@ -1576,6 +1696,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇰🇿",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Kassym-Jomart Tokayev",
+      "headOfGovernment": "Oljas Bektenov",
       "leader": "Kassym-Jomart Tokayev",
       "cuisine": "Beshbarmak",
       "currency": "Kazakhstani Tenge (KZT)"
@@ -1601,7 +1723,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇰🇼",
     "facts": {
       "politicalRegime": "Constitutional emirate",
-      "leader": "Mishal Al-Ahmad Al-Jaber Al-Sabah",
+      "headOfState": "Emir Mishal Al-Ahmad Al-Jaber Al-Sabah",
+      "headOfGovernment": "Ahmad Al-Abdullah Al-Sabah",
+      "leader": "Emir Mishal Al-Ahmad Al-Jaber Al-Sabah",
       "cuisine": "Machboos Laham",
       "currency": "Kuwaiti Dinar (KWD)"
     }
@@ -1626,6 +1750,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇰🇬",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Sadyr Japarov",
       "leader": "Sadyr Japarov",
       "cuisine": "Beshbarmak",
       "currency": "Kyrgyzstani Som (KGS)"
@@ -1651,8 +1776,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇱🇦",
     "facts": {
       "politicalRegime": "Socialist one-party state",
+      "headOfState": "Thongloun Sisoulith",
+      "headOfGovernment": "Sonexay Siphandone",
       "leader": "Thongloun Sisoulith",
-      "cuisine": "Larb",
+      "cuisine": "Larb & Sticky Rice",
       "currency": "Lao Kip (LAK)"
     }
   },
@@ -1676,8 +1803,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇱🇧",
     "facts": {
       "politicalRegime": "Confessional parliamentary republic",
-      "leader": "Najib Mikati",
-      "cuisine": "Kibbeh",
+      "headOfState": "Joseph Aoun",
+      "headOfGovernment": "Nawaf Salam",
+      "leader": "Joseph Aoun",
+      "cuisine": "Kibbeh & Tabbouleh",
       "currency": "Lebanese Pound (LBP)"
     }
   },
@@ -1701,7 +1830,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇾",
     "facts": {
       "politicalRegime": "Federal parliamentary elective monarchy",
-      "leader": "Anwar Ibrahim",
+      "headOfState": "King Ibrahim Iskandar",
+      "headOfGovernment": "Anwar Ibrahim",
+      "leader": "King Ibrahim Iskandar",
       "cuisine": "Nasi Lemak",
       "currency": "Malaysian Ringgit (MYR)"
     }
@@ -1726,6 +1857,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇻",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Mohamed Muizzu",
       "leader": "Mohamed Muizzu",
       "cuisine": "Garudhiya",
       "currency": "Maldivian Rufiyaa (MVR)"
@@ -1751,7 +1883,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇳",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
-      "leader": "Luvsannamsrain Oyun-Erdene",
+      "headOfState": "Ukhnaagiin Khürelsükh",
+      "headOfGovernment": "Nyam-Osoryn Uchral",
+      "leader": "Ukhnaagiin Khürelsükh",
       "cuisine": "Buuz",
       "currency": "Mongolian Tögrög (MNT)"
     }
@@ -1776,6 +1910,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇲",
     "facts": {
       "politicalRegime": "Military junta",
+      "headOfState": "Min Aung Hlaing",
       "leader": "Min Aung Hlaing",
       "cuisine": "Mohinga",
       "currency": "Myanmar Kyat (MMK)"
@@ -1801,8 +1936,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇳🇵",
     "facts": {
       "politicalRegime": "Federal parliamentary republic",
-      "leader": "K.P. Sharma Oli",
-      "cuisine": "Dal Bhat",
+      "headOfState": "Ram Chandra Paudel",
+      "headOfGovernment": "Balen Shah",
+      "leader": "Ram Chandra Paudel",
+      "cuisine": "Dal Bhat & Momos",
       "currency": "Nepalese Rupee (NPR)"
     }
   },
@@ -1825,9 +1962,11 @@ export const COUNTRIES: Country[] = [
     ],
     "flagEmoji": "🇰🇵",
     "facts": {
-      "politicalRegime": "Totalitarian dictatorship",
+      "politicalRegime": "Totalitarian socialist dictatorship",
+      "headOfState": "Kim Jong Un",
+      "headOfGovernment": "Kim Tok Hun",
       "leader": "Kim Jong Un",
-      "cuisine": "Naengmyeon",
+      "cuisine": "Pyongyang Cold Noodles",
       "currency": "North Korean Won (KPW)"
     }
   },
@@ -1851,7 +1990,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇴🇲",
     "facts": {
       "politicalRegime": "Absolute monarchy",
-      "leader": "Haitham bin Tariq",
+      "headOfState": "Sultan Haitham bin Tariq",
+      "leader": "Sultan Haitham bin Tariq",
       "cuisine": "Shuwa",
       "currency": "Omani Rial (OMR)"
     }
@@ -1876,8 +2016,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇵🇰",
     "facts": {
       "politicalRegime": "Federal parliamentary republic",
-      "leader": "Shehbaz Sharif",
-      "cuisine": "Nihari",
+      "headOfState": "Asif Ali Zardari",
+      "headOfGovernment": "Shehbaz Sharif",
+      "leader": "Asif Ali Zardari",
+      "cuisine": "Nihari & Biryani",
       "currency": "Pakistani Rupee (PKR)"
     }
   },
@@ -1901,9 +2043,11 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇵🇸",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Mahmoud Abbas",
+      "headOfGovernment": "Mohammad Mustafa",
       "leader": "Mahmoud Abbas",
       "cuisine": "Musakhan",
-      "currency": "Israeli New Shekel / Jordanian Dinar"
+      "currency": "New Israeli Shekel (ILS)"
     }
   },
   {
@@ -1926,8 +2070,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇵🇭",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Bongbong Marcos",
       "leader": "Bongbong Marcos",
-      "cuisine": "Adobo",
+      "cuisine": "Adobo & Sinigang",
       "currency": "Philippine Peso (PHP)"
     }
   },
@@ -1951,7 +2096,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇶🇦",
     "facts": {
       "politicalRegime": "Semi-constitutional monarchy",
-      "leader": "Tamim bin Hamad Al Thani",
+      "headOfState": "Emir Tamim bin Hamad Al Thani",
+      "headOfGovernment": "Mohammed bin Abdulrahman Al Thani",
+      "leader": "Emir Tamim bin Hamad Al Thani",
       "cuisine": "Machboos",
       "currency": "Qatari Riyal (QAR)"
     }
@@ -1976,7 +2123,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇦",
     "facts": {
       "politicalRegime": "Absolute monarchy",
-      "leader": "Mohammed bin Salman",
+      "headOfState": "King Salman bin Abdulaziz",
+      "headOfGovernment": "Crown Prince Mohammed bin Salman",
+      "leader": "King Salman bin Abdulaziz",
       "cuisine": "Kabsa",
       "currency": "Saudi Riyal (SAR)"
     }
@@ -2001,7 +2150,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇬",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Lawrence Wong",
+      "headOfState": "Tharman Shanmugaratnam",
+      "headOfGovernment": "Lawrence Wong",
+      "leader": "Tharman Shanmugaratnam",
       "cuisine": "Hainanese Chicken Rice",
       "currency": "Singapore Dollar (SGD)"
     }
@@ -2026,8 +2177,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇰🇷",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Yoon Suk Yeol",
-      "cuisine": "Kimchi & Bulgogi",
+      "headOfState": "Lee Jae Myung",
+      "leader": "Lee Jae Myung",
+      "cuisine": "Kimchi & Bibimbap",
       "currency": "South Korean Won (KRW)"
     }
   },
@@ -2051,8 +2203,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇱🇰",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Anura Kumara Dissanayake",
+      "headOfGovernment": "Harini Amarasuriya",
       "leader": "Anura Kumara Dissanayake",
-      "cuisine": "Rice and Curry",
+      "cuisine": "Rice and Curry & Kottu",
       "currency": "Sri Lankan Rupee (LKR)"
     }
   },
@@ -2075,9 +2229,11 @@ export const COUNTRIES: Country[] = [
     ],
     "flagEmoji": "🇸🇾",
     "facts": {
-      "politicalRegime": "Presidential republic",
-      "leader": "Bashar al-Assad",
-      "cuisine": "Kibbeh Bil Sanieh",
+      "politicalRegime": "Transitional republic",
+      "headOfState": "Ahmed al-Sharaa",
+      "headOfGovernment": "Mohammed al-Bashir",
+      "leader": "Ahmed al-Sharaa",
+      "cuisine": "Kibbeh & Shawarma",
       "currency": "Syrian Pound (SYP)"
     }
   },
@@ -2101,6 +2257,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇹🇼",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Lai Ching-te",
+      "headOfGovernment": "Cho Jung-tai",
       "leader": "Lai Ching-te",
       "cuisine": "Beef Noodle Soup",
       "currency": "New Taiwan Dollar (TWD)"
@@ -2126,6 +2284,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇹🇯",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Emomali Rahmon",
+      "headOfGovernment": "Qohir Rasulzoda",
       "leader": "Emomali Rahmon",
       "cuisine": "Qurutob",
       "currency": "Tajikistani Somoni (TJS)"
@@ -2151,8 +2311,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇹🇭",
     "facts": {
       "politicalRegime": "Constitutional monarchy",
-      "leader": "Paetongtarn Shinawatra",
-      "cuisine": "Pad Thai",
+      "headOfState": "King Vajiralongkorn",
+      "headOfGovernment": "Anutin Charnvirakul",
+      "leader": "King Vajiralongkorn",
+      "cuisine": "Pad Thai & Tom Yum Goong",
       "currency": "Thai Baht (THB)"
     }
   },
@@ -2176,8 +2338,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇹🇱",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
-      "leader": "Xanana Gusmão",
-      "cuisine": "Ikan Bakar",
+      "headOfState": "José Ramos-Horta",
+      "headOfGovernment": "Xanana Gusmão",
+      "leader": "José Ramos-Horta",
+      "cuisine": "Ikan Sabuko",
       "currency": "United States Dollar (USD)"
     }
   },
@@ -2201,6 +2365,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇹🇷",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Recep Tayyip Erdoğan",
       "leader": "Recep Tayyip Erdoğan",
       "cuisine": "Kebab & Baklava",
       "currency": "Turkish Lira (TRY)"
@@ -2226,9 +2391,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇹🇲",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Serdar Berdimuhamedow",
       "leader": "Serdar Berdimuhamedow",
-      "cuisine": "Shashlyk",
-      "currency": "Turkmenistan Manat (TMT)"
+      "cuisine": "Plov (Dograma)",
+      "currency": "Turkmenistani Manat (TMT)"
     }
   },
   {
@@ -2251,8 +2417,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇦🇪",
     "facts": {
       "politicalRegime": "Federal elective monarchy",
+      "headOfState": "Mohamed bin Zayed Al Nahyan",
+      "headOfGovernment": "Mohammed bin Rashid Al Maktoum",
       "leader": "Mohamed bin Zayed Al Nahyan",
-      "cuisine": "Al Harees",
+      "cuisine": "Al Harees & Shawarma",
       "currency": "UAE Dirham (AED)"
     }
   },
@@ -2276,8 +2444,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇺🇿",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Shavkat Mirziyoyev",
+      "headOfGovernment": "Abdulla Aripov",
       "leader": "Shavkat Mirziyoyev",
-      "cuisine": "Palov",
+      "cuisine": "Osh Palov",
       "currency": "Uzbekistani Som (UZS)"
     }
   },
@@ -2301,8 +2471,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇻🇳",
     "facts": {
       "politicalRegime": "Socialist one-party state",
-      "leader": "To Lam",
-      "cuisine": "Phở",
+      "headOfState": "Tô Lâm",
+      "headOfGovernment": "Pham Minh Chinh",
+      "leader": "Tô Lâm",
+      "cuisine": "Phở & Bánh Mì",
       "currency": "Vietnamese Đồng (VND)"
     }
   },
@@ -2325,9 +2497,11 @@ export const COUNTRIES: Country[] = [
     ],
     "flagEmoji": "🇾🇪",
     "facts": {
-      "politicalRegime": "Presidential republic",
+      "politicalRegime": "Presidential republic / Transitional",
+      "headOfState": "Rashad al-Alimi",
+      "headOfGovernment": "Shaya al-Zindani",
       "leader": "Rashad al-Alimi",
-      "cuisine": "Saltah",
+      "cuisine": "Mandi & Saltah",
       "currency": "Yemeni Rial (YER)"
     }
   },
@@ -2351,6 +2525,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇩🇿",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Abdelmadjid Tebboune",
+      "headOfGovernment": "Sifi Ghrieb",
       "leader": "Abdelmadjid Tebboune",
       "cuisine": "Couscous",
       "currency": "Algerian Dinar (DZD)"
@@ -2376,6 +2552,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇦🇴",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "João Lourenço",
       "leader": "João Lourenço",
       "cuisine": "Muamba de Galinha",
       "currency": "Angolan Kwanza (AOA)"
@@ -2401,8 +2578,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇯",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Patrice Talon",
-      "cuisine": "Kuli Kuli",
+      "headOfState": "Romuald Wadagni",
+      "leader": "Romuald Wadagni",
+      "cuisine": "Kuli-Kuli & Pounded Yam",
       "currency": "West African CFA Franc (XOF)"
     }
   },
@@ -2426,6 +2604,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇼",
     "facts": {
       "politicalRegime": "Parliamentary republic",
+      "headOfState": "Duma Boko",
       "leader": "Duma Boko",
       "cuisine": "Seswaa",
       "currency": "Botswana Pula (BWP)"
@@ -2451,6 +2630,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇫",
     "facts": {
       "politicalRegime": "Military junta",
+      "headOfState": "Ibrahim Traoré",
       "leader": "Ibrahim Traoré",
       "cuisine": "Riz Gras",
       "currency": "West African CFA Franc (XOF)"
@@ -2476,6 +2656,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇮",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Évariste Ndayishimiye",
+      "headOfGovernment": "Nestor Ntahontuye",
       "leader": "Évariste Ndayishimiye",
       "cuisine": "Boko Boko Harees",
       "currency": "Burundian Franc (BIF)"
@@ -2501,7 +2683,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇻",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
-      "leader": "Ulisses Correia e Silva",
+      "headOfState": "José Maria Neves",
+      "headOfGovernment": "Francisco Carvalho",
+      "leader": "José Maria Neves",
       "cuisine": "Cachupa",
       "currency": "Cape Verdean Escudo (CVE)"
     }
@@ -2526,6 +2710,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇲",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Paul Biya",
+      "headOfGovernment": "Joseph Ngute",
       "leader": "Paul Biya",
       "cuisine": "Ndole",
       "currency": "Central African CFA Franc (XAF)"
@@ -2551,8 +2737,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇫",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Faustin-Archange Touadéra",
+      "headOfGovernment": "Félix Moloua",
       "leader": "Faustin-Archange Touadéra",
-      "cuisine": "Cassava leaves (Kanda)",
+      "cuisine": "Kanda ti Nyma",
       "currency": "Central African CFA Franc (XAF)"
     }
   },
@@ -2576,6 +2764,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇹🇩",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Mahamat Déby",
+      "headOfGovernment": "Allamaye Halina",
       "leader": "Mahamat Déby",
       "cuisine": "Daraba",
       "currency": "Central African CFA Franc (XAF)"
@@ -2601,8 +2791,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇰🇲",
     "facts": {
       "politicalRegime": "Federal presidential republic",
+      "headOfState": "Azali Assoumani",
       "leader": "Azali Assoumani",
-      "cuisine": "Langouste à la vanille",
+      "cuisine": "Langouste à la Vanille",
       "currency": "Comorian Franc (KMF)"
     }
   },
@@ -2626,8 +2817,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇬",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Denis Sassou Nguesso",
+      "headOfGovernment": "Anatole Collinet Makosso",
       "leader": "Denis Sassou Nguesso",
-      "cuisine": "Saka Saka",
+      "cuisine": "Moambe Chicken & Saka Saka",
       "currency": "Central African CFA Franc (XAF)"
     }
   },
@@ -2651,8 +2844,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇩",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Félix Tshisekedi",
+      "headOfGovernment": "Judith Suminwa",
       "leader": "Félix Tshisekedi",
-      "cuisine": "Moambe Chicken",
+      "cuisine": "Poulet à la Moambé",
       "currency": "Congolese Franc (CDF)"
     }
   },
@@ -2676,8 +2871,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇮",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Alassane Ouattara",
+      "headOfGovernment": "Robert Beugré Mambé",
       "leader": "Alassane Ouattara",
-      "cuisine": "Garba / Attiéké",
+      "cuisine": "Attiéké & Garba",
       "currency": "West African CFA Franc (XOF)"
     }
   },
@@ -2701,6 +2898,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇩🇯",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Ismaïl Omar Guelleh",
       "leader": "Ismaïl Omar Guelleh",
       "cuisine": "Skoudehkaris",
       "currency": "Djiboutian Franc (DJF)"
@@ -2726,8 +2924,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇪🇬",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Abdel Fattah el-Sisi",
+      "headOfGovernment": "Mostafa Madbouly",
       "leader": "Abdel Fattah el-Sisi",
-      "cuisine": "Koshary",
+      "cuisine": "Koshary & Ful Medames",
       "currency": "Egyptian Pound (EGP)"
     }
   },
@@ -2751,8 +2951,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇬🇶",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Teodoro Obiang Nguema Mbasogo",
+      "headOfGovernment": "Manuel Osa Nsue Nsua",
       "leader": "Teodoro Obiang Nguema Mbasogo",
-      "cuisine": "Succotash",
+      "cuisine": "Succotash & Pepe Soup",
       "currency": "Central African CFA Franc (XAF)"
     }
   },
@@ -2776,6 +2978,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇪🇷",
     "facts": {
       "politicalRegime": "One-party presidential republic",
+      "headOfState": "Isaias Afwerki",
       "leader": "Isaias Afwerki",
       "cuisine": "Zigni with Injera",
       "currency": "Eritrean Nakfa (ERN)"
@@ -2801,8 +3004,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇿",
     "facts": {
       "politicalRegime": "Absolute monarchy",
-      "leader": "Mswati III",
-      "cuisine": "Umncweba",
+      "headOfState": "King Mswati III",
+      "headOfGovernment": "Russell Dlamini",
+      "leader": "King Mswati III",
+      "cuisine": "Sishwala",
       "currency": "Swazi Lilangeni (SZL)"
     }
   },
@@ -2826,7 +3031,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇪🇹",
     "facts": {
       "politicalRegime": "Federal parliamentary republic",
-      "leader": "Abiy Ahmed",
+      "headOfState": "Taye Atske Selassie",
+      "headOfGovernment": "Abiy Ahmed",
+      "leader": "Taye Atske Selassie",
       "cuisine": "Doro Wat with Injera",
       "currency": "Ethiopian Birr (ETB)"
     }
@@ -2850,7 +3057,8 @@ export const COUNTRIES: Country[] = [
     ],
     "flagEmoji": "🇬🇦",
     "facts": {
-      "politicalRegime": "Military junta / Transitional",
+      "politicalRegime": "Transitional republic",
+      "headOfState": "Brice Oligui Nguema",
       "leader": "Brice Oligui Nguema",
       "cuisine": "Poulet Nyembwe",
       "currency": "Central African CFA Franc (XAF)"
@@ -2876,6 +3084,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇬🇲",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Adama Barrow",
       "leader": "Adama Barrow",
       "cuisine": "Domoda",
       "currency": "Gambian Dalasi (GMD)"
@@ -2901,8 +3110,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇬🇭",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Nana Akufo-Addo",
-      "cuisine": "Jollof Rice",
+      "headOfState": "John Mahama",
+      "leader": "John Mahama",
+      "cuisine": "Jollof Rice & Waakye",
       "currency": "Ghanaian Cedi (GHS)"
     }
   },
@@ -2926,6 +3136,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇬🇳",
     "facts": {
       "politicalRegime": "Military junta",
+      "headOfState": "Mamady Doumbouya",
+      "headOfGovernment": "Bah Oury",
       "leader": "Mamady Doumbouya",
       "cuisine": "Poulet Yassa",
       "currency": "Guinean Franc (GNF)"
@@ -2951,6 +3163,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇬🇼",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Umaro Sissoco Embaló",
       "leader": "Umaro Sissoco Embaló",
       "cuisine": "Caldo de Mancarra",
       "currency": "West African CFA Franc (XOF)"
@@ -2976,8 +3189,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇰🇪",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "William Ruto",
       "leader": "William Ruto",
-      "cuisine": "Ugali with Sukuma Wiki",
+      "cuisine": "Ugali & Sukuma Wiki",
       "currency": "Kenyan Shilling (KES)"
     }
   },
@@ -3001,8 +3215,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇱🇸",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Sam Matekane",
-      "cuisine": "Papa and Morogo",
+      "headOfState": "King Letsie III",
+      "headOfGovernment": "Sam Matekane",
+      "leader": "King Letsie III",
+      "cuisine": "Chakalaka & Pap",
       "currency": "Lesotho Loti (LSL)"
     }
   },
@@ -3026,8 +3242,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇱🇷",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Joseph Boakai",
       "leader": "Joseph Boakai",
-      "cuisine": "Palm Butter Soup",
+      "cuisine": "Dumboy & Pepper Soup",
       "currency": "Liberian Dollar (LRD)"
     }
   },
@@ -3051,7 +3268,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇱🇾",
     "facts": {
       "politicalRegime": "Transitional government",
-      "leader": "Abdul Hamid Dbeibeh",
+      "headOfState": "Mohamed al-Menfi",
+      "headOfGovernment": "Abdul Hamid Dbeibeh",
+      "leader": "Mohamed al-Menfi",
       "cuisine": "Bazeen",
       "currency": "Libyan Dinar (LYD)"
     }
@@ -3075,8 +3294,9 @@ export const COUNTRIES: Country[] = [
     ],
     "flagEmoji": "🇲🇬",
     "facts": {
-      "politicalRegime": "Semi-presidential republic",
-      "leader": "Andry Rajoelina",
+      "politicalRegime": "Transitional republic",
+      "headOfState": "Michael Randrianirina",
+      "leader": "Michael Randrianirina",
       "cuisine": "Romazava",
       "currency": "Malagasy Ariary (MGA)"
     }
@@ -3101,8 +3321,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇼",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Lazarus Chakwera",
-      "cuisine": "Nsima with Chambo",
+      "headOfState": "Peter Mutharika",
+      "leader": "Peter Mutharika",
+      "cuisine": "Chambo with Nsima",
       "currency": "Malawian Kwacha (MWK)"
     }
   },
@@ -3126,6 +3347,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇱",
     "facts": {
       "politicalRegime": "Military junta",
+      "headOfState": "Assimi Goïta",
       "leader": "Assimi Goïta",
       "cuisine": "Tiguadege Na (Peanut stew)",
       "currency": "West African CFA Franc (XOF)"
@@ -3151,8 +3373,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇷",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Mohamed Ould Ghazouani",
+      "headOfGovernment": "Mokhtar Ould Djay",
       "leader": "Mohamed Ould Ghazouani",
-      "cuisine": "Thieboudienne",
+      "cuisine": "Thieboudienne (Ceebu Jën)",
       "currency": "Mauritanian Ouguiya (MRU)"
     }
   },
@@ -3176,7 +3400,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇺",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Navin Ramgoolam",
+      "headOfState": "Dharam Gokhool",
+      "headOfGovernment": "Navin Ramgoolam",
+      "leader": "Dharam Gokhool",
       "cuisine": "Dholl Puri",
       "currency": "Mauritian Rupee (MUR)"
     }
@@ -3201,8 +3427,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇦",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Aziz Akhannouch",
-      "cuisine": "Tagine",
+      "headOfState": "King Mohammed VI",
+      "headOfGovernment": "Fatima Ezzahra El Mansouri",
+      "leader": "King Mohammed VI",
+      "cuisine": "Tagine & Couscous",
       "currency": "Moroccan Dirham (MAD)"
     }
   },
@@ -3226,8 +3454,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇿",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Daniel Chapo",
       "leader": "Daniel Chapo",
-      "cuisine": "Peri-Peri Chicken",
+      "cuisine": "Peri-Peri Chicken & Matapa",
       "currency": "Mozambican Metical (MZN)"
     }
   },
@@ -3251,8 +3480,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇳🇦",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
-      "leader": "Nangolo Mbumba",
-      "cuisine": "Kapana",
+      "headOfState": "Netumbo Nandi-Ndaitwah",
+      "leader": "Netumbo Nandi-Ndaitwah",
+      "cuisine": "Braaivleis & Potjiekos",
       "currency": "Namibian Dollar (NAD)"
     }
   },
@@ -3276,8 +3506,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇳🇪",
     "facts": {
       "politicalRegime": "Military junta",
-      "leader": "Abdourahamane Tchiani",
-      "cuisine": "Djerma stew",
+      "headOfState": "Abdourahamane Tiani",
+      "leader": "Abdourahamane Tiani",
+      "cuisine": "Djerma Stew",
       "currency": "West African CFA Franc (XOF)"
     }
   },
@@ -3301,8 +3532,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇳🇬",
     "facts": {
       "politicalRegime": "Federal presidential republic",
+      "headOfState": "Bola Tinubu",
       "leader": "Bola Tinubu",
-      "cuisine": "Jollof Rice & Egusi",
+      "cuisine": "Jollof Rice & Pounded Yam",
       "currency": "Nigerian Naira (NGN)"
     }
   },
@@ -3326,6 +3558,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇷🇼",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
+      "headOfState": "Paul Kagame",
+      "headOfGovernment": "Justin Nsengiyumva",
       "leader": "Paul Kagame",
       "cuisine": "Isombe",
       "currency": "Rwandan Franc (RWF)"
@@ -3351,7 +3585,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇹",
     "facts": {
       "politicalRegime": "Semi-presidential republic",
-      "leader": "Patrice Trovoada",
+      "headOfState": "Carlos Vila Nova",
+      "headOfGovernment": "Américo Ramos",
+      "leader": "Carlos Vila Nova",
       "cuisine": "Calulu",
       "currency": "São Tomé and Príncipe Dobra (STN)"
     }
@@ -3376,6 +3612,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇳",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Bassirou Diomaye Faye",
+      "headOfGovernment": "Ahmadou Al Aminou Lo",
       "leader": "Bassirou Diomaye Faye",
       "cuisine": "Thieboudienne",
       "currency": "West African CFA Franc (XOF)"
@@ -3401,8 +3639,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇨",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Wavel Ramkalawan",
-      "cuisine": "Grilled Fish with Creole sauce",
+      "headOfState": "Patrick Herminie",
+      "leader": "Patrick Herminie",
+      "cuisine": "Grilled Fish with Creole Sauce",
       "currency": "Seychellois Rupee (SCR)"
     }
   },
@@ -3426,8 +3665,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇱",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Julius Maada Bio",
       "leader": "Julius Maada Bio",
-      "cuisine": "Cassava leaves stew",
+      "cuisine": "Cassava Leaf Stew",
       "currency": "Sierra Leonean Leone (SLL)"
     }
   },
@@ -3451,6 +3691,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇴",
     "facts": {
       "politicalRegime": "Federal parliamentary republic",
+      "headOfState": "Hassan Sheikh Mohamud",
+      "headOfGovernment": "Hamza Abdi Barre",
       "leader": "Hassan Sheikh Mohamud",
       "cuisine": "Bariis Iskukaris",
       "currency": "Somali Shilling (SOS)"
@@ -3476,8 +3718,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇿🇦",
     "facts": {
       "politicalRegime": "Parliamentary republic",
+      "headOfState": "Cyril Ramaphosa",
       "leader": "Cyril Ramaphosa",
-      "cuisine": "Bobotie & Braai",
+      "cuisine": "Bobotie & Biltong",
       "currency": "South African Rand (ZAR)"
     }
   },
@@ -3501,8 +3744,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇸",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Salva Kiir Mayardit",
-      "cuisine": "Kisra",
+      "headOfState": "Salva Kiir",
+      "leader": "Salva Kiir",
+      "cuisine": "Kisra with Mulawah",
       "currency": "South Sudanese Pound (SSP)"
     }
   },
@@ -3525,9 +3769,11 @@ export const COUNTRIES: Country[] = [
     ],
     "flagEmoji": "🇸🇩",
     "facts": {
-      "politicalRegime": "Military junta",
+      "politicalRegime": "Transitional Sovereignty Council",
+      "headOfState": "Abdel Fattah al-Burhan",
+      "headOfGovernment": "Kamil Idris",
       "leader": "Abdel Fattah al-Burhan",
-      "cuisine": "Ful Medames",
+      "cuisine": "Ful Medames & Gurrassa",
       "currency": "Sudanese Pound (SDG)"
     }
   },
@@ -3551,6 +3797,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇹🇿",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Samia Suluhu Hassan",
       "leader": "Samia Suluhu Hassan",
       "cuisine": "Ugali & Nyama Choma",
       "currency": "Tanzanian Shilling (TZS)"
@@ -3576,8 +3823,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇹🇬",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Faure Gnassingbé",
-      "cuisine": "Ablo with sauce",
+      "headOfState": "Jean-Lucien Savi de Tové",
+      "headOfGovernment": "Faure Gnassingbé",
+      "leader": "Jean-Lucien Savi de Tové",
+      "cuisine": "Fufu with Gboma Dessi",
       "currency": "West African CFA Franc (XOF)"
     }
   },
@@ -3601,8 +3850,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇹🇳",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Kais Saied",
+      "headOfGovernment": "Sara Zaafarani",
       "leader": "Kais Saied",
-      "cuisine": "Couscous with fish",
+      "cuisine": "Couscous with Fish",
       "currency": "Tunisian Dinar (TND)"
     }
   },
@@ -3626,8 +3877,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇺🇬",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Yoweri Museveni",
       "leader": "Yoweri Museveni",
-      "cuisine": "Matooke",
+      "cuisine": "Matoke with Groundnut Sauce",
       "currency": "Ugandan Shilling (UGX)"
     }
   },
@@ -3651,6 +3903,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇿🇲",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Hakainde Hichilema",
       "leader": "Hakainde Hichilema",
       "cuisine": "Nshima with Ifisashi",
       "currency": "Zambian Kwacha (ZMW)"
@@ -3676,8 +3929,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇿🇼",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Emmerson Mnangagwa",
       "leader": "Emmerson Mnangagwa",
-      "cuisine": "Sadza with relish",
+      "cuisine": "Sadza",
       "currency": "Zimbabwe Gold (ZiG)"
     }
   },
@@ -3701,7 +3955,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇦🇬",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Gaston Browne",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Gaston Browne",
+      "leader": "King Charles III",
       "cuisine": "Pepperpot & Fungee",
       "currency": "East Caribbean Dollar (XCD)"
     }
@@ -3726,6 +3982,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇦🇷",
     "facts": {
       "politicalRegime": "Federal presidential republic",
+      "headOfState": "Javier Milei",
       "leader": "Javier Milei",
       "cuisine": "Asado & Empanadas",
       "currency": "Argentine Peso (ARS)"
@@ -3751,8 +4008,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇸",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Philip Davis",
-      "cuisine": "Conch Salad",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Philip Davis",
+      "leader": "King Charles III",
+      "cuisine": "Conch Salad & Fritters",
       "currency": "Bahamian Dollar (BSD)"
     }
   },
@@ -3776,7 +4035,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇧",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Mia Mottley",
+      "headOfState": "Jeffrey Bostic",
+      "headOfGovernment": "Mia Mottley",
+      "leader": "Jeffrey Bostic",
       "cuisine": "Cou-Cou and Flying Fish",
       "currency": "Barbadian Dollar (BBD)"
     }
@@ -3801,8 +4062,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇿",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Johnny Briceño",
-      "cuisine": "Boil Up",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Johnny Briceño",
+      "leader": "King Charles III",
+      "cuisine": "Rice and Beans with Stewed Chicken",
       "currency": "Belize Dollar (BZD)"
     }
   },
@@ -3826,7 +4089,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇴",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Luis Arce",
+      "headOfState": "Rodrigo Paz",
+      "leader": "Rodrigo Paz",
       "cuisine": "Salteñas",
       "currency": "Bolivian Boliviano (BOB)"
     }
@@ -3851,6 +4115,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇧🇷",
     "facts": {
       "politicalRegime": "Federal presidential republic",
+      "headOfState": "Luiz Inácio Lula da Silva",
       "leader": "Luiz Inácio Lula da Silva",
       "cuisine": "Feijoada",
       "currency": "Brazilian Real (BRL)"
@@ -3876,7 +4141,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇦",
     "facts": {
       "politicalRegime": "Federal parliamentary constitutional monarchy",
-      "leader": "Justin Trudeau",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Mark Carney",
+      "leader": "King Charles III",
       "cuisine": "Poutine",
       "currency": "Canadian Dollar (CAD)"
     }
@@ -3901,7 +4168,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇱",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Gabriel Boric",
+      "headOfState": "José Antonio Kast",
+      "leader": "José Antonio Kast",
       "cuisine": "Pastel de Choclo",
       "currency": "Chilean Peso (CLP)"
     }
@@ -3926,7 +4194,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇴",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Gustavo Petro",
+      "headOfState": "Abelardo de la Espriella",
+      "leader": "Abelardo de la Espriella",
       "cuisine": "Bandeja Paisa",
       "currency": "Colombian Peso (COP)"
     }
@@ -3951,7 +4220,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇷",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Rodrigo Chaves Robles",
+      "headOfState": "Laura Fernández",
+      "leader": "Laura Fernández",
       "cuisine": "Gallo Pinto",
       "currency": "Costa Rican Colón (CRC)"
     }
@@ -3976,6 +4246,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇺",
     "facts": {
       "politicalRegime": "Socialist one-party state",
+      "headOfState": "Miguel Díaz-Canel",
+      "headOfGovernment": "Manuel Marrero Cruz",
       "leader": "Miguel Díaz-Canel",
       "cuisine": "Ropa Vieja",
       "currency": "Cuban Peso (CUP)"
@@ -4001,7 +4273,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇩🇲",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Roosevelt Skerrit",
+      "headOfState": "Sylvanie Burton",
+      "headOfGovernment": "Roosevelt Skerrit",
+      "leader": "Sylvanie Burton",
       "cuisine": "Callaloo Soup",
       "currency": "East Caribbean Dollar (XCD)"
     }
@@ -4026,6 +4300,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇩🇴",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Luis Abinader",
       "leader": "Luis Abinader",
       "cuisine": "La Bandera",
       "currency": "Dominican Peso (DOP)"
@@ -4051,6 +4326,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇪🇨",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Daniel Noboa",
       "leader": "Daniel Noboa",
       "cuisine": "Encebollado",
       "currency": "United States Dollar (USD)"
@@ -4076,6 +4352,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇻",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Nayib Bukele",
       "leader": "Nayib Bukele",
       "cuisine": "Pupusas",
       "currency": "United States Dollar (USD)"
@@ -4101,7 +4378,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇬🇩",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Dickon Mitchell",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Dickon Mitchell",
+      "leader": "King Charles III",
       "cuisine": "Oil Down",
       "currency": "East Caribbean Dollar (XCD)"
     }
@@ -4126,6 +4405,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇬🇹",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Bernardo Arévalo",
       "leader": "Bernardo Arévalo",
       "cuisine": "Pepián",
       "currency": "Guatemalan Quetzal (GTQ)"
@@ -4151,6 +4431,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇬🇾",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Irfaan Ali",
+      "headOfGovernment": "Mark Phillips",
       "leader": "Irfaan Ali",
       "cuisine": "Pepperpot",
       "currency": "Guyanese Dollar (GYD)"
@@ -4175,8 +4457,10 @@ export const COUNTRIES: Country[] = [
     ],
     "flagEmoji": "🇭🇹",
     "facts": {
-      "politicalRegime": "Semi-presidential republic",
-      "leader": "Transitional Council",
+      "politicalRegime": "Transitional presidential council",
+      "headOfState": "Transitional Presidential Council",
+      "headOfGovernment": "Alix Didier Fils-Aimé",
+      "leader": "Transitional Presidential Council",
       "cuisine": "Soup Joumou",
       "currency": "Haitian Gourde (HTG)"
     }
@@ -4201,7 +4485,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇭🇳",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Xiomara Castro",
+      "headOfState": "Nasry Asfura",
+      "leader": "Nasry Asfura",
       "cuisine": "Plato Típico & Baleadas",
       "currency": "Honduran Lempira (HNL)"
     }
@@ -4226,7 +4511,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇯🇲",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Andrew Holness",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Andrew Holness",
+      "leader": "King Charles III",
       "cuisine": "Ackee and Saltfish",
       "currency": "Jamaican Dollar (JMD)"
     }
@@ -4251,6 +4538,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇽",
     "facts": {
       "politicalRegime": "Federal presidential republic",
+      "headOfState": "Claudia Sheinbaum",
       "leader": "Claudia Sheinbaum",
       "cuisine": "Mole Poblano & Tacos",
       "currency": "Mexican Peso (MXN)"
@@ -4276,7 +4564,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇳🇮",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Daniel Ortega",
+      "headOfState": "Daniel Ortega and Rosario Murillo",
+      "leader": "Daniel Ortega and Rosario Murillo",
       "cuisine": "Gallo Pinto",
       "currency": "Nicaraguan Córdoba (NIO)"
     }
@@ -4301,6 +4590,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇵🇦",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "José Raúl Mulino",
       "leader": "José Raúl Mulino",
       "cuisine": "Sancocho de Gallina",
       "currency": "Panamanian Balboa / USD"
@@ -4326,6 +4616,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇵🇾",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Santiago Peña",
       "leader": "Santiago Peña",
       "cuisine": "Sopa Paraguaya",
       "currency": "Paraguayan Guaraní (PYG)"
@@ -4351,7 +4642,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇵🇪",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Dina Boluarte",
+      "headOfState": "Keiko Fujimori",
+      "leader": "Keiko Fujimori",
       "cuisine": "Ceviche",
       "currency": "Peruvian Sol (PEN)"
     }
@@ -4376,7 +4668,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇰🇳",
     "facts": {
       "politicalRegime": "Federal parliamentary constitutional monarchy",
-      "leader": "Terrance Drew",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Terrance Drew",
+      "leader": "King Charles III",
       "cuisine": "Saltfish and Dumplings",
       "currency": "East Caribbean Dollar (XCD)"
     }
@@ -4401,7 +4695,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇱🇨",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Philip J. Pierre",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Philip J. Pierre",
+      "leader": "King Charles III",
       "cuisine": "Green Fig and Saltfish",
       "currency": "East Caribbean Dollar (XCD)"
     }
@@ -4426,8 +4722,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇻🇨",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Ralph Gonsalves",
-      "cuisine": "Roasted Breadfruit and Fried Jackfish",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Godwin Friday",
+      "leader": "King Charles III",
+      "cuisine": "Roasted Breadfruit & Fried Jackfish",
       "currency": "East Caribbean Dollar (XCD)"
     }
   },
@@ -4451,7 +4749,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇷",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Chan Santokhi",
+      "headOfState": "Jennifer Geerlings-Simons",
+      "leader": "Jennifer Geerlings-Simons",
       "cuisine": "Pom",
       "currency": "Surinamese Dollar (SRD)"
     }
@@ -4476,7 +4775,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇹🇹",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Keith Rowley",
+      "headOfState": "Christine Kangaloo",
+      "headOfGovernment": "Kamla Persad-Bissessar",
+      "leader": "Christine Kangaloo",
       "cuisine": "Crab and Callaloo",
       "currency": "Trinidad and Tobago Dollar (TTD)"
     }
@@ -4501,7 +4802,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇺🇸",
     "facts": {
       "politicalRegime": "Federal presidential republic",
-      "leader": "Joe Biden",
+      "headOfState": "Donald Trump",
+      "leader": "Donald Trump",
       "cuisine": "Apple Pie & Barbecue",
       "currency": "United States Dollar (USD)"
     }
@@ -4526,7 +4828,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇺🇾",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Luis Lacalle Pou",
+      "headOfState": "Yamandú Orsi",
+      "leader": "Yamandú Orsi",
       "cuisine": "Chivito",
       "currency": "Uruguayan Peso (UYU)"
     }
@@ -4551,7 +4854,8 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇻🇪",
     "facts": {
       "politicalRegime": "Presidential republic",
-      "leader": "Nicolás Maduro",
+      "headOfState": "Delcy Rodríguez",
+      "leader": "Delcy Rodríguez",
       "cuisine": "Pabellón Criollo",
       "currency": "Venezuelan Bolívar (VES)"
     }
@@ -4576,7 +4880,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇦🇺",
     "facts": {
       "politicalRegime": "Federal parliamentary constitutional monarchy",
-      "leader": "Anthony Albanese",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Anthony Albanese",
+      "leader": "King Charles III",
       "cuisine": "Meat Pie & Vegemite",
       "currency": "Australian Dollar (AUD)"
     }
@@ -4601,7 +4907,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇫🇯",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Sitiveni Rabuka",
+      "headOfState": "Naiqama Lalabalavu",
+      "headOfGovernment": "Sitiveni Rabuka",
+      "leader": "Naiqama Lalabalavu",
       "cuisine": "Kokoda",
       "currency": "Fijian Dollar (FJD)"
     }
@@ -4626,6 +4934,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇰🇮",
     "facts": {
       "politicalRegime": "Parliamentary republic",
+      "headOfState": "Taneti Maamau",
       "leader": "Taneti Maamau",
       "cuisine": "Palusami",
       "currency": "Australian Dollar (AUD)"
@@ -4651,6 +4960,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇲🇭",
     "facts": {
       "politicalRegime": "Parliamentary republic",
+      "headOfState": "Hilda Heine",
       "leader": "Hilda Heine",
       "cuisine": "Barramundi & Breadfruit",
       "currency": "United States Dollar (USD)"
@@ -4676,6 +4986,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇫🇲",
     "facts": {
       "politicalRegime": "Federal presidential republic",
+      "headOfState": "Wesley Simina",
       "leader": "Wesley Simina",
       "cuisine": "Uhot (Breadfruit paste)",
       "currency": "United States Dollar (USD)"
@@ -4701,6 +5012,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇳🇷",
     "facts": {
       "politicalRegime": "Parliamentary republic",
+      "headOfState": "David Adeang",
       "leader": "David Adeang",
       "cuisine": "Coconut Fish",
       "currency": "Australian Dollar (AUD)"
@@ -4726,7 +5038,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇳🇿",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Christopher Luxon",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Christopher Luxon",
+      "leader": "King Charles III",
       "cuisine": "Hāngī & Pavlova",
       "currency": "New Zealand Dollar (NZD)"
     }
@@ -4751,6 +5065,7 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇵🇼",
     "facts": {
       "politicalRegime": "Presidential republic",
+      "headOfState": "Surangel Whipps Jr.",
       "leader": "Surangel Whipps Jr.",
       "cuisine": "Fruit Bat Soup & Taro",
       "currency": "United States Dollar (USD)"
@@ -4776,7 +5091,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇵🇬",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "James Marape",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "James Marape",
+      "leader": "King Charles III",
       "cuisine": "Mumu",
       "currency": "Papua New Guinean Kina (PGK)"
     }
@@ -4801,8 +5118,10 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇼🇸",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Fiamē Naomi Mataʻafa",
-      "cuisine": "Oka I'a (Raw fish in coconut)",
+      "headOfState": "Tuimalealiʻifano Vaʻaletoʻa Sualauvi II",
+      "headOfGovernment": "Laʻauli Leuatea Schmidt",
+      "leader": "Tuimalealiʻifano Vaʻaletoʻa Sualauvi II",
+      "cuisine": "Oka I'a",
       "currency": "Samoan Tālā (WST)"
     }
   },
@@ -4826,7 +5145,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇸🇧",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Jeremiah Manele",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Matthew Wale",
+      "leader": "King Charles III",
       "cuisine": "Poi & Cassava pudding",
       "currency": "Solomon Islands Dollar (SBD)"
     }
@@ -4851,7 +5172,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇹🇴",
     "facts": {
       "politicalRegime": "Constitutional monarchy",
-      "leader": "Siaosi Sovaleni",
+      "headOfState": "King Tupou VI",
+      "headOfGovernment": "Fatafehi Fakafānua",
+      "leader": "King Tupou VI",
       "cuisine": "Lu Pulu",
       "currency": "Tongan Paʻanga (TOP)"
     }
@@ -4876,7 +5199,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇹🇻",
     "facts": {
       "politicalRegime": "Parliamentary constitutional monarchy",
-      "leader": "Feleti Teo",
+      "headOfState": "King Charles III",
+      "headOfGovernment": "Feleti Teo",
+      "leader": "King Charles III",
       "cuisine": "Pulaka & Coconut soup",
       "currency": "Tuvaluan Dollar / AUD"
     }
@@ -4901,7 +5226,9 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇻🇺",
     "facts": {
       "politicalRegime": "Parliamentary republic",
-      "leader": "Charlot Salwai",
+      "headOfState": "Nikenike Vurobaravu",
+      "headOfGovernment": "Jotham Napat",
+      "leader": "Nikenike Vurobaravu",
       "cuisine": "Laplap",
       "currency": "Vanuatu Vatu (VUV)"
     }

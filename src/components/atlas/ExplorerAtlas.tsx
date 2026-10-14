@@ -236,14 +236,19 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
                   </div>
                 )}
 
-                {selectedCountry.facts.leader && (
+                {(selectedCountry.facts.headOfState || selectedCountry.facts.leader) && (
                   <div className="bg-[#ECE2CE]/70 border border-[#D8CBB5] p-2.5 rounded-2xl flex items-center gap-2.5">
-                    <UserCheck className="w-4 h-4 text-[#2A9D8F]" />
-                    <div>
-                      <div className="text-[10px] uppercase tracking-wider text-[#5B7083] font-extrabold">Head of State / Leader</div>
-                      <div className="text-xs font-extrabold text-[#142534]">
-                        {selectedCountry.facts.leader}
+                    <UserCheck className="w-4 h-4 text-[#2A9D8F] shrink-0" />
+                    <div className="min-w-0">
+                      <div className="text-[10px] uppercase tracking-wider text-[#5B7083] font-extrabold">Head of State</div>
+                      <div className="text-xs font-extrabold text-[#142534] truncate">
+                        {selectedCountry.facts.headOfState || selectedCountry.facts.leader}
                       </div>
+                      {selectedCountry.facts.headOfGovernment && selectedCountry.facts.headOfGovernment !== (selectedCountry.facts.headOfState || selectedCountry.facts.leader) && (
+                        <div className="text-[10px] font-semibold text-[#5B7083] truncate mt-0.5">
+                          Head of Govt: {selectedCountry.facts.headOfGovernment}
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
