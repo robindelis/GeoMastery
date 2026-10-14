@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T10:18:00.788Z",
+  "exportedAt": "2026-10-14T10:18:05.562Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13296,14 +13296,14 @@
         "id": "GNQ:location",
         "countryId": "GNQ",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T13:38:45.313Z",
-        "nextDueAt": "2026-10-11T13:38:45.313Z",
+        "lastReviewedAt": "2026-10-14T10:18:02.175Z",
+        "nextDueAt": "2026-10-21T10:18:02.175Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:35:12.776Z",
@@ -13318,9 +13318,16 @@
             "userAnswer": "Equatorial Guinea",
             "isCorrect": true,
             "timeSpentMs": 3903
+          },
+          {
+            "timestamp": "2026-10-14T10:18:02.175Z",
+            "inputMode": "map_click",
+            "userAnswer": "Equatorial Guinea",
+            "isCorrect": true,
+            "timeSpentMs": 4309
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -15365,16 +15372,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1137,
-    "totalCorrect": 845,
+    "totalReviews": 1138,
+    "totalCorrect": 846,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 20,
-        "learning": 88
+        "mastered": 21,
+        "learning": 87
       },
       "Americas": {
         "total": 70,
@@ -15398,7 +15405,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T10:17:57.535Z"
+    "updatedAt": "2026-10-14T10:18:02.177Z"
   },
   "settings": {
     "audioEnabled": true,
