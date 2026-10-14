@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:33:13.654Z",
+  "exportedAt": "2026-10-14T19:33:18.744Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -10735,12 +10735,12 @@
         "attributeId": "location",
         "stage": 1,
         "step": 0,
-        "easeFactor": 1.9499999999999995,
+        "easeFactor": 1.7499999999999996,
         "intervalDays": 0,
         "reps": 1,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-10T13:39:27.197Z",
-        "nextDueAt": "2026-10-10T13:39:27.197Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-10-14T19:33:15.376Z",
+        "nextDueAt": "2026-10-14T19:33:15.376Z",
         "history": [
           {
             "timestamp": "2026-10-06T11:48:47.950Z",
@@ -10769,6 +10769,13 @@
             "userAnswer": "Lesotho",
             "isCorrect": false,
             "timeSpentMs": 5518
+          },
+          {
+            "timestamp": "2026-10-14T19:33:15.376Z",
+            "inputMode": "map_click",
+            "userAnswer": "Eswatini",
+            "isCorrect": false,
+            "timeSpentMs": 4129
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15520,7 +15527,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1151,
+    "totalReviews": 1152,
     "totalCorrect": 854,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15553,7 +15560,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:33:10.382Z"
+    "updatedAt": "2026-10-14T19:33:15.379Z"
   },
   "settings": {
     "audioEnabled": true,
