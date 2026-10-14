@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:19:36.163Z",
+  "exportedAt": "2026-10-14T21:20:14.206Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13654,14 +13654,14 @@
         "id": "SYC:capital",
         "countryId": "SYC",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1999999999999993,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.249999999999999,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-08T20:20:28.980Z",
-        "nextDueAt": "2026-10-09T20:20:28.980Z",
+        "lastReviewedAt": "2026-10-14T21:20:10.573Z",
+        "nextDueAt": "2026-10-21T21:20:10.573Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:35:29.382Z",
@@ -13690,9 +13690,16 @@
             "userAnswer": "Victoria",
             "isCorrect": true,
             "timeSpentMs": 3409
+          },
+          {
+            "timestamp": "2026-10-14T21:20:10.573Z",
+            "inputMode": "typing",
+            "userAnswer": "Victoria",
+            "isCorrect": true,
+            "timeSpentMs": 4030
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -16169,16 +16176,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1203,
-    "totalCorrect": 884,
+    "totalReviews": 1204,
+    "totalCorrect": 885,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 21,
-        "learning": 87
+        "mastered": 22,
+        "learning": 86
       },
       "Americas": {
         "total": 70,
@@ -16202,7 +16209,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:19:32.765Z"
+    "updatedAt": "2026-10-14T21:20:10.578Z"
   },
   "settings": {
     "audioEnabled": true,
