@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T10:16:58.868Z",
+  "exportedAt": "2026-10-14T10:17:13.142Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -897,14 +897,14 @@
         "id": "AUT:location",
         "countryId": "AUT",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-06T10:21:31.364Z",
-        "nextDueAt": "2026-10-07T10:21:31.364Z",
+        "lastReviewedAt": "2026-10-14T10:17:09.779Z",
+        "nextDueAt": "2026-10-21T10:17:09.779Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:05:42.703Z",
@@ -919,9 +919,16 @@
             "userAnswer": "Austria",
             "isCorrect": true,
             "timeSpentMs": 7655
+          },
+          {
+            "timestamp": "2026-10-14T10:17:09.779Z",
+            "inputMode": "map_click",
+            "userAnswer": "Austria",
+            "isCorrect": true,
+            "timeSpentMs": 6429
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -15316,8 +15323,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1130,
-    "totalCorrect": 840,
+    "totalReviews": 1131,
+    "totalCorrect": 841,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15339,8 +15346,8 @@
       },
       "Europe": {
         "total": 90,
-        "mastered": 52,
-        "learning": 38
+        "mastered": 53,
+        "learning": 37
       },
       "Oceania": {
         "total": 28,
@@ -15349,12 +15356,12 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T10:16:55.193Z"
+    "updatedAt": "2026-10-14T10:17:09.786Z"
   },
   "settings": {
     "audioEnabled": true,
     "soundVolume": 0.6,
-    "mapMode": "3d",
+    "mapMode": "2d",
     "autoRotateGlobe": false,
     "showMapCountryLabels": false,
     "typingFuzzyTolerance": 1,
