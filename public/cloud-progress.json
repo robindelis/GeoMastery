@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:19:01.857Z",
+  "exportedAt": "2026-10-14T21:19:10.136Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16067,11 +16067,63 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "PAN:capital",
+      {
+        "id": "PAN:capital",
+        "countryId": "PAN",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T21:19:06.008Z",
+        "nextDueAt": "2026-10-15T21:19:06.008Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:19:06.008Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Panama City",
+            "isCorrect": true,
+            "timeSpentMs": 2171
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
+    ],
+    [
+      "DOM:capital",
+      {
+        "id": "DOM:capital",
+        "countryId": "DOM",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T21:19:09.727Z",
+        "nextDueAt": "2026-10-15T21:19:09.727Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:19:09.727Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Santo Domingo",
+            "isCorrect": true,
+            "timeSpentMs": 2390
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1197,
-    "totalCorrect": 879,
+    "totalReviews": 1199,
+    "totalCorrect": 881,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -16084,7 +16136,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 32
+        "learning": 34
       },
       "Asia": {
         "total": 96,
@@ -16103,7 +16155,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:18:58.745Z"
+    "updatedAt": "2026-10-14T21:19:09.729Z"
   },
   "settings": {
     "audioEnabled": true,
