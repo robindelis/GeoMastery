@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T10:18:11.315Z",
+  "exportedAt": "2026-10-14T10:18:16.198Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7848,13 +7848,13 @@
         "countryId": "BRN",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.1499999999999995,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2.1999999999999993,
+        "intervalDays": 1,
+        "reps": 2,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-09T19:18:58.867Z",
-        "nextDueAt": "2026-10-09T19:18:58.867Z",
+        "lastReviewedAt": "2026-10-14T10:18:12.475Z",
+        "nextDueAt": "2026-10-15T10:18:12.475Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:31:27.740Z",
@@ -7876,9 +7876,16 @@
             "userAnswer": "Kuwait",
             "isCorrect": false,
             "timeSpentMs": 8823
+          },
+          {
+            "timestamp": "2026-10-14T10:18:12.475Z",
+            "inputMode": "map_click",
+            "userAnswer": "Brunei",
+            "isCorrect": true,
+            "timeSpentMs": 3434
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -15379,8 +15386,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1139,
-    "totalCorrect": 846,
+    "totalReviews": 1140,
+    "totalCorrect": 847,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15412,7 +15419,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T10:18:07.611Z"
+    "updatedAt": "2026-10-14T10:18:12.477Z"
   },
   "settings": {
     "audioEnabled": true,
