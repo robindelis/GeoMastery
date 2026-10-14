@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T10:17:13.142Z",
+  "exportedAt": "2026-10-14T10:17:20.869Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -2066,14 +2066,14 @@
         "id": "BHS:capital",
         "countryId": "BHS",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.0499999999999994,
-        "intervalDays": 1,
-        "reps": 3,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.099999999999999,
+        "intervalDays": 7,
+        "reps": 4,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-09T19:18:26.597Z",
-        "nextDueAt": "2026-10-10T19:18:26.597Z",
+        "lastReviewedAt": "2026-10-14T10:17:17.122Z",
+        "nextDueAt": "2026-10-21T10:17:17.122Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:11:22.398Z",
@@ -2116,9 +2116,16 @@
             "userAnswer": "Nassau",
             "isCorrect": true,
             "timeSpentMs": 3422
+          },
+          {
+            "timestamp": "2026-10-14T10:17:17.122Z",
+            "inputMode": "typing",
+            "userAnswer": "Nassau",
+            "isCorrect": true,
+            "timeSpentMs": 6326
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -15323,8 +15330,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1131,
-    "totalCorrect": 841,
+    "totalReviews": 1132,
+    "totalCorrect": 842,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15336,8 +15343,8 @@
       },
       "Americas": {
         "total": 70,
-        "mastered": 12,
-        "learning": 20
+        "mastered": 13,
+        "learning": 19
       },
       "Asia": {
         "total": 96,
@@ -15356,7 +15363,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T10:17:09.786Z"
+    "updatedAt": "2026-10-14T10:17:17.125Z"
   },
   "settings": {
     "audioEnabled": true,
