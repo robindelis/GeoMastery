@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:20:45.746Z",
+  "exportedAt": "2026-10-14T21:20:53.031Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -3546,13 +3546,13 @@
         "countryId": "CHE",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.6999999999999993,
+        "intervalDays": 19,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-09T20:08:56.354Z",
-        "nextDueAt": "2026-10-16T20:08:56.354Z",
+        "lastReviewedAt": "2026-10-14T21:20:49.644Z",
+        "nextDueAt": "2026-11-02T21:20:49.644Z",
         "history": [
           {
             "timestamp": "2026-10-04T17:03:47.490Z",
@@ -3574,9 +3574,16 @@
             "userAnswer": "Switzerland",
             "isCorrect": true,
             "timeSpentMs": 8029
+          },
+          {
+            "timestamp": "2026-10-14T21:20:49.644Z",
+            "inputMode": "map_click",
+            "userAnswer": "Switzerland",
+            "isCorrect": true,
+            "timeSpentMs": 6171
           }
         ],
-        "consecutiveRecallCorrect": 2
+        "consecutiveRecallCorrect": 3
       }
     ],
     [
@@ -16268,8 +16275,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1209,
-    "totalCorrect": 889,
+    "totalReviews": 1210,
+    "totalCorrect": 890,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -16301,7 +16308,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:20:42.416Z"
+    "updatedAt": "2026-10-14T21:20:49.646Z"
   },
   "settings": {
     "audioEnabled": true,
