@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:18:39.745Z",
+  "exportedAt": "2026-10-14T21:18:45.095Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16008,11 +16008,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "CAN:location",
+      {
+        "id": "CAN:location",
+        "countryId": "CAN",
+        "attributeId": "location",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T21:18:41.234Z",
+        "nextDueAt": "2026-10-15T21:18:41.234Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:18:41.234Z",
+            "inputMode": "map_click",
+            "userAnswer": "Canada",
+            "isCorrect": true,
+            "timeSpentMs": 1808
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1194,
-    "totalCorrect": 877,
+    "totalReviews": 1195,
+    "totalCorrect": 878,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -16025,7 +16051,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 30
+        "learning": 31
       },
       "Asia": {
         "total": 96,
@@ -16044,7 +16070,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:18:36.454Z"
+    "updatedAt": "2026-10-14T21:18:41.238Z"
   },
   "settings": {
     "audioEnabled": true,
