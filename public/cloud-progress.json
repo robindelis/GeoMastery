@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:20:17.572Z",
+  "exportedAt": "2026-10-14T21:20:26.519Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16199,10 +16199,36 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "CUB:location",
+      {
+        "id": "CUB:location",
+        "countryId": "CUB",
+        "attributeId": "location",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-14T21:20:23.391Z",
+        "nextDueAt": "2026-10-14T21:20:23.391Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:20:23.391Z",
+            "inputMode": "map_click",
+            "userAnswer": "Jamaica",
+            "isCorrect": false,
+            "timeSpentMs": 5166
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1205,
+    "totalReviews": 1206,
     "totalCorrect": 886,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -16235,7 +16261,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:20:14.323Z"
+    "updatedAt": "2026-10-14T21:20:23.393Z"
   },
   "settings": {
     "audioEnabled": true,
