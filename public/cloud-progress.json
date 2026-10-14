@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:15:55.220Z",
+  "exportedAt": "2026-10-14T21:16:04.431Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -1119,13 +1119,13 @@
         "countryId": "DNK",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.6999999999999993,
+        "intervalDays": 19,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-09T20:09:40.886Z",
-        "nextDueAt": "2026-10-16T20:09:40.886Z",
+        "lastReviewedAt": "2026-10-14T21:16:00.786Z",
+        "nextDueAt": "2026-11-02T21:16:00.786Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:06:53.464Z",
@@ -1147,9 +1147,16 @@
             "userAnswer": "Denmark",
             "isCorrect": true,
             "timeSpentMs": 4505
+          },
+          {
+            "timestamp": "2026-10-14T21:16:00.786Z",
+            "inputMode": "map_click",
+            "userAnswer": "Denmark",
+            "isCorrect": true,
+            "timeSpentMs": 3554
           }
         ],
-        "consecutiveRecallCorrect": 2
+        "consecutiveRecallCorrect": 3
       }
     ],
     [
@@ -15856,8 +15863,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1180,
-    "totalCorrect": 869,
+    "totalReviews": 1181,
+    "totalCorrect": 870,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15889,7 +15896,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:15:51.945Z"
+    "updatedAt": "2026-10-14T21:16:00.789Z"
   },
   "settings": {
     "audioEnabled": true,
