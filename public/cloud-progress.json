@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T14:00:47.794Z",
+  "exportedAt": "2026-10-14T14:00:55.395Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -12517,13 +12517,13 @@
         "countryId": "MUS",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
+        "step": 2,
+        "easeFactor": 2.5999999999999996,
         "intervalDays": 1,
-        "reps": 1,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-06T12:29:10.721Z",
-        "nextDueAt": "2026-10-07T12:29:10.721Z",
+        "lastReviewedAt": "2026-10-14T14:00:52.142Z",
+        "nextDueAt": "2026-10-15T14:00:52.142Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:29:10.721Z",
@@ -12531,9 +12531,16 @@
             "userAnswer": "Mauritius",
             "isCorrect": true,
             "timeSpentMs": 4145
+          },
+          {
+            "timestamp": "2026-10-14T14:00:52.142Z",
+            "inputMode": "map_click",
+            "userAnswer": "Mauritius",
+            "isCorrect": true,
+            "timeSpentMs": 6453
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -15393,8 +15400,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1141,
-    "totalCorrect": 848,
+    "totalReviews": 1142,
+    "totalCorrect": 849,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15426,7 +15433,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T14:00:44.756Z"
+    "updatedAt": "2026-10-14T14:00:52.145Z"
   },
   "settings": {
     "audioEnabled": true,
