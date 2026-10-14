@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:36:21.922Z",
+  "exportedAt": "2026-10-14T19:36:37.328Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15684,10 +15684,36 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "BHS:location",
+      {
+        "id": "BHS:location",
+        "countryId": "BHS",
+        "attributeId": "location",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-14T19:36:34.221Z",
+        "nextDueAt": "2026-10-14T19:36:34.221Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T19:36:34.221Z",
+            "inputMode": "map_click",
+            "userAnswer": "France",
+            "isCorrect": false,
+            "timeSpentMs": 13717
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1164,
+    "totalReviews": 1165,
     "totalCorrect": 862,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15720,7 +15746,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:36:18.903Z"
+    "updatedAt": "2026-10-14T19:36:34.222Z"
   },
   "settings": {
     "audioEnabled": true,
