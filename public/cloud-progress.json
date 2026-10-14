@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:20:14.206Z",
+  "exportedAt": "2026-10-14T21:20:17.572Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16173,11 +16173,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "URY:capital",
+      {
+        "id": "URY:capital",
+        "countryId": "URY",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T21:20:14.320Z",
+        "nextDueAt": "2026-10-15T21:20:14.320Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:20:14.320Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Montevideo",
+            "isCorrect": true,
+            "timeSpentMs": 2671
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1204,
-    "totalCorrect": 885,
+    "totalReviews": 1205,
+    "totalCorrect": 886,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -16190,7 +16216,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 35
+        "learning": 36
       },
       "Asia": {
         "total": 96,
@@ -16209,7 +16235,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:20:10.578Z"
+    "updatedAt": "2026-10-14T21:20:14.323Z"
   },
   "settings": {
     "audioEnabled": true,
