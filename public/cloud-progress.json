@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:18:48.527Z",
+  "exportedAt": "2026-10-14T21:19:01.857Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13921,13 +13921,13 @@
         "countryId": "SDN",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.3499999999999996,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-06T12:36:16.367Z",
-        "nextDueAt": "2026-10-07T12:36:16.367Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-14T21:18:58.742Z",
+        "nextDueAt": "2026-10-14T21:18:58.742Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:36:16.367Z",
@@ -13935,6 +13935,13 @@
             "userAnswer": "Khartoum",
             "isCorrect": true,
             "timeSpentMs": 4508
+          },
+          {
+            "timestamp": "2026-10-14T21:18:58.742Z",
+            "inputMode": "typing",
+            "userAnswer": "Juba",
+            "isCorrect": false,
+            "timeSpentMs": 12570
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -16063,7 +16070,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1196,
+    "totalReviews": 1197,
     "totalCorrect": 879,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -16096,7 +16103,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:18:45.378Z"
+    "updatedAt": "2026-10-14T21:18:58.745Z"
   },
   "settings": {
     "audioEnabled": true,
