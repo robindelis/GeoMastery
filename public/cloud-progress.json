@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T10:17:27.603Z",
+  "exportedAt": "2026-10-14T10:17:31.226Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -4275,14 +4275,14 @@
         "id": "JPN:capital",
         "countryId": "JPN",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T17:39:44.735Z",
-        "nextDueAt": "2026-10-09T17:39:44.735Z",
+        "lastReviewedAt": "2026-10-14T10:17:27.774Z",
+        "nextDueAt": "2026-10-21T10:17:27.774Z",
         "history": [
           {
             "timestamp": "2026-10-04T18:41:14.186Z",
@@ -4297,9 +4297,16 @@
             "userAnswer": "Tokyo",
             "isCorrect": true,
             "timeSpentMs": 3937
+          },
+          {
+            "timestamp": "2026-10-14T10:17:27.774Z",
+            "inputMode": "typing",
+            "userAnswer": "Tokyo",
+            "isCorrect": true,
+            "timeSpentMs": 2383
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -15337,8 +15344,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1133,
-    "totalCorrect": 843,
+    "totalReviews": 1134,
+    "totalCorrect": 844,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15355,8 +15362,8 @@
       },
       "Asia": {
         "total": 96,
-        "mastered": 16,
-        "learning": 80
+        "mastered": 17,
+        "learning": 79
       },
       "Europe": {
         "total": 90,
@@ -15370,7 +15377,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T10:17:24.375Z"
+    "updatedAt": "2026-10-14T10:17:27.777Z"
   },
   "settings": {
     "audioEnabled": true,
