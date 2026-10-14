@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:18:01.208Z",
+  "exportedAt": "2026-10-14T21:18:14.440Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15396,13 +15396,13 @@
         "countryId": "GUY",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 1.7499999999999998,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 1.5499999999999998,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 4,
-        "lastReviewedAt": "2026-10-10T08:59:55.113Z",
-        "nextDueAt": "2026-10-11T08:59:55.113Z",
+        "lapses": 5,
+        "lastReviewedAt": "2026-10-14T21:18:11.446Z",
+        "nextDueAt": "2026-10-14T21:18:11.446Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:55:47.502Z",
@@ -15438,6 +15438,13 @@
             "userAnswer": "Georgetown",
             "isCorrect": true,
             "timeSpentMs": 56945
+          },
+          {
+            "timestamp": "2026-10-14T21:18:11.446Z",
+            "inputMode": "typing",
+            "userAnswer": "Guyana",
+            "isCorrect": false,
+            "timeSpentMs": 5559
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15997,7 +16004,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1192,
+    "totalReviews": 1193,
     "totalCorrect": 877,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -16030,7 +16037,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:17:58.168Z"
+    "updatedAt": "2026-10-14T21:18:11.448Z"
   },
   "settings": {
     "audioEnabled": true,
