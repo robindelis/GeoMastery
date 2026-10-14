@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:20:42.260Z",
+  "exportedAt": "2026-10-14T21:20:45.746Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16239,11 +16239,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "ARG:capital",
+      {
+        "id": "ARG:capital",
+        "countryId": "ARG",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T21:20:42.413Z",
+        "nextDueAt": "2026-10-15T21:20:42.413Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:20:42.413Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Buenos Aires",
+            "isCorrect": true,
+            "timeSpentMs": 2056
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1208,
-    "totalCorrect": 888,
+    "totalReviews": 1209,
+    "totalCorrect": 889,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -16256,7 +16282,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 36
+        "learning": 37
       },
       "Asia": {
         "total": 96,
@@ -16275,7 +16301,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:20:39.020Z"
+    "updatedAt": "2026-10-14T21:20:42.416Z"
   },
   "settings": {
     "audioEnabled": true,
