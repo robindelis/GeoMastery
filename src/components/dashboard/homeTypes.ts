@@ -41,6 +41,8 @@ export interface RegionModel {
   shortName: string;
   emblem: string;
   subtitle: string;
+  /** Tightest form of the subtitle, for narrow tiles (e.g. "45 nations") */
+  shortSubtitle: string;
   total: number;
   mastered: number;
   recall: number;

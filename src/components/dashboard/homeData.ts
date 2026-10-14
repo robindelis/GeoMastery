@@ -109,6 +109,7 @@ export const useHomeData = (
       shortName: string,
       emblem: string,
       subtitle: string,
+      shortSubtitle: string,
       counts: { total: number; stage0: number; stage1: number; stage2: number },
       isWater: boolean
     ): RegionModel => {
@@ -122,6 +123,7 @@ export const useHomeData = (
         shortName,
         emblem,
         subtitle,
+        shortSubtitle,
         total: counts.total,
         mastered,
         recall,
@@ -144,6 +146,7 @@ export const useHomeData = (
           continent,
           CONTINENT_EMBLEMS[continent] || '🌍',
           `${nations} nations · ${b.total} cards`,
+          `${nations} nations`,
           b,
           false
         );
@@ -154,6 +157,7 @@ export const useHomeData = (
         'Oceans',
         '🌊',
         `${WATER_BODIES.length} maritime bodies`,
+        `${WATER_BODIES.length} seas`,
         mastery.waterBreakdown || {
           total: WATER_BODIES.length,
           stage0: WATER_BODIES.length,
