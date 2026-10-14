@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:33:52.237Z",
+  "exportedAt": "2026-10-14T19:33:56.429Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15571,11 +15571,63 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "CAN:capital",
+      {
+        "id": "CAN:capital",
+        "countryId": "CAN",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T19:33:52.953Z",
+        "nextDueAt": "2026-10-15T19:33:52.953Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T19:33:52.953Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Ottawa",
+            "isCorrect": true,
+            "timeSpentMs": 1499
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
+    ],
+    [
+      "GTM:capital",
+      {
+        "id": "GTM:capital",
+        "countryId": "GTM",
+        "attributeId": "capital",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-14T19:33:56.353Z",
+        "nextDueAt": "2026-10-14T19:33:56.353Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T19:33:56.353Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Montevideo",
+            "isCorrect": false,
+            "timeSpentMs": 2497
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1156,
-    "totalCorrect": 855,
+    "totalReviews": 1158,
+    "totalCorrect": 856,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15588,7 +15640,7 @@
       "Americas": {
         "total": 70,
         "mastered": 14,
-        "learning": 20
+        "learning": 21
       },
       "Asia": {
         "total": 96,
@@ -15607,7 +15659,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:33:48.674Z"
+    "updatedAt": "2026-10-14T19:33:56.357Z"
   },
   "settings": {
     "audioEnabled": true,
