@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:00:21.849Z",
+  "exportedAt": "2026-10-14T21:15:13.223Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7758,13 +7758,13 @@
         "countryId": "UZB",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.3499999999999996,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-04T20:30:26.859Z",
-        "nextDueAt": "2026-10-05T20:30:26.859Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-14T21:15:09.861Z",
+        "nextDueAt": "2026-10-14T21:15:09.861Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:30:26.859Z",
@@ -7772,6 +7772,13 @@
             "userAnswer": "Uzbekistan",
             "isCorrect": true,
             "timeSpentMs": 6822
+          },
+          {
+            "timestamp": "2026-10-14T21:15:09.861Z",
+            "inputMode": "map_click",
+            "userAnswer": "Turkmenistan",
+            "isCorrect": false,
+            "timeSpentMs": 889808
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15802,7 +15809,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1175,
+    "totalReviews": 1176,
     "totalCorrect": 867,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15835,7 +15842,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:00:18.595Z"
+    "updatedAt": "2026-10-14T21:15:09.863Z"
   },
   "settings": {
     "audioEnabled": true,
