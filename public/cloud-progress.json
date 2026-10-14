@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:21:44.048Z",
+  "exportedAt": "2026-10-14T21:22:25.053Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16385,11 +16385,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "PER:capital",
+      {
+        "id": "PER:capital",
+        "countryId": "PER",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T21:22:21.777Z",
+        "nextDueAt": "2026-10-15T21:22:21.777Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:22:21.777Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Lima",
+            "isCorrect": true,
+            "timeSpentMs": 4676
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1218,
-    "totalCorrect": 895,
+    "totalReviews": 1219,
+    "totalCorrect": 896,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -16402,7 +16428,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 40
+        "learning": 41
       },
       "Asia": {
         "total": 96,
@@ -16421,7 +16447,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:21:40.876Z"
+    "updatedAt": "2026-10-14T21:22:21.781Z"
   },
   "settings": {
     "audioEnabled": true,
