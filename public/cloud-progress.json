@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:15:48.639Z",
+  "exportedAt": "2026-10-14T21:15:55.220Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -5486,12 +5486,12 @@
         "attributeId": "location",
         "stage": 1,
         "step": 0,
-        "easeFactor": 1.7999999999999994,
+        "easeFactor": 1.5999999999999994,
         "intervalDays": 0,
         "reps": 2,
-        "lapses": 4,
-        "lastReviewedAt": "2026-10-14T19:33:48.670Z",
-        "nextDueAt": "2026-10-14T19:33:48.670Z",
+        "lapses": 5,
+        "lastReviewedAt": "2026-10-14T21:15:51.943Z",
+        "nextDueAt": "2026-10-14T21:15:51.943Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:26:05.988Z",
@@ -5534,6 +5534,13 @@
             "userAnswer": "__DONT_KNOW__",
             "isCorrect": false,
             "timeSpentMs": 2843
+          },
+          {
+            "timestamp": "2026-10-14T21:15:51.943Z",
+            "inputMode": "map_click",
+            "userAnswer": "Vanuatu",
+            "isCorrect": false,
+            "timeSpentMs": 6160
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15849,7 +15856,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1179,
+    "totalReviews": 1180,
     "totalCorrect": 869,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15882,7 +15889,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:15:44.422Z"
+    "updatedAt": "2026-10-14T21:15:51.945Z"
   },
   "settings": {
     "audioEnabled": true,
