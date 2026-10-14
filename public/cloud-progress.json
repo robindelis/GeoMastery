@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:18:45.095Z",
+  "exportedAt": "2026-10-14T21:18:48.527Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16034,11 +16034,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "GUY:location",
+      {
+        "id": "GUY:location",
+        "countryId": "GUY",
+        "attributeId": "location",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T21:18:45.376Z",
+        "nextDueAt": "2026-10-15T21:18:45.376Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:18:45.376Z",
+            "inputMode": "map_click",
+            "userAnswer": "Guyana",
+            "isCorrect": true,
+            "timeSpentMs": 2353
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1195,
-    "totalCorrect": 878,
+    "totalReviews": 1196,
+    "totalCorrect": 879,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -16051,7 +16077,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 31
+        "learning": 32
       },
       "Asia": {
         "total": 96,
@@ -16070,7 +16096,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:18:41.238Z"
+    "updatedAt": "2026-10-14T21:18:45.378Z"
   },
   "settings": {
     "audioEnabled": true,
