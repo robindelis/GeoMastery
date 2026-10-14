@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:37:21.244Z",
+  "exportedAt": "2026-10-14T19:37:25.911Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15563,14 +15563,14 @@
         "id": "LCA:capital",
         "countryId": "LCA",
         "attributeId": "capital",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.3499999999999996,
+        "intervalDays": 1,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-14T19:32:53.251Z",
-        "nextDueAt": "2026-10-14T19:32:53.251Z",
+        "lastReviewedAt": "2026-10-14T19:37:22.585Z",
+        "nextDueAt": "2026-10-15T19:37:22.585Z",
         "history": [
           {
             "timestamp": "2026-10-14T19:32:53.251Z",
@@ -15578,6 +15578,13 @@
             "userAnswer": "St. John's",
             "isCorrect": false,
             "timeSpentMs": 3544
+          },
+          {
+            "timestamp": "2026-10-14T19:37:22.585Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Castries",
+            "isCorrect": true,
+            "timeSpentMs": 2315
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15781,8 +15788,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1172,
-    "totalCorrect": 864,
+    "totalReviews": 1173,
+    "totalCorrect": 865,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15795,7 +15802,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 23
+        "learning": 24
       },
       "Asia": {
         "total": 96,
@@ -15814,7 +15821,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:37:17.979Z"
+    "updatedAt": "2026-10-14T19:37:22.588Z"
   },
   "settings": {
     "audioEnabled": true,
