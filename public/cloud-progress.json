@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T10:16:42.077Z",
+  "exportedAt": "2026-10-14T10:16:58.868Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -14439,13 +14439,13 @@
         "countryId": "GRD",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 1.9999999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 1.7999999999999996,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-10T16:16:30.581Z",
-        "nextDueAt": "2026-10-11T16:16:30.581Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-10-14T10:16:55.192Z",
+        "nextDueAt": "2026-10-14T10:16:55.192Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:46:07.775Z",
@@ -14481,9 +14481,16 @@
             "userAnswer": "Grenada",
             "isCorrect": true,
             "timeSpentMs": 23041
+          },
+          {
+            "timestamp": "2026-10-14T10:16:55.192Z",
+            "inputMode": "map_click",
+            "userAnswer": "Indian Ocean",
+            "isCorrect": false,
+            "timeSpentMs": 15655
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 0
       }
     ],
     [
@@ -15309,7 +15316,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1129,
+    "totalReviews": 1130,
     "totalCorrect": 840,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15342,12 +15349,12 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T10:16:38.985Z"
+    "updatedAt": "2026-10-14T10:16:55.193Z"
   },
   "settings": {
     "audioEnabled": true,
     "soundVolume": 0.6,
-    "mapMode": "2d",
+    "mapMode": "3d",
     "autoRotateGlobe": false,
     "showMapCountryLabels": false,
     "typingFuzzyTolerance": 1,
