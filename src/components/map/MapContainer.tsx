@@ -86,7 +86,7 @@ export const MapContainer: React.FC<MapContainerProps> = ({
               title="Switch to 2D Flat Vector Map"
             >
               <Map className="w-3.5 h-3.5" />
-              <span>2D Atlas</span>
+              <span>2D Map</span>
             </button>
             <button
               onClick={() => onToggleMapMode('3d')}

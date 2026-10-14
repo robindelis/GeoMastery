@@ -1,5 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState, useMemo, useCallback } from 'react';
 import * as d3 from 'd3';
+import { feature } from 'topojson-client';
+import worldData110m from '../../assets/geo/countries-110m.json';
 import { Country, SRSItem } from '../../core/types';
 import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
 import { WATER_BODIES, getWaterBodyById, WaterBody } from '../../assets/data/waterBodies';
@@ -59,8 +61,23 @@ export const Globe3D: React.FC<Globe3DProps> = ({
     }
   }, []);
 
-  // Reuse module-cached GeoJSON features
+  // Reuse module-cached GeoJSON features (50m full detail + 110m fast LOD while rotating)
   const geoFeatures = useMemo(() => getCachedGeoFeatures(), []);
+  const lodGeoFeatures = useMemo(() => {
+    try {
+      const geo = feature(worldData110m as any, (worldData110m as any).objects.countries) as any;
+      return (geo.features as any[]) || geoFeatures;
+    } catch {
+      return geoFeatures;
+    }
+  }, [geoFeatures]);
+  const coastalLandGeo = useMemo(() => {
+    try {
+      return feature(worldData110m as any, (worldData110m as any).objects.land) as any;
+    } catch {
+      return null;
+    }
+  }, []);
 
   const countryFeatureItems = useMemo(() => {
     return geoFeatures.map((feat) => {
@@ -253,6 +270,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
     const path = d3.geoPath(projection, ctx);
     const graticule = d3.geoGraticule10();
 
+    let wasMoving = false;
     const render = () => {
       // Auto-rotation or inertia deceleration
       let isMoving = false;
@@ -262,17 +280,19 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       } else if (isDraggingRef.current) {
         isMoving = true;
       } else {
-        if (Math.abs(velocityRef.current.x) > 0.002 || Math.abs(velocityRef.current.y) > 0.002) {
+        if (Math.abs(velocityRef.current.x) > 0.005 || Math.abs(velocityRef.current.y) > 0.005) {
           rotationRef.current[0] += velocityRef.current.x;
           rotationRef.current[1] = Math.max(-80, Math.min(80, rotationRef.current[1] + velocityRef.current.y));
-          velocityRef.current.x *= 0.94;
-          velocityRef.current.y *= 0.94;
+          velocityRef.current.x *= 0.92;
+          velocityRef.current.y *= 0.92;
           isMoving = true;
         } else {
           velocityRef.current.x = 0;
           velocityRef.current.y = 0;
         }
       }
+      const prevMoving = wasMoving;
+      wasMoving = isMoving;
 
       projection.rotate(rotationRef.current);
 
@@ -308,83 +328,97 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       path(graticule);
       ctx.stroke();
 
+      // Turquoise Coastal Bathymetry Shelf around continents (when stationary)
+      if (!isMoving && coastalLandGeo) {
+        ctx.beginPath();
+        path(coastalLandGeo);
+        ctx.strokeStyle = 'rgba(72, 202, 228, 0.16)';
+        ctx.lineWidth = 6.5;
+        ctx.stroke();
+        ctx.strokeStyle = 'rgba(144, 224, 239, 0.25)';
+        ctx.lineWidth = 2.8;
+        ctx.stroke();
+      }
+
       const centerCoords = [-rotationRef.current[0], -rotationRef.current[1]];
 
-      // Draw Water Body Basin Polygons (rendered UNDER country landmasses so coastlines cleanly mask them)
-      for (const { feat, wb } of sortedWaterItemsForRender) {
-        const isSelected = wb.id === selectedCountryId;
-        const isTarget = wb.id === targetCountryId;
-        const isHovered = wb.id === hoveredWaterIdRef.current;
-        const isFeedback = feedbackState !== null && (isSelected || isTarget);
-        const isHighlighted = highlightedCountryIds.includes(wb.id);
+      // Draw Water Body Basin Polygons (skipped while actively dragging for 144fps zero-lag rotation)
+      if (!isMoving || selectedCountryId?.startsWith('WATER_') || targetCountryId?.startsWith('WATER_')) {
+        for (const { feat, wb } of sortedWaterItemsForRender) {
+          const isSelected = wb.id === selectedCountryId;
+          const isTarget = wb.id === targetCountryId;
+          const isHovered = wb.id === hoveredWaterIdRef.current;
+          const isFeedback = feedbackState !== null && (isSelected || isTarget);
+          const isHighlighted = highlightedCountryIds.includes(wb.id);
 
-        const isOcean = wb.type === 'ocean';
-        const isActive = isSelected || isTarget || isHovered || isFeedback || isHighlighted;
+          const isOcean = wb.type === 'ocean';
+          const isActive = isSelected || isTarget || isHovered || isFeedback || isHighlighted;
 
-        // Performance standard: Inactive oceans blend into the ocean sphere.
-        if (isOcean && !isActive) continue;
+          if ((isOcean || isMoving) && !isActive) continue;
 
-        let fillStyle =
-          wb.type === 'strait' || wb.type === 'channel'
-            ? 'rgba(72, 202, 228, 0.22)'
-            : wb.type === 'ocean'
-            ? 'rgba(29, 78, 107, 0.1)'
-            : 'rgba(56, 163, 195, 0.14)';
-        let strokeStyle =
-          wb.type === 'strait' || wb.type === 'channel'
-            ? 'rgba(144, 224, 239, 0.4)'
-            : wb.type === 'ocean'
-            ? 'transparent'
-            : 'rgba(144, 224, 239, 0.2)';
-        let lineWidth = 0.8;
+          let fillStyle =
+            wb.type === 'strait' || wb.type === 'channel'
+              ? 'rgba(72, 202, 228, 0.22)'
+              : wb.type === 'ocean'
+              ? 'rgba(29, 78, 107, 0.1)'
+              : 'rgba(56, 163, 195, 0.14)';
+          let strokeStyle =
+            wb.type === 'strait' || wb.type === 'channel'
+              ? 'rgba(144, 224, 239, 0.4)'
+              : wb.type === 'ocean'
+              ? 'transparent'
+              : 'rgba(144, 224, 239, 0.2)';
+          let lineWidth = 0.8;
 
-        if (feedbackState === 'correct' && (isSelected || isTarget)) {
-          fillStyle = 'rgba(16, 185, 129, 0.5)';
-          strokeStyle = '#10b981';
-          lineWidth = 1.6;
-        } else if (feedbackState === 'incorrect') {
-          if (isTarget) {
+          if (feedbackState === 'correct' && (isSelected || isTarget)) {
             fillStyle = 'rgba(16, 185, 129, 0.5)';
             strokeStyle = '#10b981';
             lineWidth = 1.6;
-          } else if (isSelected) {
-            fillStyle = 'rgba(230, 57, 70, 0.5)';
-            strokeStyle = '#e63946';
+          } else if (feedbackState === 'incorrect') {
+            if (isTarget) {
+              fillStyle = 'rgba(16, 185, 129, 0.5)';
+              strokeStyle = '#10b981';
+              lineWidth = 1.6;
+            } else if (isSelected) {
+              fillStyle = 'rgba(230, 57, 70, 0.5)';
+              strokeStyle = '#e63946';
+              lineWidth = 1.6;
+            }
+          } else if (isHovered) {
+            fillStyle = 'rgba(233, 196, 106, 0.38)';
+            strokeStyle = '#e9c46a';
             lineWidth = 1.6;
+          } else if (isSelected || isTarget) {
+            fillStyle = 'rgba(233, 196, 106, 0.35)';
+            strokeStyle = '#fff8e7';
+            lineWidth = 1.4;
+          } else if (highlightedCountryIds.includes(wb.id)) {
+            fillStyle = 'rgba(72, 202, 228, 0.35)';
+            strokeStyle = '#90e0ef';
+            lineWidth = 1.2;
           }
-        } else if (isHovered) {
-          fillStyle = 'rgba(233, 196, 106, 0.38)';
-          strokeStyle = '#e9c46a';
-          lineWidth = 1.6;
-        } else if (isSelected || isTarget) {
-          fillStyle = 'rgba(233, 196, 106, 0.35)';
-          strokeStyle = '#fff8e7';
-          lineWidth = 1.4;
-        } else if (highlightedCountryIds.includes(wb.id)) {
-          fillStyle = 'rgba(72, 202, 228, 0.35)';
-          strokeStyle = '#90e0ef';
-          lineWidth = 1.2;
-        }
 
-        ctx.beginPath();
-        path(feat);
-        ctx.fillStyle = fillStyle;
-        ctx.fill();
-        if (strokeStyle !== 'transparent') {
-          ctx.strokeStyle = strokeStyle;
-          ctx.lineWidth = lineWidth;
-          ctx.stroke();
+          ctx.beginPath();
+          path(feat);
+          ctx.fillStyle = fillStyle;
+          ctx.fill();
+          if (strokeStyle !== 'transparent') {
+            ctx.strokeStyle = strokeStyle;
+            ctx.lineWidth = lineWidth;
+            ctx.stroke();
+          }
         }
       }
 
-      // Draw countries (Warm political atlas fill & deep Prussian-sepia ink borders)
-      for (const feat of geoFeatures) {
+      // Draw countries (use 110m LOD during motion for 144fps, 50m full detail when stationary)
+      const activeFeatures = isMoving ? lodGeoFeatures : geoFeatures;
+      for (const feat of activeFeatures) {
         const country = COUNTRIES_BY_NUMERIC.get(String(feat.id));
         const isHovered = country && hoveredCountry?.id === country.id;
         const isActive = country && (country.id === selectedCountryId || country.id === targetCountryId);
         ctx.fillStyle = getCountryFill(country);
-        ctx.strokeStyle = isActive ? '#fff8e7' : isHovered ? '#d94e34' : '#14293a';
-        ctx.lineWidth = isActive || isHovered ? 1.3 : 0.8;
+        ctx.strokeStyle = isActive ? '#fff8e7' : isHovered ? '#d94e34' : '#112433';
+        ctx.lineWidth = isActive || isHovered ? 1.4 : 0.8;
 
         ctx.beginPath();
         path(feat);
@@ -470,7 +504,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       ctx.stroke();
 
       const isPulsing = Boolean(selectedCountryId || targetCountryId);
-      if (isMoving || isPulsing) {
+      if (isMoving || isPulsing || prevMoving) {
         animFrameRef.current = requestAnimationFrame(render);
       } else {
         animFrameRef.current = null;
@@ -491,6 +525,8 @@ export const Globe3D: React.FC<Globe3DProps> = ({
     dimensions,
     projection,
     geoFeatures,
+    lodGeoFeatures,
+    coastalLandGeo,
     getCountryFill,
     autoRotate,
     sortedWaterItemsForRender,

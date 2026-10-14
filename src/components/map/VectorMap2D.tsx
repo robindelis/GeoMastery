@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState, useMemo, useCallba
 import * as d3 from 'd3';
 import { feature } from 'topojson-client';
 import worldData50m from '../../assets/geo/countries-50m.json';
+import worldData110m from '../../assets/geo/countries-110m.json';
 import waterBodies50m from '../../assets/geo/water-bodies-50m.json';
 import { Country, SRSItem } from '../../core/types';
 import { COUNTRIES_BY_ID, COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
@@ -46,6 +47,15 @@ interface HoverState {
   poly?: PolyItem;
 }
 
+interface CountryLabelItem {
+  country: Country;
+  cx: number;
+  cy: number;
+  capX: number;
+  capY: number;
+  spanPx: number;
+}
+
 interface FrameState {
   W: number;
   H: number;
@@ -54,10 +64,13 @@ interface FrameState {
   moving: boolean;
   sphereOutline: Path2D | null;
   graticulePath: Path2D | null;
+  tropicsPath: Path2D | null;
+  coastalShelfPath: Path2D | null;
   oceans: PolyItem[];
   seas: PolyItem[];
   straits: PolyItem[];
   countries: PolyItem[];
+  labelItems: CountryLabelItem[];
   oceanFills: string[];
   seaFills: string[];
   straitFills: string[];
@@ -75,14 +88,20 @@ interface FrameState {
   hideHoverTooltip?: boolean;
 }
 
-// Curated 6-tone warm vintage political atlas palette
+// Curated 12-tone sovereign vintage political atlas palette
 export const ATLAS_LAND_PALETTE = [
-  '#E8D8BC', // Sunlit Parchment Sand
+  '#EADBC0', // Sunlit Parchment Sand
   '#DF9A84', // Warm Terracotta Apricot
   '#A5BEA0', // Sage Olive
   '#E8C67A', // Golden Saffron Ochre
   '#D9A5A0', // Dusty Coral Rose
   '#CBB592', // Travertine Buff
+  '#B8CCB6', // Celadon Lichen
+  '#E5B383', // Warm Amber Clay
+  '#D4A577', // Ochre Sienna
+  '#9EC0C8', // Verdigris Mist
+  '#DEB3A0', // Rose Terracotta
+  '#C9C4A5', // Warm Limestone
 ];
 
 export function getAtlasCountryColor(countryId: string): string {
@@ -185,21 +204,44 @@ function drawBase(ctx: CanvasRenderingContext2D, s: FrameState) {
   const vy1 = (H - t.y) / k;
   const lod = moving && k < LOD_MAX_ZOOM;
 
-  // Cartographic sphere ocean basin & warm ivory graticule
+  // 1. Cartographic Sphere Basin, Graticules & Equator/Tropics
   if (s.sphereOutline) {
-    ctx.fillStyle = '#174059';
+    ctx.fillStyle = '#153B52';
     ctx.fill(s.sphereOutline);
-    ctx.lineWidth = 1.4 / k;
-    ctx.strokeStyle = 'rgba(233, 196, 106, 0.38)';
-    ctx.stroke(s.sphereOutline);
+    if (!moving) {
+      ctx.lineWidth = 2.2 / k;
+      ctx.strokeStyle = 'rgba(233, 196, 106, 0.5)';
+      ctx.stroke(s.sphereOutline);
+    }
   }
-  if (!moving && s.graticulePath) {
-    ctx.lineWidth = 0.55 / k;
-    ctx.strokeStyle = 'rgba(245, 237, 224, 0.09)';
-    ctx.stroke(s.graticulePath);
+  if (!moving) {
+    if (s.graticulePath) {
+      ctx.lineWidth = 0.5 / k;
+      ctx.strokeStyle = 'rgba(246, 239, 226, 0.1)';
+      ctx.stroke(s.graticulePath);
+    }
+    if (s.tropicsPath) {
+      ctx.save();
+      ctx.setLineDash([4 / k, 4 / k]);
+      ctx.lineWidth = 0.75 / k;
+      ctx.strokeStyle = 'rgba(233, 196, 106, 0.32)';
+      ctx.stroke(s.tropicsPath);
+      ctx.restore();
+    }
+    // 2. Two-tier Turquoise Coastal Bathymetry Shelf around all landmasses
+    if (s.coastalShelfPath) {
+      ctx.lineWidth = 9 / k;
+      ctx.strokeStyle = 'rgba(72, 202, 228, 0.13)';
+      ctx.stroke(s.coastalShelfPath);
+      ctx.lineWidth = 3.8 / k;
+      ctx.strokeStyle = 'rgba(144, 224, 239, 0.22)';
+      ctx.stroke(s.coastalShelfPath);
+    }
   }
 
-  const drawWater = (items: PolyItem[], fills: string[], strokes: string[], width: number) => {
+  // 3. Water bodies (skip passive ocean/sea fills during fast pan/zoom for zero lag)
+  const drawWater = (items: PolyItem[], fills: string[], strokes: string[], width: number, skipWhenMoving: boolean) => {
+    if (moving && skipWhenMoving) return;
     for (let i = 0; i < items.length; i++) {
       const it = items[i];
       if (!isVisible(it.bbox, vx0, vy0, vx1, vy1)) continue;
@@ -212,23 +254,31 @@ function drawBase(ctx: CanvasRenderingContext2D, s: FrameState) {
       }
     }
   };
-  drawWater(s.oceans, s.oceanFills, s.oceanStrokes, 0.8);
-  drawWater(s.seas, s.seaFills, s.seaStrokes, 0.8);
-  drawWater(s.straits, s.straitFills, s.straitStrokes, 1);
+  const hasActiveWater = Boolean(s.selectedId?.startsWith('WATER_') || s.targetId?.startsWith('WATER_'));
+  drawWater(s.oceans, s.oceanFills, s.oceanStrokes, 0.8, !hasActiveWater);
+  drawWater(s.seas, s.seaFills, s.seaStrokes, 0.8, !hasActiveWater);
+  drawWater(s.straits, s.straitFills, s.straitStrokes, 1, false);
 
+  // 4. Sovereign Landmasses with Inner Sunlit Bevel & Crisp Ink Borders
   for (let i = 0; i < s.countries.length; i++) {
     const it = s.countries[i];
     if (!isVisible(it.bbox, vx0, vy0, vx1, vy1)) continue;
     const path = lod ? it.lod : it.full;
     ctx.fillStyle = s.countryFills[i];
     ctx.fill(path);
+
     const active = it.country && (it.country.id === s.selectedId || it.country.id === s.targetId);
-    ctx.lineWidth = (active ? 1.5 : 0.8) / k;
-    ctx.strokeStyle = active ? '#fff8e7' : '#14293a';
+    if (!moving && !active) {
+      ctx.lineWidth = 1.6 / k;
+      ctx.strokeStyle = 'rgba(255, 250, 240, 0.28)';
+      ctx.stroke(path);
+    }
+    ctx.lineWidth = (active ? 1.6 : 0.8) / k;
+    ctx.strokeStyle = active ? '#fff8e7' : '#112433';
     ctx.stroke(path);
   }
 
-  // Microstate beacons
+  // 5. Microstate beacons
   ctx.lineWidth = 1.1 / k;
   for (let i = 0; i < s.micro.length; i++) {
     const m = s.micro[i];
@@ -237,12 +287,12 @@ function drawBase(ctx: CanvasRenderingContext2D, s: FrameState) {
     ctx.beginPath();
     ctx.arc(m.cx, m.cy, 3.6 / k, 0, Math.PI * 2);
     ctx.fillStyle = s.microFills[i];
-    ctx.strokeStyle = active ? '#fff8e7' : '#14293a';
+    ctx.strokeStyle = active ? '#fff8e7' : '#112433';
     ctx.fill();
     ctx.stroke();
   }
 
-  // Maritime beacons
+  // 6. Maritime beacons
   ctx.lineWidth = 1.2 / k;
   for (let i = 0; i < s.waterBeacons.length; i++) {
     const w = s.waterBeacons[i];
@@ -323,8 +373,8 @@ function drawOverlay(
       ctx.lineWidth = (2 + 2 * pulse) / k;
     } else if (isHovered) {
       ctx.fillStyle = '#fff3b0';
-      ctx.strokeStyle = isSelected || isTarget ? '#d94e34' : '#14293a';
-      ctx.lineWidth = (isSelected || isTarget ? 1.8 : 1.3) / k;
+      ctx.strokeStyle = '#d94e34';
+      ctx.lineWidth = (isSelected || isTarget ? 2.0 : 1.5) / k;
     } else if (isSelected || isTarget) {
       const idx = s.countries.indexOf(poly);
       ctx.fillStyle = idx >= 0 ? s.countryFills[idx] : '#f4a261';
@@ -373,11 +423,65 @@ function drawOverlay(
   for (const m of s.micro) ring(m, 8, 1.2);
   for (const w of s.waterBeacons) if (w.wb) ring(w, waterBeaconRadii(w.wb).pulse, 1.4);
 
-  // Labels live in screen space so text stays crisp and constant-size
+  // Screen-space cartographic typography & capital bullseye pins (skipped while moving for 144fps pan/zoom)
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
   ctx.textAlign = 'center';
   ctx.lineJoin = 'round';
+
+  if (!s.moving && !s.hideHoverTooltip) {
+    // 1. Capital City Pinpoints & Engraved Country Names
+    for (let i = 0; i < s.labelItems.length; i++) {
+      const lbl = s.labelItems[i];
+      const screenSpan = lbl.spanPx * k;
+      if (screenSpan < 44) continue;
+
+      const sx = lbl.cx * k + t.x;
+      const sy = lbl.cy * k + t.y;
+      if (sx < -80 || sx > W + 80 || sy < -30 || sy > H + 30) continue;
+
+      // Capital City Bullseye Marker
+      const capSx = lbl.capX * k + t.x;
+      const capSy = lbl.capY * k + t.y;
+      if (capSx >= 0 && capSx <= W && capSy >= 0 && capSy <= H) {
+        ctx.fillStyle = '#fff8e7';
+        ctx.strokeStyle = '#142534';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.arc(capSx, capSy, 2.8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#d94e34';
+        ctx.beginPath();
+        ctx.arc(capSx, capSy, 1.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (screenSpan >= 145 && k >= 2.2) {
+          ctx.font = '600 9.5px "Plus Jakarta Sans", sans-serif';
+          ctx.lineWidth = 2.6;
+          ctx.strokeStyle = 'rgba(246, 239, 226, 0.85)';
+          ctx.fillStyle = '#142534';
+          ctx.strokeText(lbl.country.capital, capSx, capSy - 5);
+          ctx.fillText(lbl.country.capital, capSx, capSy - 5);
+        }
+      }
+
+      // Country Engraving Label
+      if (screenSpan >= 58) {
+        const fontSize = Math.min(13, Math.max(8.5, Math.round(screenSpan * 0.085)));
+        ctx.font = `800 ${fontSize}px "Fraunces", Georgia, serif`;
+        ctx.lineWidth = 2.8;
+        ctx.strokeStyle = 'rgba(246, 239, 226, 0.78)';
+        ctx.fillStyle = '#10212f';
+        const text = lbl.country.name.toUpperCase();
+        ctx.strokeText(text, sx, sy + 3);
+        ctx.fillText(text, sx, sy + 3);
+      }
+    }
+  }
+
+  // 2. Active & Zoomed Water Body Labels
+  ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
   ctx.lineWidth = 3.2;
   ctx.strokeStyle = '#0e2433';
   ctx.fillStyle = '#fff8e7';
@@ -399,7 +503,10 @@ const EMPTY_HIGHLIGHTED_IDS: string[] = [];
 interface ProjectionGeometry {
   sphereOutline: Path2D | null;
   graticulePath: Path2D | null;
+  tropicsPath: Path2D | null;
+  coastalShelfPath: Path2D | null;
   countries: PolyItem[];
+  labelItems: CountryLabelItem[];
   oceans: PolyItem[];
   seas: PolyItem[];
   straits: PolyItem[];
@@ -417,7 +524,10 @@ interface CachedProjectionBundle {
 const EMPTY_GEOMETRY: ProjectionGeometry = {
   sphereOutline: null,
   graticulePath: null,
+  tropicsPath: null,
+  coastalShelfPath: null,
   countries: [],
+  labelItems: [],
   oceans: [],
   seas: [],
   straits: [],
@@ -486,6 +596,22 @@ function getOrBuildProjectionBundle(width: number, height: number): CachedProjec
   const graticulePath = new Path2D();
   d3.geoPath(projection, graticulePath as any)(d3.geoGraticule10());
 
+  const tropicsPath = new Path2D();
+  const specialLats = [0, 23.436, -23.436, 66.563, -66.563];
+  for (const lat of specialLats) {
+    const coords = d3.range(-180, 181, 4).map((lng) => [lng, lat]);
+    d3.geoPath(projection, tropicsPath as any)({ type: 'LineString', coordinates: coords } as any);
+  }
+
+  let coastalShelfPath: Path2D | null = null;
+  try {
+    const landGeo = feature(worldData110m as any, (worldData110m as any).objects.land) as any;
+    coastalShelfPath = new Path2D();
+    d3.geoPath(projection, coastalShelfPath as any)(landGeo);
+  } catch {
+    coastalShelfPath = null;
+  }
+
   const build = (feat: any, id: string, country?: Country, wb?: WaterBody): PolyItem | null => {
     const b = boundsGen.bounds(feat);
     if (!b || !isFinite(b[0][0]) || !isFinite(b[1][1])) return null;
@@ -497,11 +623,29 @@ function getOrBuildProjectionBundle(width: number, height: number): CachedProjec
   };
 
   const countries: PolyItem[] = [];
+  const labelItems: CountryLabelItem[] = [];
   for (let i = 0; i < geoFeatures.length; i++) {
     const feat = geoFeatures[i];
     const country = COUNTRIES_BY_NUMERIC.get(String(feat.id));
     const item = build(feat, country ? country.id : `__unmapped_${feat.id ?? i}`, country);
-    if (item) countries.push(item);
+    if (item) {
+      countries.push(item);
+      if (country) {
+        const cPt = projection(country.coordinates);
+        const capPt = projection(country.capitalCoordinates || country.coordinates);
+        if (cPt && capPt) {
+          const spanPx = Math.hypot(item.bbox[2] - item.bbox[0], item.bbox[3] - item.bbox[1]);
+          labelItems.push({
+            country,
+            cx: cPt[0],
+            cy: cPt[1],
+            capX: capPt[0],
+            capY: capPt[1],
+            spanPx,
+          });
+        }
+      }
+    }
   }
 
   const oceans: PolyItem[] = [];
@@ -540,7 +684,18 @@ function getOrBuildProjectionBundle(width: number, height: number): CachedProjec
   cachedBundle = {
     key,
     projection,
-    geometry: { sphereOutline, graticulePath, countries, oceans, seas, straits, polyById },
+    geometry: {
+      sphereOutline,
+      graticulePath,
+      tropicsPath,
+      coastalShelfPath,
+      countries,
+      labelItems,
+      oceans,
+      seas,
+      straits,
+      polyById,
+    },
     microstateItems,
     waterBodyItems,
   };
@@ -860,10 +1015,13 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       moving: movingRef.current,
       sphereOutline: geometry.sphereOutline,
       graticulePath: geometry.graticulePath,
+      tropicsPath: geometry.tropicsPath,
+      coastalShelfPath: geometry.coastalShelfPath,
       oceans: geometry.oceans,
       seas: geometry.seas,
       straits: geometry.straits,
       countries: geometry.countries,
+      labelItems: geometry.labelItems,
       ...styles,
       micro: microstateItems,
       waterBeacons: waterBodyItems,

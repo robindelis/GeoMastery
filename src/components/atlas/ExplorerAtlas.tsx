@@ -158,8 +158,8 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
 
         {/* Slide-Over (Tablet/Desktop) & Bottom-Sheet (Mobile) Country Dossier */}
         {selectedCountry && (
-          <div className="absolute inset-x-0 bottom-0 top-auto w-full max-h-[55dvh] rounded-t-3xl border-t-2 sm:rounded-none sm:border-t-0 sm:inset-y-0 sm:right-0 sm:left-auto sm:w-96 sm:max-h-none bg-[#F6EFE2] text-[#142534] sm:border-l-2 border-[#D8CBB5] z-40 p-5 sm:p-6 flex flex-col justify-between shadow-2xl overflow-y-auto">
-            <div className="flex flex-col gap-4 sm:gap-5">
+          <div className="absolute inset-x-0 bottom-0 top-auto w-full max-h-[55dvh] rounded-t-3xl border-t-2 sm:rounded-none sm:border-t-0 sm:inset-y-0 sm:right-0 sm:left-auto sm:w-96 sm:max-h-none bg-[#F6EFE2] text-[#142534] sm:border-l-2 border-[#D8CBB5] z-40 p-5 flex flex-col justify-between shadow-2xl overflow-hidden">
+            <div className="flex flex-col gap-3">
               {/* Header with Close */}
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
@@ -190,9 +190,9 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
               </div>
 
               {/* Facts Grid */}
-              <div className="flex flex-col gap-2.5 mt-1">
+              <div className="flex flex-col gap-2">
                 {/* Capital City */}
-                <div className="bg-[#ECE2CE] border border-[#D8CBB5] p-3.5 rounded-2xl flex items-center justify-between">
+                <div className="bg-[#ECE2CE] border border-[#D8CBB5] p-3 rounded-2xl flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
                     <Building2 className="w-4 h-4 text-[#D94E34]" />
                     <div>
@@ -204,7 +204,7 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
                 </div>
 
                 {/* Map Location */}
-                <div className="bg-[#ECE2CE] border border-[#D8CBB5] p-3.5 rounded-2xl flex items-center justify-between">
+                <div className="bg-[#ECE2CE] border border-[#D8CBB5] p-3 rounded-2xl flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
                     <MapPin className="w-4 h-4 text-[#2A9D8F]" />
                     <div>
@@ -219,7 +219,7 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
 
                 {/* Future Extensible Attributes (Starter Data) */}
                 {selectedCountry.facts.politicalRegime && (
-                  <div className="bg-[#ECE2CE]/70 border border-[#D8CBB5] p-3 rounded-2xl flex items-center gap-2.5">
+                  <div className="bg-[#ECE2CE]/70 border border-[#D8CBB5] p-2.5 rounded-2xl flex items-center gap-2.5">
                     <Scale className="w-4 h-4 text-[#D48C1C]" />
                     <div>
                       <div className="text-[10px] uppercase tracking-wider text-[#5B7083] font-extrabold">Political Regime</div>
@@ -231,7 +231,7 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
                 )}
 
                 {selectedCountry.facts.leader && (
-                  <div className="bg-[#ECE2CE]/70 border border-[#D8CBB5] p-3 rounded-2xl flex items-center gap-2.5">
+                  <div className="bg-[#ECE2CE]/70 border border-[#D8CBB5] p-2.5 rounded-2xl flex items-center gap-2.5">
                     <UserCheck className="w-4 h-4 text-[#2A9D8F]" />
                     <div>
                       <div className="text-[10px] uppercase tracking-wider text-[#5B7083] font-extrabold">Head of State / Leader</div>
@@ -243,7 +243,7 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
                 )}
 
                 {selectedCountry.facts.cuisine && (
-                  <div className="bg-[#ECE2CE]/70 border border-[#D8CBB5] p-3 rounded-2xl flex items-center gap-2.5">
+                  <div className="bg-[#ECE2CE]/70 border border-[#D8CBB5] p-2.5 rounded-2xl flex items-center gap-2.5">
                     <Utensils className="w-4 h-4 text-[#D94E34]" />
                     <div>
                       <div className="text-[10px] uppercase tracking-wider text-[#5B7083] font-extrabold">National Dish</div>
@@ -255,7 +255,7 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
                 )}
 
                 {selectedCountry.facts.currency && (
-                  <div className="bg-[#ECE2CE]/70 border border-[#D8CBB5] p-3 rounded-2xl flex items-center gap-2.5">
+                  <div className="bg-[#ECE2CE]/70 border border-[#D8CBB5] p-2.5 rounded-2xl flex items-center gap-2.5">
                     <Coins className="w-4 h-4 text-[#1E6B7B]" />
                     <div>
                       <div className="text-[10px] uppercase tracking-wider text-[#5B7083] font-extrabold">Currency</div>
@@ -272,10 +272,10 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
             {onStartSpecificDrill && (
               <button
                 onClick={() => onStartSpecificDrill(selectedCountry)}
-                className="w-full mt-4 py-3.5 rounded-2xl bg-[#D94E34] hover:bg-[#C54128] text-[#FFF8E7] font-extrabold text-sm flex items-center justify-center gap-2 transition-all shadow-lg"
+                className="w-full mt-3 py-3 rounded-2xl bg-[#D94E34] hover:bg-[#C54128] text-[#FFF8E7] font-extrabold text-sm flex items-center justify-center gap-2 transition-all shadow-lg"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>Study This Nation</span>
+                <span>Drill This Nation</span>
               </button>
             )}
           </div>

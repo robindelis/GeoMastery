@@ -112,7 +112,7 @@ export const App: React.FC = () => {
               }`}
             >
               <LayoutDashboard className="w-3.5 h-3.5" />
-              <span>Atelier</span>
+              <span>Dashboard</span>
             </button>
 
             <button
@@ -127,7 +127,7 @@ export const App: React.FC = () => {
               }`}
             >
               <Compass className="w-3.5 h-3.5" />
-              <span>World Map</span>
+              <span>Atlas</span>
             </button>
 
             <button

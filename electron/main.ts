@@ -10,11 +10,6 @@ const execFileAsync = promisify(execFile);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Prevent Chromium Skia GPU 2D-canvas path tessellation and offscreen blur shaders
-// from overloading AMD RDNA3 / Phoenix iGPU (gfx_0.0.0 ring) on Linux Wayland.
-app.commandLine.appendSwitch('disable-accelerated-2d-canvas');
-app.commandLine.appendSwitch('disable-gpu-rasterization');
-
 let mainWindow: BrowserWindow | null = null;
 
 function createWindow() {

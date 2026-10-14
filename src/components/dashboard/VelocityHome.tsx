@@ -21,7 +21,6 @@ import {
   Globe2,
   Map as MapIcon,
   Crosshair,
-  CheckCircle2,
   Scale,
   UserCheck,
   Utensils,
@@ -41,16 +40,12 @@ import { speechEngine } from '../../core/speechEngine';
 import { formatCoordinates } from '../../core/geoUtils';
 
 /* ────────────────────────────────────────────────────────────────────────────
- * L'ATELIER DU MONDE — The Grand Political Atlas Theme
+ * L'ATELIER DU MONDE — Viewport-Locked Single-Screen Grand Atlas Deck
  *
- * Soulful, bold, tactile cartography inspired by mid-century political globes,
- * National Geographic folio plates, and warm archival vellum.
- *
- * GPU-SAFE ARCHITECTURE:
- * - Zero infinite requestAnimationFrame loops at idle (globe renders on-demand
- *   when slewing to a hovered region or being dragged, then rests at 0% GPU).
- * - Uses lightweight 110m TopoJSON geometry on the preview globe.
- * - Zero large CSS blur() filter layers or infinite keyframe layer repaints.
+ * Strictly zero vertical scroll (h-full overflow-hidden): every control,
+ * the sunlit vellum hero folio, the interactive 3D political globe, the
+ * spotlight nation dispatch, lifetime telemetry, and all 6 regional folio
+ * plates fit in a single 12-column viewport-locked Bento grid.
  * ──────────────────────────────────────────────────────────────────────────── */
 
 const JADE = '#2A9D8F';
@@ -67,37 +62,37 @@ const REGION_META: Record<string, RegionAtelierMeta> = {
     accent: '#E07A5F',
     coords: [15, 50],
     coordLabel: '50°N · 15°E',
-    plateNumber: 'Plate I'
+    plateNumber: 'I'
   },
   Asia: {
     accent: '#E9C46A',
     coords: [95, 32],
     coordLabel: '32°N · 95°E',
-    plateNumber: 'Plate II'
+    plateNumber: 'II'
   },
   Africa: {
     accent: '#F4A261',
     coords: [20, 4],
     coordLabel: '04°N · 20°E',
-    plateNumber: 'Plate III'
+    plateNumber: 'III'
   },
   Americas: {
     accent: '#2A9D8F',
     coords: [-74, 8],
     coordLabel: '08°N · 74°W',
-    plateNumber: 'Plate IV'
+    plateNumber: 'IV'
   },
   Oceania: {
     accent: '#81B29A',
     coords: [148, -22],
     coordLabel: '22°S · 148°E',
-    plateNumber: 'Plate V'
+    plateNumber: 'V'
   },
   Oceans: {
     accent: '#48CAE4',
     coords: [-145, -5],
     coordLabel: '05°S · 145°W',
-    plateNumber: 'Plate VI'
+    plateNumber: 'VI'
   }
 };
 
@@ -110,7 +105,7 @@ const VOYAGE_ROUTES: Array<[[number, number], [number, number]]> = [
 
 const serifDisplay = 'font-[family-name:var(--font-fraunces)]';
 
-/* ── On-Demand Interactive 3D Political Atelier Globe (Zero Idle GPU) ───── */
+/* ── On-Demand Interactive 3D Political Atelier Globe ──────────────────── */
 
 interface AtelierGlobeProps {
   targetCoords: [number, number] | null;
@@ -127,7 +122,9 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
   spotlightName,
   spotlightId
 }) => {
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [canvasSize, setCanvasSize] = useState(240);
   const isDraggingRef = useRef(false);
   const dragStartRef = useRef<{ x: number; y: number; yaw: number; pitch: number }>({
     x: 0,
@@ -153,7 +150,24 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
     };
   });
 
-  // Lightweight 110m country features precomputed once
+  // Measure available container space so the globe never overflows vertically
+  useEffect(() => {
+    const update = () => {
+      if (!wrapperRef.current) return;
+      const { clientWidth, clientHeight } = wrapperRef.current;
+      const next = Math.max(160, Math.min(clientWidth - 16, clientHeight - 8, 300));
+      setCanvasSize((prev) => (Math.abs(prev - next) > 2 ? next : prev));
+    };
+    update();
+    const ro = typeof ResizeObserver !== 'undefined' && wrapperRef.current ? new ResizeObserver(update) : null;
+    if (ro && wrapperRef.current) ro.observe(wrapperRef.current);
+    window.addEventListener('resize', update);
+    return () => {
+      ro?.disconnect();
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
   const countryFeatures = useMemo(() => {
     try {
       const geo = feature(worldData110m as any, (worldData110m as any).objects.countries) as any;
@@ -168,6 +182,14 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
       });
     } catch {
       return [];
+    }
+  }, []);
+
+  const landGeo = useMemo(() => {
+    try {
+      return feature(worldData110m as any, (worldData110m as any).objects.land) as any;
+    } catch {
+      return null;
     }
   }, []);
 
@@ -204,15 +226,15 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const size = 360;
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const size = canvasSize;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = size * dpr;
     canvas.height = size * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     const cx = size / 2;
     const cy = size / 2;
-    const radius = 148;
+    const radius = size * 0.42;
 
     const projection = d3
       .geoOrthographic()
@@ -246,12 +268,11 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
       }
 
       projection.rotate([rotationRef.current.yaw, rotationRef.current.pitch, 0]);
-
       ctx.clearRect(0, 0, size, size);
 
       // 1. Warm Sunlit Brass Outer Halo
-      const halo = ctx.createRadialGradient(cx, cy, radius * 0.92, cx, cy, radius * 1.15);
-      halo.addColorStop(0, 'rgba(233, 196, 106, 0.22)');
+      const halo = ctx.createRadialGradient(cx, cy, radius * 0.9, cx, cy, radius * 1.15);
+      halo.addColorStop(0, 'rgba(233, 196, 106, 0.24)');
       halo.addColorStop(1, 'rgba(14, 34, 49, 0)');
       ctx.fillStyle = halo;
       ctx.beginPath();
@@ -277,14 +298,23 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
 
       // 3. Warm Ivory Graticule
       ctx.strokeStyle = 'rgba(246, 239, 226, 0.11)';
-      ctx.lineWidth = 0.55;
+      ctx.lineWidth = 0.5;
       ctx.beginPath();
       path(graticule);
       ctx.stroke();
 
-      // 4. Multi-tonal Political Atlas Countries (110m lightweight polygons)
-      ctx.lineWidth = 0.7;
-      ctx.strokeStyle = '#14293A';
+      // 4. Turquoise Coastal Bathymetry Shelf
+      if (landGeo) {
+        ctx.beginPath();
+        path(landGeo);
+        ctx.strokeStyle = 'rgba(72, 202, 228, 0.2)';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+      }
+
+      // 5. Multi-tonal Political Atlas Countries
+      ctx.lineWidth = 0.65;
+      ctx.strokeStyle = '#112433';
       for (let i = 0; i < countryFeatures.length; i++) {
         const item = countryFeatures[i];
         ctx.fillStyle = item.id === activeSpotlightId ? '#FFF3B0' : item.fill;
@@ -294,11 +324,11 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
         ctx.stroke();
       }
 
-      // 5. Classic Dashed Trade Routes
+      // 6. Classic Dashed Trade Routes
       ctx.save();
-      ctx.setLineDash([3, 4]);
+      ctx.setLineDash([2.5, 3.5]);
       ctx.strokeStyle = 'rgba(246, 239, 226, 0.28)';
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 0.9;
       for (const route of routeFeatures) {
         ctx.beginPath();
         path(route as any);
@@ -306,7 +336,7 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
       }
       ctx.restore();
 
-      // 6. Active Compass Target Pin & Callout Flag
+      // 7. Active Compass Target Pin & Callout Flag
       const centerGeo: [number, number] = [-rotationRef.current.yaw, -rotationRef.current.pitch];
       if (d3.geoDistance(goalCoords, centerGeo) < Math.PI / 2) {
         const pt = projection(goalCoords);
@@ -314,44 +344,44 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
           const [rx, ry] = pt;
 
           ctx.strokeStyle = '#D94E34';
-          ctx.lineWidth = 1.6;
+          ctx.lineWidth = 1.5;
           ctx.beginPath();
-          ctx.arc(rx, ry, 10, 0, Math.PI * 2);
+          ctx.arc(rx, ry, 8.5, 0, Math.PI * 2);
           ctx.stroke();
 
           ctx.fillStyle = '#D94E34';
           ctx.strokeStyle = '#FFF8E7';
-          ctx.lineWidth = 1.5;
+          ctx.lineWidth = 1.4;
           ctx.beginPath();
-          ctx.arc(rx, ry, 4.2, 0, Math.PI * 2);
+          ctx.arc(rx, ry, 3.8, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
 
-          ctx.font = '700 10px "Plus Jakarta Sans", sans-serif';
+          ctx.font = '700 9.5px "Plus Jakarta Sans", sans-serif';
           const tw = ctx.measureText(goalLabel).width;
-          const bx = Math.min(size - tw - 26, Math.max(10, rx + 12));
-          const by = Math.max(24, ry - 8);
+          const bx = Math.min(size - tw - 22, Math.max(8, rx + 10));
+          const by = Math.max(22, ry - 7);
 
           ctx.fillStyle = '#F6EFE2';
           ctx.strokeStyle = '#142534';
-          ctx.lineWidth = 1.4;
+          ctx.lineWidth = 1.3;
           ctx.beginPath();
-          ctx.roundRect(bx, by - 13, tw + 16, 20, 7);
+          ctx.roundRect(bx, by - 12, tw + 14, 18, 6);
           ctx.fill();
           ctx.stroke();
 
           ctx.fillStyle = '#142534';
-          ctx.fillText(goalLabel, bx + 8, by + 1);
+          ctx.fillText(goalLabel, bx + 7, by + 0.5);
         }
       }
 
-      // 7. Engraved Brass Globe Meridian Rim
+      // 8. Engraved Brass Globe Meridian Rim
       const rimGrad = ctx.createLinearGradient(cx - radius, cy - radius, cx + radius, cy + radius);
       rimGrad.addColorStop(0, '#F3D999');
       rimGrad.addColorStop(0.5, '#C8963E');
       rimGrad.addColorStop(1, '#7E571E');
       ctx.strokeStyle = rimGrad;
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 2.2;
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
       ctx.stroke();
@@ -377,9 +407,8 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
         animFrameRef.current = null;
       }
     };
-  }, [countryFeatures, routeFeatures]);
+  }, [canvasSize, countryFeatures, landGeo, routeFeatures]);
 
-  // Trigger smooth on-demand slew whenever targetCoords or spotlightCoords changes
   useEffect(() => {
     scheduleDraw();
   }, [activeGoalCoords[0], activeGoalCoords[1], activeGoalLabel, spotlightId, scheduleDraw]);
@@ -417,12 +446,13 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
   };
 
   return (
-    <div className="relative flex items-center justify-center select-none">
-      {/* Static Engraved Brass Meridian & Compass Rose SVG Frame (Zero GPU animation cost) */}
+    <div ref={wrapperRef} className="relative flex flex-1 min-h-0 w-full items-center justify-center select-none">
+      {/* Static Engraved Brass Meridian & Compass Rose SVG Frame */}
       <svg
         aria-hidden="true"
         viewBox="0 0 420 420"
-        className="pointer-events-none absolute h-[330px] w-[330px] sm:h-[375px] sm:w-[375px]"
+        style={{ width: canvasSize * 1.08, height: canvasSize * 1.08 }}
+        className="pointer-events-none absolute"
       >
         <circle
           cx="210"
@@ -437,24 +467,17 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
         <polygon points="412,210 402,214 402,206" fill="#E9C46A" />
         <polygon points="210,412 214,402 206,402" fill="#E9C46A" />
         <polygon points="8,210 18,214 18,206" fill="#E9C46A" />
-        <circle
-          cx="210"
-          cy="210"
-          r="178"
-          fill="none"
-          stroke="rgba(246, 239, 226, 0.16)"
-          strokeWidth="1"
-        />
-        <text x="210" y="29" textAnchor="middle" className="fill-[#E9C46A] font-serif text-[10px] font-bold">
+        <circle cx="210" cy="210" r="178" fill="none" stroke="rgba(246, 239, 226, 0.16)" strokeWidth="1" />
+        <text x="210" y="29" textAnchor="middle" className="fill-[#E9C46A] font-serif text-[11px] font-bold">
           N
         </text>
-        <text x="395" y="213" textAnchor="middle" className="fill-[#F6EFE2]/60 font-serif text-[10px] font-bold">
+        <text x="395" y="213" textAnchor="middle" className="fill-[#F6EFE2]/60 font-serif text-[11px] font-bold">
           E
         </text>
-        <text x="210" y="401" textAnchor="middle" className="fill-[#F6EFE2]/60 font-serif text-[10px] font-bold">
+        <text x="210" y="401" textAnchor="middle" className="fill-[#F6EFE2]/60 font-serif text-[11px] font-bold">
           S
         </text>
-        <text x="25" y="213" textAnchor="middle" className="fill-[#F6EFE2]/60 font-serif text-[10px] font-bold">
+        <text x="25" y="213" textAnchor="middle" className="fill-[#F6EFE2]/60 font-serif text-[11px] font-bold">
           W
         </text>
       </svg>
@@ -467,27 +490,28 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
         title="Drag to spin the political globe"
-        className="relative z-10 h-[300px] w-[300px] sm:h-[345px] sm:w-[345px] cursor-grab active:cursor-grabbing touch-none"
+        style={{ width: canvasSize, height: canvasSize }}
+        className="relative z-10 cursor-grab active:cursor-grabbing touch-none"
       />
 
-      {/* Warm Brass & Vellum Bearing Tag */}
-      <div className="pointer-events-none absolute left-3 top-3 z-20 rounded-xl border border-[#E9C46A]/35 bg-[#102637] px-3 py-1.5">
-        <span className="block text-[9px] font-bold uppercase tracking-[0.18em] text-[#E9C46A]">
-          {targetCoords ? `Focused · ${targetLabel}` : `Spotlight · ${spotlightName}`}
+      {/* Bearing Tag */}
+      <div className="pointer-events-none absolute left-2 top-1.5 z-20 rounded-xl border border-[#E9C46A]/35 bg-[#102637] px-2.5 py-1">
+        <span className="block text-[8px] font-bold uppercase tracking-[0.16em] text-[#E9C46A]">
+          {targetCoords ? `Sector · ${targetLabel}` : `Spotlight · ${spotlightName}`}
         </span>
-        <span className="font-mono text-[11px] font-semibold tabular-nums text-[#F6EFE2]">
+        <span className="font-mono text-[10px] font-semibold tabular-nums text-[#F6EFE2]">
           {hudBearing.lat} · {hudBearing.lng}
         </span>
       </div>
 
-      <div className="pointer-events-none absolute right-3 bottom-3 z-20 rounded-full border border-[#F6EFE2]/20 bg-[#102637] px-3 py-1 text-[10px] font-semibold text-[#F6EFE2]/80">
-        Drag globe to explore
+      <div className="pointer-events-none absolute right-2 bottom-1.5 z-20 rounded-full border border-[#F6EFE2]/20 bg-[#102637] px-2.5 py-0.5 text-[9px] font-semibold text-[#F6EFE2]/80">
+        Drag to spin
       </div>
     </div>
   );
 };
 
-/* ── Main Front Page Component ──────────────────────────────────────────── */
+/* ── Main Viewport-Locked Front Page Component ──────────────────────────── */
 
 const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const {
@@ -526,7 +550,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const masteryValue = useCountUp(data.mastery.masteryPercentage);
   const dueValue = useCountUp(data.totalDueCount, 650);
 
-  const ringRadius = 42;
+  const ringRadius = 32;
   const ringCircumference = 2 * Math.PI * ringRadius;
   const ringOffset = ringCircumference - (masteryValue / 100) * ringCircumference;
 
@@ -551,18 +575,18 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   };
 
   return (
-    <div className="relative h-full overflow-y-auto bg-[#0F2536] text-[#F6EFE2] selection:bg-[#D94E34]/30 selection:text-[#F6EFE2]">
-      {/* ══ WARM AEGEAN & PARCHMENT STUDIO ATMOSPHERE (Zero Blur Shaders) ═ */}
+    <div className="relative h-full w-full overflow-hidden bg-[#0F2536] text-[#F6EFE2] selection:bg-[#D94E34]/30 selection:text-[#F6EFE2] flex flex-col">
+      {/* Pure CSS radial gradient lighting */}
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 bg-[radial-gradient(120%_90%_at_20%_0%,#1D4763_0%,#112A3D_55%,#0B1C2A_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_20%_0%,#1D4763_0%,#112A3D_55%,#0B1C2A_100%)]"
       />
 
-      {/* ══ MAIN CONTENT CONTAINER ═══════════════════════════════════════ */}
-      <div className="relative z-10 mx-auto flex w-full max-w-[1420px] flex-col gap-7 px-4 py-5 sm:px-7 sm:py-8">
-        {/* ── 1. ATELIER RIBBON HEADER ─────────────────────────────────── */}
-        <header className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#F6EFE2]/15 bg-[#153348] px-4 py-3 shadow-lg">
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+      {/* ══ LOCKED VIEWPORT CONTAINER (Zero Vertical Scroll) ══════════════ */}
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1600px] flex-col justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4 overflow-hidden">
+        {/* ── 1. TOP ATELIER RIBBON (Shrink-0) ─────────────────────────── */}
+        <header className="relative shrink-0 flex items-center justify-between gap-3 rounded-2xl border border-[#F6EFE2]/15 bg-[#153348] px-4 py-2 shadow-md">
+          <div className="flex items-center gap-3 sm:gap-4">
             <div className="flex items-center gap-2">
               <BookOpen className="h-4 w-4 text-[#E9C46A]" />
               <span className={`${serifDisplay} text-sm font-bold italic text-[#F6EFE2]`}>
@@ -573,7 +597,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             <span className="hidden h-4 w-px bg-[#F6EFE2]/15 sm:block" />
 
             <div className="flex items-center gap-3">
-              <span className="rounded-full bg-[#E9C46A]/20 border border-[#E9C46A]/45 px-3 py-0.5 text-[11px] font-bold text-[#F6EFE2]">
+              <span className="rounded-full bg-[#E9C46A]/20 border border-[#E9C46A]/45 px-2.5 py-0.5 text-[11px] font-bold text-[#F6EFE2]">
                 Rank {data.rank.level} · {data.rank.title}
               </span>
               <div className="hidden items-center gap-2 md:flex">
@@ -583,25 +607,31 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                     style={{ width: `${data.rank.progress}%` }}
                   />
                 </div>
-                <span className="font-mono text-[11px] font-semibold text-[#D6CBB9]">
+                <span className="font-mono text-[10px] font-semibold text-[#D6CBB9]">
                   {data.rank.xp.toLocaleString()} / {data.rank.nextXP.toLocaleString()} XP
                 </span>
               </div>
             </div>
+
+            {syncStatusMessage && (
+              <span className="rounded-full bg-[#2A9D8F]/25 border border-[#2A9D8F]/50 px-3 py-0.5 text-[11px] font-bold text-[#A7F3D0]">
+                {syncStatusMessage}
+              </span>
+            )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-2">
             {/* Streak Pill */}
-            <div className="flex items-center gap-1.5 rounded-full bg-[#D94E34] px-3.5 py-1.5 text-xs font-extrabold text-[#FFF8E7] shadow-sm">
+            <div className="flex items-center gap-1.5 rounded-full bg-[#D94E34] px-3 py-1 text-xs font-extrabold text-[#FFF8E7] shadow-sm">
               <Flame className="h-3.5 w-3.5 fill-current" />
-              <span>{stats.currentStreak} Day Streak</span>
+              <span>{stats.currentStreak}d Streak</span>
             </div>
 
             {/* 2D / 3D Map Projection Switcher */}
             <div className="flex items-center rounded-full border border-[#F6EFE2]/15 bg-[#0E2231] p-0.5">
               <button
                 onClick={() => onToggleMapMode('2d')}
-                className={`flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold transition-all ${
+                className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold transition-all ${
                   mapMode === '2d'
                     ? 'bg-[#F6EFE2] text-[#142534] shadow-sm'
                     : 'text-[#D6CBB9] hover:text-white'
@@ -613,7 +643,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               </button>
               <button
                 onClick={() => onToggleMapMode('3d')}
-                className={`flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold transition-all ${
+                className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold transition-all ${
                   mapMode === '3d'
                     ? 'bg-[#F6EFE2] text-[#142534] shadow-sm'
                     : 'text-[#D6CBB9] hover:text-white'
@@ -630,7 +660,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               onClick={onSyncGitHub}
               title={isSyncing ? 'Syncing…' : 'Sync progress with GitHub'}
               aria-label="Sync progress with GitHub"
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] transition-colors hover:border-[#E9C46A] hover:text-white"
+              className="flex h-7 w-7 items-center justify-center rounded-full border border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] transition-colors hover:border-[#E9C46A] hover:text-white"
             >
               <RefreshCw className={`h-3.5 w-3.5 ${isSyncing ? 'animate-spin text-[#E9C46A]' : ''}`} />
             </button>
@@ -639,7 +669,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               onClick={() => setShowToken((v) => !v)}
               title="GitHub cloud sync token"
               aria-label="GitHub cloud sync token"
-              className={`flex h-8 w-8 items-center justify-center rounded-full border transition-colors ${
+              className={`flex h-7 w-7 items-center justify-center rounded-full border transition-colors ${
                 settings.githubSyncToken
                   ? 'border-[#E9C46A] bg-[#E9C46A]/20 text-[#E9C46A]'
                   : 'border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] hover:border-[#F6EFE2]/40 hover:text-white'
@@ -652,7 +682,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               onClick={onToggleSound}
               title={settings.audioEnabled ? 'Mute sound' : 'Enable sound'}
               aria-label="Toggle sound"
-              className={`flex h-8 w-8 items-center justify-center rounded-full border transition-colors ${
+              className={`flex h-7 w-7 items-center justify-center rounded-full border transition-colors ${
                 settings.audioEnabled
                   ? 'border-[#2A9D8F] bg-[#2A9D8F]/25 text-[#A7F3D0]'
                   : 'border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] hover:text-white'
@@ -665,7 +695,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               onClick={onExportBackup}
               title="Export backup (JSON)"
               aria-label="Export backup"
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] transition-colors hover:border-[#F6EFE2]/40 hover:text-white"
+              className="flex h-7 w-7 items-center justify-center rounded-full border border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] transition-colors hover:border-[#F6EFE2]/40 hover:text-white"
             >
               <Download className="h-3.5 w-3.5" />
             </button>
@@ -673,7 +703,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             <label
               title="Import backup (JSON)"
               aria-label="Import backup"
-              className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] transition-colors hover:border-[#F6EFE2]/40 hover:text-white"
+              className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] transition-colors hover:border-[#F6EFE2]/40 hover:text-white"
             >
               <Upload className="h-3.5 w-3.5" />
               <input
@@ -687,570 +717,427 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               />
             </label>
           </div>
-        </header>
 
-        {/* Sync & Token Drawer */}
-        {(syncStatusMessage || showToken) && (
-          <div className="rounded-2xl border-2 border-[#E9C46A]/50 bg-[#153348] p-4 shadow-xl">
-            {showToken ? (
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-extrabold uppercase tracking-wider text-[#E9C46A]">
-                    GitHub Two-Way Sync Token
-                  </span>
-                  <button
-                    onClick={() => setShowToken(false)}
-                    className="text-xs font-semibold text-[#D6CBB9] hover:text-white"
-                  >
-                    Close
-                  </button>
-                </div>
-                <p className="text-xs leading-relaxed text-[#D6CBB9]">
-                  Pulling progress works automatically. Add a Personal Access Token with{' '}
-                  <code className="rounded bg-[#0E2231] px-1.5 py-0.5 font-mono text-[#E9C46A]">repo</code> scope to push
-                  updates from any device.
-                </p>
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <input
-                    type="password"
-                    value={tokenDraft}
-                    onChange={(e) => setTokenDraft(e.target.value)}
-                    placeholder="ghp_… or github_pat_…"
-                    className="flex-1 rounded-xl border border-[#F6EFE2]/20 bg-[#0E2231] px-4 py-2 font-mono text-xs text-white placeholder:text-slate-500 focus:border-[#E9C46A] focus:outline-none"
-                  />
-                  <button
-                    onClick={() => {
-                      onSaveGithubToken(tokenDraft.trim());
-                      setShowToken(false);
-                    }}
-                    className="rounded-xl bg-[#D94E34] px-5 py-2 text-xs font-extrabold uppercase tracking-wider text-white transition-colors hover:bg-[#E05A47]"
-                  >
-                    Save Token
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <p className="flex items-center gap-2 text-xs font-bold text-[#E9C46A]">
-                <span className="h-2 w-2 rounded-full bg-[#2A9D8F]" />
-                {syncStatusMessage}
-              </p>
-            )}
-          </div>
-        )}
-
-        {/* ── 2. HERO FOLIO — SUNLIT VELLUM + LIVE POLITICAL GLOBE ─────── */}
-        <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-          {/* Left: Tactile Warm Parchment Vellum Atlas Folio */}
-          <div className="relative flex flex-col justify-between overflow-hidden rounded-[2rem] border-2 border-[#E2D5BE] bg-[#F6EFE2] p-6 sm:p-9 text-[#142534] shadow-2xl">
-            {/* Inner Cartographic Frame Rule */}
-            <div className="pointer-events-none absolute inset-3 rounded-[1.4rem] border border-[#142534]/12" />
-
-            <div className="relative">
-              {/* Top Edition Kicker */}
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#D94E34]/30 bg-[#D94E34]/10 px-3.5 py-1 text-xs font-extrabold uppercase tracking-[0.14em] text-[#C84228]">
-                <Sparkles className="h-3.5 w-3.5" />
-                <span>
-                  {data.totalDueCount > 0
-                    ? `${dueValue} Cards Ready for Today’s Expedition`
-                    : 'All Scheduled Cards Complete · Free Practice Ready'}
+          {/* Floating Popover for GitHub Token (Never shifts page height) */}
+          {showToken && (
+            <div className="absolute right-4 top-12 z-50 w-96 rounded-2xl border-2 border-[#E9C46A] bg-[#153348] p-4 shadow-2xl">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-extrabold uppercase tracking-wider text-[#E9C46A]">
+                  GitHub Two-Way Sync Token
                 </span>
+                <button
+                  onClick={() => setShowToken(false)}
+                  className="text-xs font-semibold text-[#D6CBB9] hover:text-white"
+                >
+                  Close
+                </button>
               </div>
-
-              {/* Bold Editorial Serif Headline */}
-              <h1
-                className={`${serifDisplay} mt-4 text-[2.6rem] font-black leading-[0.98] tracking-[-0.03em] text-[#142534] sm:text-[3.5rem] xl:text-[3.85rem]`}
-              >
-                Learn the World
-                <br />
-                <span className="italic font-bold text-[#D94E34]">by Heart.</span>
-              </h1>
-
-              <p className="mt-4 max-w-xl text-sm sm:text-[15px] font-medium leading-relaxed text-[#334A5E]">
-                {data.totalDueCount > 0 ? (
-                  <>
-                    Explore <strong className="font-extrabold text-[#142534]">196 sovereign nations</strong> and{' '}
-                    <strong className="font-extrabold text-[#142534]">40 oceans & straits</strong> on our tactile
-                    political atlas. Answer twice in a row from active recall to master each card.
-                  </>
-                ) : (
-                  <>
-                    Your daily spaced-repetition queue is completely caught up. Take an ungraded practice voyage across
-                    any continent or test your speed in 60-second Time Attack.
-                  </>
-                )}
+              <p className="mt-1.5 text-[11px] leading-relaxed text-[#D6CBB9]">
+                Add a Personal Access Token (<code className="font-mono text-[#E9C46A]">repo</code> scope) to push
+                progress updates from any device.
               </p>
-
-              {/* Focus Switches (Capitals & Locations) */}
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <span className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#5B7083]">
-                  Study Focus:
-                </span>
-                {focusOptions.map((opt) => {
-                  const active = selectedAttributes.includes(opt.attr);
-                  return (
-                    <button
-                      key={opt.attr}
-                      onClick={() => {
-                        soundFx.playClick();
-                        onToggleAttribute(opt.attr);
-                      }}
-                      aria-pressed={active}
-                      className={`flex items-center gap-2.5 rounded-full border-2 px-4 py-2 text-xs font-extrabold transition-all active:scale-95 ${
-                        active
-                          ? 'border-[#142534] bg-[#142534] text-[#F6EFE2] shadow-md'
-                          : 'border-[#D5C7B0] bg-[#EDE3D0]/70 text-[#495E70] hover:border-[#142534]/50 hover:text-[#142534]'
-                      }`}
-                    >
-                      <span className="text-base">{opt.glyph}</span>
-                      <span>{opt.label}</span>
-                      <span
-                        className={`rounded-full px-2 py-0.5 font-mono text-[10px] ${
-                          active ? 'bg-[#E9C46A] text-[#142534]' : 'bg-[#DDD1BC] text-[#495E70]'
-                        }`}
-                      >
-                        {opt.detail}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Primary CTA & Secondary Mode Buttons */}
-              <div className="mt-7 flex flex-wrap items-center gap-3">
+              <div className="mt-2.5 flex gap-2">
+                <input
+                  type="password"
+                  value={tokenDraft}
+                  onChange={(e) => setTokenDraft(e.target.value)}
+                  placeholder="ghp_… or github_pat_…"
+                  className="flex-1 rounded-xl border border-[#F6EFE2]/20 bg-[#0E2231] px-3 py-1.5 font-mono text-xs text-white placeholder:text-slate-500 focus:border-[#E9C46A] focus:outline-none"
+                />
                 <button
                   onClick={() => {
-                    soundFx.playClick();
-                    onStartSession('All', selectedAttributes, data.isCaughtUp('All'));
+                    onSaveGithubToken(tokenDraft.trim());
+                    setShowToken(false);
                   }}
-                  className="group relative overflow-hidden flex items-center gap-3 rounded-2xl bg-[#D94E34] px-7 py-4 text-sm font-black uppercase tracking-[0.06em] text-[#FFF8E7] shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[#C54128] active:scale-[0.98]"
+                  className="rounded-xl bg-[#D94E34] px-4 py-1.5 text-xs font-extrabold text-white hover:bg-[#E05A47]"
                 >
-                  <Play className="h-5 w-5 fill-current transition-transform group-hover:translate-x-0.5" />
-                  <span>{data.isCaughtUp('All') ? 'Practice World Atlas' : 'Begin World Expedition'}</span>
-                  <span className="rounded-full bg-black/20 px-2.5 py-0.5 font-mono text-xs font-bold text-[#FFF8E7]">
-                    {data.isCaughtUp('All') ? '236' : dueValue}
-                  </span>
-                </button>
-
-                <button
-                  onClick={onOpenAtlas}
-                  className="flex items-center gap-2 rounded-2xl border-2 border-[#142534] bg-transparent px-5 py-3.5 text-xs font-extrabold uppercase tracking-[0.06em] text-[#142534] transition-all hover:-translate-y-0.5 hover:bg-[#142534] hover:text-[#F6EFE2]"
-                >
-                  <Compass className="h-4 w-4" />
-                  <span>Explore Atlas</span>
-                </button>
-
-                <button
-                  onClick={onOpenArcade}
-                  className="flex items-center gap-2 rounded-2xl border-2 border-[#D49B27] bg-[#E9C46A]/35 px-5 py-3.5 text-xs font-extrabold uppercase tracking-[0.06em] text-[#142534] transition-all hover:-translate-y-0.5 hover:bg-[#E9C46A]/65"
-                >
-                  <Zap className="h-4 w-4 fill-[#D94E34] text-[#D94E34]" />
-                  <span>60s Time Attack</span>
+                  Save
                 </button>
               </div>
             </div>
+          )}
+        </header>
 
-            {/* Bottom Ledger inside the Vellum Folio: Mastery Ring + 4-Stage Pipeline */}
-            <div className="relative mt-8 grid gap-5 rounded-2xl border border-[#D8CBB5] bg-[#ECE2CE]/80 p-4 sm:grid-cols-[auto_1fr] sm:items-center">
-              <div className="flex items-center gap-4 sm:border-r sm:border-[#D0C2AA] sm:pr-5">
-                <div className="relative flex h-20 w-20 shrink-0 items-center justify-center">
-                  <svg className="h-20 w-20 -rotate-90" viewBox="0 0 96 96">
+        {/* ── 2. MAIN 12-COLUMN BENTO GRID (Fits 100% in Remaining Height) ═ */}
+        <div className="flex-1 min-h-0 grid grid-cols-12 gap-3.5 overflow-hidden">
+          {/* ══ LEFT COLUMN (5 Cols): VELLUM HERO FOLIO + TELEMETRY STRIP ══ */}
+          <div className="col-span-12 lg:col-span-5 flex flex-col justify-between gap-3 min-h-0 overflow-hidden">
+            {/* Sunlit Vellum Hero Card */}
+            <div className="relative flex-1 min-h-0 flex flex-col justify-between overflow-hidden rounded-[1.75rem] border-2 border-[#E2D5BE] bg-[#F6EFE2] p-5 sm:p-6 text-[#142534] shadow-2xl">
+              <div className="pointer-events-none absolute inset-2.5 rounded-[1.3rem] border border-[#142534]/10" />
+
+              <div className="relative">
+                <div className="inline-flex items-center gap-1.5 rounded-full border border-[#D94E34]/30 bg-[#D94E34]/10 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#C84228]">
+                  <Sparkles className="h-3 w-3" />
+                  <span>
+                    {data.totalDueCount > 0
+                      ? `${dueValue} Cards Ready for Today’s Expedition`
+                      : 'All Cards Scheduled · Free Practice Ready'}
+                  </span>
+                </div>
+
+                <h1
+                  className={`${serifDisplay} mt-3 text-[2.2rem] xl:text-[2.75rem] font-black leading-[0.96] tracking-[-0.03em] text-[#142534]`}
+                >
+                  Learn the World{' '}
+                  <span className="italic font-bold text-[#D94E34]">by Heart.</span>
+                </h1>
+
+                <p className="mt-2.5 text-xs sm:text-[13px] font-medium leading-relaxed text-[#334A5E]">
+                  {data.totalDueCount > 0 ? (
+                    <>
+                      Master <strong className="font-extrabold text-[#142534]">196 sovereign nations</strong> and{' '}
+                      <strong className="font-extrabold text-[#142534]">40 oceans & straits</strong>. Two consecutive
+                      active-recall answers graduate each card into long-term memory.
+                    </>
+                  ) : (
+                    <>
+                      Your spaced-repetition queue is caught up. Launch an ungraded practice voyage across any region
+                      or test your speed in 60s Time Attack.
+                    </>
+                  )}
+                </p>
+
+                {/* Study Focus Toggles */}
+                <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <span className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#5B7083]">
+                    Focus:
+                  </span>
+                  {focusOptions.map((opt) => {
+                    const active = selectedAttributes.includes(opt.attr);
+                    return (
+                      <button
+                        key={opt.attr}
+                        onClick={() => {
+                          soundFx.playClick();
+                          onToggleAttribute(opt.attr);
+                        }}
+                        aria-pressed={active}
+                        className={`flex items-center gap-2 rounded-full border-2 px-3.5 py-1.5 text-xs font-extrabold transition-all active:scale-95 ${
+                          active
+                            ? 'border-[#142534] bg-[#142534] text-[#F6EFE2]'
+                            : 'border-[#D5C7B0] bg-[#EDE3D0]/70 text-[#495E70] hover:border-[#142534]/50'
+                        }`}
+                      >
+                        <span>{opt.glyph}</span>
+                        <span>{opt.label}</span>
+                        <span
+                          className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] ${
+                            active ? 'bg-[#E9C46A] text-[#142534]' : 'bg-[#DDD1BC] text-[#495E70]'
+                          }`}
+                        >
+                          {opt.detail}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Primary Launch & Mode Buttons */}
+                <div className="mt-4 flex flex-wrap items-center gap-2.5">
+                  <button
+                    onClick={() => {
+                      soundFx.playClick();
+                      onStartSession('All', selectedAttributes, data.isCaughtUp('All'));
+                    }}
+                    className="group flex items-center gap-2.5 rounded-2xl bg-[#D94E34] px-5 py-3 text-xs sm:text-sm font-black uppercase tracking-[0.05em] text-[#FFF8E7] shadow-md transition-all hover:bg-[#C54128] active:scale-[0.98]"
+                  >
+                    <Play className="h-4 w-4 fill-current" />
+                    <span>{data.isCaughtUp('All') ? 'Practice World' : 'Begin Expedition'}</span>
+                    <span className="rounded-full bg-black/20 px-2 py-0.5 font-mono text-[11px] font-bold">
+                      {data.isCaughtUp('All') ? '236' : dueValue}
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={onOpenAtlas}
+                    className="flex items-center gap-1.5 rounded-2xl border-2 border-[#142534] px-4 py-2.5 text-xs font-extrabold uppercase tracking-[0.05em] text-[#142534] transition-colors hover:bg-[#142534] hover:text-[#F6EFE2]"
+                  >
+                    <Compass className="h-3.5 w-3.5" />
+                    <span>Atlas</span>
+                  </button>
+
+                  <button
+                    onClick={onOpenArcade}
+                    className="flex items-center gap-1.5 rounded-2xl border-2 border-[#D49B27] bg-[#E9C46A]/40 px-4 py-2.5 text-xs font-extrabold uppercase tracking-[0.05em] text-[#142534] transition-colors hover:bg-[#E9C46A]/70"
+                  >
+                    <Zap className="h-3.5 w-3.5 fill-[#D94E34] text-[#D94E34]" />
+                    <span>Arcade</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Integrated Mastery Ring & 4-Stage Memory Horizon */}
+              <div className="relative mt-4 grid grid-cols-[auto_1fr] items-center gap-4 rounded-2xl border border-[#D8CBB5] bg-[#ECE2CE]/85 p-3">
+                <div className="relative flex h-16 w-16 shrink-0 items-center justify-center border-r border-[#D0C2AA] pr-3">
+                  <svg className="h-16 w-16 -rotate-90" viewBox="0 0 76 76">
+                    <circle cx="38" cy="38" r={ringRadius} stroke="#D5C7B0" strokeWidth="6.5" fill="transparent" />
                     <circle
-                      cx="48"
-                      cy="48"
-                      r={ringRadius}
-                      stroke="#D5C7B0"
-                      strokeWidth="8"
-                      fill="transparent"
-                    />
-                    <circle
-                      cx="48"
-                      cy="48"
+                      cx="38"
+                      cy="38"
                       r={ringRadius}
                       stroke={JADE}
-                      strokeWidth="8"
+                      strokeWidth="6.5"
                       strokeDasharray={ringCircumference}
                       strokeDashoffset={ringOffset}
                       strokeLinecap="round"
                       fill="transparent"
                     />
                   </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="font-mono text-lg font-extrabold leading-none text-[#142534]">
+                  <div className="absolute inset-0 pr-3 flex flex-col items-center justify-center">
+                    <span className="font-mono text-sm font-extrabold leading-none text-[#142534]">
                       {masteryValue}%
                     </span>
-                    <span className="mt-0.5 text-[8px] font-extrabold uppercase tracking-widest text-[#2A9D8F]">
-                      Mastered
+                    <span className="text-[7px] font-extrabold uppercase tracking-wider text-[#2A9D8F]">
+                      Mastery
                     </span>
                   </div>
                 </div>
-                <div className="sm:hidden">
-                  <p className="text-xs font-extrabold uppercase tracking-wider text-[#142534]">Atlas Retention</p>
-                  <p className="text-xs text-[#495E70]">
-                    {data.pipeline.mastered + data.pipeline.recall} of {data.pipeline.total} places in memory
-                  </p>
-                </div>
-              </div>
 
-              <div>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="font-extrabold uppercase tracking-[0.12em] text-[#142534]">
-                    World Memory Horizon ({data.pipeline.total} Sovereign States & Seas)
-                  </span>
-                  <span className="font-mono font-bold text-[#2A9D8F]">
-                    {data.pipeline.mastered + data.pipeline.recall} / {data.pipeline.total}
-                  </span>
-                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="font-extrabold uppercase tracking-wider text-[#142534]">
+                      Memory Horizon
+                    </span>
+                    <span className="font-mono font-bold text-[#2A9D8F]">
+                      {data.pipeline.mastered + data.pipeline.recall}/{data.pipeline.total}
+                    </span>
+                  </div>
 
-                {/* Smooth Segmented Progress Bar */}
-                <div className="mt-2 flex h-3 overflow-hidden rounded-full bg-[#D5C7B0] p-0.5">
-                  <div
-                    className="h-full rounded-l-full bg-[#2A9D8F] transition-all duration-700"
-                    style={{ width: `${(data.pipeline.mastered / data.pipeline.total) * 100}%` }}
-                  />
-                  <div
-                    className="h-full bg-[#E07A3C] transition-all duration-700"
-                    style={{ width: `${(data.pipeline.recall / data.pipeline.total) * 100}%` }}
-                  />
-                  <div
-                    className="h-full rounded-r-full bg-[#3B8EA5] transition-all duration-700"
-                    style={{ width: `${(data.pipeline.recognition / data.pipeline.total) * 100}%` }}
-                  />
-                </div>
-
-                <div className="mt-2.5 grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  {[
-                    { label: 'Mastered', val: data.pipeline.mastered, dot: 'bg-[#2A9D8F]' },
-                    { label: 'Active Recall', val: data.pipeline.recall, dot: 'bg-[#E07A3C]' },
-                    { label: 'First Sight', val: data.pipeline.recognition, dot: 'bg-[#3B8EA5]' },
-                    { label: 'Uncharted', val: data.pipeline.uncharted, dot: 'bg-[#948875]' }
-                  ].map((item) => (
+                  <div className="mt-1.5 flex h-2.5 overflow-hidden rounded-full bg-[#D5C7B0] p-0.5">
                     <div
-                      key={item.label}
-                      className="flex items-center justify-between rounded-lg bg-[#F6EFE2]/80 px-2.5 py-1 text-[11px] font-bold text-[#142534]"
-                    >
-                      <span className="flex items-center gap-1.5 text-[#495E70]">
-                        <span className={`h-2 w-2 rounded-full ${item.dot}`} />
-                        {item.label}
-                      </span>
-                      <span className="font-mono font-extrabold">{item.val}</span>
-                    </div>
-                  ))}
+                      className="h-full rounded-l-full bg-[#2A9D8F]"
+                      style={{ width: `${(data.pipeline.mastered / data.pipeline.total) * 100}%` }}
+                    />
+                    <div
+                      className="h-full bg-[#E07A3C]"
+                      style={{ width: `${(data.pipeline.recall / data.pipeline.total) * 100}%` }}
+                    />
+                    <div
+                      className="h-full rounded-r-full bg-[#3B8EA5]"
+                      style={{ width: `${(data.pipeline.recognition / data.pipeline.total) * 100}%` }}
+                    />
+                  </div>
+
+                  <div className="mt-2 grid grid-cols-4 gap-1.5">
+                    {[
+                      { label: 'Master', val: data.pipeline.mastered, dot: 'bg-[#2A9D8F]' },
+                      { label: 'Recall', val: data.pipeline.recall, dot: 'bg-[#E07A3C]' },
+                      { label: 'Seen', val: data.pipeline.recognition, dot: 'bg-[#3B8EA5]' },
+                      { label: 'Unseen', val: data.pipeline.uncharted, dot: 'bg-[#948875]' }
+                    ].map((item) => (
+                      <div
+                        key={item.label}
+                        className="flex items-center justify-between rounded-md bg-[#F6EFE2]/80 px-1.5 py-0.5 text-[10px] font-bold text-[#142534]"
+                      >
+                        <span className="flex items-center gap-1 text-[#495E70]">
+                          <span className={`h-1.5 w-1.5 rounded-full ${item.dot}`} />
+                          {item.label}
+                        </span>
+                        <span className="font-mono font-extrabold">{item.val}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
+              </div>
+            </div>
+
+            {/* 4-Card Lifetime Telemetry Strip (Shrink-0) */}
+            <div className="shrink-0 grid grid-cols-4 gap-2.5">
+              <div className="rounded-2xl border border-[#F6EFE2]/15 bg-[#143146] p-3 shadow-md">
+                <span className="flex items-center gap-1 text-[10px] font-bold text-[#D6CBB9]">
+                  <Target className="h-3 w-3 text-[#48CAE4]" />
+                  Total Reviews
+                </span>
+                <p className={`${serifDisplay} mt-1 text-xl font-black leading-none text-[#F6EFE2]`}>
+                  {stats.totalReviews.toLocaleString()}
+                </p>
+                <p className="mt-1 text-[10px] text-[#8FA6B8]">{data.reviewsToday} today</p>
+              </div>
+
+              <div className="rounded-2xl border border-[#F6EFE2]/15 bg-[#143146] p-3 shadow-md">
+                <span className="flex items-center gap-1 text-[10px] font-bold text-[#D6CBB9]">
+                  <Gauge className="h-3 w-3 text-[#2A9D8F]" />
+                  Accuracy
+                </span>
+                <p className={`${serifDisplay} mt-1 text-xl font-black leading-none text-[#6EE7B7]`}>
+                  {data.accuracy}%
+                </p>
+                <p className="mt-1 text-[10px] text-[#8FA6B8]">all-time</p>
+              </div>
+
+              <div className="rounded-2xl border border-[#F6EFE2]/15 bg-[#143146] p-3 shadow-md">
+                <span className="flex items-center gap-1 text-[10px] font-bold text-[#D6CBB9]">
+                  <Flame className="h-3 w-3 text-[#E07A5F]" />
+                  Best Streak
+                </span>
+                <p className={`${serifDisplay} mt-1 text-xl font-black leading-none text-[#E9C46A]`}>
+                  {stats.longestStreak}d
+                </p>
+                <p className="mt-1 text-[10px] text-[#8FA6B8]">now {stats.currentStreak}d</p>
+              </div>
+
+              <div className="rounded-2xl border border-[#F6EFE2]/15 bg-[#143146] p-3 shadow-md">
+                <span className="flex items-center gap-1 text-[10px] font-bold text-[#D6CBB9]">
+                  <Trophy className="h-3 w-3 text-[#E9C46A]" />
+                  Charted
+                </span>
+                <p className={`${serifDisplay} mt-1 text-xl font-black leading-none text-[#F6EFE2]`}>
+                  {data.entitiesInMemory}
+                  <span className="text-xs font-normal text-[#8FA6B8]">/{data.totalWorldEntities}</span>
+                </p>
+                <p className="mt-1 text-[10px] text-[#8FA6B8]">{data.pipeline.uncharted} left</p>
               </div>
             </div>
           </div>
 
-          {/* Right: Interactive 3D Political Globe Dome */}
-          <div className="relative flex flex-col items-center justify-between overflow-hidden rounded-[2rem] border-2 border-[#E9C46A]/35 bg-gradient-to-b from-[#173A52] via-[#112C3F] to-[#0C202E] p-5 sm:p-6 shadow-2xl">
-            <InteractiveAtelierGlobe
-              targetCoords={activeRegionLock ? activeRegionLock.coords : null}
-              targetLabel={activeRegionLock ? activeRegionLock.label : data.spotlight.name}
-              spotlightCoords={data.spotlight.coordinates}
-              spotlightName={data.spotlight.name}
-              spotlightId={data.spotlight.id}
-            />
+          {/* ══ CENTER COLUMN (4 Cols): 3D POLITICAL GLOBE + SPOTLIGHT ══════ */}
+          <div className="col-span-12 lg:col-span-4 flex flex-col justify-between gap-3 min-h-0 overflow-hidden">
+            {/* Interactive 3D Political Globe Dome */}
+            <div className="relative flex-1 min-h-0 flex flex-col items-center justify-between overflow-hidden rounded-[1.75rem] border-2 border-[#E9C46A]/35 bg-gradient-to-b from-[#173A52] via-[#112C3F] to-[#0C202E] p-3.5 shadow-2xl">
+              <InteractiveAtelierGlobe
+                targetCoords={activeRegionLock ? activeRegionLock.coords : null}
+                targetLabel={activeRegionLock ? activeRegionLock.label : data.spotlight.name}
+                spotlightCoords={data.spotlight.coordinates}
+                spotlightName={data.spotlight.name}
+                spotlightId={data.spotlight.id}
+              />
 
-            {/* Region Rotation Pills under the Globe */}
-            <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
-              <button
-                onClick={() => {
-                  soundFx.playClick();
-                  setActiveRegionLock(null);
-                }}
-                className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-bold transition-all ${
-                  activeRegionLock === null
-                    ? 'border-[#E9C46A] bg-[#E9C46A] text-[#142534]'
-                    : 'border-[#F6EFE2]/20 bg-[#0E2231] text-[#D6CBB9] hover:text-white'
-                }`}
-              >
-                <Crosshair className="h-3 w-3" />
-                <span>Spotlight ({data.spotlight.name})</span>
-              </button>
-
-              {data.regions.map((reg) => {
-                const meta = REGION_META[reg.id] || REGION_META.Europe;
-                const isLocked = activeRegionLock?.id === reg.id;
-                return (
-                  <button
-                    key={reg.id}
-                    onClick={() => {
-                      soundFx.playClick();
-                      setActiveRegionLock(
-                        isLocked
-                          ? null
-                          : {
-                              id: reg.id,
-                              label: reg.shortName,
-                              coords: meta.coords
-                            }
-                      );
-                    }}
-                    className={`rounded-full border px-2.5 py-1 text-[11px] font-bold transition-all ${
-                      isLocked
-                        ? 'border-[#F6EFE2] bg-[#F6EFE2] text-[#142534]'
-                        : 'border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] hover:border-[#F6EFE2]/40 hover:text-white'
-                    }`}
-                  >
-                    {reg.emblem} {reg.shortName}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ── 3. THE SIX THEATERS OF THE WORLD (REGIONAL PLATES) ────────── */}
-        <section className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-end justify-between gap-3 px-1">
-            <div>
-              <span className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#E9C46A]">
-                Regional Folios
-              </span>
-              <h2 className={`${serifDisplay} mt-1 text-2xl sm:text-3xl font-black tracking-tight text-[#F6EFE2]`}>
-                Choose a Region to Study
-              </h2>
-            </div>
-            <p className="text-xs font-medium text-[#D6CBB9]">
-              Hover any folio plate to turn the globe · Click to begin a regional drill
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-            {data.regions.map((region) => {
-              const meta = REGION_META[region.id] || REGION_META.Europe;
-              const isHovered = activeRegionLock?.id === region.id;
-
-              return (
+              {/* Quick Globe Sector Pills */}
+              <div className="mt-2 shrink-0 flex flex-wrap items-center justify-center gap-1">
                 <button
-                  key={region.id}
-                  onMouseEnter={() =>
-                    setActiveRegionLock({
-                      id: region.id,
-                      label: region.name,
-                      coords: meta.coords
-                    })
-                  }
-                  onMouseLeave={() => setActiveRegionLock(null)}
                   onClick={() => {
                     soundFx.playClick();
-                    onStartSession(
-                      region.id as TrainingCategory,
-                      region.isWater ? ['location'] : selectedAttributes,
-                      region.caughtUp
-                    );
+                    setActiveRegionLock(null);
                   }}
-                  className={`group relative flex flex-col justify-between overflow-hidden rounded-[1.5rem] border-2 p-4 text-left transition-all duration-200 hover:-translate-y-1 ${
-                    isHovered
-                      ? 'border-[#E9C46A] bg-[#1A3E58] shadow-xl'
-                      : 'border-[#F6EFE2]/15 bg-[#143146] hover:border-[#E9C46A]/70 hover:bg-[#193B54]'
+                  className={`flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-bold transition-all ${
+                    activeRegionLock === null
+                      ? 'border-[#E9C46A] bg-[#E9C46A] text-[#142534]'
+                      : 'border-[#F6EFE2]/20 bg-[#0E2231] text-[#D6CBB9] hover:text-white'
                   }`}
                 >
-                  {/* Warm Top Pigment Ribbon */}
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-x-0 top-0 h-1.5"
-                    style={{ background: meta.accent }}
-                  />
-
-                  <div>
-                    <div className="mt-1 flex items-center justify-between font-mono text-[10px] font-bold text-[#D6CBB9]">
-                      <span className="uppercase tracking-widest text-[#E9C46A]">{meta.plateNumber}</span>
-                      <span>{meta.coordLabel}</span>
-                    </div>
-
-                    <div className="mt-3 flex items-start justify-between gap-2">
-                      <div className="flex items-center gap-2.5">
-                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-[#F6EFE2]/20 bg-[#0E2231] text-xl shadow-inner">
-                          {region.emblem}
-                        </span>
-                        <div>
-                          <span className={`${serifDisplay} block text-lg font-extrabold leading-tight text-[#F6EFE2]`}>
-                            {region.shortName}
-                          </span>
-                          <span className="mt-0.5 block text-[11px] font-semibold text-[#D6CBB9]">
-                            {region.shortSubtitle}
-                          </span>
-                        </div>
-                      </div>
-
-                      <span
-                        className={`${serifDisplay} text-2xl font-black leading-none`}
-                        style={{ color: meta.accent }}
-                      >
-                        {region.masteredPct}%
-                      </span>
-                    </div>
-
-                    {/* Progress Bar */}
-                    <div className="mt-4 flex h-2.5 overflow-hidden rounded-full bg-[#0C1D2B] p-0.5">
-                      <span
-                        className="h-full rounded-l-full transition-all duration-500"
-                        style={{ width: `${region.masteredPct}%`, background: meta.accent }}
-                      />
-                      <span
-                        className="h-full bg-[#E9C46A]/80 transition-all duration-500"
-                        style={{ width: `${region.recallPct}%` }}
-                      />
-                    </div>
-
-                    <div className="mt-3 flex items-center justify-between text-[11px] font-semibold text-[#D6CBB9]">
-                      <span>
-                        <strong className="text-[#F6EFE2]">{region.mastered}</strong>/{region.total} mastered
-                      </span>
-                      <span className={region.recall > 0 ? 'text-[#E9C46A]' : 'text-[#8FA6B8]'}>
-                        {region.recall} recall
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex items-center justify-between rounded-xl bg-[#0E2231] px-3.5 py-2.5 text-xs font-extrabold text-[#F6EFE2] transition-colors group-hover:bg-[#F6EFE2] group-hover:text-[#142534]">
-                    <span className="flex items-center gap-1.5">
-                      <Play className="h-3 w-3 fill-current" />
-                      {region.caughtUp ? 'Practice Plate' : `Study · ${region.dueCount} due`}
-                    </span>
-                    <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-                  </div>
+                  <Crosshair className="h-2.5 w-2.5" />
+                  <span>{data.spotlight.name}</span>
                 </button>
-              );
-            })}
-          </div>
-        </section>
 
-        {/* ── 4. CARTOGRAPHER'S DISPATCH & NAVIGATOR'S LEDGER ───────────── */}
-        <section className="grid gap-5 lg:grid-cols-3">
-          {/* Left 2 Columns: Archival Nation Postcard Dossier */}
-          <div className="relative flex flex-col justify-between overflow-hidden rounded-[2rem] border-2 border-[#E2D5BE] bg-[#F6EFE2] p-6 sm:p-7 text-[#142534] shadow-xl lg:col-span-2">
-            <div>
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D8CBB5] pb-4">
-                <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#D94E34]" />
-                  <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#C84228]">
-                    Country in Focus · Archive #{data.spotlight.numericId}
-                  </span>
-                </div>
+                {data.regions.map((reg) => {
+                  const meta = REGION_META[reg.id] || REGION_META.Europe;
+                  const isLocked = activeRegionLock?.id === reg.id;
+                  return (
+                    <button
+                      key={reg.id}
+                      onClick={() => {
+                        soundFx.playClick();
+                        setActiveRegionLock(
+                          isLocked
+                            ? null
+                            : {
+                                id: reg.id,
+                                label: reg.shortName,
+                                coords: meta.coords
+                              }
+                        );
+                      }}
+                      className={`rounded-full border px-2 py-0.5 text-[10px] font-bold transition-all ${
+                        isLocked
+                          ? 'border-[#F6EFE2] bg-[#F6EFE2] text-[#142534]'
+                          : 'border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] hover:text-white'
+                      }`}
+                    >
+                      {reg.shortName}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-                <div className="flex items-center gap-2">
-                  <span className="rounded-full border border-[#D0C2AA] bg-[#ECE2CE] px-3 py-1 font-mono text-[10px] font-bold text-[#334A5E]">
-                    {formatCoordinates(data.spotlight.coordinates)}
-                  </span>
-                  <span className="rounded-full bg-[#142534] px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#F6EFE2]">
-                    {data.spotlightStatus.label}
-                  </span>
-                </div>
+            {/* Spotlight Nation Archival Postcard (Shrink-0) */}
+            <div className="shrink-0 rounded-[1.75rem] border-2 border-[#E2D5BE] bg-[#F6EFE2] p-4 text-[#142534] shadow-xl">
+              <div className="flex items-center justify-between border-b border-[#D8CBB5] pb-2">
+                <span className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#C84228]">
+                  <span className="h-2 w-2 rounded-full bg-[#D94E34]" />
+                  Country in Focus · #{data.spotlight.numericId}
+                </span>
+                <span className="font-mono text-[10px] font-bold text-[#495E70]">
+                  {formatCoordinates(data.spotlight.coordinates)}
+                </span>
               </div>
 
-              <div className="mt-5 flex flex-wrap items-center justify-between gap-5">
-                <div className="flex items-center gap-4 sm:gap-5">
-                  <div className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl border-2 border-[#D8CBB5] bg-[#ECE2CE] text-5xl shadow-inner">
+              <div className="mt-2.5 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-[#D8CBB5] bg-[#ECE2CE] text-3xl">
                     {data.spotlight.flagEmoji}
                   </div>
-                  <div>
-                    <p className="text-xs font-extrabold uppercase tracking-[0.15em] text-[#5B7083]">
-                      {data.spotlight.subregion} · {data.spotlight.continent}
-                    </p>
-                    <h3 className={`${serifDisplay} mt-1 text-3xl font-black tracking-tight text-[#142534]`}>
+                  <div className="min-w-0">
+                    <h3 className={`${serifDisplay} truncate text-xl font-black leading-tight text-[#142534]`}>
                       {data.spotlight.name}
                     </h3>
-                    <p className="mt-0.5 text-xs font-medium text-[#495E70]">{data.spotlight.officialName}</p>
+                    <p className="truncate text-[10px] font-bold uppercase tracking-wider text-[#5B7083]">
+                      {data.spotlight.subregion} · {data.spotlightStatus.label}
+                    </p>
                   </div>
                 </div>
 
-                {/* Capital Flashcard & Studio Audio */}
-                <div className="flex flex-wrap items-center gap-3 rounded-2xl border-2 border-[#D8CBB5] bg-[#ECE2CE] px-4 py-3">
-                  <div className="min-w-[140px]">
-                    <span className="block text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#5B7083]">
-                      Capital City
+                {/* Capital Reveal + Audio */}
+                <div className="flex items-center gap-1.5 rounded-xl border border-[#D8CBB5] bg-[#ECE2CE] px-2.5 py-1.5 shrink-0">
+                  <div className="pr-1">
+                    <span className="block text-[8px] font-extrabold uppercase tracking-wider text-[#5B7083]">
+                      Capital
                     </span>
-                    <span className={`${serifDisplay} mt-0.5 block text-xl font-black text-[#142534]`}>
-                      {revealCapital ? data.spotlight.capital : '• • • • • • • •'}
+                    <span className={`${serifDisplay} block text-sm font-black text-[#142534]`}>
+                      {revealCapital ? data.spotlight.capital : '• • • • • •'}
                     </span>
                   </div>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => {
-                        setRevealCapital((v) => !v);
-                        soundFx.playClick();
-                      }}
-                      className="flex items-center gap-1.5 rounded-xl bg-[#142534] px-3.5 py-2 text-xs font-extrabold text-[#F6EFE2] transition-colors hover:bg-[#223B52]"
-                    >
-                      {revealCapital ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-                      <span>{revealCapital ? 'Hide' : 'Reveal'}</span>
-                    </button>
-
-                    <button
-                      onClick={handlePronounceSpotlightCapital}
-                      title="Listen to capital pronunciation"
-                      className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#142534]/25 bg-[#F6EFE2] text-[#142534] transition-colors hover:bg-[#D94E34] hover:text-white"
-                    >
-                      <Volume2 className="h-4 w-4" />
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => {
+                      setRevealCapital((v) => !v);
+                      soundFx.playClick();
+                    }}
+                    className="rounded-lg bg-[#142534] px-2 py-1 text-[10px] font-extrabold text-[#F6EFE2] hover:bg-[#223B52]"
+                  >
+                    {revealCapital ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                  </button>
+                  <button
+                    onClick={handlePronounceSpotlightCapital}
+                    title="Pronounce capital"
+                    className="rounded-lg border border-[#142534]/20 bg-[#F6EFE2] p-1 text-[#142534] hover:bg-[#D94E34] hover:text-white"
+                  >
+                    <Volume2 className="h-3 w-3" />
+                  </button>
                 </div>
               </div>
 
-              {/* 4 Cultural & Geopolitical Field Notes */}
+              {/* 2x2 Field Notes */}
               {data.spotlight.facts && (
-                <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  <div className="rounded-xl border border-[#D8CBB5] bg-[#ECE2CE]/75 p-3">
-                    <span className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-[#5B7083]">
-                      <Scale className="h-3.5 w-3.5 text-[#D94E34]" />
-                      Government
-                    </span>
-                    <p
-                      className="mt-1 truncate text-xs font-extrabold text-[#142534]"
-                      title={data.spotlight.facts.politicalRegime}
-                    >
+                <div className="mt-2.5 grid grid-cols-2 gap-1.5 text-[11px]">
+                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#ECE2CE]/80 px-2.5 py-1">
+                    <Scale className="h-3 w-3 shrink-0 text-[#D94E34]" />
+                    <span className="truncate font-bold text-[#142534]">
                       {data.spotlight.facts.politicalRegime || 'Republic'}
-                    </p>
-                  </div>
-
-                  <div className="rounded-xl border border-[#D8CBB5] bg-[#ECE2CE]/75 p-3">
-                    <span className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-[#5B7083]">
-                      <UserCheck className="h-3.5 w-3.5 text-[#2A9D8F]" />
-                      Head of State
                     </span>
-                    <p
-                      className="mt-1 truncate text-xs font-extrabold text-[#142534]"
-                      title={data.spotlight.facts.leader}
-                    >
+                  </div>
+                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#ECE2CE]/80 px-2.5 py-1">
+                    <UserCheck className="h-3 w-3 shrink-0 text-[#2A9D8F]" />
+                    <span className="truncate font-bold text-[#142534]">
                       {data.spotlight.facts.leader || 'Head of State'}
-                    </p>
-                  </div>
-
-                  <div className="rounded-xl border border-[#D8CBB5] bg-[#ECE2CE]/75 p-3">
-                    <span className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-[#5B7083]">
-                      <Utensils className="h-3.5 w-3.5 text-[#D48C1C]" />
-                      National Dish
                     </span>
-                    <p
-                      className="mt-1 truncate text-xs font-extrabold text-[#142534]"
-                      title={data.spotlight.facts.cuisine}
-                    >
-                      {data.spotlight.facts.cuisine || 'Traditional Cuisine'}
-                    </p>
                   </div>
-
-                  <div className="rounded-xl border border-[#D8CBB5] bg-[#ECE2CE]/75 p-3">
-                    <span className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-[#5B7083]">
-                      <Coins className="h-3.5 w-3.5 text-[#1E6B7B]" />
-                      Currency
+                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#ECE2CE]/80 px-2.5 py-1">
+                    <Utensils className="h-3 w-3 shrink-0 text-[#D48C1C]" />
+                    <span className="truncate font-bold text-[#142534]">
+                      {data.spotlight.facts.cuisine || 'Cuisine'}
                     </span>
-                    <p
-                      className="mt-1 truncate text-xs font-extrabold text-[#142534]"
-                      title={data.spotlight.facts.currency}
-                    >
-                      {data.spotlight.facts.currency || 'National Currency'}
-                    </p>
+                  </div>
+                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#ECE2CE]/80 px-2.5 py-1">
+                    <Coins className="h-3 w-3 shrink-0 text-[#1E6B7B]" />
+                    <span className="truncate font-bold text-[#142534]">
+                      {data.spotlight.facts.currency || 'Currency'}
+                    </span>
                   </div>
                 </div>
               )}
-            </div>
 
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-[#D8CBB5] pt-4">
-              <p className="text-xs font-semibold text-[#495E70]">{data.spotlightStatus.hint}</p>
-
-              <div className="flex flex-wrap items-center gap-2.5">
+              <div className="mt-2.5 flex items-center justify-between pt-1">
                 <button
                   onClick={() => {
                     soundFx.playClick();
@@ -1260,134 +1147,120 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       coords: data.spotlight.coordinates
                     });
                   }}
-                  className="flex items-center gap-1.5 rounded-xl border-2 border-[#142534] px-3.5 py-2 text-xs font-extrabold text-[#142534] transition-colors hover:bg-[#142534] hover:text-[#F6EFE2]"
+                  className="flex items-center gap-1 text-[11px] font-extrabold text-[#142534] hover:text-[#D94E34]"
                 >
-                  <Crosshair className="h-3.5 w-3.5" />
+                  <Crosshair className="h-3 w-3" />
                   <span>Center on Globe</span>
                 </button>
 
                 <button
                   onClick={() => onStartSession(data.spotlight.continent, ['capital', 'location'], true)}
-                  className="group flex items-center gap-1.5 rounded-xl bg-[#D94E34] px-4 py-2 text-xs font-extrabold text-white transition-colors hover:bg-[#C54128]"
+                  className="flex items-center gap-1 rounded-lg bg-[#D94E34] px-3 py-1 text-[11px] font-extrabold text-white hover:bg-[#C54128]"
                 >
-                  <span>Practice {data.spotlight.continent}</span>
-                  <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                  <span>Drill {data.spotlight.continent}</span>
+                  <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Navigator's Ledger & Daily Goals */}
-          <div className="flex flex-col justify-between gap-4 rounded-[2rem] border-2 border-[#F6EFE2]/15 bg-[#143146] p-6 shadow-xl">
-            <div>
-              <div className="flex items-center justify-between border-b border-[#F6EFE2]/15 pb-3">
-                <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#E9C46A]">
-                  Navigator’s Ledger
-                </span>
-                <Trophy className="h-4 w-4 text-[#E9C46A]" />
-              </div>
-
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                <div className="rounded-2xl border border-[#F6EFE2]/10 bg-[#0E2231] p-3.5">
-                  <span className="flex items-center gap-1.5 text-[11px] font-bold text-[#D6CBB9]">
-                    <Target className="h-3.5 w-3.5 text-[#48CAE4]" />
-                    Total Reviews
-                  </span>
-                  <p className={`${serifDisplay} mt-1.5 text-2xl font-black text-[#F6EFE2]`}>
-                    {stats.totalReviews.toLocaleString()}
-                  </p>
-                  <p className="mt-0.5 text-[11px] text-[#8FA6B8]">{data.reviewsToday} today</p>
-                </div>
-
-                <div className="rounded-2xl border border-[#F6EFE2]/10 bg-[#0E2231] p-3.5">
-                  <span className="flex items-center gap-1.5 text-[11px] font-bold text-[#D6CBB9]">
-                    <Gauge className="h-3.5 w-3.5 text-[#2A9D8F]" />
-                    Accuracy
-                  </span>
-                  <p className={`${serifDisplay} mt-1.5 text-2xl font-black text-[#6EE7B7]`}>{data.accuracy}%</p>
-                  <p className="mt-0.5 text-[11px] text-[#8FA6B8]">all-time precision</p>
-                </div>
-
-                <div className="rounded-2xl border border-[#F6EFE2]/10 bg-[#0E2231] p-3.5">
-                  <span className="flex items-center gap-1.5 text-[11px] font-bold text-[#D6CBB9]">
-                    <Flame className="h-3.5 w-3.5 text-[#E07A5F]" />
-                    Best Streak
-                  </span>
-                  <p className={`${serifDisplay} mt-1.5 text-2xl font-black text-[#E9C46A]`}>
-                    {stats.longestStreak} days
-                  </p>
-                  <p className="mt-0.5 text-[11px] text-[#8FA6B8]">current: {stats.currentStreak}d</p>
-                </div>
-
-                <div className="rounded-2xl border border-[#F6EFE2]/10 bg-[#0E2231] p-3.5">
-                  <span className="flex items-center gap-1.5 text-[11px] font-bold text-[#D6CBB9]">
-                    <Compass className="h-3.5 w-3.5 text-[#E9C46A]" />
-                    Charted
-                  </span>
-                  <p className={`${serifDisplay} mt-1.5 text-2xl font-black text-[#F6EFE2]`}>
-                    {data.entitiesInMemory}
-                    <span className="text-sm font-normal text-[#8FA6B8]">/{data.totalWorldEntities}</span>
-                  </p>
-                  <p className="mt-0.5 text-[11px] text-[#8FA6B8]">{data.pipeline.uncharted} left to discover</p>
-                </div>
-              </div>
+          {/* ══ RIGHT COLUMN (3 Cols): 6 REGIONAL FOLIO PLATES ══════════════ */}
+          <div className="col-span-12 lg:col-span-3 flex flex-col justify-between gap-2 min-h-0 overflow-hidden">
+            <div className="shrink-0 flex items-center justify-between px-1">
+              <span className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#E9C46A]">
+                Regional Folios ({data.regions.length})
+              </span>
+              <span className="text-[10px] font-semibold text-[#D6CBB9]">Hover to turn globe</span>
             </div>
 
-            <div className="border-t border-[#F6EFE2]/15 pt-4">
-              <span className="block text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#E9C46A]">
-                Daily Field Goals
-              </span>
-              <div className="mt-2.5 space-y-2">
-                {[
-                  {
-                    label: 'Complete a Daily World Session',
-                    done: data.reviewsToday > 0 || data.totalDueCount === 0,
-                    badge: '+50 XP'
-                  },
-                  {
-                    label: 'Reach 5 Nations in Active Recall',
-                    done: data.pipeline.recall + data.pipeline.mastered >= 5,
-                    badge: '+35 XP'
-                  },
-                  {
-                    label: 'Keep Your Daily Streak Alive',
-                    done: stats.currentStreak > 0,
-                    badge: 'Active'
-                  }
-                ].map((goal) => (
-                  <div
-                    key={goal.label}
-                    className="flex items-center justify-between rounded-xl border border-[#F6EFE2]/10 bg-[#0E2231] px-3.5 py-2 text-xs"
+            <div className="flex-1 min-h-0 grid grid-rows-6 gap-2">
+              {data.regions.map((region) => {
+                const meta = REGION_META[region.id] || REGION_META.Europe;
+                const isHovered = activeRegionLock?.id === region.id;
+
+                return (
+                  <button
+                    key={region.id}
+                    onMouseEnter={() =>
+                      setActiveRegionLock({
+                        id: region.id,
+                        label: region.name,
+                        coords: meta.coords
+                      })
+                    }
+                    onMouseLeave={() => setActiveRegionLock(null)}
+                    onClick={() => {
+                      soundFx.playClick();
+                      onStartSession(
+                        region.id as TrainingCategory,
+                        region.isWater ? ['location'] : selectedAttributes,
+                        region.caughtUp
+                      );
+                    }}
+                    className={`group relative min-h-0 flex flex-col justify-between overflow-hidden rounded-2xl border-2 px-3.5 py-2.5 text-left transition-all ${
+                      isHovered
+                        ? 'border-[#E9C46A] bg-[#1A3E58] shadow-lg'
+                        : 'border-[#F6EFE2]/15 bg-[#143146] hover:border-[#E9C46A]/65 hover:bg-[#193B54]'
+                    }`}
                   >
-                    <span className="flex items-center gap-2 font-semibold text-[#F6EFE2]">
-                      <CheckCircle2
-                        className={`h-4 w-4 shrink-0 ${
-                          goal.done ? 'text-[#2A9D8F]' : 'text-[#495E70]'
-                        }`}
-                      />
-                      <span>{goal.label}</span>
-                    </span>
+                    {/* Left Pigment Spine */}
                     <span
-                      className={`font-mono text-[10px] font-bold ${
-                        goal.done ? 'text-[#E9C46A]' : 'text-[#8FA6B8]'
-                      }`}
-                    >
-                      {goal.badge}
-                    </span>
-                  </div>
-                ))}
-              </div>
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-y-0 left-0 w-1.5"
+                      style={{ background: meta.accent }}
+                    />
+
+                    <div className="flex items-center justify-between gap-2 pl-1">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[#F6EFE2]/15 bg-[#0E2231] text-base">
+                          {region.emblem}
+                        </span>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5">
+                            <span className={`${serifDisplay} truncate text-base font-black leading-none text-[#F6EFE2]`}>
+                              {region.shortName}
+                            </span>
+                            <span className="font-mono text-[9px] font-bold text-[#8FA6B8]">
+                              {meta.coordLabel}
+                            </span>
+                          </div>
+                          <span className="mt-0.5 block text-[10px] font-semibold text-[#D6CBB9]">
+                            {region.shortSubtitle} · <strong className="text-[#F6EFE2]">{region.mastered}</strong>/{region.total} mastered
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span
+                          className={`${serifDisplay} text-lg font-black leading-none`}
+                          style={{ color: meta.accent }}
+                        >
+                          {region.masteredPct}%
+                        </span>
+                        <span className="flex items-center gap-1 rounded-lg bg-[#0E2231] px-2.5 py-1 text-[10px] font-extrabold text-[#F6EFE2] transition-colors group-hover:bg-[#F6EFE2] group-hover:text-[#142534]">
+                          <Play className="h-2.5 w-2.5 fill-current" />
+                          {region.caughtUp ? 'Practice' : `${region.dueCount} due`}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Progress Bar */}
+                    <div className="mt-1.5 ml-1 flex h-1.5 overflow-hidden rounded-full bg-[#0C1D2B]">
+                      <span
+                        className="h-full rounded-l-full transition-all duration-500"
+                        style={{ width: `${region.masteredPct}%`, background: meta.accent }}
+                      />
+                      <span
+                        className="h-full bg-[#E9C46A]/80 transition-all duration-500"
+                        style={{ width: `${region.recallPct}%` }}
+                      />
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
-        </section>
-
-        {/* ── 5. FOOTER ────────────────────────────────────────────────── */}
-        <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-[#F6EFE2]/15 px-1 pt-4 pb-2 text-xs font-semibold text-[#8FA6B8]">
-          <span className={`${serifDisplay} italic text-[#D6CBB9]`}>
-            GeoMastery — L’Atelier du Monde · Political & Maritime Atlas
-          </span>
-          <span>196 Sovereign States · 40 Oceans & Straits · {data.mastery.grandTotal} Study Cards</span>
-        </footer>
+        </div>
       </div>
     </div>
   );
