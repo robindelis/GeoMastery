@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:16:19.918Z",
+  "exportedAt": "2026-10-14T21:16:36.824Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15893,11 +15893,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "TTO:capital",
+      {
+        "id": "TTO:capital",
+        "countryId": "TTO",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T21:16:33.481Z",
+        "nextDueAt": "2026-10-15T21:16:33.481Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:16:33.481Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Port of Spain",
+            "isCorrect": true,
+            "timeSpentMs": 11565
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1183,
-    "totalCorrect": 871,
+    "totalReviews": 1184,
+    "totalCorrect": 872,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15910,7 +15936,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 26
+        "learning": 27
       },
       "Asia": {
         "total": 96,
@@ -15929,7 +15955,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:16:16.746Z"
+    "updatedAt": "2026-10-14T21:16:33.485Z"
   },
   "settings": {
     "audioEnabled": true,
