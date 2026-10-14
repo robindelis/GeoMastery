@@ -19,8 +19,8 @@
   }
 
   body {
-    background-color: #0f172a;
-    color: #f8fafc;
+    background-color: #0F2536;
+    color: #F6EFE2;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     overscroll-behavior: none;
     -webkit-tap-highlight-color: transparent;
@@ -52,12 +52,10 @@
   background: rgba(100, 116, 139, 0.85);
 }
 
-/* Elevated glass card styling in lighter slate palette */
+/* Elevated card styling (zero GPU backdrop-filter shader cost) */
 .glass-card {
-  background: rgba(30, 41, 59, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(20, 49, 70, 0.94);
+  border: 1px solid rgba(246, 239, 226, 0.16);
   box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.35);
 }
 

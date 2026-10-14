@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import * as d3 from 'd3';
+import { feature } from 'topojson-client';
 import {
   Play,
   Compass,
@@ -28,8 +29,9 @@ import {
   BookOpen,
   Sparkles
 } from 'lucide-react';
-import { COUNTRIES, COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
-import { getCachedGeoFeatures, getAtlasCountryColor } from '../map/VectorMap2D';
+import worldData110m from '../../assets/geo/countries-110m.json';
+import { COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
+import { getAtlasCountryColor } from '../map/VectorMap2D';
 import { useHomeData, useDueBreakdown } from './homeData';
 import { useCountUp } from './useCountUp';
 import type { HomeViewProps } from './homeTypes';
@@ -42,23 +44,19 @@ import { formatCoordinates } from '../../core/geoUtils';
  * L'ATELIER DU MONDE — The Grand Political Atlas Theme
  *
  * Soulful, bold, tactile cartography inspired by mid-century political globes,
- * National Geographic folio plates, and warm archival vellum:
- * - Sunlit Parchment Vellum (#F6EFE2 & #EDE3D0) paired with Deep Prussian Ink (#142534)
- * - Aegean Cerulean Seas (#1B4965 → #0F2C3F)
- * - Multi-tonal Political Landmasses (Sand, Terracotta, Sage, Saffron, Coral, Buff)
- * - Bold Fraunces editorial serif headlines + smooth tactile controls
+ * National Geographic folio plates, and warm archival vellum.
+ *
+ * GPU-SAFE ARCHITECTURE:
+ * - Zero infinite requestAnimationFrame loops at idle (globe renders on-demand
+ *   when slewing to a hovered region or being dragged, then rests at 0% GPU).
+ * - Uses lightweight 110m TopoJSON geometry on the preview globe.
+ * - Zero large CSS blur() filter layers or infinite keyframe layer repaints.
  * ──────────────────────────────────────────────────────────────────────────── */
 
-const TERRACOTTA = '#D94E34';
 const JADE = '#2A9D8F';
-const OCHRE = '#E9C46A';
-const CORAL = '#E07A5F';
-const SAGE = '#6B9E78';
-const CERULEAN = '#48CAE4';
 
 interface RegionAtelierMeta {
   accent: string;
-  badgeBg: string;
   coords: [number, number];
   coordLabel: string;
   plateNumber: string;
@@ -67,66 +65,52 @@ interface RegionAtelierMeta {
 const REGION_META: Record<string, RegionAtelierMeta> = {
   Europe: {
     accent: '#E07A5F',
-    badgeBg: '#E07A5F',
     coords: [15, 50],
     coordLabel: '50°N · 15°E',
     plateNumber: 'Plate I'
   },
   Asia: {
     accent: '#E9C46A',
-    badgeBg: '#D49B27',
     coords: [95, 32],
     coordLabel: '32°N · 95°E',
     plateNumber: 'Plate II'
   },
   Africa: {
     accent: '#F4A261',
-    badgeBg: '#E07A3C',
     coords: [20, 4],
     coordLabel: '04°N · 20°E',
     plateNumber: 'Plate III'
   },
   Americas: {
     accent: '#2A9D8F',
-    badgeBg: '#2A9D8F',
     coords: [-74, 8],
     coordLabel: '08°N · 74°W',
     plateNumber: 'Plate IV'
   },
   Oceania: {
     accent: '#81B29A',
-    badgeBg: '#5E947A',
     coords: [148, -22],
     coordLabel: '22°S · 148°E',
     plateNumber: 'Plate V'
   },
   Oceans: {
     accent: '#48CAE4',
-    badgeBg: '#2899B5',
     coords: [-145, -5],
     coordLabel: '05°S · 145°W',
     plateNumber: 'Plate VI'
   }
 };
 
-interface TradeRouteArc {
-  source: [number, number];
-  target: [number, number];
-  speed: number;
-}
-
-const VOYAGE_ARCS: TradeRouteArc[] = [
-  { source: [2.3522, 48.8566], target: [-74.006, 40.7128], speed: 0.0028 },
-  { source: [-9.1393, 38.7223], target: [-47.8825, -15.7942], speed: 0.0032 },
-  { source: [31.2357, 30.0444], target: [77.209, 28.6139], speed: 0.0036 },
-  { source: [103.8198, 1.3521], target: [139.6917, 35.6895], speed: 0.0031 },
-  { source: [151.2093, -33.8688], target: [-122.4194, 37.7749], speed: 0.0024 }
+const VOYAGE_ROUTES: Array<[[number, number], [number, number]]> = [
+  [[2.3522, 48.8566], [-74.006, 40.7128]],
+  [[-9.1393, 38.7223], [-47.8825, -15.7942]],
+  [[31.2357, 30.0444], [77.209, 28.6139]],
+  [[103.8198, 1.3521], [139.6917, 35.6895]]
 ];
 
 const serifDisplay = 'font-[family-name:var(--font-fraunces)]';
-const blackDisplay = 'font-[family-name:var(--font-black)]';
 
-/* ── Interactive 3D Political Atelier Globe ────────────────────────────── */
+/* ── On-Demand Interactive 3D Political Atelier Globe (Zero Idle GPU) ───── */
 
 interface AtelierGlobeProps {
   targetCoords: [number, number] | null;
@@ -148,8 +132,8 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
   const dragStartRef = useRef<{ x: number; y: number; yaw: number; pitch: number }>({
     x: 0,
     y: 0,
-    yaw: -15,
-    pitch: -20
+    yaw: -spotlightCoords[0],
+    pitch: -Math.max(-55, Math.min(55, spotlightCoords[1]))
   });
 
   const rotationRef = useRef<{ yaw: number; pitch: number }>({
@@ -157,53 +141,62 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
     pitch: -Math.max(-55, Math.min(55, spotlightCoords[1]))
   });
 
-  const [hudBearing, setHudBearing] = useState<{ lat: string; lng: string }>({
-    lat: '20.0° N',
-    lng: '015.0° E'
-  });
+  const animFrameRef = useRef<number | null>(null);
+  const drawFrameRef = useRef<(() => void) | null>(null);
 
-  const targetRef = useRef({
-    coords: targetCoords,
-    label: targetLabel,
-    spotlightCoords,
-    spotlightName,
-    spotlightId
-  });
-  useEffect(() => {
-    targetRef.current = {
-      coords: targetCoords,
-      label: targetLabel,
-      spotlightCoords,
-      spotlightName,
-      spotlightId
+  const [hudBearing, setHudBearing] = useState<{ lat: string; lng: string }>(() => {
+    const lat = spotlightCoords[1];
+    const lng = spotlightCoords[0];
+    return {
+      lat: `${Math.abs(lat).toFixed(1)}° ${lat >= 0 ? 'N' : 'S'}`,
+      lng: `${Math.abs(lng).toFixed(1).padStart(5, '0')}° ${lng >= 0 ? 'E' : 'W'}`
     };
-  }, [targetCoords, targetLabel, spotlightCoords, spotlightName, spotlightId]);
+  });
 
-  // Use the 50m country features so every country renders in its warm political pigment
+  // Lightweight 110m country features precomputed once
   const countryFeatures = useMemo(() => {
-    const raw = getCachedGeoFeatures();
-    return raw.map((feat) => {
-      const c = COUNTRIES_BY_NUMERIC.get(String(feat.id));
-      return {
-        feat,
-        id: c?.id || '',
-        fill: c ? getAtlasCountryColor(c.id) : '#C6BBA5'
-      };
-    });
+    try {
+      const geo = feature(worldData110m as any, (worldData110m as any).objects.countries) as any;
+      const raw = (geo.features as any[]) || [];
+      return raw.map((feat) => {
+        const c = COUNTRIES_BY_NUMERIC.get(String(feat.id));
+        return {
+          feat,
+          id: c?.id || '',
+          fill: c ? getAtlasCountryColor(c.id) : '#C6BBA5'
+        };
+      });
+    } catch {
+      return [];
+    }
   }, []);
 
-  const arcInterpolators = useMemo(() => {
-    return VOYAGE_ARCS.map((arc) => ({
-      interpolator: d3.geoInterpolate(arc.source, arc.target),
-      speed: arc.speed,
-      arcGeoJSON: {
-        type: 'LineString',
-        coordinates: d3.range(0, 1.02, 0.04).map((t) => d3.geoInterpolate(arc.source, arc.target)(t))
-      }
+  const routeFeatures = useMemo(() => {
+    return VOYAGE_ROUTES.map(([src, dst]) => ({
+      type: 'LineString',
+      coordinates: d3.range(0, 1.05, 0.08).map((t) => d3.geoInterpolate(src, dst)(t))
     }));
   }, []);
 
-  const arcProgressRef = useRef<number[]>(VOYAGE_ARCS.map((_, i) => (i * 0.21) % 1));
+  const activeGoalCoords = targetCoords || spotlightCoords;
+  const activeGoalLabel = targetCoords ? targetLabel : spotlightName;
+
+  const targetRef = useRef({
+    goalCoords: activeGoalCoords,
+    goalLabel: activeGoalLabel,
+    spotlightId
+  });
+  targetRef.current = {
+    goalCoords: activeGoalCoords,
+    goalLabel: activeGoalLabel,
+    spotlightId
+  };
+
+  const scheduleDraw = useCallback(() => {
+    if (animFrameRef.current == null && drawFrameRef.current) {
+      animFrameRef.current = requestAnimationFrame(drawFrameRef.current);
+    }
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -211,15 +204,15 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const size = 380;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const size = 360;
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     canvas.width = size * dpr;
     canvas.height = size * dpr;
-    ctx.scale(dpr, dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     const cx = size / 2;
     const cy = size / 2;
-    const radius = 154;
+    const radius = 148;
 
     const projection = d3
       .geoOrthographic()
@@ -230,48 +223,39 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
     const path = d3.geoPath(projection, ctx);
     const graticule = d3.geoGraticule10();
 
-    let frame = 0;
-    let animId: number;
-
     const render = () => {
-      frame++;
-      const currentTarget = targetRef.current;
+      animFrameRef.current = null;
+      const { goalCoords, goalLabel, spotlightId: activeSpotlightId } = targetRef.current;
+
+      let needsMoreFrames = false;
 
       if (!isDraggingRef.current) {
-        if (currentTarget.coords) {
-          const desiredYaw = -currentTarget.coords[0];
-          const desiredPitch = -Math.max(-65, Math.min(65, currentTarget.coords[1]));
-          const deltaYaw = ((desiredYaw - rotationRef.current.yaw + 540) % 360) - 180;
-          rotationRef.current.yaw += deltaYaw * 0.075;
-          rotationRef.current.pitch += (desiredPitch - rotationRef.current.pitch) * 0.075;
+        const desiredYaw = -goalCoords[0];
+        const desiredPitch = -Math.max(-65, Math.min(65, goalCoords[1]));
+        const deltaYaw = ((desiredYaw - rotationRef.current.yaw + 540) % 360) - 180;
+        const deltaPitch = desiredPitch - rotationRef.current.pitch;
+
+        if (Math.abs(deltaYaw) > 0.15 || Math.abs(deltaPitch) > 0.15) {
+          rotationRef.current.yaw += deltaYaw * 0.14;
+          rotationRef.current.pitch += deltaPitch * 0.14;
+          needsMoreFrames = true;
         } else {
-          rotationRef.current.yaw = (rotationRef.current.yaw + 0.13) % 360;
-          const idlePitch = -18 + Math.sin(frame * 0.008) * 5;
-          rotationRef.current.pitch += (idlePitch - rotationRef.current.pitch) * 0.03;
+          rotationRef.current.yaw = desiredYaw;
+          rotationRef.current.pitch = desiredPitch;
         }
       }
 
       projection.rotate([rotationRef.current.yaw, rotationRef.current.pitch, 0]);
 
-      if (frame % 14 === 0) {
-        const centerLng = ((-rotationRef.current.yaw + 540) % 360) - 180;
-        const centerLat = -rotationRef.current.pitch;
-        setHudBearing({
-          lat: `${Math.abs(centerLat).toFixed(1)}° ${centerLat >= 0 ? 'N' : 'S'}`,
-          lng: `${Math.abs(centerLng).toFixed(1).padStart(5, '0')}° ${centerLng >= 0 ? 'E' : 'W'}`
-        });
-      }
-
       ctx.clearRect(0, 0, size, size);
 
-      // 1. Warm Sunlit Brass Halo around the Globe
-      const halo = ctx.createRadialGradient(cx, cy, radius * 0.9, cx, cy, radius * 1.2);
-      halo.addColorStop(0, 'rgba(233, 196, 106, 0.26)');
-      halo.addColorStop(0.55, 'rgba(42, 157, 143, 0.1)');
+      // 1. Warm Sunlit Brass Outer Halo
+      const halo = ctx.createRadialGradient(cx, cy, radius * 0.92, cx, cy, radius * 1.15);
+      halo.addColorStop(0, 'rgba(233, 196, 106, 0.22)');
       halo.addColorStop(1, 'rgba(14, 34, 49, 0)');
       ctx.fillStyle = halo;
       ctx.beginPath();
-      ctx.arc(cx, cy, radius * 1.2, 0, Math.PI * 2);
+      ctx.arc(cx, cy, radius * 1.15, 0, Math.PI * 2);
       ctx.fill();
 
       // 2. Aegean-Prussian Ocean Sphere
@@ -284,109 +268,80 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
         radius
       );
       oceanGrad.addColorStop(0, '#22597A');
-      oceanGrad.addColorStop(0.62, '#163D56');
+      oceanGrad.addColorStop(0.65, '#163D56');
       oceanGrad.addColorStop(1, '#0C2333');
       ctx.fillStyle = oceanGrad;
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
       ctx.fill();
 
-      // 3. Warm Ivory Meridians & Parallels
-      ctx.strokeStyle = 'rgba(246, 239, 226, 0.12)';
+      // 3. Warm Ivory Graticule
+      ctx.strokeStyle = 'rgba(246, 239, 226, 0.11)';
       ctx.lineWidth = 0.55;
       ctx.beginPath();
       path(graticule);
       ctx.stroke();
 
-      // 4. Multi-tonal Political Atlas Countries with Deep Sepia/Prussian Ink Borders
+      // 4. Multi-tonal Political Atlas Countries (110m lightweight polygons)
       ctx.lineWidth = 0.7;
       ctx.strokeStyle = '#14293A';
       for (let i = 0; i < countryFeatures.length; i++) {
         const item = countryFeatures[i];
-        const isSpotlight = item.id === currentTarget.spotlightId;
-        ctx.fillStyle = isSpotlight ? '#FFF3B0' : item.fill;
+        ctx.fillStyle = item.id === activeSpotlightId ? '#FFF3B0' : item.fill;
         ctx.beginPath();
         path(item.feat);
         ctx.fill();
         ctx.stroke();
       }
 
-      const centerGeo: [number, number] = [-rotationRef.current.yaw, -rotationRef.current.pitch];
-
-      // 5. Classic Dashed Navigation Routes & Golden Compass Travellers
+      // 5. Classic Dashed Trade Routes
       ctx.save();
       ctx.setLineDash([3, 4]);
-      ctx.strokeStyle = 'rgba(246, 239, 226, 0.32)';
-      ctx.lineWidth = 1.1;
-      arcInterpolators.forEach((arc) => {
+      ctx.strokeStyle = 'rgba(246, 239, 226, 0.28)';
+      ctx.lineWidth = 1;
+      for (const route of routeFeatures) {
         ctx.beginPath();
-        path(arc.arcGeoJSON as any);
+        path(route as any);
         ctx.stroke();
-      });
+      }
       ctx.restore();
 
-      arcInterpolators.forEach((arc, idx) => {
-        arcProgressRef.current[idx] = (arcProgressRef.current[idx] + arc.speed) % 1;
-        const ptGeo = arc.interpolator(arcProgressRef.current[idx]);
-        if (d3.geoDistance(ptGeo, centerGeo) < Math.PI / 2) {
-          const projected = projection(ptGeo);
-          if (projected) {
-            const [px, py] = projected;
-            ctx.fillStyle = '#FFF8E7';
-            ctx.strokeStyle = '#D94E34';
-            ctx.lineWidth = 1.3;
-            ctx.beginPath();
-            ctx.arc(px, py, 2.8, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
-          }
-        }
-      });
-
-      // 6. Active Compass Target Ring (Hovered Continent or Spotlight Country)
-      const reticleGeo = currentTarget.coords || currentTarget.spotlightCoords;
-      const reticleLabel = currentTarget.coords ? currentTarget.label : currentTarget.spotlightName;
-
-      if (d3.geoDistance(reticleGeo, centerGeo) < Math.PI / 2) {
-        const pt = projection(reticleGeo);
+      // 6. Active Compass Target Pin & Callout Flag
+      const centerGeo: [number, number] = [-rotationRef.current.yaw, -rotationRef.current.pitch];
+      if (d3.geoDistance(goalCoords, centerGeo) < Math.PI / 2) {
+        const pt = projection(goalCoords);
         if (pt) {
           const [rx, ry] = pt;
-          const pulse = (frame * 0.022) % 1;
-          const ringR = 7 + pulse * 17;
 
           ctx.strokeStyle = '#D94E34';
-          ctx.globalAlpha = (1 - pulse) * 0.85;
-          ctx.lineWidth = 1.8;
+          ctx.lineWidth = 1.6;
           ctx.beginPath();
-          ctx.arc(rx, ry, ringR, 0, Math.PI * 2);
+          ctx.arc(rx, ry, 10, 0, Math.PI * 2);
           ctx.stroke();
-          ctx.globalAlpha = 1;
 
           ctx.fillStyle = '#D94E34';
           ctx.strokeStyle = '#FFF8E7';
-          ctx.lineWidth = 1.6;
+          ctx.lineWidth = 1.5;
           ctx.beginPath();
-          ctx.arc(rx, ry, 4.5, 0, Math.PI * 2);
+          ctx.arc(rx, ry, 4.2, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
 
-          // Warm Parchment Callout Flag on the Globe
-          const text = reticleLabel;
           ctx.font = '700 10px "Plus Jakarta Sans", sans-serif';
-          const tw = ctx.measureText(text).width;
-          const bx = Math.min(size - tw - 26, Math.max(10, rx + 10));
+          const tw = ctx.measureText(goalLabel).width;
+          const bx = Math.min(size - tw - 26, Math.max(10, rx + 12));
           const by = Math.max(24, ry - 8);
 
           ctx.fillStyle = '#F6EFE2';
           ctx.strokeStyle = '#142534';
-          ctx.lineWidth = 1.5;
+          ctx.lineWidth = 1.4;
           ctx.beginPath();
           ctx.roundRect(bx, by - 13, tw + 16, 20, 7);
           ctx.fill();
           ctx.stroke();
 
           ctx.fillStyle = '#142534';
-          ctx.fillText(text, bx + 8, by + 1);
+          ctx.fillText(goalLabel, bx + 8, by + 1);
         }
       }
 
@@ -396,17 +351,38 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
       rimGrad.addColorStop(0.5, '#C8963E');
       rimGrad.addColorStop(1, '#7E571E');
       ctx.strokeStyle = rimGrad;
-      ctx.lineWidth = 2.6;
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
       ctx.stroke();
 
-      animId = requestAnimationFrame(render);
+      if (needsMoreFrames) {
+        animFrameRef.current = requestAnimationFrame(render);
+      } else {
+        const centerLng = ((-rotationRef.current.yaw + 540) % 360) - 180;
+        const centerLat = -rotationRef.current.pitch;
+        setHudBearing({
+          lat: `${Math.abs(centerLat).toFixed(1)}° ${centerLat >= 0 ? 'N' : 'S'}`,
+          lng: `${Math.abs(centerLng).toFixed(1).padStart(5, '0')}° ${centerLng >= 0 ? 'E' : 'W'}`
+        });
+      }
     };
 
-    animId = requestAnimationFrame(render);
-    return () => cancelAnimationFrame(animId);
-  }, [countryFeatures, arcInterpolators]);
+    drawFrameRef.current = render;
+    render();
+
+    return () => {
+      if (animFrameRef.current != null) {
+        cancelAnimationFrame(animFrameRef.current);
+        animFrameRef.current = null;
+      }
+    };
+  }, [countryFeatures, routeFeatures]);
+
+  // Trigger smooth on-demand slew whenever targetCoords or spotlightCoords changes
+  useEffect(() => {
+    scheduleDraw();
+  }, [activeGoalCoords[0], activeGoalCoords[1], activeGoalLabel, spotlightId, scheduleDraw]);
 
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     isDraggingRef.current = true;
@@ -425,37 +401,42 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
     const dy = e.clientY - dragStartRef.current.y;
     rotationRef.current.yaw = dragStartRef.current.yaw + dx * 0.45;
     rotationRef.current.pitch = Math.max(-70, Math.min(70, dragStartRef.current.pitch - dy * 0.45));
+    scheduleDraw();
   };
 
   const handlePointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
     e.currentTarget.releasePointerCapture(e.pointerId);
+    const centerLng = ((-rotationRef.current.yaw + 540) % 360) - 180;
+    const centerLat = -rotationRef.current.pitch;
+    setHudBearing({
+      lat: `${Math.abs(centerLat).toFixed(1)}° ${centerLat >= 0 ? 'N' : 'S'}`,
+      lng: `${Math.abs(centerLng).toFixed(1).padStart(5, '0')}° ${centerLng >= 0 ? 'E' : 'W'}`
+    });
   };
 
   return (
     <div className="relative flex items-center justify-center select-none">
-      {/* Engraved Brass Meridian & Compass Rose SVG Frame */}
+      {/* Static Engraved Brass Meridian & Compass Rose SVG Frame (Zero GPU animation cost) */}
       <svg
         aria-hidden="true"
         viewBox="0 0 420 420"
-        className="pointer-events-none absolute h-[340px] w-[340px] sm:h-[390px] sm:w-[390px]"
+        className="pointer-events-none absolute h-[330px] w-[330px] sm:h-[375px] sm:w-[375px]"
       >
-        <g className="origin-center animate-gm-spin-slow">
-          <circle
-            cx="210"
-            cy="210"
-            r="194"
-            fill="none"
-            stroke="rgba(233, 196, 106, 0.35)"
-            strokeWidth="1.2"
-            strokeDasharray="4 8"
-          />
-          <polygon points="210,8 214,18 206,18" fill="#E9C46A" />
-          <polygon points="412,210 402,214 402,206" fill="#E9C46A" />
-          <polygon points="210,412 214,402 206,402" fill="#E9C46A" />
-          <polygon points="8,210 18,214 18,206" fill="#E9C46A" />
-        </g>
+        <circle
+          cx="210"
+          cy="210"
+          r="194"
+          fill="none"
+          stroke="rgba(233, 196, 106, 0.35)"
+          strokeWidth="1.2"
+          strokeDasharray="4 8"
+        />
+        <polygon points="210,8 214,18 206,18" fill="#E9C46A" />
+        <polygon points="412,210 402,214 402,206" fill="#E9C46A" />
+        <polygon points="210,412 214,402 206,402" fill="#E9C46A" />
+        <polygon points="8,210 18,214 18,206" fill="#E9C46A" />
         <circle
           cx="210"
           cy="210"
@@ -486,20 +467,20 @@ const InteractiveAtelierGlobe: React.FC<AtelierGlobeProps> = ({
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
         title="Drag to spin the political globe"
-        className="relative z-10 h-[310px] w-[310px] sm:h-[360px] sm:w-[360px] cursor-grab active:cursor-grabbing touch-none"
+        className="relative z-10 h-[300px] w-[300px] sm:h-[345px] sm:w-[345px] cursor-grab active:cursor-grabbing touch-none"
       />
 
       {/* Warm Brass & Vellum Bearing Tag */}
-      <div className="pointer-events-none absolute left-3 top-3 z-20 rounded-xl border border-[#E9C46A]/35 bg-[#102637]/90 px-3 py-1.5 backdrop-blur-md">
+      <div className="pointer-events-none absolute left-3 top-3 z-20 rounded-xl border border-[#E9C46A]/35 bg-[#102637] px-3 py-1.5">
         <span className="block text-[9px] font-bold uppercase tracking-[0.18em] text-[#E9C46A]">
-          {targetCoords ? `Focused · ${targetLabel}` : 'Meridian Bearing'}
+          {targetCoords ? `Focused · ${targetLabel}` : `Spotlight · ${spotlightName}`}
         </span>
         <span className="font-mono text-[11px] font-semibold tabular-nums text-[#F6EFE2]">
           {hudBearing.lat} · {hudBearing.lng}
         </span>
       </div>
 
-      <div className="pointer-events-none absolute right-3 bottom-3 z-20 rounded-full border border-[#F6EFE2]/20 bg-[#102637]/85 px-3 py-1 text-[10px] font-semibold text-[#F6EFE2]/80 backdrop-blur-md">
+      <div className="pointer-events-none absolute right-3 bottom-3 z-20 rounded-full border border-[#F6EFE2]/20 bg-[#102637] px-3 py-1 text-[10px] font-semibold text-[#F6EFE2]/80">
         Drag globe to explore
       </div>
     </div>
@@ -571,27 +552,16 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
   return (
     <div className="relative h-full overflow-y-auto bg-[#0F2536] text-[#F6EFE2] selection:bg-[#D94E34]/30 selection:text-[#F6EFE2]">
-      {/* ══ WARM AEGEAN & PARCHMENT STUDIO ATMOSPHERE ════════════════════ */}
-      <div aria-hidden="true" className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(125%_95%_at_20%_0%,#1D4763_0%,#112A3D_55%,#0B1C2A_100%)]" />
-        <div className="animate-gm-drift absolute -left-24 -top-24 h-[32rem] w-[32rem] rounded-full bg-[#E9C46A]/[0.09] blur-[130px]" />
-        <div className="animate-gm-drift absolute right-0 top-1/4 h-[28rem] w-[28rem] rounded-full bg-[#E07A5F]/[0.08] blur-[140px] [animation-delay:-7s]" />
-
-        {/* Subtle Engraved Atlas Meridian Lines */}
-        <svg className="absolute inset-0 h-full w-full opacity-25">
-          <defs>
-            <pattern id="atelier-atlas-lines" width="96" height="96" patternUnits="userSpaceOnUse">
-              <path d="M 96 0 L 0 0 0 96" fill="none" stroke="rgba(246, 239, 226, 0.06)" strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#atelier-atlas-lines)" />
-        </svg>
-      </div>
+      {/* ══ WARM AEGEAN & PARCHMENT STUDIO ATMOSPHERE (Zero Blur Shaders) ═ */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 bg-[radial-gradient(120%_90%_at_20%_0%,#1D4763_0%,#112A3D_55%,#0B1C2A_100%)]"
+      />
 
       {/* ══ MAIN CONTENT CONTAINER ═══════════════════════════════════════ */}
       <div className="relative z-10 mx-auto flex w-full max-w-[1420px] flex-col gap-7 px-4 py-5 sm:px-7 sm:py-8">
         {/* ── 1. ATELIER RIBBON HEADER ─────────────────────────────────── */}
-        <header className="animate-gm-rise flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#F6EFE2]/15 bg-[#153348]/85 px-4 py-3 shadow-lg backdrop-blur-md">
+        <header className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#F6EFE2]/15 bg-[#153348] px-4 py-3 shadow-lg">
           <div className="flex flex-wrap items-center gap-3 sm:gap-4">
             <div className="flex items-center gap-2">
               <BookOpen className="h-4 w-4 text-[#E9C46A]" />
@@ -721,7 +691,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
         {/* Sync & Token Drawer */}
         {(syncStatusMessage || showToken) && (
-          <div className="animate-gm-pop rounded-2xl border-2 border-[#E9C46A]/50 bg-[#153348] p-4 shadow-xl">
+          <div className="rounded-2xl border-2 border-[#E9C46A]/50 bg-[#153348] p-4 shadow-xl">
             {showToken ? (
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
@@ -769,9 +739,9 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
         )}
 
         {/* ── 2. HERO FOLIO — SUNLIT VELLUM + LIVE POLITICAL GLOBE ─────── */}
-        <section className="animate-gm-rise grid gap-6 lg:grid-cols-[1.15fr_0.85fr] [animation-delay:60ms]">
+        <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
           {/* Left: Tactile Warm Parchment Vellum Atlas Folio */}
-          <div className="relative flex flex-col justify-between overflow-hidden rounded-[2rem] border-2 border-[#E2D5BE] bg-[#F6EFE2] p-6 sm:p-9 text-[#142534] shadow-[0_24px_60px_-15px_rgba(0,0,0,0.55)]">
+          <div className="relative flex flex-col justify-between overflow-hidden rounded-[2rem] border-2 border-[#E2D5BE] bg-[#F6EFE2] p-6 sm:p-9 text-[#142534] shadow-2xl">
             {/* Inner Cartographic Frame Rule */}
             <div className="pointer-events-none absolute inset-3 rounded-[1.4rem] border border-[#142534]/12" />
 
@@ -852,7 +822,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                     soundFx.playClick();
                     onStartSession('All', selectedAttributes, data.isCaughtUp('All'));
                   }}
-                  className="group relative overflow-hidden flex items-center gap-3 rounded-2xl bg-[#D94E34] px-7 py-4 text-sm font-black uppercase tracking-[0.06em] text-[#FFF8E7] shadow-[0_14px_30px_-8px_rgba(217,78,52,0.65)] transition-all hover:-translate-y-0.5 hover:bg-[#C54128] active:scale-[0.98]"
+                  className="group relative overflow-hidden flex items-center gap-3 rounded-2xl bg-[#D94E34] px-7 py-4 text-sm font-black uppercase tracking-[0.06em] text-[#FFF8E7] shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[#C54128] active:scale-[0.98]"
                 >
                   <Play className="h-5 w-5 fill-current transition-transform group-hover:translate-x-0.5" />
                   <span>{data.isCaughtUp('All') ? 'Practice World Atlas' : 'Begin World Expedition'}</span>
@@ -971,7 +941,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
           </div>
 
           {/* Right: Interactive 3D Political Globe Dome */}
-          <div className="relative flex flex-col items-center justify-between overflow-hidden rounded-[2rem] border-2 border-[#E9C46A]/35 bg-gradient-to-b from-[#173A52] via-[#112C3F] to-[#0C202E] p-5 sm:p-6 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.6)]">
+          <div className="relative flex flex-col items-center justify-between overflow-hidden rounded-[2rem] border-2 border-[#E9C46A]/35 bg-gradient-to-b from-[#173A52] via-[#112C3F] to-[#0C202E] p-5 sm:p-6 shadow-2xl">
             <InteractiveAtelierGlobe
               targetCoords={activeRegionLock ? activeRegionLock.coords : null}
               targetLabel={activeRegionLock ? activeRegionLock.label : data.spotlight.name}
@@ -990,7 +960,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-bold transition-all ${
                   activeRegionLock === null
                     ? 'border-[#E9C46A] bg-[#E9C46A] text-[#142534]'
-                    : 'border-[#F6EFE2]/20 bg-[#0E2231]/80 text-[#D6CBB9] hover:text-white'
+                    : 'border-[#F6EFE2]/20 bg-[#0E2231] text-[#D6CBB9] hover:text-white'
                 }`}
               >
                 <Crosshair className="h-3 w-3" />
@@ -1018,7 +988,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                     className={`rounded-full border px-2.5 py-1 text-[11px] font-bold transition-all ${
                       isLocked
                         ? 'border-[#F6EFE2] bg-[#F6EFE2] text-[#142534]'
-                        : 'border-[#F6EFE2]/15 bg-[#0E2231]/70 text-[#D6CBB9] hover:border-[#F6EFE2]/40 hover:text-white'
+                        : 'border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] hover:border-[#F6EFE2]/40 hover:text-white'
                     }`}
                   >
                     {reg.emblem} {reg.shortName}
@@ -1030,7 +1000,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
         </section>
 
         {/* ── 3. THE SIX THEATERS OF THE WORLD (REGIONAL PLATES) ────────── */}
-        <section className="animate-gm-rise flex flex-col gap-4 [animation-delay:140ms]">
+        <section className="flex flex-col gap-4">
           <div className="flex flex-wrap items-end justify-between gap-3 px-1">
             <div>
               <span className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#E9C46A]">
@@ -1069,10 +1039,10 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       region.caughtUp
                     );
                   }}
-                  className={`group relative flex flex-col justify-between overflow-hidden rounded-[1.5rem] border-2 p-4 text-left transition-all duration-300 hover:-translate-y-1.5 ${
+                  className={`group relative flex flex-col justify-between overflow-hidden rounded-[1.5rem] border-2 p-4 text-left transition-all duration-200 hover:-translate-y-1 ${
                     isHovered
-                      ? 'border-[#E9C46A] bg-[#1A3E58] shadow-2xl'
-                      : 'border-[#F6EFE2]/15 bg-[#143146]/90 hover:border-[#E9C46A]/70 hover:bg-[#193B54]'
+                      ? 'border-[#E9C46A] bg-[#1A3E58] shadow-xl'
+                      : 'border-[#F6EFE2]/15 bg-[#143146] hover:border-[#E9C46A]/70 hover:bg-[#193B54]'
                   }`}
                 >
                   {/* Warm Top Pigment Ribbon */}
@@ -1090,7 +1060,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
                     <div className="mt-3 flex items-start justify-between gap-2">
                       <div className="flex items-center gap-2.5">
-                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-[#F6EFE2]/20 bg-[#0E2231] text-xl shadow-inner transition-transform group-hover:scale-105">
+                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-[#F6EFE2]/20 bg-[#0E2231] text-xl shadow-inner">
                           {region.emblem}
                         </span>
                         <div>
@@ -1147,7 +1117,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
         </section>
 
         {/* ── 4. CARTOGRAPHER'S DISPATCH & NAVIGATOR'S LEDGER ───────────── */}
-        <section className="animate-gm-rise grid gap-5 lg:grid-cols-3 [animation-delay:210ms]">
+        <section className="grid gap-5 lg:grid-cols-3">
           {/* Left 2 Columns: Archival Nation Postcard Dossier */}
           <div className="relative flex flex-col justify-between overflow-hidden rounded-[2rem] border-2 border-[#E2D5BE] bg-[#F6EFE2] p-6 sm:p-7 text-[#142534] shadow-xl lg:col-span-2">
             <div>
@@ -1308,7 +1278,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
           </div>
 
           {/* Right Column: Navigator's Ledger & Daily Goals */}
-          <div className="flex flex-col justify-between gap-4 rounded-[2rem] border-2 border-[#F6EFE2]/15 bg-[#143146]/95 p-6 shadow-xl">
+          <div className="flex flex-col justify-between gap-4 rounded-[2rem] border-2 border-[#F6EFE2]/15 bg-[#143146] p-6 shadow-xl">
             <div>
               <div className="flex items-center justify-between border-b border-[#F6EFE2]/15 pb-3">
                 <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#E9C46A]">

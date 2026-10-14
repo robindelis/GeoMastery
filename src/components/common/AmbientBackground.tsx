@@ -10,21 +10,9 @@ export const AmbientBackground: React.FC<{
   contentClassName = 'flex flex-col'
 }) => {
   return (
-    <div className={`relative w-full h-full overflow-hidden bg-slate-900 ${className}`}>
-      {/* Dynamic Ambient Gradient Glows */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Top-center soft cyan glow */}
-        <div className="absolute -top-[15%] left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-sky-500/10 rounded-full blur-[140px]" />
-        
-        {/* Top-right emerald ambient orb */}
-        <div className="absolute top-[10%] -right-[10%] w-[550px] h-[550px] bg-emerald-500/8 rounded-full blur-[160px]" />
-        
-        {/* Bottom-left deep indigo orb */}
-        <div className="absolute -bottom-[15%] -left-[10%] w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[160px]" />
-
-        {/* Center subtle slate radiant fill */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_20%,rgba(30,41,59,0.5)_0%,rgba(15,23,42,0.98)_100%)]" />
-      </div>
+    <div className={`relative w-full h-full overflow-hidden bg-[#0F2536] ${className}`}>
+      {/* Pure CSS radial gradient lighting (zero offscreen GPU blur shaders) */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(120%_90%_at_50%_15%,#1B4460_0%,#102738_58%,#0A1925_100%)]" />
 
       {/* Cartographic Navigational Geometry Layer */}
       <div className="absolute inset-0 pointer-events-none select-none opacity-40">
