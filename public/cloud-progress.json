@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:21:39.247Z",
+  "exportedAt": "2026-10-14T21:21:44.048Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16359,11 +16359,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "USA:capital",
+      {
+        "id": "USA:capital",
+        "countryId": "USA",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T21:21:40.872Z",
+        "nextDueAt": "2026-10-15T21:21:40.872Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:21:40.872Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Washington, D.C.",
+            "isCorrect": true,
+            "timeSpentMs": 1348
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1217,
-    "totalCorrect": 894,
+    "totalReviews": 1218,
+    "totalCorrect": 895,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -16376,7 +16402,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 39
+        "learning": 40
       },
       "Asia": {
         "total": 96,
@@ -16395,7 +16421,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:21:35.851Z"
+    "updatedAt": "2026-10-14T21:21:40.876Z"
   },
   "settings": {
     "audioEnabled": true,
