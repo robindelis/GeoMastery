@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T09:55:56.536Z",
+  "exportedAt": "2026-10-14T09:56:06.553Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6906,13 +6906,13 @@
         "countryId": "SGP",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
+        "step": 2,
+        "easeFactor": 2.5999999999999996,
         "intervalDays": 1,
-        "reps": 1,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-04T20:25:33.098Z",
-        "nextDueAt": "2026-10-05T20:25:33.098Z",
+        "lastReviewedAt": "2026-10-14T09:56:03.061Z",
+        "nextDueAt": "2026-10-15T09:56:03.061Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:25:33.098Z",
@@ -6920,9 +6920,16 @@
             "userAnswer": "Singapore",
             "isCorrect": true,
             "timeSpentMs": 7585
+          },
+          {
+            "timestamp": "2026-10-14T09:56:03.061Z",
+            "inputMode": "typing",
+            "userAnswer": "Singapore",
+            "isCorrect": true,
+            "timeSpentMs": 8928
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -15288,8 +15295,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1126,
-    "totalCorrect": 837,
+    "totalReviews": 1127,
+    "totalCorrect": 838,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15321,7 +15328,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T09:55:53.219Z"
+    "updatedAt": "2026-10-14T09:56:03.063Z"
   },
   "settings": {
     "audioEnabled": true,
