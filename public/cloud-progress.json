@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T10:17:20.869Z",
+  "exportedAt": "2026-10-14T10:17:27.603Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11751,14 +11751,14 @@
         "id": "COG:location",
         "countryId": "COG",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-09T20:11:02.629Z",
-        "nextDueAt": "2026-10-10T20:11:02.629Z",
+        "lastReviewedAt": "2026-10-14T10:17:24.372Z",
+        "nextDueAt": "2026-10-21T10:17:24.372Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:22:05.579Z",
@@ -11773,9 +11773,16 @@
             "userAnswer": "Republic of the Congo",
             "isCorrect": true,
             "timeSpentMs": 7361
+          },
+          {
+            "timestamp": "2026-10-14T10:17:24.372Z",
+            "inputMode": "map_click",
+            "userAnswer": "Republic of the Congo",
+            "isCorrect": true,
+            "timeSpentMs": 6700
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -15330,16 +15337,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1132,
-    "totalCorrect": 842,
+    "totalReviews": 1133,
+    "totalCorrect": 843,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 19,
-        "learning": 89
+        "mastered": 20,
+        "learning": 88
       },
       "Americas": {
         "total": 70,
@@ -15363,7 +15370,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T10:17:17.125Z"
+    "updatedAt": "2026-10-14T10:17:24.375Z"
   },
   "settings": {
     "audioEnabled": true,
