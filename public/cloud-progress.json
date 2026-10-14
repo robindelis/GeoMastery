@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:35:57.715Z",
+  "exportedAt": "2026-10-14T19:36:01.086Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -2977,13 +2977,13 @@
         "countryId": "LVA",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.6999999999999993,
+        "intervalDays": 19,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:36:11.955Z",
-        "nextDueAt": "2026-10-15T20:36:11.955Z",
+        "lastReviewedAt": "2026-10-14T19:35:58.097Z",
+        "nextDueAt": "2026-11-02T19:35:58.097Z",
         "history": [
           {
             "timestamp": "2026-10-04T17:02:07.123Z",
@@ -3005,9 +3005,16 @@
             "userAnswer": "Latvia",
             "isCorrect": true,
             "timeSpentMs": 3309
+          },
+          {
+            "timestamp": "2026-10-14T19:35:58.097Z",
+            "inputMode": "map_click",
+            "userAnswer": "Latvia",
+            "isCorrect": true,
+            "timeSpentMs": 2608
           }
         ],
-        "consecutiveRecallCorrect": 2
+        "consecutiveRecallCorrect": 3
       }
     ],
     [
@@ -15633,8 +15640,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1159,
-    "totalCorrect": 857,
+    "totalReviews": 1160,
+    "totalCorrect": 858,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15666,7 +15673,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:35:54.514Z"
+    "updatedAt": "2026-10-14T19:35:58.099Z"
   },
   "settings": {
     "audioEnabled": true,
