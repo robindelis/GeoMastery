@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:16:04.431Z",
+  "exportedAt": "2026-10-14T21:16:11.345Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -9695,13 +9695,13 @@
         "countryId": "WATER_SEA_YELLOW",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.6999999999999993,
+        "intervalDays": 19,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:14:15.624Z",
-        "nextDueAt": "2026-10-15T20:14:15.624Z",
+        "lastReviewedAt": "2026-10-14T21:16:08.327Z",
+        "nextDueAt": "2026-11-02T21:16:08.327Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:53:13.102Z",
@@ -9723,9 +9723,16 @@
             "userAnswer": "Yellow Sea",
             "isCorrect": true,
             "timeSpentMs": 5195
+          },
+          {
+            "timestamp": "2026-10-14T21:16:08.327Z",
+            "inputMode": "map_click",
+            "userAnswer": "Yellow Sea",
+            "isCorrect": true,
+            "timeSpentMs": 6266
           }
         ],
-        "consecutiveRecallCorrect": 2
+        "consecutiveRecallCorrect": 3
       }
     ],
     [
@@ -15863,8 +15870,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1181,
-    "totalCorrect": 870,
+    "totalReviews": 1182,
+    "totalCorrect": 871,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15896,7 +15903,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:16:00.789Z"
+    "updatedAt": "2026-10-14T21:16:08.329Z"
   },
   "settings": {
     "audioEnabled": true,
