@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:33:09.124Z",
+  "exportedAt": "2026-10-14T19:33:13.654Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -14376,14 +14376,14 @@
         "id": "CRI:capital",
         "countryId": "CRI",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1999999999999993,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.249999999999999,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-10T13:49:41.021Z",
-        "nextDueAt": "2026-10-11T13:49:41.021Z",
+        "lastReviewedAt": "2026-10-14T19:33:10.379Z",
+        "nextDueAt": "2026-10-21T19:33:10.379Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:44:28.639Z",
@@ -14412,9 +14412,16 @@
             "userAnswer": "San Jose",
             "isCorrect": true,
             "timeSpentMs": 7049
+          },
+          {
+            "timestamp": "2026-10-14T19:33:10.379Z",
+            "inputMode": "typing",
+            "userAnswer": "San Josa",
+            "isCorrect": true,
+            "timeSpentMs": 4074
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -15513,8 +15520,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1150,
-    "totalCorrect": 853,
+    "totalReviews": 1151,
+    "totalCorrect": 854,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15526,8 +15533,8 @@
       },
       "Americas": {
         "total": 70,
-        "mastered": 13,
-        "learning": 21
+        "mastered": 14,
+        "learning": 20
       },
       "Asia": {
         "total": 96,
@@ -15546,7 +15553,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:33:05.472Z"
+    "updatedAt": "2026-10-14T19:33:10.382Z"
   },
   "settings": {
     "audioEnabled": true,
