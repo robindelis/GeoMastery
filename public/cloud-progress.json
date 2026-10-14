@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:21:18.294Z",
+  "exportedAt": "2026-10-14T21:21:24.839Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16300,11 +16300,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "GRD:capital",
+      {
+        "id": "GRD:capital",
+        "countryId": "GRD",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-14T21:21:21.549Z",
+        "nextDueAt": "2026-10-15T21:21:21.549Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:21:21.549Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "St. George's",
+            "isCorrect": true,
+            "timeSpentMs": 4673
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1214,
-    "totalCorrect": 892,
+    "totalReviews": 1215,
+    "totalCorrect": 893,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -16317,7 +16343,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 37
+        "learning": 38
       },
       "Asia": {
         "total": 96,
@@ -16336,7 +16362,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:21:15.011Z"
+    "updatedAt": "2026-10-14T21:21:21.553Z"
   },
   "settings": {
     "audioEnabled": true,
