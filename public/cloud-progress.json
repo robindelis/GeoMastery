@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:37:00.162Z",
+  "exportedAt": "2026-10-14T19:37:08.070Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -10373,13 +10373,13 @@
         "countryId": "MUS",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.3499999999999996,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-06T10:43:49.006Z",
-        "nextDueAt": "2026-10-07T10:43:49.006Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-14T19:37:04.999Z",
+        "nextDueAt": "2026-10-14T19:37:04.999Z",
         "history": [
           {
             "timestamp": "2026-10-06T10:43:49.006Z",
@@ -10387,6 +10387,13 @@
             "userAnswer": "Port Louis",
             "isCorrect": true,
             "timeSpentMs": 5014
+          },
+          {
+            "timestamp": "2026-10-14T19:37:04.999Z",
+            "inputMode": "typing",
+            "userAnswer": "Port au prince",
+            "isCorrect": false,
+            "timeSpentMs": 7019
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15734,7 +15741,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1168,
+    "totalReviews": 1169,
     "totalCorrect": 863,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15767,7 +15774,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:36:57.057Z"
+    "updatedAt": "2026-10-14T19:37:05.002Z"
   },
   "settings": {
     "audioEnabled": true,
