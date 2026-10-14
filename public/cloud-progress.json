@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:36:48.701Z",
+  "exportedAt": "2026-10-14T19:36:54.411Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13019,12 +13019,12 @@
         "attributeId": "location",
         "stage": 1,
         "step": 0,
-        "easeFactor": 2.1499999999999995,
+        "easeFactor": 1.9499999999999995,
         "intervalDays": 0,
         "reps": 1,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-08T20:20:23.091Z",
-        "nextDueAt": "2026-10-08T20:20:23.091Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-14T19:36:51.110Z",
+        "nextDueAt": "2026-10-14T19:36:51.110Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:32:03.058Z",
@@ -13046,6 +13046,13 @@
             "userAnswer": "Ivory Coast",
             "isCorrect": false,
             "timeSpentMs": 4186
+          },
+          {
+            "timestamp": "2026-10-14T19:36:51.110Z",
+            "inputMode": "map_click",
+            "userAnswer": "Ivory Coast",
+            "isCorrect": false,
+            "timeSpentMs": 4034
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15720,7 +15727,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1166,
+    "totalReviews": 1167,
     "totalCorrect": 862,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15753,7 +15760,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:36:45.667Z"
+    "updatedAt": "2026-10-14T19:36:51.112Z"
   },
   "settings": {
     "audioEnabled": true,
