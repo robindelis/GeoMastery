@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T19:32:35.733Z",
+  "exportedAt": "2026-10-14T19:32:41.999Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6505,13 +6505,13 @@
         "countryId": "NRU",
         "attributeId": "capital",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2.3999999999999995,
+        "intervalDays": 1,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T17:53:33.525Z",
-        "nextDueAt": "2026-10-08T17:53:33.525Z",
+        "lastReviewedAt": "2026-10-14T19:32:39.835Z",
+        "nextDueAt": "2026-10-15T19:32:39.835Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:57:58.275Z",
@@ -6526,9 +6526,16 @@
             "userAnswer": "Nauru",
             "isCorrect": false,
             "timeSpentMs": 4497
+          },
+          {
+            "timestamp": "2026-10-14T19:32:39.835Z",
+            "inputMode": "typing",
+            "userAnswer": "Yaren",
+            "isCorrect": true,
+            "timeSpentMs": 4709
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -15421,8 +15428,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1145,
-    "totalCorrect": 849,
+    "totalReviews": 1146,
+    "totalCorrect": 850,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15454,7 +15461,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T19:32:32.710Z"
+    "updatedAt": "2026-10-14T19:32:39.839Z"
   },
   "settings": {
     "audioEnabled": true,
