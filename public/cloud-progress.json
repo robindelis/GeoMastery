@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:16:51.953Z",
+  "exportedAt": "2026-10-14T21:17:01.242Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -1686,13 +1686,13 @@
         "countryId": "MLI",
         "attributeId": "location",
         "stage": 1,
-        "step": 2,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.1999999999999993,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-06T10:43:24.344Z",
-        "nextDueAt": "2026-10-07T10:43:24.344Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-14T21:16:58.134Z",
+        "nextDueAt": "2026-10-14T21:16:58.134Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:09:27.514Z",
@@ -1714,9 +1714,16 @@
             "userAnswer": "Mali",
             "isCorrect": true,
             "timeSpentMs": 2709
+          },
+          {
+            "timestamp": "2026-10-14T21:16:58.134Z",
+            "inputMode": "map_click",
+            "userAnswer": "Nigeria",
+            "isCorrect": false,
+            "timeSpentMs": 6644
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 0
       }
     ],
     [
@@ -15962,7 +15969,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1187,
+    "totalReviews": 1188,
     "totalCorrect": 875,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15995,7 +16002,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:16:48.349Z"
+    "updatedAt": "2026-10-14T21:16:58.137Z"
   },
   "settings": {
     "audioEnabled": true,
