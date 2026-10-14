@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:16:11.345Z",
+  "exportedAt": "2026-10-14T21:16:19.918Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15867,10 +15867,36 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "ATG:location",
+      {
+        "id": "ATG:location",
+        "countryId": "ATG",
+        "attributeId": "location",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-14T21:16:16.743Z",
+        "nextDueAt": "2026-10-14T21:16:16.743Z",
+        "history": [
+          {
+            "timestamp": "2026-10-14T21:16:16.743Z",
+            "inputMode": "map_click",
+            "userAnswer": "Dominica",
+            "isCorrect": false,
+            "timeSpentMs": 7017
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1182,
+    "totalReviews": 1183,
     "totalCorrect": 871,
     "currentStreak": 1,
     "longestStreak": 3,
@@ -15903,7 +15929,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:16:08.329Z"
+    "updatedAt": "2026-10-14T21:16:16.746Z"
   },
   "settings": {
     "audioEnabled": true,
