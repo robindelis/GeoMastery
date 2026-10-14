@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:16:36.824Z",
+  "exportedAt": "2026-10-14T21:16:42.055Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15789,14 +15789,14 @@
         "id": "BHS:location",
         "countryId": "BHS",
         "attributeId": "location",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.3499999999999996,
+        "intervalDays": 1,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-14T19:36:34.221Z",
-        "nextDueAt": "2026-10-14T19:36:34.221Z",
+        "lastReviewedAt": "2026-10-14T21:16:39.048Z",
+        "nextDueAt": "2026-10-15T21:16:39.048Z",
         "history": [
           {
             "timestamp": "2026-10-14T19:36:34.221Z",
@@ -15804,6 +15804,13 @@
             "userAnswer": "France",
             "isCorrect": false,
             "timeSpentMs": 13717
+          },
+          {
+            "timestamp": "2026-10-14T21:16:39.048Z",
+            "inputMode": "map_click",
+            "userAnswer": "Bahamas",
+            "isCorrect": true,
+            "timeSpentMs": 4018
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -15922,8 +15929,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1184,
-    "totalCorrect": 872,
+    "totalReviews": 1185,
+    "totalCorrect": 873,
     "currentStreak": 1,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-14",
@@ -15936,7 +15943,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 27
+        "learning": 28
       },
       "Asia": {
         "total": 96,
@@ -15955,7 +15962,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:16:33.485Z"
+    "updatedAt": "2026-10-14T21:16:39.052Z"
   },
   "settings": {
     "audioEnabled": true,
