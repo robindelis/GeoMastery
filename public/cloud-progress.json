@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:22:22.892Z",
+  "exportedAt": "2026-10-15T16:22:31.548Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -5555,13 +5555,13 @@
         "countryId": "PLW",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 1.5999999999999994,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 1.6499999999999995,
+        "intervalDays": 1,
+        "reps": 3,
         "lapses": 5,
-        "lastReviewedAt": "2026-10-14T21:15:51.943Z",
-        "nextDueAt": "2026-10-14T21:15:51.943Z",
+        "lastReviewedAt": "2026-10-15T16:22:27.405Z",
+        "nextDueAt": "2026-10-16T16:22:27.405Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:26:05.988Z",
@@ -5611,9 +5611,16 @@
             "userAnswer": "Vanuatu",
             "isCorrect": false,
             "timeSpentMs": 6160
+          },
+          {
+            "timestamp": "2026-10-15T16:22:27.405Z",
+            "inputMode": "map_click",
+            "userAnswer": "Palau",
+            "isCorrect": true,
+            "timeSpentMs": 7900
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -16779,8 +16786,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1244,
-    "totalCorrect": 914,
+    "totalReviews": 1245,
+    "totalCorrect": 915,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16812,7 +16819,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:22:18.359Z"
+    "updatedAt": "2026-10-15T16:22:27.407Z"
   },
   "settings": {
     "audioEnabled": true,
