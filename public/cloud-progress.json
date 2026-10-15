@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T17:47:34.072Z",
+  "exportedAt": "2026-10-15T17:47:52.376Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -5419,13 +5419,13 @@
         "countryId": "JOR",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1999999999999993,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-08T17:44:34.988Z",
-        "nextDueAt": "2026-10-09T17:44:34.988Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-15T17:47:48.965Z",
+        "nextDueAt": "2026-10-15T17:47:48.965Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:09:41.320Z",
@@ -5454,11 +5454,23 @@
             "userAnswer": "Amman",
             "isCorrect": true,
             "timeSpentMs": 1387
+          },
+          {
+            "timestamp": "2026-10-15T17:47:48.965Z",
+            "inputMode": "typing",
+            "userAnswer": "Abuja",
+            "isCorrect": false,
+            "timeSpentMs": 7722,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 6.93
+        "stability": 0.77,
+        "difficulty": 7.37,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "NGA"
+        ]
       }
     ],
     [
@@ -18033,7 +18045,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1288,
+    "totalReviews": 1289,
     "totalCorrect": 943,
     "currentStreak": 2,
     "longestStreak": 3,
@@ -18066,7 +18078,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T17:47:31.017Z"
+    "updatedAt": "2026-10-15T17:47:48.967Z"
   },
   "settings": {
     "audioEnabled": true,
