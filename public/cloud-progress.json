@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T11:53:59.714Z",
+  "exportedAt": "2026-10-15T11:58:44.219Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11172,13 +11172,13 @@
         "countryId": "SLE",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3499999999999996,
+        "step": 2,
+        "easeFactor": 2.3999999999999995,
         "intervalDays": 1,
-        "reps": 1,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-06T11:50:41.998Z",
-        "nextDueAt": "2026-10-07T11:50:41.998Z",
+        "lastReviewedAt": "2026-10-15T11:58:40.893Z",
+        "nextDueAt": "2026-10-16T11:58:40.893Z",
         "history": [
           {
             "timestamp": "2026-10-06T11:49:18.545Z",
@@ -11193,9 +11193,16 @@
             "userAnswer": "Sierra Leone",
             "isCorrect": true,
             "timeSpentMs": 4716
+          },
+          {
+            "timestamp": "2026-10-15T11:58:40.893Z",
+            "inputMode": "map_click",
+            "userAnswer": "Sierra Leone",
+            "isCorrect": true,
+            "timeSpentMs": 282582
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -16508,8 +16515,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1227,
-    "totalCorrect": 903,
+    "totalReviews": 1228,
+    "totalCorrect": 904,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16541,7 +16548,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T11:53:56.493Z"
+    "updatedAt": "2026-10-15T11:58:40.896Z"
   },
   "settings": {
     "audioEnabled": true,
