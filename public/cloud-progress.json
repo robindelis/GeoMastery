@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T17:52:52.533Z",
+  "exportedAt": "2026-10-15T17:53:01.170Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -862,13 +862,13 @@
         "countryId": "LTU",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.0999999999999988,
-        "intervalDays": 0,
-        "reps": 4,
+        "step": 1,
+        "easeFactor": 2.15,
+        "intervalDays": 3,
+        "reps": 5,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-15T16:27:25.103Z",
-        "nextDueAt": "2026-10-15T16:27:25.103Z",
+        "lastReviewedAt": "2026-10-15T17:52:57.680Z",
+        "nextDueAt": "2026-10-18T17:52:57.680Z",
         "history": [
           {
             "timestamp": "2026-10-04T14:47:49.645Z",
@@ -918,11 +918,21 @@
             "userAnswer": "Slovenia",
             "isCorrect": false,
             "timeSpentMs": 7501
+          },
+          {
+            "timestamp": "2026-10-15T17:52:57.680Z",
+            "inputMode": "map_click",
+            "userAnswer": "Lithuania",
+            "isCorrect": true,
+            "timeSpentMs": 5035,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 8.42
+        "stability": 2.58,
+        "difficulty": 7.83,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -15048,14 +15058,14 @@
         "id": "SOM:location",
         "countryId": "SOM",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.68,
+        "intervalDays": 33,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:20:10.550Z",
-        "nextDueAt": "2026-10-09T20:20:10.550Z",
+        "lastReviewedAt": "2026-10-15T17:53:01.125Z",
+        "nextDueAt": "2026-11-17T17:53:01.125Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:35:46.767Z",
@@ -15070,11 +15080,21 @@
             "userAnswer": "Somalia",
             "isCorrect": true,
             "timeSpentMs": 2187
+          },
+          {
+            "timestamp": "2026-10-15T17:53:01.125Z",
+            "inputMode": "map_click",
+            "userAnswer": "Somalia",
+            "isCorrect": true,
+            "timeSpentMs": 2143,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 3.76
+        "stability": 33.41,
+        "difficulty": 2.61,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -18165,16 +18185,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1301,
-    "totalCorrect": 953,
+    "totalReviews": 1303,
+    "totalCorrect": 955,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 25,
-        "learning": 83
+        "mastered": 26,
+        "learning": 82
       },
       "Americas": {
         "total": 70,
@@ -18198,7 +18218,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T17:52:49.502Z"
+    "updatedAt": "2026-10-15T17:53:01.128Z"
   },
   "settings": {
     "audioEnabled": true,
