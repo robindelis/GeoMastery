@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:22:31.548Z",
+  "exportedAt": "2026-10-15T16:22:41.136Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -14248,14 +14248,14 @@
         "id": "ETH:location",
         "countryId": "ETH",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T09:02:25.101Z",
-        "nextDueAt": "2026-10-11T09:02:25.101Z",
+        "lastReviewedAt": "2026-10-15T16:22:35.215Z",
+        "nextDueAt": "2026-10-22T16:22:35.215Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:36:37.299Z",
@@ -14270,9 +14270,16 @@
             "userAnswer": "Ethiopia",
             "isCorrect": true,
             "timeSpentMs": 68494
+          },
+          {
+            "timestamp": "2026-10-15T16:22:35.215Z",
+            "inputMode": "map_click",
+            "userAnswer": "Ethiopia",
+            "isCorrect": true,
+            "timeSpentMs": 5569
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -16786,16 +16793,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1245,
-    "totalCorrect": 915,
+    "totalReviews": 1246,
+    "totalCorrect": 916,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 22,
-        "learning": 86
+        "mastered": 23,
+        "learning": 85
       },
       "Americas": {
         "total": 70,
@@ -16819,7 +16826,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:22:27.407Z"
+    "updatedAt": "2026-10-15T16:22:35.218Z"
   },
   "settings": {
     "audioEnabled": true,
