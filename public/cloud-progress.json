@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:24:03.706Z",
+  "exportedAt": "2026-10-15T16:24:08.751Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7188,14 +7188,14 @@
         "id": "LAO:capital",
         "countryId": "LAO",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-11T22:23:28.106Z",
-        "nextDueAt": "2026-10-12T22:23:28.106Z",
+        "lastReviewedAt": "2026-10-15T16:24:05.437Z",
+        "nextDueAt": "2026-10-22T16:24:05.437Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:26:07.614Z",
@@ -7210,9 +7210,16 @@
             "userAnswer": "Vientane",
             "isCorrect": true,
             "timeSpentMs": 2509
+          },
+          {
+            "timestamp": "2026-10-15T16:24:05.437Z",
+            "inputMode": "typing",
+            "userAnswer": "Vientiane",
+            "isCorrect": true,
+            "timeSpentMs": 3914
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -16842,8 +16849,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1253,
-    "totalCorrect": 920,
+    "totalReviews": 1254,
+    "totalCorrect": 921,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16860,8 +16867,8 @@
       },
       "Asia": {
         "total": 96,
-        "mastered": 21,
-        "learning": 75
+        "mastered": 22,
+        "learning": 74
       },
       "Europe": {
         "total": 90,
@@ -16875,7 +16882,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:24:00.669Z"
+    "updatedAt": "2026-10-15T16:24:05.439Z"
   },
   "settings": {
     "audioEnabled": true,
