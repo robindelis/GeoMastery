@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:25:16.076Z",
+  "exportedAt": "2026-10-15T16:25:20.407Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -10736,13 +10736,13 @@
         "countryId": "COG",
         "attributeId": "capital",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 2.4499999999999993,
+        "intervalDays": 1,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-14T19:37:10.841Z",
-        "nextDueAt": "2026-10-14T19:37:10.841Z",
+        "lastReviewedAt": "2026-10-15T16:25:17.081Z",
+        "nextDueAt": "2026-10-16T16:25:17.081Z",
         "history": [
           {
             "timestamp": "2026-10-06T10:45:31.346Z",
@@ -10764,9 +10764,16 @@
             "userAnswer": "Kinshasa",
             "isCorrect": false,
             "timeSpentMs": 4809
+          },
+          {
+            "timestamp": "2026-10-15T16:25:17.081Z",
+            "inputMode": "typing",
+            "userAnswer": "Brazzaville",
+            "isCorrect": true,
+            "timeSpentMs": 3499
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -16936,8 +16943,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1261,
-    "totalCorrect": 925,
+    "totalReviews": 1262,
+    "totalCorrect": 926,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16969,7 +16976,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:25:12.661Z"
+    "updatedAt": "2026-10-15T16:25:17.083Z"
   },
   "settings": {
     "audioEnabled": true,
