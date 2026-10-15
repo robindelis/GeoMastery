@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T17:48:36.377Z",
+  "exportedAt": "2026-10-15T17:48:58.806Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -226,13 +226,13 @@
         "countryId": "SRB",
         "attributeId": "location",
         "stage": 2,
-        "step": 2,
-        "easeFactor": 2.4499999999999993,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 3,
+        "easeFactor": 2.43,
+        "intervalDays": 15,
+        "reps": 4,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:08:18.607Z",
-        "nextDueAt": "2026-10-15T20:08:18.607Z",
+        "lastReviewedAt": "2026-10-15T17:48:55.625Z",
+        "nextDueAt": "2026-10-30T17:48:55.625Z",
         "history": [
           {
             "timestamp": "2026-10-04T14:34:28.647Z",
@@ -261,11 +261,21 @@
             "userAnswer": "Serbia",
             "isCorrect": true,
             "timeSpentMs": 6914
+          },
+          {
+            "timestamp": "2026-10-15T17:48:55.625Z",
+            "inputMode": "map_click",
+            "userAnswer": "Serbia",
+            "isCorrect": true,
+            "timeSpentMs": 15504,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 5.98
+        "stability": 15,
+        "difficulty": 6.18,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
       }
     ],
     [
@@ -18085,8 +18095,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1293,
-    "totalCorrect": 946,
+    "totalReviews": 1294,
+    "totalCorrect": 947,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -18118,7 +18128,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T17:48:33.147Z"
+    "updatedAt": "2026-10-15T17:48:55.627Z"
   },
   "settings": {
     "audioEnabled": true,
