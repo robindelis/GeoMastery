@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:22:47.198Z",
+  "exportedAt": "2026-10-15T16:22:53.442Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -1318,14 +1318,14 @@
         "id": "BEL:location",
         "countryId": "BEL",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-06T10:22:45.989Z",
-        "nextDueAt": "2026-10-07T10:22:45.989Z",
+        "lastReviewedAt": "2026-10-15T16:22:50.252Z",
+        "nextDueAt": "2026-10-22T16:22:50.252Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:07:40.669Z",
@@ -1340,9 +1340,16 @@
             "userAnswer": "Belgium",
             "isCorrect": true,
             "timeSpentMs": 2262
+          },
+          {
+            "timestamp": "2026-10-15T16:22:50.252Z",
+            "inputMode": "map_click",
+            "userAnswer": "Belgium",
+            "isCorrect": true,
+            "timeSpentMs": 2728
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -16800,8 +16807,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1247,
-    "totalCorrect": 916,
+    "totalReviews": 1248,
+    "totalCorrect": 917,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16823,8 +16830,8 @@
       },
       "Europe": {
         "total": 90,
-        "mastered": 55,
-        "learning": 35
+        "mastered": 56,
+        "learning": 34
       },
       "Oceania": {
         "total": 28,
@@ -16833,7 +16840,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:22:42.982Z"
+    "updatedAt": "2026-10-15T16:22:50.254Z"
   },
   "settings": {
     "audioEnabled": true,
