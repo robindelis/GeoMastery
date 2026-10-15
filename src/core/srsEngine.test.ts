@@ -8,17 +8,21 @@ import {
   shuffleArray,
   computeRetrievability,
   deriveActRGrade,
-  interleaveSessionQueue
+  interleaveSessionQueue,
+  classifyCardHorizon,
+  calibrateSRSItem,
+  MASTERY_STABILITY_DAYS
 } from './srsEngine';
 import { COUNTRIES, COUNTRIES_BY_ID } from '../assets/data/countries';
 import { WATER_BODIES } from '../assets/data/waterBodies';
 
-describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
-  it('initializes items in Stage 0 (Multiple Choice Scaffolding)', () => {
+describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => {
+  it('initializes items in Stage 0 (Multiple Choice Scaffolding) with FSRS parameters', () => {
     const item = createInitialSRSItem('FRA', 'capital');
     expect(item.stage).toBe(0);
     expect(item.reps).toBe(0);
-    expect(item.consecutiveRecallCorrect).toBe(0);
+    expect(item.stability).toBe(0.4);
+    expect(item.difficulty).toBe(5.0);
 
     const country = COUNTRIES_BY_ID.get('FRA')!;
     const q = buildQuestion(item, country, COUNTRIES);
@@ -35,7 +39,7 @@ describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
     expect(stats.masteryPercentage).toBe(0);
   });
 
-  it('graduates from Stage 0 to Stage 1 on first correct answer with 0 recall streak', () => {
+  it('graduates from Stage 0 to Stage 1 on first correct answer with calibrated FSRS stability', () => {
     const initial = createInitialSRSItem('FRA', 'capital');
     const { updatedItem, promotedToLearning, promotedToMastered } = processAnswer(
       initial,
@@ -48,73 +52,87 @@ describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
     expect(promotedToLearning).toBe(true);
     expect(promotedToMastered).toBe(false);
     expect(updatedItem.stage).toBe(1);
-    expect(updatedItem.consecutiveRecallCorrect).toBe(0); // Not yet tested in recall
+    expect(updatedItem.stability).toBeGreaterThan(1.0);
+    expect(classifyCardHorizon(updatedItem)).toBe('learning');
   });
 
-  it('requires 2 consecutive correct active recall answers to become Mastered', () => {
+  it('progresses Stability S through consolidating recall into Mastered (Stage 2) via FSRS-6 DSR', () => {
     let item = createInitialSRSItem('ITA', 'capital');
-    // 1. Initial MCQ -> Correct
-    item = processAnswer(item, true, 'multiple_choice', 'Rome', 1000).updatedItem;
+    // 1. Initial MCQ -> Graduates to Stage 1 (Acquisition Learning)
+    item = processAnswer(item, true, 'multiple_choice', 'Rome', 1500).updatedItem;
     expect(item.stage).toBe(1);
-    expect(item.consecutiveRecallCorrect).toBe(0);
+    expect(classifyCardHorizon(item)).toBe('learning');
 
-    // 2. Active recall 1st success -> consecutive = 1, stays in Stage 1
-    const res1 = processAnswer(item, true, 'typing', 'Rome', 1000);
+    // 2. Active recall 1st success -> Enters Consolidating Recall (S >= 2.2d)
+    const res1 = processAnswer(item, true, 'typing', 'Rome', 4200);
     item = res1.updatedItem;
     expect(item.stage).toBe(1);
-    expect(item.consecutiveRecallCorrect).toBe(1);
+    expect(classifyCardHorizon(item)).toBe('recall');
     expect(res1.promotedToMastered).toBe(false);
 
-    // 3. Active recall 2nd consecutive success -> consecutive = 2, promoted to Stage 2 (Mastered)!
-    const res2 = processAnswer(item, true, 'typing', 'Rome', 1000);
+    // 3. Next active recall success -> Crosses MASTERY_STABILITY_DAYS (S >= 6.0d), promoted to Stage 2!
+    const res2 = processAnswer(item, true, 'typing', 'Rome', 2500);
     item = res2.updatedItem;
     expect(item.stage).toBe(2);
-    expect(item.consecutiveRecallCorrect).toBe(2);
+    expect(item.stability).toBeGreaterThanOrEqual(MASTERY_STABILITY_DAYS);
+    expect(classifyCardHorizon(item)).toBe('mastered');
     expect(res2.promotedToMastered).toBe(true);
     expect(item.intervalDays).toBeGreaterThanOrEqual(7);
   });
 
-  it('resets the consecutive counter to 0 upon failure in Stage 1', () => {
+  it('reduces stability to post-lapse S_f upon failure in Stage 1 and requires re-stabilization', () => {
     let item = createInitialSRSItem('ESP', 'capital');
-    // MCQ correct -> Stage 1
-    item = processAnswer(item, true, 'multiple_choice', 'Madrid', 1000).updatedItem;
+    item = processAnswer(item, true, 'multiple_choice', 'Madrid', 1200).updatedItem;
+    item = processAnswer(item, true, 'typing', 'Madrid', 3500).updatedItem;
+    expect(classifyCardHorizon(item)).toBe('recall');
+
+    // Fail active recall -> post-lapse stability drops back into learning (< 2.2d)
+    item = processAnswer(item, false, 'typing', 'Barcelona', 2000).updatedItem;
     expect(item.stage).toBe(1);
+    expect(classifyCardHorizon(item)).toBe('learning');
+    expect(item.intervalDays).toBe(0);
 
-    // 1st active recall -> Correct
-    item = processAnswer(item, true, 'typing', 'Madrid', 1000).updatedItem;
-    expect(item.consecutiveRecallCorrect).toBe(1);
-
-    // 2nd active recall -> Failed!
-    item = processAnswer(item, false, 'typing', 'Barcelona', 1000).updatedItem;
-    expect(item.consecutiveRecallCorrect).toBe(0); // Reset to 0!
-    expect(item.stage).toBe(1);
-
-    // 3rd active recall -> Correct again (only 1st in new streak)
-    const res3 = processAnswer(item, true, 'typing', 'Madrid', 1000);
-    item = res3.updatedItem;
-    expect(item.consecutiveRecallCorrect).toBe(1);
-    expect(item.stage).toBe(1); // Not mastered yet!
-
-    // 4th active recall -> Correct again (2nd in new streak) -> Promoted!
-    const res4 = processAnswer(item, true, 'typing', 'Madrid', 1000);
-    item = res4.updatedItem;
-    expect(item.consecutiveRecallCorrect).toBe(2);
-    expect(item.stage).toBe(2); // Now Mastered!
+    // Recover through active recall back to Mastered
+    item = processAnswer(item, true, 'typing', 'Madrid', 3500).updatedItem;
+    expect(classifyCardHorizon(item)).toBe('recall');
+    item = processAnswer(item, true, 'typing', 'Madrid', 2000).updatedItem;
+    expect(item.stage).toBe(2);
+    expect(classifyCardHorizon(item)).toBe('mastered');
   });
 
-  it('drops out of Mastered (Stage 2) back to Stage 1 with 0 streak if missed later', () => {
+  it('demotes Mastered (Stage 2) card back to Stage 1 with post-lapse stability if missed later', () => {
     let item = createInitialSRSItem('JPN', 'location');
-    // Pass MCQ
     item = processAnswer(item, true, 'multiple_choice', 'Japan', 1000).updatedItem;
-    // Pass 2 recalls
-    item = processAnswer(item, true, 'map_click', 'Japan', 1000).updatedItem;
-    item = processAnswer(item, true, 'map_click', 'Japan', 1000).updatedItem;
+    item = processAnswer(item, true, 'map_click', 'Japan', 1800).updatedItem;
+    item = processAnswer(item, true, 'map_click', 'Japan', 1800).updatedItem;
     expect(item.stage).toBe(2);
 
-    // Now fail during long-term review
-    item = processAnswer(item, false, 'map_click', 'Korea', 1000).updatedItem;
-    expect(item.stage).toBe(1); // Dropped back to Learning
-    expect(item.consecutiveRecallCorrect).toBe(0); // Streak reset
+    // Fail during long-term review
+    item = processAnswer(item, false, 'map_click', 'Korea', 1500).updatedItem;
+    expect(item.stage).toBe(1);
+    expect(item.stability).toBeLessThan(MASTERY_STABILITY_DAYS);
+    expect(item.intervalDays).toBe(0);
+  });
+
+  it('calibrates FSRS stability and difficulty automatically for legacy cards based on their state', () => {
+    const legacyMastered: any = {
+      id: 'BEL:capital',
+      countryId: 'BEL',
+      attributeId: 'capital',
+      stage: 2,
+      step: 3,
+      easeFactor: 2.6,
+      intervalDays: 14,
+      reps: 4,
+      lapses: 0,
+      lastReviewedAt: new Date().toISOString(),
+      nextDueAt: new Date(Date.now() + 14 * 86400000).toISOString(),
+      history: []
+    };
+    const calibrated = calibrateSRSItem(legacyMastered);
+    expect(calibrated.stability).toBeGreaterThanOrEqual(14);
+    expect(calibrated.difficulty).toBeGreaterThanOrEqual(1);
+    expect(classifyCardHorizon(calibrated)).toBe('mastered');
   });
 
   it('correctly generates and verifies Slovakia location question', () => {
@@ -259,7 +277,7 @@ describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
       for (const attr of ['capital', 'location']) {
         const item = createInitialSRSItem(c.id, attr);
         item.stage = 1;
-        item.consecutiveRecallCorrect = 1;
+        item.stability = 3.2;
         item.nextDueAt = pastDate;
         item.intervalDays = 1;
         itemsMap.set(item.id, item);
@@ -288,12 +306,12 @@ describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
     const pastDate = new Date(Date.now() - 86400000).toISOString();
     const futureDate = new Date(Date.now() + 14 * 86400000).toISOString();
 
-    // Create 15 Mastered (2/2) cards scheduled in the future
+    // Create 15 Mastered cards scheduled in the future
     const masteredCountries = COUNTRIES.slice(0, 15);
     for (const c of masteredCountries) {
       const item = createInitialSRSItem(c.id, 'capital');
       item.stage = 2;
-      item.consecutiveRecallCorrect = 2;
+      item.stability = 14;
       item.intervalDays = 14;
       item.nextDueAt = futureDate;
       item.lastReviewedAt = new Date(Date.now() - 3 * 86400000).toISOString();
@@ -305,7 +323,7 @@ describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
     for (const c of dueCountries) {
       const item = createInitialSRSItem(c.id, 'capital');
       item.stage = 1;
-      item.consecutiveRecallCorrect = 0;
+      item.stability = 1.4;
       item.intervalDays = 1;
       item.nextDueAt = pastDate;
       itemsMap.set(item.id, item);
@@ -322,14 +340,14 @@ describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
     expect(masteredInQueue.length).toBeGreaterThanOrEqual(1);
     expect(masteredInQueue.length).toBeLessThanOrEqual(2);
 
-    // Verify that answering a Mastered card incorrectly demotes it to Stage 1 with 0 recall streak
+    // Verify that answering a Mastered card incorrectly demotes it to Stage 1 with post-lapse stability
     const masteredCard = itemsMap.get(masteredInQueue[0].srsItemId)!;
     expect(masteredCard.stage).toBe(2);
-    expect(masteredCard.consecutiveRecallCorrect).toBe(2);
+    expect(masteredCard.stability).toBe(14);
 
     const { updatedItem } = processAnswer(masteredCard, false, 'typing', 'WrongAnswer', 2000);
     expect(updatedItem.stage).toBe(1);
-    expect(updatedItem.consecutiveRecallCorrect).toBe(0);
+    expect(updatedItem.stability).toBeLessThan(MASTERY_STABILITY_DAYS);
     expect(updatedItem.intervalDays).toBe(0);
   });
 
@@ -361,7 +379,8 @@ describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
     slowItem = processAnswer(slowItem, true, 'typing', 'Berlin', 12000).updatedItem;
 
     expect(fastItem.stage).toBe(2);
-    expect(slowItem.stage).toBe(2);
+    expect(slowItem.stage).toBe(1); // Slow Hard recall stays in consolidating recall longer
+    expect(fastItem.stability!).toBeGreaterThan(slowItem.stability!);
     expect(fastItem.intervalDays).toBeGreaterThan(slowItem.intervalDays);
     expect(fastItem.difficulty!).toBeLessThan(slowItem.difficulty!);
   });

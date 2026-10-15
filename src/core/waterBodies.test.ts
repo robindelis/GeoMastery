@@ -319,12 +319,12 @@ describe('Water Bodies SRS & Question Integration', () => {
     const item = createInitialSRSItem(wb.id, 'location');
     item.stage = 2; // Was mastered
     item.intervalDays = 6;
-    item.consecutiveRecallCorrect = 2;
+    item.stability = 7;
 
     const res = processAnswer(item, false, 'map_click', '__DONT_KNOW__', 1500);
     expect(res.updatedItem.stage).toBe(1); // demoted from 2 to 1
     expect(res.updatedItem.intervalDays).toBe(0); // reset interval
-    expect(res.updatedItem.consecutiveRecallCorrect).toBe(0); // reset streak
+    expect(res.updatedItem.stability).toBeLessThan(6); // post-lapse stability
     expect(res.updatedItem.lapses).toBe(1);
   });
 });

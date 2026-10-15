@@ -2,7 +2,7 @@ import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { SRSItem, UserStats, AppSettings } from './types';
-import { computeMasteryStats } from './srsEngine';
+import { computeMasteryStats, calibrateSRSItem } from './srsEngine';
 
 const STORAGE_KEYS = {
   SRS_ITEMS: 'geomastery_srs_items_v1',
@@ -685,7 +685,7 @@ export class StorageService {
       const data = localStorage.getItem(STORAGE_KEYS.SRS_ITEMS);
       if (!data) return new Map();
       const parsed: [string, SRSItem][] = JSON.parse(data);
-      return new Map(parsed);
+      return new Map(parsed.map(([id, item]) => [id, calibrateSRSItem(item)]));
     } catch (e) {
       console.error('Failed to load SRS items from storage:', e);
       return new Map();

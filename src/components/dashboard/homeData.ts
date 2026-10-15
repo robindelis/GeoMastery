@@ -8,7 +8,7 @@ import {
 } from '../../core/types';
 import { COUNTRIES } from '../../assets/data/countries';
 import { WATER_BODIES } from '../../assets/data/waterBodies';
-import { computeMasteryStats } from '../../core/srsEngine';
+import { computeMasteryStats, classifyCardHorizon } from '../../core/srsEngine';
 import type { HomeData, RegionModel, SpotlightTone } from './homeTypes';
 
 const CONTINENT_EMBLEMS: Record<Continent, string> = {
@@ -244,16 +244,15 @@ export const useHomeData = (
         for (const country of continentCountries) {
           for (const attrId of ['capital', 'location']) {
             const item = srsItemsMap.get(`${country.id}:${attrId}`);
-            if (!item) {
+            const bucket = classifyCardHorizon(item);
+            if (bucket === 'unseen') {
               unseenCards++;
-            } else if (item.stage === 0) {
+            } else if (item && item.stage === 0) {
               stage0Cards++;
-            } else if (item.stage === 1) {
-              if ((item.consecutiveRecallCorrect || 0) === 0) {
-                recall0Cards++;
-              } else {
-                recall1Cards++;
-              }
+            } else if (bucket === 'learning') {
+              recall0Cards++;
+            } else if (bucket === 'recall') {
+              recall1Cards++;
             }
           }
         }
@@ -278,16 +277,15 @@ export const useHomeData = (
 
         for (const wb of WATER_BODIES) {
           const item = srsItemsMap.get(`${wb.id}:location`);
-          if (!item) {
+          const bucket = classifyCardHorizon(item);
+          if (bucket === 'unseen') {
             unseenCards++;
-          } else if (item.stage === 0) {
+          } else if (item && item.stage === 0) {
             stage0Cards++;
-          } else if (item.stage === 1) {
-            if ((item.consecutiveRecallCorrect || 0) === 0) {
-              recall0Cards++;
-            } else {
-              recall1Cards++;
-            }
+          } else if (bucket === 'learning') {
+            recall0Cards++;
+          } else if (bucket === 'recall') {
+            recall1Cards++;
           }
         }
 

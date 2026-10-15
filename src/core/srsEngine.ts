@@ -70,34 +70,89 @@ const FSRS_W = {
   sameDayPow: 0.0658
 };
 
+export const MASTERY_STABILITY_DAYS = 6.0;
+export const RECALL_STABILITY_DAYS = 2.2;
+
+export type HorizonBucket = 'mastered' | 'recall' | 'learning' | 'unseen';
+
 /**
- * Infers baseline FSRS Stability (S in days at 90% retrievability) for legacy or new items.
+ * Calibrates / infers FSRS Stability (S in days at 90% retrievability) from a card's current state.
+ * Seamlessly migrates existing user cards based on their current stage, interval, reps, and lapses.
  */
 export function inferStability(item?: SRSItem): number {
   if (!item) return 0;
   if (typeof item.stability === 'number' && item.stability > 0) {
+    if (item.stage === 2 && item.stability < MASTERY_STABILITY_DAYS) {
+      return Math.max(MASTERY_STABILITY_DAYS, item.intervalDays || 7.0);
+    }
     return item.stability;
   }
-  if (item.intervalDays > 0) {
-    return item.intervalDays;
+  if (item.stage === 2) {
+    return Math.max(7.0, item.intervalDays || 7.0);
   }
-  if (item.stage === 2) return 7;
-  if (item.stage === 1) return (item.consecutiveRecallCorrect || 0) >= 1 ? 1.8 : 1.0;
+  if (item.stage === 1) {
+    if (item.intervalDays >= 2) return item.intervalDays;
+    // Migrate existing cards that were already in consolidating recall vs fresh acquisition
+    const legacyStreak = (item as any).consecutiveRecallCorrect || 0;
+    if (legacyStreak >= 1 || (item.reps >= 2 && item.lapses === 0)) {
+      return 2.8;
+    }
+    return 1.2;
+  }
   return 0.4;
 }
 
 /**
- * Infers baseline FSRS Difficulty D in [1, 10] for legacy or new items.
+ * Calibrates / infers FSRS Difficulty D in [1, 10] from a card's current state.
  */
 export function inferDifficulty(item?: SRSItem): number {
   if (!item) return 5.0;
   if (typeof item.difficulty === 'number' && item.difficulty >= 1 && item.difficulty <= 10) {
     return item.difficulty;
   }
-  // Map legacy SM-2 easeFactor [1.3, 3.0] to Difficulty [1, 10]
+  // Derive from existing easeFactor, lapses, and average response latency in history
   const fromEase = 10 - ((Math.min(3.0, Math.max(1.3, item.easeFactor || 2.5)) - 1.3) / 1.7) * 7.5;
-  const lapseBump = Math.min(2.0, (item.lapses || 0) * 0.4);
-  return Math.min(10, Math.max(1, Number((fromEase + lapseBump).toFixed(2))));
+  const lapseBump = Math.min(2.2, (item.lapses || 0) * 0.45);
+  let latencyAdj = 0;
+  if (item.history && item.history.length > 0) {
+    const avgMs =
+      item.history.reduce((acc, h) => acc + (h.timeSpentMs || 3000), 0) / item.history.length;
+    if (avgMs < 2400) latencyAdj = -0.5;
+    else if (avgMs > 7500) latencyAdj = 0.6;
+  }
+  return Math.min(10, Math.max(1, Number((fromEase + lapseBump + latencyAdj).toFixed(2))));
+}
+
+/**
+ * Classifies any card into one of the 4 Memory Horizon buckets based purely on its FSRS state:
+ * - 'unseen': never reviewed (!item)
+ * - 'mastered': long-term memory (stage === 2 or Stability S >= 6.0d)
+ * - 'recall': consolidating active recall (stage === 1 and Stability S in [2.2d, 6.0d))
+ * - 'learning': initial acquisition (stage === 0 or stage === 1 with Stability S < 2.2d)
+ */
+export function classifyCardHorizon(item?: SRSItem): HorizonBucket {
+  if (!item) return 'unseen';
+  const S = inferStability(item);
+  if (item.stage === 2 || S >= MASTERY_STABILITY_DAYS) return 'mastered';
+  if (item.stage === 1 && S >= RECALL_STABILITY_DAYS) return 'recall';
+  return 'learning';
+}
+
+/**
+ * Non-destructively populates calibrated FSRS parameters (`stability`, `difficulty`, `stage`)
+ * on an existing SRSItem based on its current state.
+ */
+export function calibrateSRSItem(item: SRSItem): SRSItem {
+  const S = Number(inferStability(item).toFixed(2));
+  const D = inferDifficulty(item);
+  const stage: SRSStage =
+    item.stage === 0 ? 0 : S >= MASTERY_STABILITY_DAYS || item.stage === 2 ? 2 : 1;
+  return {
+    ...item,
+    stage,
+    stability: S,
+    difficulty: D
+  };
 }
 
 /**
@@ -164,9 +219,8 @@ export function createInitialSRSItem(countryId: string, attributeId: string): SR
     id: `${countryId}:${attributeId}`,
     countryId,
     attributeId,
-    stage: 0, // Starts at Stage 0 (Multiple Choice Scaffolding)
+    stage: 0, // Starts at Stage 0 (Multiple Choice / Recognition Scaffolding)
     step: 0,
-    consecutiveRecallCorrect: 0,
     easeFactor: 2.5,
     intervalDays: 0,
     reps: 0,
@@ -181,11 +235,13 @@ export function createInitialSRSItem(countryId: string, attributeId: string): SR
 }
 
 /**
- * Updates an SRS item after an answer attempt using the Hybrid Geo-FSRS + ACT-R model.
- * Preserves strict 3-Stage Cognitive Scaffolding invariants:
- * - Stage 0: Multiple choice recognition -> 1 correct answer graduates to Active Recall (Stage 1, 0/2 streak).
- * - Stage 1 (Active recall without propositions): Requires 2 consecutive correct answers to reach Mastered (Stage 2).
- * - Any failure resets `consecutiveRecallCorrect` to 0 and demotes Stage 2 back to Stage 1.
+ * Updates an SRS item after an answer attempt using the pure FSRS-6 DSR + ACT-R Latency model.
+ * - Stage 0 (Recognition Scaffolding): First correct answer transitions to Stage 1 (Active Recall)
+ *   with initial FSRS Stability S calibrated by ACT-R response latency.
+ * - Stage 1+ (Active Recall): Stability S and Difficulty D evolve continuously via FSRS-6 equations.
+ *   When S >= MASTERY_STABILITY_DAYS (6.0d), the card is promoted to Stage 2 (Mastered).
+ * - Any lapse computes post-lapse stability S'_f (< 6.0d), demoting Stage 2 back to Stage 1
+ *   for immediate reinforcement while preserving a partial memory trace.
  */
 export function processAnswer(
   item: SRSItem,
@@ -203,7 +259,6 @@ export function processAnswer(
   let intervalDays = item.intervalDays;
   let reps = item.reps;
   let lapses = item.lapses;
-  let consecutiveRecallCorrect = item.consecutiveRecallCorrect || 0;
   let promotedToLearning = false;
   let promotedToMastered = false;
 
@@ -215,7 +270,9 @@ export function processAnswer(
   const prevS = Math.max(0.25, inferStability(item));
   const lastMs = item.lastReviewedAt ? new Date(item.lastReviewedAt).getTime() : NaN;
   const elapsedDays = !Number.isNaN(lastMs) ? Math.max(0, (nowMs - lastMs) / 86400000) : 0;
-  const R = item.lastReviewedAt ? computeRetrievability(item, nowMs) : 0.9;
+  // Use effective retrievability (bounded <= 0.92 on scheduled reviews so desirable-difficulty gain applies)
+  const rawR = item.lastReviewedAt ? computeRetrievability(item, nowMs) : 0.85;
+  const R = Math.min(0.92, rawR);
 
   // 3. Update FSRS Difficulty D in [1, 10] with linear damping & mean reversion
   const d0Easy = Math.min(10, Math.max(1, FSRS_W.d0Base - Math.exp(FSRS_W.d0Exp * (4 - 1)) + 1));
@@ -231,86 +288,67 @@ export function processAnswer(
   if (isCorrect) {
     reps += 1;
 
-    // Update FSRS Stability S on successful recall (Desirable Difficulty equation)
-    if (reps === 1 || !item.lastReviewedAt) {
-      nextStability = grade === 4 ? 2.4 : grade === 3 ? 1.6 : 1.1;
-    } else if (elapsedDays < 0.5) {
-      // Same-day review stability scaling (prevents cramming inflation)
-      const sameDayFactor =
-        Math.exp(FSRS_W.sameDayGain * (grade - 3 + FSRS_W.sameDayOffset)) *
-        Math.pow(prevS, -FSRS_W.sameDayPow);
-      nextStability = Math.max(prevS * 1.05, prevS * sameDayFactor);
-    } else {
-      const hardMod = grade === 2 ? FSRS_W.hardPenalty : 1.0;
-      const easyMod = grade === 4 ? FSRS_W.easyBonus : 1.0;
-      const inc =
-        Math.exp(FSRS_W.sRecallExp) *
-        (11 - nextDifficulty) *
-        Math.pow(prevS, -FSRS_W.sDecayPower) *
-        (Math.exp(FSRS_W.sRetrievabilityGain * (1 - R)) - 1) *
-        hardMod *
-        easyMod;
-      nextStability = Math.min(365, prevS * (1 + Math.max(0.15, inc)));
-    }
-
     if (stage === 0) {
-      // First time answered correctly -> Graduate to Stage 1 (Learning / Active Recall)
+      // First exposure answered correctly -> Graduate to Stage 1 (Active Recall)
       stage = 1;
       step = 1;
+      nextStability = grade === 4 ? 1.9 : grade === 3 ? 1.4 : 1.0;
       intervalDays = 1;
-      consecutiveRecallCorrect = 0; // Has not yet been tested in active recall mode
       promotedToLearning = true;
-    } else if (stage === 1) {
-      // Stage 1 (Active Recall - no propositions):
-      // Must be answered correctly 2 times in a row to achieve Mastered status
-      step += 1;
-      consecutiveRecallCorrect += 1;
-
-      if (consecutiveRecallCorrect >= 2) {
-        stage = 2; // Mastered!
-        // Scale initial Mastered interval using FSRS stability & latency grade (at least 7 days)
-        const baseMasteredInterval = grade === 4 ? 10 : grade === 3 ? 8 : 7;
-        intervalDays = Math.max(7, Math.min(21, Math.round(Math.max(baseMasteredInterval, nextStability))));
-        nextStability = Math.max(nextStability, intervalDays);
-        promotedToMastered = true;
-      } else {
-        // First successful recall (1/2): 1 day (or 2 days on fast fluent recall)
-        intervalDays = grade === 4 ? 2 : 1;
-        nextStability = Math.max(nextStability, intervalDays);
-      }
     } else {
-      // Stage 2 (Mastered): Long-term FSRS + ease hybrid interval
+      // Active Recall (Stage 1 or Stage 2): pure FSRS-6 DSR stability growth
       step += 1;
-      consecutiveRecallCorrect += 1;
-      const latencyMod = grade === 4 ? 1.15 : grade === 2 ? 0.85 : 1.0;
-      const sm2Candidate = Math.round(intervalDays * easeFactor * latencyMod);
-      const fsrsCandidate = Math.round(nextStability);
-      intervalDays = Math.min(365, Math.max(14, Math.max(sm2Candidate, fsrsCandidate)));
-      nextStability = Math.max(nextStability, intervalDays);
+      const hardMod = grade === 2 ? FSRS_W.hardPenalty : 1.0;
+      const easyMod = grade === 4 ? FSRS_W.easyBonus : 1.0;
+
+      if (elapsedDays < 0.25 && item.lastReviewedAt) {
+        // Same-session / same-day review: controlled stability boost scaled by ACT-R latency grade
+        const sameDayMult = grade === 4 ? 2.55 : grade === 3 ? 2.15 : 1.5;
+        nextStability = Math.min(365, Math.max(RECALL_STABILITY_DAYS + 0.3, prevS * sameDayMult));
+      } else {
+        const inc =
+          Math.exp(FSRS_W.sRecallExp) *
+          (11 - nextDifficulty) *
+          Math.pow(prevS, -FSRS_W.sDecayPower) *
+          (Math.exp(FSRS_W.sRetrievabilityGain * (1 - R)) - 1) *
+          hardMod *
+          easyMod;
+        const minGrowth = grade === 4 ? 2.55 : grade === 3 ? 2.15 : 1.5;
+        nextStability = Math.min(365, Math.max(prevS * minGrowth, prevS * (1 + inc)));
+      }
+
+      if (stage === 1 && nextStability >= MASTERY_STABILITY_DAYS) {
+        stage = 2;
+        promotedToMastered = true;
+        intervalDays = Math.max(7, Math.min(365, Math.round(nextStability)));
+        nextStability = Math.max(nextStability, intervalDays);
+      } else if (stage === 2) {
+        intervalDays = Math.max(14, Math.min(365, Math.round(nextStability)));
+        nextStability = Math.max(nextStability, intervalDays);
+      } else {
+        // Consolidating in Stage 1 (S in [2.2d, 6.0d))
+        nextStability = Math.max(RECALL_STABILITY_DAYS, nextStability);
+        intervalDays = Math.max(1, Math.round(nextStability));
+      }
     }
 
     // Latency-sensitive ease factor adjustment
     const easeDelta = grade === 4 ? 0.08 : grade === 3 ? 0.05 : -0.02;
     easeFactor = Number(Math.min(3.0, Math.max(1.3, easeFactor + easeDelta)).toFixed(2));
   } else {
-    // Incorrect answer: immediately reset streak counter!
+    // Incorrect answer (Grade 1 Again):
     lapses += 1;
     step = 0;
-    consecutiveRecallCorrect = 0; // Reset counter
     easeFactor = Number(Math.max(1.3, easeFactor - 0.2).toFixed(2));
     intervalDays = 0; // Due immediately for reinforcement
 
-    // FSRS post-lapse stability S'_f (retains partial memory trace for faster re-stabilization)
-    nextStability = Math.max(
-      0.5,
-      Math.min(
-        prevS * 0.65,
-        FSRS_W.sForgetBase *
-          Math.pow(nextDifficulty, -FSRS_W.sForgetDiffPow) *
-          (Math.pow(prevS + 1, FSRS_W.sForgetStabPow) - 1) *
-          Math.exp(FSRS_W.sForgetRetGain * (1 - R))
-      )
-    );
+    // FSRS post-lapse stability S'_f (bounded < RECALL_STABILITY_DAYS so it re-enters acquisition learning)
+    const rawPostLapse =
+      FSRS_W.sForgetBase *
+      Math.pow(nextDifficulty, -FSRS_W.sForgetDiffPow) *
+      (Math.pow(prevS + 1, FSRS_W.sForgetStabPow) - 1) *
+      Math.exp(FSRS_W.sForgetRetGain * (1 - R));
+    nextStability = Math.max(0.6, Math.min(RECALL_STABILITY_DAYS - 0.2, rawPostLapse, prevS * 0.45));
 
     // Record LECTOR confusion pair if user clicked/typed another known entity
     const resolvedConfusion = confusedEntityId || resolveConfusedCountryId(userAnswer, item.countryId);
@@ -340,7 +378,6 @@ export function processAnswer(
     ...item,
     stage,
     step,
-    consecutiveRecallCorrect,
     easeFactor,
     intervalDays,
     reps,
@@ -693,19 +730,19 @@ export function prepareSessionQueue(
       if (item.nextDueAt <= now || item.intervalDays === 0) {
         dueStage0Pool.push(cand);
       }
-    } else if (item.stage === 1) {
-      if (item.nextDueAt <= now || item.intervalDays === 0) {
-        if ((item.consecutiveRecallCorrect || 0) === 0) {
-          dueRecallZeroPool.push(cand);
-        } else {
-          dueRecallOnePool.push(cand);
-        }
-      }
-    } else if (item.stage === 2) {
+    } else if (classifyCardHorizon(item) === 'mastered') {
       if (item.nextDueAt <= now || item.intervalDays === 0) {
         dueMasteredPool.push(cand);
       } else {
         retentionMasteredPool.push(cand);
+      }
+    } else {
+      if (item.nextDueAt <= now || item.intervalDays === 0) {
+        if (classifyCardHorizon(item) === 'learning') {
+          dueRecallZeroPool.push(cand);
+        } else {
+          dueRecallOnePool.push(cand);
+        }
       }
     }
   }
@@ -964,8 +1001,8 @@ export function computeMasteryStats(itemsMap: Map<string, SRSItem>) {
 
     const assess = (item?: SRSItem) => {
       if (!item || item.stage === 0) return 0;
-      if (item.stage === 1) return 1;
-      return 2;
+      if (classifyCardHorizon(item) === 'mastered') return 2;
+      return 1;
     };
 
     const sCap = assess(capItem);
@@ -987,12 +1024,12 @@ export function computeMasteryStats(itemsMap: Map<string, SRSItem>) {
     if (!item || item.stage === 0) {
       waterBreakdown.stage0++;
       globalStage0++;
-    } else if (item.stage === 1) {
-      waterBreakdown.stage1++;
-      globalStage1++;
-    } else {
+    } else if (classifyCardHorizon(item) === 'mastered') {
       waterBreakdown.stage2++;
       globalStage2++;
+    } else {
+      waterBreakdown.stage1++;
+      globalStage1++;
     }
   }
 

@@ -8,7 +8,8 @@ import {
   processAnswer,
   buildQuestion,
   createInitialSRSItem,
-  waterBodyToCountry
+  waterBodyToCountry,
+  inferStability
 } from '../../core/srsEngine';
 import { getWaterBodyById } from '../../assets/data/waterBodies';
 import { ATTRIBUTE_REGISTRY } from '../../core/attributes';
@@ -348,8 +349,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
         if (retryCount < 2) {
           const liveItem = srsItemsMapRef.current.get(question.srsItemId) || {
             ...createInitialSRSItem(question.country.id, question.attributeId),
-            stage: 1,
-            consecutiveRecallCorrect: 0
+            stage: 1
           };
           const freshRetry = { ...buildQuestion(liveItem, question.country, COUNTRIES), isRetry: true };
           if (retryCount === 0) {
@@ -662,12 +662,14 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
                 </span>
               );
             }
-            const recallStreak = item?.consecutiveRecallCorrect || 0;
+            const cardStability = inferStability(item);
             return (
               <span className="text-[10px] font-bold tracking-wider px-2 sm:px-2.5 py-1 rounded-full border bg-sky-950/50 border-sky-700/50 text-sky-300 flex items-center gap-1">
                 <span className="hidden sm:inline">L1 Active Recall</span>
                 <span className="sm:hidden">L1</span>
-                <span className="text-emerald-400 font-mono">({recallStreak}/2<span className="hidden sm:inline"> to Master</span>)</span>
+                <span className="text-emerald-400 font-mono">
+                  (S:{cardStability.toFixed(1)}d<span className="hidden sm:inline"> / 6d Master</span>)
+                </span>
               </span>
             );
           })()}

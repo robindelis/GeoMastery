@@ -40,6 +40,7 @@ import { useHomeData, useDueBreakdown } from './homeData';
 import { useCountUp } from './useCountUp';
 import type { HomeViewProps } from './homeTypes';
 import type { TrainingCategory, SRSItem } from '../../core/types';
+import { classifyCardHorizon, inferStability, computeRetrievability } from '../../core/srsEngine';
 import { soundFx } from '../../core/soundFx';
 import { speechEngine } from '../../core/speechEngine';
 import { formatCoordinates } from '../../core/geoUtils';
@@ -154,8 +155,8 @@ const HORIZON_CATEGORY_META: Record<
 > = {
   mastered: {
     label: 'Mastered',
-    subtitle: '2/2 Retention',
-    description: 'Graduated to long-term memory after 2 consecutive active recall successes.',
+    subtitle: 'S ≥ 6d Stability',
+    description: 'High-stability long-term memory plates (FSRS Stability S ≥ 6 days at 90% retrievability).',
     color: '#10B981',
     dotCls: 'bg-[#10B981]',
     textCls: 'text-[#10B981]',
@@ -165,8 +166,8 @@ const HORIZON_CATEGORY_META: Record<
   },
   recall: {
     label: 'Recall',
-    subtitle: '1/2 to Master',
-    description: 'Halfway to mastery — needs 1 more consecutive active recall answer.',
+    subtitle: 'S 2–6d Horizon',
+    description: 'Consolidating active recall plates building stability toward the 6-day mastery horizon.',
     color: '#E9C46A',
     dotCls: 'bg-[#E9C46A]',
     textCls: 'text-[#E9C46A]',
@@ -176,8 +177,8 @@ const HORIZON_CATEGORY_META: Record<
   },
   learning: {
     label: 'Learning',
-    subtitle: '0/2 Recall',
-    description: 'In active acquisition (Level 0 recognition or 0/2 active recall).',
+    subtitle: 'S < 2.2d Acquire',
+    description: 'In active FSRS acquisition (initial recognition or short-horizon active recall).',
     color: '#F4A261',
     dotCls: 'bg-[#F4A261]',
     textCls: 'text-[#F4A261]',
@@ -696,6 +697,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       unseen: []
     };
 
+    const nowMs = Date.now();
     const categorizeItem = (item?: SRSItem): {
       category: HorizonCategory;
       statusBadge: string;
@@ -713,20 +715,24 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
         };
       }
       const isDue = item.nextDueAt <= nowIso || item.intervalDays === 0;
-      if (item.stage === 2) {
+      const bucket = classifyCardHorizon(item);
+      const S = inferStability(item);
+      const R = Math.round(computeRetrievability(item, nowMs) * 100);
+
+      if (bucket === 'mastered') {
         return {
           category: 'mastered',
-          statusBadge: '2/2 Mastered',
-          shortBadge: '2/2',
+          statusBadge: `S:${Math.round(S)}d · R:${R}%`,
+          shortBadge: `S:${Math.round(S)}d`,
           trophyGlyph: '🏆',
           isDue
         };
       }
-      if (item.stage === 1 && (item.consecutiveRecallCorrect || 0) >= 1) {
+      if (bucket === 'recall') {
         return {
           category: 'recall',
-          statusBadge: '1/2 Recall',
-          shortBadge: '1/2',
+          statusBadge: `S:${S.toFixed(1)}d · R:${R}%`,
+          shortBadge: `S:${S.toFixed(1)}d`,
           trophyGlyph: '⚡',
           isDue
         };
@@ -734,8 +740,8 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       if (item.stage === 1) {
         return {
           category: 'learning',
-          statusBadge: '0/2 Recall',
-          shortBadge: '0/2',
+          statusBadge: `S:${S.toFixed(1)}d Recall`,
+          shortBadge: `S:${S.toFixed(1)}d`,
           trophyGlyph: '🧭',
           isDue
         };
@@ -894,25 +900,23 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
         cls: 'border-[#38BDF8]/30 bg-[#38BDF8]/10 text-[#38BDF8]'
       };
     }
-    if (item.stage === 0) {
+    const bucket = classifyCardHorizon(item);
+    const S = inferStability(item);
+    if (bucket === 'mastered') {
       return {
-        label: 'L0 Recognition',
-        cls: 'border-[#F4A261]/30 bg-[#F4A261]/10 text-[#F4A261]'
-      };
-    }
-    if (item.stage === 2) {
-      return {
-        label: '2/2 Mastered',
+        label: `Mastered (S:${Math.round(S)}d)`,
         cls: 'border-[#10B981]/30 bg-[#10B981]/15 text-[#10B981]'
       };
     }
-    const recall = item.consecutiveRecallCorrect || 0;
+    if (bucket === 'recall') {
+      return {
+        label: `Recall (S:${S.toFixed(1)}d)`,
+        cls: 'border-[#E9C46A]/30 bg-[#E9C46A]/15 text-[#E9C46A]'
+      };
+    }
     return {
-      label: `${recall}/2 Recall`,
-      cls:
-        recall === 0
-          ? 'border-[#F4A261]/30 bg-[#F4A261]/10 text-[#F4A261]'
-          : 'border-[#E9C46A]/30 bg-[#E9C46A]/15 text-[#E9C46A]'
+      label: item.stage === 0 ? 'L0 Recognition' : `Learning (S:${S.toFixed(1)}d)`,
+      cls: 'border-[#F4A261]/30 bg-[#F4A261]/10 text-[#F4A261]'
     };
   };
 
@@ -1133,7 +1137,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
               {/* Subtitle */}
               <p className="mt-1 text-xs font-medium leading-relaxed text-[#9FB3C4]">
-                Smart SRS prioritizes unlearned & 0/2 active recall cards while weaving in rare 2/2 retention checks to guarantee lifelong mastery.
+                FSRS-6 DSR & ACT-R latency scheduling adapts stability (S) and retrievability (R) per card while weaving in long-term retention checks.
               </p>
 
               {/* Study Focus Toggles */}
@@ -1498,7 +1502,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                     🎯 ~6 Unseen
                   </span>
                   <span className="px-2 py-0.5 rounded-full bg-[#F4A261]/15 border border-[#F4A261]/30 font-bold text-[#F4A261]">
-                    🧠 ~7 Recall (0/2 & 1/2)
+                    🧠 ~7 Active Recall (FSRS)
                   </span>
                   <span className="px-2 py-0.5 rounded-full bg-[#10B981]/15 border border-[#10B981]/30 font-bold text-[#10B981]">
                     🛡️ 1–2 Mastered
