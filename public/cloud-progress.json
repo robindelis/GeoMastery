@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:25:06.477Z",
+  "exportedAt": "2026-10-15T16:25:10.330Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16900,11 +16900,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "CHL:location",
+      {
+        "id": "CHL:location",
+        "countryId": "CHL",
+        "attributeId": "location",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-15T16:25:07.335Z",
+        "nextDueAt": "2026-10-16T16:25:07.335Z",
+        "history": [
+          {
+            "timestamp": "2026-10-15T16:25:07.335Z",
+            "inputMode": "map_click",
+            "userAnswer": "Chile",
+            "isCorrect": true,
+            "timeSpentMs": 2752
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1259,
-    "totalCorrect": 924,
+    "totalReviews": 1260,
+    "totalCorrect": 925,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16917,7 +16943,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 53
+        "learning": 54
       },
       "Asia": {
         "total": 96,
@@ -16936,7 +16962,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:25:03.123Z"
+    "updatedAt": "2026-10-15T16:25:07.338Z"
   },
   "settings": {
     "audioEnabled": true,
