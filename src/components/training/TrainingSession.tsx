@@ -274,7 +274,8 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
         correct,
         question.expectedInputMode,
         answer,
-        timeSpentMs
+        timeSpentMs,
+        selectedCountryId
       );
       const updatedItem = res.updatedItem;
       promotedToLearning = res.promotedToLearning;
@@ -340,17 +341,26 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     } else {
       soundFx.playError();
       setStreak(0);
-      // Re-queue missed question at end of session for reinforcement (capped at 2 retries per card)
+      // Landauer & Bjork Expanding Retrieval Practice:
+      // 1st retry is inserted at a short expanding lag (+4 cards ahead); 2nd retry goes to end of session
       setQueue((prevQueue) => {
         const retryCount = prevQueue.filter((q) => q.srsItemId === question.srsItemId && q.isRetry).length;
         if (retryCount < 2) {
-          const liveItem = srsItemsMap.get(question.srsItemId) || {
+          const liveItem = srsItemsMapRef.current.get(question.srsItemId) || {
             ...createInitialSRSItem(question.country.id, question.attributeId),
             stage: 1,
             consecutiveRecallCorrect: 0
           };
-          const freshRetry = buildQuestion(liveItem, question.country, COUNTRIES);
-          return [...prevQueue, { ...freshRetry, isRetry: true }];
+          const freshRetry = { ...buildQuestion(liveItem, question.country, COUNTRIES), isRetry: true };
+          if (retryCount === 0) {
+            const activeIdx = prevQueue.findIndex((q, idx) => idx >= currentIndex && q.srsItemId === question.srsItemId);
+            const baseIdx = activeIdx !== -1 ? activeIdx : currentIndex;
+            const insertAt = Math.min(prevQueue.length, baseIdx + 1 + 4);
+            const nextQueue = [...prevQueue];
+            nextQueue.splice(insertAt, 0, freshRetry);
+            return nextQueue;
+          }
+          return [...prevQueue, freshRetry];
         }
         return prevQueue;
       });

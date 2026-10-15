@@ -57,12 +57,22 @@ export interface AttributeDefinition<T = any> {
 
 export type SRSStage = 0 | 1 | 2; // 0: New / Multiple-Choice Scaffolding; 1: Learning / Typing Active Recall; 2: Mastered
 
+/**
+ * FSRS / ACT-R implicit retrieval grade derived from accuracy + response latency:
+ * 1 = Again (Fail)
+ * 2 = Hard (Correct, high latency / effortful recall)
+ * 3 = Good (Correct, normal latency)
+ * 4 = Easy (Correct, fast automatic fluency)
+ */
+export type FSRSGrade = 1 | 2 | 3 | 4;
+
 export interface SRSHistoryEntry {
   timestamp: string;
   inputMode: InputMode;
   userAnswer: string;
   isCorrect: boolean;
   timeSpentMs: number;
+  grade?: FSRSGrade;
 }
 
 export interface SRSItem {
@@ -79,6 +89,14 @@ export interface SRSItem {
   lastReviewedAt: string | null;
   nextDueAt: string;
   history: SRSHistoryEntry[];
+  /** FSRS-6 DSR Memory Difficulty D in [1, 10] (optional for backwards compatibility) */
+  difficulty?: number;
+  /** FSRS-6 DSR Memory Stability S in days at 90% retrievability (optional for backwards compatibility) */
+  stability?: number;
+  /** ACT-R latency-derived grade on the most recent review */
+  lastLatencyGrade?: FSRSGrade;
+  /** IDs of countries or capitals confused with this card (LECTOR spatial/semantic interference) */
+  confusedWith?: string[];
 }
 
 export type MapViewMode = '2d' | '3d';

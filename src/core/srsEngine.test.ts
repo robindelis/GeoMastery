@@ -5,7 +5,10 @@ import {
   buildQuestion,
   computeMasteryStats,
   prepareSessionQueue,
-  shuffleArray
+  shuffleArray,
+  computeRetrievability,
+  deriveActRGrade,
+  interleaveSessionQueue
 } from './srsEngine';
 import { COUNTRIES, COUNTRIES_BY_ID } from '../assets/data/countries';
 import { WATER_BODIES } from '../assets/data/waterBodies';
@@ -328,6 +331,70 @@ describe('srsEngine Cognitive Scaffolding & 2-Streak Mastery', () => {
     expect(updatedItem.stage).toBe(1);
     expect(updatedItem.consecutiveRecallCorrect).toBe(0);
     expect(updatedItem.intervalDays).toBe(0);
+  });
+
+  it('computes FSRS-6 power-law retrievability R(t, S) = 90% when elapsed time equals stability S', () => {
+    const item = createInitialSRSItem('FRA', 'capital');
+    item.stability = 10;
+    const nowMs = Date.now();
+    item.lastReviewedAt = new Date(nowMs - 10 * 86400000).toISOString();
+
+    const R = computeRetrievability(item, nowMs);
+    expect(R).toBeCloseTo(0.9, 3);
+  });
+
+  it('differentiates intervals and stability via ACT-R response latency grades (Fast Easy vs Slow Hard)', () => {
+    expect(deriveActRGrade(true, 'typing', 1500)).toBe(4); // Easy
+    expect(deriveActRGrade(true, 'typing', 5000)).toBe(3); // Good
+    expect(deriveActRGrade(true, 'typing', 11000)).toBe(2); // Hard
+    expect(deriveActRGrade(false, 'typing', 1500)).toBe(1); // Again
+
+    // Fast fluent learner vs slow hesitant learner on the exact same card
+    let fastItem = createInitialSRSItem('DEU', 'capital');
+    fastItem = processAnswer(fastItem, true, 'multiple_choice', 'Berlin', 1100).updatedItem;
+    fastItem = processAnswer(fastItem, true, 'typing', 'Berlin', 1600).updatedItem;
+    fastItem = processAnswer(fastItem, true, 'typing', 'Berlin', 1500).updatedItem;
+
+    let slowItem = createInitialSRSItem('DEU', 'capital');
+    slowItem = processAnswer(slowItem, true, 'multiple_choice', 'Berlin', 7000).updatedItem;
+    slowItem = processAnswer(slowItem, true, 'typing', 'Berlin', 11000).updatedItem;
+    slowItem = processAnswer(slowItem, true, 'typing', 'Berlin', 12000).updatedItem;
+
+    expect(fastItem.stage).toBe(2);
+    expect(slowItem.stage).toBe(2);
+    expect(fastItem.intervalDays).toBeGreaterThan(slowItem.intervalDays);
+    expect(fastItem.difficulty!).toBeLessThan(slowItem.difficulty!);
+  });
+
+  it('tracks LECTOR confused country pairs and injects them as high-salience distractors', () => {
+    let item = createInitialSRSItem('SVK', 'capital');
+    // Learner confuses Slovakia with Slovenia's capital (Ljubljana)
+    item = processAnswer(item, false, 'typing', 'Ljubljana', 3500).updatedItem;
+    expect(item.confusedWith).toContain('SVN');
+
+    // When building a Stage 0 recognition question, Ljubljana must appear in the 4 options
+    item.stage = 0;
+    const slovakia = COUNTRIES_BY_ID.get('SVK')!;
+    const q = buildQuestion(item, slovakia, COUNTRIES);
+    expect(q.options).toContain('Bratislava');
+    expect(q.options).toContain('Ljubljana');
+  });
+
+  it('interleaves same-country capital and location cards at least 4 questions apart', () => {
+    const sampleCountries = COUNTRIES.slice(0, 8);
+    const questions = [
+      buildQuestion(createInitialSRSItem(sampleCountries[0].id, 'capital'), sampleCountries[0], COUNTRIES),
+      buildQuestion(createInitialSRSItem(sampleCountries[0].id, 'location'), sampleCountries[0], COUNTRIES),
+      ...sampleCountries.slice(1).map((c) => buildQuestion(createInitialSRSItem(c.id, 'capital'), c, COUNTRIES))
+    ];
+
+    const interleaved = interleaveSessionQueue(questions, 4);
+    const indices = interleaved
+      .map((q, idx) => (q.country.id === sampleCountries[0].id ? idx : -1))
+      .filter((idx) => idx !== -1);
+
+    expect(indices.length).toBe(2);
+    expect(indices[1] - indices[0]).toBeGreaterThanOrEqual(4);
   });
 });
 

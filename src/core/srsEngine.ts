@@ -1,4 +1,13 @@
-import { Country, Continent, SRSItem, SRSStage, InputMode, TrainingCategory, SRSHistoryEntry } from './types';
+import {
+  Country,
+  Continent,
+  SRSItem,
+  SRSStage,
+  InputMode,
+  TrainingCategory,
+  SRSHistoryEntry,
+  FSRSGrade
+} from './types';
 import { COUNTRIES, COUNTRIES_BY_ID } from '../assets/data/countries';
 import { WATER_BODIES, getWaterBodyById, WaterBody } from '../assets/data/waterBodies';
 import { ATTRIBUTE_REGISTRY } from './attributes';
@@ -14,6 +23,125 @@ export interface TrainingQuestion {
   options?: string[]; // Populated when expectedInputMode === 'multiple_choice'
   waterBody?: WaterBody;
   isRetry?: boolean;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * HYBRID GEO-FSRS + ACT-R + LECTOR SPATIAL MEMORY ENGINE
+ *
+ * Combines four evidence-based cognitive memory architectures:
+ * 1. FSRS-6 DSR Model (Difficulty, Stability, Retrievability):
+ *    Power-law forgetting curve R(t, S) = (1 + (19/81) * t / S)^(-0.5)
+ *    with Bjork's Desirable Difficulty stability boost when recalling at lower R.
+ * 2. ACT-R / ARTS Latency-to-Grade Inference (Pavlik & Anderson / Kellman):
+ *    Maps response time (timeSpentMs) and input modality into an objective
+ *    4-point FSRS grade (1=Again, 2=Hard, 3=Good, 4=Easy) without manual buttons.
+ * 3. LECTOR Confusion-Pair Interference Tracking:
+ *    Records countries/capitals confused by the learner (`confusedWith`) and
+ *    prioritizes them as high-salience distractors and review targets.
+ * 4. Paivio Dual-Coding Coupling & Anti-Priming Interleaving:
+ *    Synergizes `location` and `capital` acquisition for the same nation while
+ *    spacing same-entity cards >= 4 items apart inside each 15-card session.
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+const FSRS_DECAY = -0.5;
+const FSRS_FACTOR = 19 / 81;
+
+// Calibrated FSRS-6 default weights
+const FSRS_W = {
+  s0Again: 0.4,
+  s0Hard: 1.29,
+  s0Good: 2.31,
+  s0Easy: 8.3,
+  d0Base: 6.4133,
+  d0Exp: 0.8334,
+  dDelta: 1.4604,
+  dMeanRev: 0.08,
+  sRecallExp: 1.8722,
+  sDecayPower: 0.1666,
+  sRetrievabilityGain: 0.796,
+  sForgetBase: 1.4835,
+  sForgetDiffPow: 0.0614,
+  sForgetStabPow: 0.2629,
+  sForgetRetGain: 1.6483,
+  hardPenalty: 0.6014,
+  easyBonus: 1.35,
+  sameDayGain: 0.5425,
+  sameDayOffset: 0.0912,
+  sameDayPow: 0.0658
+};
+
+/**
+ * Infers baseline FSRS Stability (S in days at 90% retrievability) for legacy or new items.
+ */
+export function inferStability(item?: SRSItem): number {
+  if (!item) return 0;
+  if (typeof item.stability === 'number' && item.stability > 0) {
+    return item.stability;
+  }
+  if (item.intervalDays > 0) {
+    return item.intervalDays;
+  }
+  if (item.stage === 2) return 7;
+  if (item.stage === 1) return (item.consecutiveRecallCorrect || 0) >= 1 ? 1.8 : 1.0;
+  return 0.4;
+}
+
+/**
+ * Infers baseline FSRS Difficulty D in [1, 10] for legacy or new items.
+ */
+export function inferDifficulty(item?: SRSItem): number {
+  if (!item) return 5.0;
+  if (typeof item.difficulty === 'number' && item.difficulty >= 1 && item.difficulty <= 10) {
+    return item.difficulty;
+  }
+  // Map legacy SM-2 easeFactor [1.3, 3.0] to Difficulty [1, 10]
+  const fromEase = 10 - ((Math.min(3.0, Math.max(1.3, item.easeFactor || 2.5)) - 1.3) / 1.7) * 7.5;
+  const lapseBump = Math.min(2.0, (item.lapses || 0) * 0.4);
+  return Math.min(10, Math.max(1, Number((fromEase + lapseBump).toFixed(2))));
+}
+
+/**
+ * Computes real-time FSRS Retrievability R(t, S) in (0, 1] using the power-law forgetting curve.
+ * At t = 0, R = 1.0 (100%). At t = S days, R = 0.90 (90%).
+ */
+export function computeRetrievability(item?: SRSItem, nowMs: number = Date.now()): number {
+  if (!item || !item.lastReviewedAt) return 0;
+  const lastMs = new Date(item.lastReviewedAt).getTime();
+  if (Number.isNaN(lastMs)) return 0;
+  const elapsedDays = Math.max(0, (nowMs - lastMs) / 86400000);
+  const S = Math.max(0.25, inferStability(item));
+  return Math.pow(1 + FSRS_FACTOR * (elapsedDays / S), FSRS_DECAY);
+}
+
+/**
+ * ACT-R / ARTS Latency-to-Grade Mapping:
+ * Infers FSRS Grade (1=Again, 2=Hard, 3=Good, 4=Easy) from response accuracy,
+ * input modality, and retrieval latency in milliseconds.
+ */
+export function deriveActRGrade(
+  isCorrect: boolean,
+  inputMode: InputMode,
+  timeSpentMs: number
+): FSRSGrade {
+  if (!isCorrect) return 1;
+  const t = Math.max(100, timeSpentMs || 2500);
+
+  if (inputMode === 'typing') {
+    if (t <= 3200) return 4; // Easy: automatic lexical + motor retrieval
+    if (t <= 8500) return 3; // Good: solid active recall
+    return 2; // Hard: high-latency effortful recall
+  }
+
+  if (inputMode === 'map_click') {
+    if (t <= 2400) return 4; // Easy: instant spatial pinpoint
+    if (t <= 6200) return 3; // Good: normal spatial scan
+    return 2; // Hard: prolonged visual search
+  }
+
+  // multiple_choice (Stage 0 recognition)
+  if (t <= 2200) return 4;
+  if (t <= 5500) return 3;
+  return 2;
 }
 
 /**
@@ -45,25 +173,30 @@ export function createInitialSRSItem(countryId: string, attributeId: string): SR
     lapses: 0,
     lastReviewedAt: null,
     nextDueAt: new Date(0).toISOString(), // Immediately due
-    history: []
+    history: [],
+    difficulty: 5.0,
+    stability: 0.4,
+    confusedWith: []
   };
 }
 
 /**
- * Updates an SRS item after an answer attempt.
- * Implements cognitive scaffolding:
- * - 1st time: Multiple choice recognition -> 1 correct answer graduates to Active Recall (Stage 1).
- * - Stage 1 (Active recall without propositions): Requires getting it right 2 times in a row to reach Mastered (Stage 2).
- * - Any failure resets the consecutive streak counter to 0 (and drops Stage 2 back to Stage 1).
+ * Updates an SRS item after an answer attempt using the Hybrid Geo-FSRS + ACT-R model.
+ * Preserves strict 3-Stage Cognitive Scaffolding invariants:
+ * - Stage 0: Multiple choice recognition -> 1 correct answer graduates to Active Recall (Stage 1, 0/2 streak).
+ * - Stage 1 (Active recall without propositions): Requires 2 consecutive correct answers to reach Mastered (Stage 2).
+ * - Any failure resets `consecutiveRecallCorrect` to 0 and demotes Stage 2 back to Stage 1.
  */
 export function processAnswer(
   item: SRSItem,
   isCorrect: boolean,
   inputMode: InputMode,
   userAnswer: string,
-  timeSpentMs: number
+  timeSpentMs: number,
+  confusedEntityId?: string
 ): { updatedItem: SRSItem; promotedToLearning: boolean; promotedToMastered: boolean } {
   const now = new Date();
+  const nowMs = now.getTime();
   let stage = item.stage;
   let step = item.step;
   let easeFactor = item.easeFactor;
@@ -74,8 +207,52 @@ export function processAnswer(
   let promotedToLearning = false;
   let promotedToMastered = false;
 
+  // 1. Derive ACT-R latency grade (1=Again, 2=Hard, 3=Good, 4=Easy)
+  const grade = deriveActRGrade(isCorrect, inputMode, timeSpentMs);
+
+  // 2. Compute prior FSRS Difficulty (D), Stability (S), and Retrievability (R)
+  const prevD = inferDifficulty(item);
+  const prevS = Math.max(0.25, inferStability(item));
+  const lastMs = item.lastReviewedAt ? new Date(item.lastReviewedAt).getTime() : NaN;
+  const elapsedDays = !Number.isNaN(lastMs) ? Math.max(0, (nowMs - lastMs) / 86400000) : 0;
+  const R = item.lastReviewedAt ? computeRetrievability(item, nowMs) : 0.9;
+
+  // 3. Update FSRS Difficulty D in [1, 10] with linear damping & mean reversion
+  const d0Easy = Math.min(10, Math.max(1, FSRS_W.d0Base - Math.exp(FSRS_W.d0Exp * (4 - 1)) + 1));
+  const deltaD = -FSRS_W.dDelta * (grade - 3);
+  const dampedD = prevD + deltaD * ((10 - prevD) / 9);
+  const nextDifficulty = Number(
+    Math.min(10, Math.max(1, FSRS_W.dMeanRev * d0Easy + (1 - FSRS_W.dMeanRev) * dampedD)).toFixed(2)
+  );
+
+  let nextStability = prevS;
+  let confusedWith = [...(item.confusedWith || [])];
+
   if (isCorrect) {
     reps += 1;
+
+    // Update FSRS Stability S on successful recall (Desirable Difficulty equation)
+    if (reps === 1 || !item.lastReviewedAt) {
+      nextStability = grade === 4 ? 2.4 : grade === 3 ? 1.6 : 1.1;
+    } else if (elapsedDays < 0.5) {
+      // Same-day review stability scaling (prevents cramming inflation)
+      const sameDayFactor =
+        Math.exp(FSRS_W.sameDayGain * (grade - 3 + FSRS_W.sameDayOffset)) *
+        Math.pow(prevS, -FSRS_W.sameDayPow);
+      nextStability = Math.max(prevS * 1.05, prevS * sameDayFactor);
+    } else {
+      const hardMod = grade === 2 ? FSRS_W.hardPenalty : 1.0;
+      const easyMod = grade === 4 ? FSRS_W.easyBonus : 1.0;
+      const inc =
+        Math.exp(FSRS_W.sRecallExp) *
+        (11 - nextDifficulty) *
+        Math.pow(prevS, -FSRS_W.sDecayPower) *
+        (Math.exp(FSRS_W.sRetrievabilityGain * (1 - R)) - 1) *
+        hardMod *
+        easyMod;
+      nextStability = Math.min(365, prevS * (1 + Math.max(0.15, inc)));
+    }
+
     if (stage === 0) {
       // First time answered correctly -> Graduate to Stage 1 (Learning / Active Recall)
       stage = 1;
@@ -91,28 +268,55 @@ export function processAnswer(
 
       if (consecutiveRecallCorrect >= 2) {
         stage = 2; // Mastered!
-        intervalDays = 7;
+        // Scale initial Mastered interval using FSRS stability & latency grade (at least 7 days)
+        const baseMasteredInterval = grade === 4 ? 10 : grade === 3 ? 8 : 7;
+        intervalDays = Math.max(7, Math.min(21, Math.round(Math.max(baseMasteredInterval, nextStability))));
+        nextStability = Math.max(nextStability, intervalDays);
         promotedToMastered = true;
       } else {
-        // First successful recall
-        intervalDays = 1;
+        // First successful recall (1/2): 1 day (or 2 days on fast fluent recall)
+        intervalDays = grade === 4 ? 2 : 1;
+        nextStability = Math.max(nextStability, intervalDays);
       }
     } else {
-      // Stage 2 (Mastered): Long-term spaced review
+      // Stage 2 (Mastered): Long-term FSRS + ease hybrid interval
       step += 1;
       consecutiveRecallCorrect += 1;
-      intervalDays = Math.max(14, Math.round(intervalDays * easeFactor));
+      const latencyMod = grade === 4 ? 1.15 : grade === 2 ? 0.85 : 1.0;
+      const sm2Candidate = Math.round(intervalDays * easeFactor * latencyMod);
+      const fsrsCandidate = Math.round(nextStability);
+      intervalDays = Math.min(365, Math.max(14, Math.max(sm2Candidate, fsrsCandidate)));
+      nextStability = Math.max(nextStability, intervalDays);
     }
 
-    // Gentle ease factor scaling
-    easeFactor = Math.min(3.0, easeFactor + 0.05);
+    // Latency-sensitive ease factor adjustment
+    const easeDelta = grade === 4 ? 0.08 : grade === 3 ? 0.05 : -0.02;
+    easeFactor = Number(Math.min(3.0, Math.max(1.3, easeFactor + easeDelta)).toFixed(2));
   } else {
     // Incorrect answer: immediately reset streak counter!
     lapses += 1;
     step = 0;
     consecutiveRecallCorrect = 0; // Reset counter
-    easeFactor = Math.max(1.3, easeFactor - 0.2);
+    easeFactor = Number(Math.max(1.3, easeFactor - 0.2).toFixed(2));
     intervalDays = 0; // Due immediately for reinforcement
+
+    // FSRS post-lapse stability S'_f (retains partial memory trace for faster re-stabilization)
+    nextStability = Math.max(
+      0.5,
+      Math.min(
+        prevS * 0.65,
+        FSRS_W.sForgetBase *
+          Math.pow(nextDifficulty, -FSRS_W.sForgetDiffPow) *
+          (Math.pow(prevS + 1, FSRS_W.sForgetStabPow) - 1) *
+          Math.exp(FSRS_W.sForgetRetGain * (1 - R))
+      )
+    );
+
+    // Record LECTOR confusion pair if user clicked/typed another known entity
+    const resolvedConfusion = confusedEntityId || resolveConfusedCountryId(userAnswer, item.countryId);
+    if (resolvedConfusion && resolvedConfusion !== item.countryId) {
+      confusedWith = [resolvedConfusion, ...confusedWith.filter((id) => id !== resolvedConfusion)].slice(0, 4);
+    }
 
     // If lapsed while in Stage 2 (Mastered), drop back to Stage 1
     if (stage === 2) {
@@ -121,14 +325,15 @@ export function processAnswer(
   }
 
   // Calculate next due date
-  const nextDueDate = new Date(now.getTime() + intervalDays * 24 * 60 * 60 * 1000);
+  const nextDueDate = new Date(nowMs + intervalDays * 24 * 60 * 60 * 1000);
 
   const newHistoryEntry: SRSHistoryEntry = {
     timestamp: now.toISOString(),
     inputMode,
     userAnswer,
     isCorrect,
-    timeSpentMs
+    timeSpentMs,
+    grade
   };
 
   const updatedItem: SRSItem = {
@@ -142,10 +347,34 @@ export function processAnswer(
     lapses,
     lastReviewedAt: now.toISOString(),
     nextDueAt: nextDueDate.toISOString(),
-    history: [...(item.history || []).slice(-14), newHistoryEntry]
+    history: [...(item.history || []).slice(-14), newHistoryEntry],
+    difficulty: nextDifficulty,
+    stability: Number(nextStability.toFixed(2)),
+    lastLatencyGrade: grade,
+    confusedWith
   };
 
   return { updatedItem, promotedToLearning, promotedToMastered };
+}
+
+/**
+ * Resolves a wrong user answer (country name or capital city) to a Country ID
+ * so LECTOR interference tracking can pair the two confused nations.
+ */
+function resolveConfusedCountryId(userAnswer: string, targetCountryId: string): string | undefined {
+  const clean = (userAnswer || '').trim().toLowerCase();
+  if (!clean || clean === '__dont_know__' || clean.length < 3) return undefined;
+  for (const c of COUNTRIES) {
+    if (c.id === targetCountryId) continue;
+    if (
+      c.name.toLowerCase() === clean ||
+      c.capital.toLowerCase() === clean ||
+      c.id.toLowerCase() === clean
+    ) {
+      return c.id;
+    }
+  }
+  return undefined;
 }
 
 /**
@@ -244,8 +473,23 @@ export function buildQuestion(
     } else {
       expectedInputMode = 'multiple_choice';
       if (attrDef) {
-        const distractors = attrDef.generateDistractors(country, allCountries, 5);
         const uniqueOpts = new Set<string>([correctAnswer]);
+
+        // LECTOR Interference Resolution: inject previously confused entities as high-salience distractors
+        if (srsItem.confusedWith && srsItem.confusedWith.length > 0) {
+          for (const confId of srsItem.confusedWith) {
+            const confCountry = COUNTRIES_BY_ID.get(confId);
+            if (confCountry) {
+              const confVal = String(attrDef.getValue(confCountry));
+              if (confVal && !uniqueOpts.has(confVal)) {
+                uniqueOpts.add(confVal);
+                if (uniqueOpts.size >= 4) break;
+              }
+            }
+          }
+        }
+
+        const distractors = attrDef.generateDistractors(country, allCountries, 5);
         for (const dist of distractors) {
           if (dist && !uniqueOpts.has(dist)) {
             uniqueOpts.add(dist);
@@ -466,7 +710,13 @@ export function prepareSessionQueue(
     }
   }
 
+  const nowMs = Date.now();
+
+  // Sort Mastered retention candidates by lowest FSRS Retrievability R(t, S) first
   retentionMasteredPool.sort((a, b) => {
+    const rA = computeRetrievability(a.existing, nowMs);
+    const rB = computeRetrievability(b.existing, nowMs);
+    if (Math.abs(rA - rB) > 0.005) return rA - rB;
     const aRev = a.existing?.lastReviewedAt ? new Date(a.existing.lastReviewedAt).getTime() : 0;
     const bRev = b.existing?.lastReviewedAt ? new Date(b.existing.lastReviewedAt).getTime() : 0;
     if (aRev !== bRev) return aRev - bRev;
@@ -525,8 +775,37 @@ export function prepareSessionQueue(
   const selectedKeys = new Set<string>(
     selectedMastered.map((c) => `${c.country.id}:${c.attributeId}`)
   );
+  const selectedCountryIds = new Set<string>(selectedMastered.map((c) => c.country.id));
 
   const getRegion = (c: QueueCandidate) => c.country.continent || 'Oceans';
+
+  // Hybrid Geo-FSRS + ACT-R + Dual-Coding + Interference Candidate Weight
+  const computeCandidateWeight = (cand: QueueCandidate): number => {
+    const base = Math.max(0.15, regionWeights.get(getRegion(cand)) ?? 1);
+    const item = cand.existing;
+    const siblingAttr = cand.attributeId === 'capital' ? 'location' : 'capital';
+    const siblingItem = existingItemsMap.get(`${cand.country.id}:${siblingAttr}`);
+
+    // Paivio Dual-Coding Synergy: boost if sibling attribute is in active learning or in session
+    const hasDualCodingSynergy =
+      selectedCountryIds.has(cand.country.id) || Boolean(siblingItem && siblingItem.stage === 1);
+    const dualCodingBoost = hasDualCodingSynergy ? 1.55 : 1.0;
+
+    if (!item) {
+      return base * dualCodingBoost;
+    }
+
+    const R = computeRetrievability(item, nowMs);
+    const forgettingUrgency = 1 + Math.max(0, 1 - R) * 1.4;
+    const lapseBoost = item.lapses > 0 ? 1 + Math.min(item.lapses, 3) * 0.5 : 1.0;
+    const interferenceBoost = item.confusedWith && item.confusedWith.length > 0 ? 1.35 : 1.0;
+    const difficultyBoost = 1 + ((inferDifficulty(item) - 5) / 10) * 0.25;
+
+    return Math.max(
+      0.15,
+      base * forgettingUrgency * lapseBoost * interferenceBoost * dualCodingBoost * difficultyBoost
+    );
+  };
 
   // 1. Stage 0 Due: target up to ceil(learningBudget * 0.45)
   const targetStage0 = Math.ceil(learningBudget * 0.45);
@@ -534,11 +813,13 @@ export function prepareSessionQueue(
     dueStage0Pool,
     targetStage0,
     getRegion,
-    regionWeights
+    regionWeights,
+    computeCandidateWeight
   );
   for (const c of pickedStage0) {
     selectedLearning.push(c);
     selectedKeys.add(`${c.country.id}:${c.attributeId}`);
+    selectedCountryIds.add(c.country.id);
   }
 
   // 2. Unseen Pool: target Math.max(0, Math.ceil(learningBudget * 0.45) - pickedStage0.length)
@@ -548,11 +829,13 @@ export function prepareSessionQueue(
       unseenPool,
       targetUnseen,
       getRegion,
-      regionWeights
+      regionWeights,
+      computeCandidateWeight
     );
     for (const c of pickedUnseen) {
       selectedLearning.push(c);
       selectedKeys.add(`${c.country.id}:${c.attributeId}`);
+      selectedCountryIds.add(c.country.id);
     }
   }
 
@@ -563,16 +846,12 @@ export function prepareSessionQueue(
     targetRecallZero,
     getRegion,
     regionWeights,
-    (item) => {
-      const base = Math.max(0.15, regionWeights.get(getRegion(item)) ?? 1);
-      return item.existing && item.existing.lapses > 0
-        ? base * (1 + Math.min(item.existing.lapses, 3) * 0.5)
-        : base;
-    }
+    computeCandidateWeight
   );
   for (const c of pickedRecallZero) {
     selectedLearning.push(c);
     selectedKeys.add(`${c.country.id}:${c.attributeId}`);
+    selectedCountryIds.add(c.country.id);
   }
 
   // 4. Due Recall 1/2 Pool: target remaining slots
@@ -582,11 +861,13 @@ export function prepareSessionQueue(
       dueRecallOnePool,
       targetRecallOne,
       getRegion,
-      regionWeights
+      regionWeights,
+      computeCandidateWeight
     );
     for (const c of pickedRecallOne) {
       selectedLearning.push(c);
       selectedKeys.add(`${c.country.id}:${c.attributeId}`);
+      selectedCountryIds.add(c.country.id);
     }
   }
 
@@ -598,10 +879,17 @@ export function prepareSessionQueue(
       );
       const needed = learningBudget - selectedLearning.length;
       if (needed <= 0 || remainingInPool.length === 0) return;
-      const picked = selectWeightedByRegion(remainingInPool, needed, getRegion, regionWeights);
+      const picked = selectWeightedByRegion(
+        remainingInPool,
+        needed,
+        getRegion,
+        regionWeights,
+        computeCandidateWeight
+      );
       for (const c of picked) {
         selectedLearning.push(c);
         selectedKeys.add(`${c.country.id}:${c.attributeId}`);
+        selectedCountryIds.add(c.country.id);
       }
     };
 
@@ -618,7 +906,36 @@ export function prepareSessionQueue(
     return buildQuestion(itemToUse, cand.country, allContextCountries);
   });
 
-  return shuffleArray(sessionQueue);
+  return interleaveSessionQueue(shuffleArray(sessionQueue), 4);
+}
+
+/**
+ * Anti-Priming Interleaved Session Scheduler:
+ * Ensures that two cards for the same entity (e.g. `FRA:location` and `FRA:capital`)
+ * are separated by at least `minGap` intervening questions so one does not
+ * trivially giveaway the other in short-term working memory.
+ */
+export function interleaveSessionQueue(
+  questions: TrainingQuestion[],
+  minGap: number = 4
+): TrainingQuestion[] {
+  if (questions.length <= 2) return [...questions];
+  const pool = [...questions];
+  const result: TrainingQuestion[] = [];
+
+  while (pool.length > 0) {
+    const recentEntityIds = new Set<string>(
+      result.slice(Math.max(0, result.length - minGap)).map((q) => q.country.id)
+    );
+    const nonCollidingIdx = pool.findIndex((q) => !recentEntityIds.has(q.country.id));
+    if (nonCollidingIdx !== -1) {
+      result.push(pool.splice(nonCollidingIdx, 1)[0]);
+    } else {
+      result.push(pool.shift()!);
+    }
+  }
+
+  return result;
 }
 
 /**

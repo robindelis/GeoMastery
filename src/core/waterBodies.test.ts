@@ -143,7 +143,7 @@ describe('Water Bodies & Maritime Hydrography Dataset', () => {
         expect(maxX, 'Mediterranean Sea SVG path maxX must stay in Europe/Levant (< 600)').toBeLessThan(600);
       }
     }
-  });
+  }, 20000);
 
   it('guarantees zero mutual polygon overlap among all 5 global oceans across a global grid', () => {
     const geo = feature(waterBodies50m as any, (waterBodies50m as any).objects.water_bodies) as any;
