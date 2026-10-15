@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:27:08.141Z",
+  "exportedAt": "2026-10-15T16:27:19.287Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -1970,13 +1970,13 @@
         "countryId": "NAM",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.4499999999999993,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.499999999999999,
+        "intervalDays": 17,
+        "reps": 4,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-10T09:03:37.910Z",
-        "nextDueAt": "2026-10-17T09:03:37.910Z",
+        "lastReviewedAt": "2026-10-15T16:27:15.969Z",
+        "nextDueAt": "2026-11-01T16:27:15.969Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:10:46.309Z",
@@ -2005,9 +2005,16 @@
             "userAnswer": "Namibia",
             "isCorrect": true,
             "timeSpentMs": 6280
+          },
+          {
+            "timestamp": "2026-10-15T16:27:15.969Z",
+            "inputMode": "map_click",
+            "userAnswer": "Namibia",
+            "isCorrect": true,
+            "timeSpentMs": 6575
           }
         ],
-        "consecutiveRecallCorrect": 2
+        "consecutiveRecallCorrect": 3
       }
     ],
     [
@@ -17011,8 +17018,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1269,
-    "totalCorrect": 931,
+    "totalReviews": 1270,
+    "totalCorrect": 932,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -17044,7 +17051,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:27:04.629Z"
+    "updatedAt": "2026-10-15T16:27:15.971Z"
   },
   "settings": {
     "audioEnabled": true,
