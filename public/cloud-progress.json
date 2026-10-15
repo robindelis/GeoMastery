@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T11:53:38.108Z",
+  "exportedAt": "2026-10-15T11:53:45.581Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -1278,14 +1278,14 @@
         "id": "CYP:location",
         "countryId": "CYP",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-06T10:22:42.438Z",
-        "nextDueAt": "2026-10-07T10:22:42.438Z",
+        "lastReviewedAt": "2026-10-15T11:53:42.285Z",
+        "nextDueAt": "2026-10-22T11:53:42.285Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:07:36.444Z",
@@ -1300,9 +1300,16 @@
             "userAnswer": "Cyprus",
             "isCorrect": true,
             "timeSpentMs": 3468
+          },
+          {
+            "timestamp": "2026-10-15T11:53:42.285Z",
+            "inputMode": "map_click",
+            "userAnswer": "Cyprus",
+            "isCorrect": true,
+            "timeSpentMs": 6493
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -16442,8 +16449,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1223,
-    "totalCorrect": 899,
+    "totalReviews": 1224,
+    "totalCorrect": 900,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16465,8 +16472,8 @@
       },
       "Europe": {
         "total": 90,
-        "mastered": 54,
-        "learning": 36
+        "mastered": 55,
+        "learning": 35
       },
       "Oceania": {
         "total": 28,
@@ -16475,7 +16482,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T11:53:34.938Z"
+    "updatedAt": "2026-10-15T11:53:42.290Z"
   },
   "settings": {
     "audioEnabled": true,
