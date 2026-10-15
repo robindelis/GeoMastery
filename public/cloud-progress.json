@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T11:53:45.581Z",
+  "exportedAt": "2026-10-15T11:53:49.204Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16446,11 +16446,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "VEN:capital",
+      {
+        "id": "VEN:capital",
+        "countryId": "VEN",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-15T11:53:46.246Z",
+        "nextDueAt": "2026-10-16T11:53:46.246Z",
+        "history": [
+          {
+            "timestamp": "2026-10-15T11:53:46.246Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Caracas",
+            "isCorrect": true,
+            "timeSpentMs": 2956
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1224,
-    "totalCorrect": 900,
+    "totalReviews": 1225,
+    "totalCorrect": 901,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16463,7 +16489,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 42
+        "learning": 43
       },
       "Asia": {
         "total": 96,
@@ -16482,7 +16508,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T11:53:42.290Z"
+    "updatedAt": "2026-10-15T11:53:46.249Z"
   },
   "settings": {
     "audioEnabled": true,
