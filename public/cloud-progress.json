@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:23:02.629Z",
+  "exportedAt": "2026-10-15T16:23:10.377Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -4060,14 +4060,14 @@
         "id": "MNE:location",
         "countryId": "MNE",
         "attributeId": "location",
-        "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
+        "stage": 1,
+        "step": 0,
+        "easeFactor": 2.4499999999999993,
+        "intervalDays": 0,
         "reps": 3,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-09T19:19:38.228Z",
-        "nextDueAt": "2026-10-16T19:19:38.228Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-15T16:23:06.313Z",
+        "nextDueAt": "2026-10-15T16:23:06.313Z",
         "history": [
           {
             "timestamp": "2026-10-04T17:05:11.020Z",
@@ -4089,9 +4089,16 @@
             "userAnswer": "Montenegro",
             "isCorrect": true,
             "timeSpentMs": 6070
+          },
+          {
+            "timestamp": "2026-10-15T16:23:06.313Z",
+            "inputMode": "map_click",
+            "userAnswer": "Bosnia and Herzegovina",
+            "isCorrect": false,
+            "timeSpentMs": 5591
           }
         ],
-        "consecutiveRecallCorrect": 2
+        "consecutiveRecallCorrect": 0
       }
     ],
     [
@@ -16821,7 +16828,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1250,
+    "totalReviews": 1251,
     "totalCorrect": 918,
     "currentStreak": 2,
     "longestStreak": 3,
@@ -16844,8 +16851,8 @@
       },
       "Europe": {
         "total": 90,
-        "mastered": 56,
-        "learning": 34
+        "mastered": 55,
+        "learning": 35
       },
       "Oceania": {
         "total": 28,
@@ -16854,7 +16861,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:22:59.244Z"
+    "updatedAt": "2026-10-15T16:23:06.315Z"
   },
   "settings": {
     "audioEnabled": true,
