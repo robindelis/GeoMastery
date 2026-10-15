@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T17:49:07.383Z",
+  "exportedAt": "2026-10-15T17:49:14.266Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -14546,13 +14546,13 @@
         "countryId": "SEN",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 23,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T10:36:48.183Z",
-        "nextDueAt": "2026-10-17T10:36:48.183Z",
+        "lastReviewedAt": "2026-10-15T17:49:10.507Z",
+        "nextDueAt": "2026-11-07T17:49:10.507Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:34:52.179Z",
@@ -14574,11 +14574,21 @@
             "userAnswer": "Senegal",
             "isCorrect": true,
             "timeSpentMs": 5932
+          },
+          {
+            "timestamp": "2026-10-15T17:49:10.507Z",
+            "inputMode": "map_click",
+            "userAnswer": "Senegal",
+            "isCorrect": true,
+            "timeSpentMs": 4417,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 23,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -18105,8 +18115,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1295,
-    "totalCorrect": 948,
+    "totalReviews": 1296,
+    "totalCorrect": 949,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -18138,7 +18148,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T17:49:03.771Z"
+    "updatedAt": "2026-10-15T17:49:10.509Z"
   },
   "settings": {
     "audioEnabled": true,
