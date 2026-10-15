@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T11:53:49.204Z",
+  "exportedAt": "2026-10-15T11:53:54.025Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16472,11 +16472,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "MEX:location",
+      {
+        "id": "MEX:location",
+        "countryId": "MEX",
+        "attributeId": "location",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-15T11:53:50.828Z",
+        "nextDueAt": "2026-10-16T11:53:50.828Z",
+        "history": [
+          {
+            "timestamp": "2026-10-15T11:53:50.828Z",
+            "inputMode": "map_click",
+            "userAnswer": "Mexico",
+            "isCorrect": true,
+            "timeSpentMs": 3412
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1225,
-    "totalCorrect": 901,
+    "totalReviews": 1226,
+    "totalCorrect": 902,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16489,7 +16515,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 43
+        "learning": 44
       },
       "Asia": {
         "total": 96,
@@ -16508,7 +16534,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T11:53:46.249Z"
+    "updatedAt": "2026-10-15T11:53:50.831Z"
   },
   "settings": {
     "audioEnabled": true,
