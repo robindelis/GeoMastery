@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T17:53:59.194Z",
+  "exportedAt": "2026-10-15T18:29:30.408Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6589,13 +6589,13 @@
         "countryId": "TON",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.249999999999999,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.05,
+        "intervalDays": 0,
         "reps": 3,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-09T19:18:22.670Z",
-        "nextDueAt": "2026-10-10T19:18:22.670Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-15T18:29:27.207Z",
+        "nextDueAt": "2026-10-15T18:29:27.207Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:27:15.359Z",
@@ -6631,11 +6631,21 @@
             "userAnswer": "Nukualofa",
             "isCorrect": true,
             "timeSpentMs": 7694
+          },
+          {
+            "timestamp": "2026-10-15T18:29:27.207Z",
+            "inputMode": "typing",
+            "userAnswer": "u",
+            "isCorrect": false,
+            "timeSpentMs": 2129548,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 6.71
+        "stability": 0.75,
+        "difficulty": 7.24,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -18255,7 +18265,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1310,
+    "totalReviews": 1311,
     "totalCorrect": 961,
     "currentStreak": 2,
     "longestStreak": 3,
@@ -18288,7 +18298,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T17:53:55.931Z"
+    "updatedAt": "2026-10-15T18:29:27.209Z"
   },
   "settings": {
     "audioEnabled": true,
