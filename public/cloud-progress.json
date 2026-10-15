@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T11:59:07.375Z",
+  "exportedAt": "2026-10-15T11:59:13.066Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16604,10 +16604,36 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "ATG:capital",
+      {
+        "id": "ATG:capital",
+        "countryId": "ATG",
+        "attributeId": "capital",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-15T11:59:09.041Z",
+        "nextDueAt": "2026-10-15T11:59:09.041Z",
+        "history": [
+          {
+            "timestamp": "2026-10-15T11:59:09.041Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Santiago",
+            "isCorrect": false,
+            "timeSpentMs": 3793
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1233,
+    "totalReviews": 1234,
     "totalCorrect": 908,
     "currentStreak": 2,
     "longestStreak": 3,
@@ -16640,7 +16666,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T11:59:04.373Z"
+    "updatedAt": "2026-10-15T11:59:09.042Z"
   },
   "settings": {
     "audioEnabled": true,
