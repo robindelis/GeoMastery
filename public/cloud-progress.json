@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:21:26.936Z",
+  "exportedAt": "2026-10-15T16:21:32.159Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16670,10 +16670,36 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "URY:location",
+      {
+        "id": "URY:location",
+        "countryId": "URY",
+        "attributeId": "location",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-15T16:21:28.569Z",
+        "nextDueAt": "2026-10-15T16:21:28.569Z",
+        "history": [
+          {
+            "timestamp": "2026-10-15T16:21:28.569Z",
+            "inputMode": "map_click",
+            "userAnswer": "Honduras",
+            "isCorrect": false,
+            "timeSpentMs": 3521
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1237,
+    "totalReviews": 1238,
     "totalCorrect": 911,
     "currentStreak": 2,
     "longestStreak": 3,
@@ -16706,7 +16732,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:21:23.925Z"
+    "updatedAt": "2026-10-15T16:21:28.570Z"
   },
   "settings": {
     "audioEnabled": true,
