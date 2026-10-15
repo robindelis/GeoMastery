@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:25:27.737Z",
+  "exportedAt": "2026-10-15T16:25:32.606Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -4329,13 +4329,13 @@
         "countryId": "NLD",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.6999999999999993,
+        "intervalDays": 19,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T13:38:25.101Z",
-        "nextDueAt": "2026-10-17T13:38:25.101Z",
+        "lastReviewedAt": "2026-10-15T16:25:29.551Z",
+        "nextDueAt": "2026-11-03T16:25:29.551Z",
         "history": [
           {
             "timestamp": "2026-10-04T17:07:05.966Z",
@@ -4357,9 +4357,16 @@
             "userAnswer": "Netherlands",
             "isCorrect": true,
             "timeSpentMs": 3512
+          },
+          {
+            "timestamp": "2026-10-15T16:25:29.551Z",
+            "inputMode": "map_click",
+            "userAnswer": "Netherlands",
+            "isCorrect": true,
+            "timeSpentMs": 3341
           }
         ],
-        "consecutiveRecallCorrect": 2
+        "consecutiveRecallCorrect": 3
       }
     ],
     [
@@ -16950,8 +16957,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1263,
-    "totalCorrect": 926,
+    "totalReviews": 1264,
+    "totalCorrect": 927,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16983,7 +16990,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:25:24.243Z"
+    "updatedAt": "2026-10-15T16:25:29.554Z"
   },
   "settings": {
     "audioEnabled": true,
