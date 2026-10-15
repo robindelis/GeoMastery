@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:28:23.378Z",
+  "exportedAt": "2026-10-15T16:28:29.819Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6239,14 +6239,14 @@
         "id": "TUV:capital",
         "countryId": "TUV",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1999999999999993,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.249999999999999,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-08T17:49:52.341Z",
-        "nextDueAt": "2026-10-09T17:49:52.341Z",
+        "lastReviewedAt": "2026-10-15T16:28:26.839Z",
+        "nextDueAt": "2026-10-22T16:28:26.839Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:27:26.257Z",
@@ -6275,9 +6275,16 @@
             "userAnswer": "Fufanuti",
             "isCorrect": true,
             "timeSpentMs": 4470
+          },
+          {
+            "timestamp": "2026-10-15T16:28:26.839Z",
+            "inputMode": "typing",
+            "userAnswer": "Fanafuti",
+            "isCorrect": true,
+            "timeSpentMs": 5760
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -17060,8 +17067,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1276,
-    "totalCorrect": 934,
+    "totalReviews": 1277,
+    "totalCorrect": 935,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -17088,12 +17095,12 @@
       },
       "Oceania": {
         "total": 28,
-        "mastered": 4,
-        "learning": 24
+        "mastered": 5,
+        "learning": 23
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:28:18.254Z"
+    "updatedAt": "2026-10-15T16:28:26.843Z"
   },
   "settings": {
     "audioEnabled": true,
