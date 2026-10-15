@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:28:29.819Z",
+  "exportedAt": "2026-10-15T16:28:35.143Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7291,14 +7291,14 @@
         "id": "KGZ:location",
         "countryId": "KGZ",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.4499999999999993,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-10T09:01:03.890Z",
-        "nextDueAt": "2026-10-11T09:01:03.890Z",
+        "lastReviewedAt": "2026-10-15T16:28:31.807Z",
+        "nextDueAt": "2026-10-22T16:28:31.807Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:26:39.905Z",
@@ -7320,9 +7320,16 @@
             "userAnswer": "Kyrgyzstan",
             "isCorrect": true,
             "timeSpentMs": 10264
+          },
+          {
+            "timestamp": "2026-10-15T16:28:31.807Z",
+            "inputMode": "map_click",
+            "userAnswer": "Kyrgyzstan",
+            "isCorrect": true,
+            "timeSpentMs": 3764
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -17067,8 +17074,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1277,
-    "totalCorrect": 935,
+    "totalReviews": 1278,
+    "totalCorrect": 936,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -17085,8 +17092,8 @@
       },
       "Asia": {
         "total": 96,
-        "mastered": 23,
-        "learning": 73
+        "mastered": 24,
+        "learning": 72
       },
       "Europe": {
         "total": 90,
@@ -17100,7 +17107,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:28:26.843Z"
+    "updatedAt": "2026-10-15T16:28:31.810Z"
   },
   "settings": {
     "audioEnabled": true,
