@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T11:53:32.759Z",
+  "exportedAt": "2026-10-15T11:53:38.108Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -9619,13 +9619,13 @@
         "countryId": "WATER_STRAIT_TAIWAN",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.6999999999999993,
+        "intervalDays": 19,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-09T20:11:36.655Z",
-        "nextDueAt": "2026-10-16T20:11:36.655Z",
+        "lastReviewedAt": "2026-10-15T11:53:34.937Z",
+        "nextDueAt": "2026-11-03T11:53:34.937Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:50:28.031Z",
@@ -9647,9 +9647,16 @@
             "userAnswer": "Taiwan Strait",
             "isCorrect": true,
             "timeSpentMs": 4379
+          },
+          {
+            "timestamp": "2026-10-15T11:53:34.937Z",
+            "inputMode": "map_click",
+            "userAnswer": "Taiwan Strait",
+            "isCorrect": true,
+            "timeSpentMs": 4069
           }
         ],
-        "consecutiveRecallCorrect": 2
+        "consecutiveRecallCorrect": 3
       }
     ],
     [
@@ -16435,8 +16442,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1222,
-    "totalCorrect": 898,
+    "totalReviews": 1223,
+    "totalCorrect": 899,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16468,7 +16475,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T11:53:29.841Z"
+    "updatedAt": "2026-10-15T11:53:34.938Z"
   },
   "settings": {
     "audioEnabled": true,
