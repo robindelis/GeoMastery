@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:26:27.994Z",
+  "exportedAt": "2026-10-15T16:26:50.411Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -9542,14 +9542,14 @@
         "id": "WATER_BAY_BENGAL:location",
         "countryId": "WATER_BAY_BENGAL",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.4499999999999993,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-06T13:14:25.805Z",
-        "nextDueAt": "2026-10-07T13:14:25.805Z",
+        "lastReviewedAt": "2026-10-15T16:26:47.428Z",
+        "nextDueAt": "2026-10-22T16:26:47.428Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:48:34.484Z",
@@ -9571,9 +9571,16 @@
             "userAnswer": "Bay of Bengal",
             "isCorrect": true,
             "timeSpentMs": 5675
+          },
+          {
+            "timestamp": "2026-10-15T16:26:47.428Z",
+            "inputMode": "map_click",
+            "userAnswer": "Bay of Bengal",
+            "isCorrect": true,
+            "timeSpentMs": 18509
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -16997,8 +17004,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1267,
-    "totalCorrect": 929,
+    "totalReviews": 1268,
+    "totalCorrect": 930,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -17030,7 +17037,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:26:24.866Z"
+    "updatedAt": "2026-10-15T16:26:47.430Z"
   },
   "settings": {
     "audioEnabled": true,
