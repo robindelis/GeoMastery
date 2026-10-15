@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T11:59:04.241Z",
+  "exportedAt": "2026-10-15T11:59:07.375Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16578,11 +16578,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "PAN:location",
+      {
+        "id": "PAN:location",
+        "countryId": "PAN",
+        "attributeId": "location",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-15T11:59:04.371Z",
+        "nextDueAt": "2026-10-16T11:59:04.371Z",
+        "history": [
+          {
+            "timestamp": "2026-10-15T11:59:04.371Z",
+            "inputMode": "map_click",
+            "userAnswer": "Panama",
+            "isCorrect": true,
+            "timeSpentMs": 3302
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1232,
-    "totalCorrect": 907,
+    "totalReviews": 1233,
+    "totalCorrect": 908,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16595,7 +16621,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 45
+        "learning": 46
       },
       "Asia": {
         "total": 96,
@@ -16614,7 +16640,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T11:59:00.611Z"
+    "updatedAt": "2026-10-15T11:59:04.373Z"
   },
   "settings": {
     "audioEnabled": true,
