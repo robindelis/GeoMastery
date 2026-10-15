@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T17:50:59.599Z",
+  "exportedAt": "2026-10-15T17:52:03.231Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15225,13 +15225,13 @@
         "countryId": "GNB",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 24,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-09T20:10:36.262Z",
-        "nextDueAt": "2026-10-16T20:10:36.262Z",
+        "lastReviewedAt": "2026-10-15T17:52:00.140Z",
+        "nextDueAt": "2026-11-08T17:52:00.140Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:36:29.327Z",
@@ -15253,11 +15253,21 @@
             "userAnswer": "Guinea-Bissau",
             "isCorrect": true,
             "timeSpentMs": 4432
+          },
+          {
+            "timestamp": "2026-10-15T17:52:00.140Z",
+            "inputMode": "map_click",
+            "userAnswer": "Guinea-Bissau",
+            "isCorrect": true,
+            "timeSpentMs": 3972,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 24,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -18125,8 +18135,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1297,
-    "totalCorrect": 950,
+    "totalReviews": 1298,
+    "totalCorrect": 951,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -18158,7 +18168,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T17:50:56.274Z"
+    "updatedAt": "2026-10-15T17:52:00.141Z"
   },
   "settings": {
     "audioEnabled": true,
