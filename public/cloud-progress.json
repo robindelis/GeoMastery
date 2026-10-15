@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:21:51.407Z",
+  "exportedAt": "2026-10-15T16:22:00.435Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13270,13 +13270,13 @@
         "countryId": "GHA",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 1.9499999999999995,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 1.9999999999999996,
+        "intervalDays": 1,
+        "reps": 2,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-14T19:36:51.110Z",
-        "nextDueAt": "2026-10-14T19:36:51.110Z",
+        "lastReviewedAt": "2026-10-15T16:21:57.062Z",
+        "nextDueAt": "2026-10-16T16:21:57.062Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:32:03.058Z",
@@ -13305,9 +13305,16 @@
             "userAnswer": "Ivory Coast",
             "isCorrect": false,
             "timeSpentMs": 4034
+          },
+          {
+            "timestamp": "2026-10-15T16:21:57.062Z",
+            "inputMode": "map_click",
+            "userAnswer": "Ghana",
+            "isCorrect": true,
+            "timeSpentMs": 8279
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -16713,8 +16720,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1240,
-    "totalCorrect": 911,
+    "totalReviews": 1241,
+    "totalCorrect": 912,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16746,7 +16753,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:21:47.427Z"
+    "updatedAt": "2026-10-15T16:21:57.064Z"
   },
   "settings": {
     "audioEnabled": true,
