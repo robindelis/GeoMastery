@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-14T21:22:33.759Z",
+  "exportedAt": "2026-10-15T11:53:32.759Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -10341,13 +10341,13 @@
         "countryId": "WATER_STRAIT_GIBRALTAR",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 2.4499999999999993,
+        "intervalDays": 1,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-14T10:17:31.363Z",
-        "nextDueAt": "2026-10-14T10:17:31.363Z",
+        "lastReviewedAt": "2026-10-15T11:53:29.839Z",
+        "nextDueAt": "2026-10-16T11:53:29.839Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:25:13.680Z",
@@ -10369,9 +10369,16 @@
             "userAnswer": "Spain",
             "isCorrect": false,
             "timeSpentMs": 3289
+          },
+          {
+            "timestamp": "2026-10-15T11:53:29.839Z",
+            "inputMode": "map_click",
+            "userAnswer": "Strait of Gibraltar",
+            "isCorrect": true,
+            "timeSpentMs": 4113
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -16428,11 +16435,11 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1221,
-    "totalCorrect": 897,
-    "currentStreak": 1,
+    "totalReviews": 1222,
+    "totalCorrect": 898,
+    "currentStreak": 2,
     "longestStreak": 3,
-    "lastReviewDate": "2026-10-14",
+    "lastReviewDate": "2026-10-15",
     "continentMastery": {
       "Africa": {
         "total": 108,
@@ -16461,7 +16468,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-14T21:22:30.714Z"
+    "updatedAt": "2026-10-15T11:53:29.841Z"
   },
   "settings": {
     "audioEnabled": true,
