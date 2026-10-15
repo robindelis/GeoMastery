@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:28:46.930Z",
+  "exportedAt": "2026-10-15T16:28:50.554Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6681,14 +6681,14 @@
         "id": "NZL:location",
         "countryId": "NZL",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.6499999999999995,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T17:53:28.102Z",
-        "nextDueAt": "2026-10-09T17:53:28.102Z",
+        "lastReviewedAt": "2026-10-15T16:28:47.424Z",
+        "nextDueAt": "2026-10-22T16:28:47.424Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:57:46.632Z",
@@ -6703,9 +6703,16 @@
             "userAnswer": "New Zealand",
             "isCorrect": true,
             "timeSpentMs": 3330
+          },
+          {
+            "timestamp": "2026-10-15T16:28:47.424Z",
+            "inputMode": "map_click",
+            "userAnswer": "New Zealand",
+            "isCorrect": true,
+            "timeSpentMs": 2698
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 2
       }
     ],
     [
@@ -17088,8 +17095,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1280,
-    "totalCorrect": 937,
+    "totalReviews": 1281,
+    "totalCorrect": 938,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -17116,12 +17123,12 @@
       },
       "Oceania": {
         "total": 28,
-        "mastered": 5,
-        "learning": 23
+        "mastered": 6,
+        "learning": 22
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:28:43.506Z"
+    "updatedAt": "2026-10-15T16:28:47.427Z"
   },
   "settings": {
     "audioEnabled": true,
