@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:25:32.606Z",
+  "exportedAt": "2026-10-15T16:25:38.906Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -2386,13 +2386,13 @@
         "countryId": "SMR",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.4499999999999993,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.499999999999999,
+        "intervalDays": 17,
+        "reps": 4,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:36:07.754Z",
-        "nextDueAt": "2026-10-15T20:36:07.754Z",
+        "lastReviewedAt": "2026-10-15T16:25:35.179Z",
+        "nextDueAt": "2026-11-01T16:25:35.179Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:59:29.922Z",
@@ -2421,9 +2421,16 @@
             "userAnswer": "San Marino",
             "isCorrect": true,
             "timeSpentMs": 4032
+          },
+          {
+            "timestamp": "2026-10-15T16:25:35.179Z",
+            "inputMode": "map_click",
+            "userAnswer": "San Marino",
+            "isCorrect": true,
+            "timeSpentMs": 4890
           }
         ],
-        "consecutiveRecallCorrect": 2
+        "consecutiveRecallCorrect": 3
       }
     ],
     [
@@ -16957,8 +16964,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1264,
-    "totalCorrect": 927,
+    "totalReviews": 1265,
+    "totalCorrect": 928,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16990,7 +16997,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:25:29.554Z"
+    "updatedAt": "2026-10-15T16:25:35.181Z"
   },
   "settings": {
     "audioEnabled": true,
