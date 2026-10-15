@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:22:58.755Z",
+  "exportedAt": "2026-10-15T16:23:02.629Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6712,12 +6712,12 @@
         "attributeId": "capital",
         "stage": 1,
         "step": 0,
-        "easeFactor": 2.3499999999999996,
+        "easeFactor": 2.1499999999999995,
         "intervalDays": 0,
         "reps": 1,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-14T21:19:18.355Z",
-        "nextDueAt": "2026-10-14T21:19:18.355Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-15T16:22:59.241Z",
+        "nextDueAt": "2026-10-15T16:22:59.241Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:58:52.905Z",
@@ -6732,6 +6732,13 @@
             "userAnswer": "Solomon",
             "isCorrect": false,
             "timeSpentMs": 4373
+          },
+          {
+            "timestamp": "2026-10-15T16:22:59.241Z",
+            "inputMode": "typing",
+            "userAnswer": "Port of spain",
+            "isCorrect": false,
+            "timeSpentMs": 3748
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -16814,7 +16821,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1249,
+    "totalReviews": 1250,
     "totalCorrect": 918,
     "currentStreak": 2,
     "longestStreak": 3,
@@ -16847,7 +16854,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:22:55.086Z"
+    "updatedAt": "2026-10-15T16:22:59.244Z"
   },
   "settings": {
     "audioEnabled": true,
