@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:24:08.751Z",
+  "exportedAt": "2026-10-15T16:24:14.284Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16643,14 +16643,14 @@
         "id": "NIC:location",
         "countryId": "NIC",
         "attributeId": "location",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.0999999999999996,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.1499999999999995,
+        "intervalDays": 1,
+        "reps": 1,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-15T16:22:42.980Z",
-        "nextDueAt": "2026-10-15T16:22:42.980Z",
+        "lastReviewedAt": "2026-10-15T16:24:10.425Z",
+        "nextDueAt": "2026-10-16T16:24:10.425Z",
         "history": [
           {
             "timestamp": "2026-10-15T11:58:54.868Z",
@@ -16665,6 +16665,13 @@
             "userAnswer": "Belize",
             "isCorrect": false,
             "timeSpentMs": 6371
+          },
+          {
+            "timestamp": "2026-10-15T16:24:10.425Z",
+            "inputMode": "map_click",
+            "userAnswer": "Nicaragua",
+            "isCorrect": true,
+            "timeSpentMs": 4335
           }
         ],
         "consecutiveRecallCorrect": 0
@@ -16849,8 +16856,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1254,
-    "totalCorrect": 921,
+    "totalReviews": 1255,
+    "totalCorrect": 922,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16863,7 +16870,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 51
+        "learning": 52
       },
       "Asia": {
         "total": 96,
@@ -16882,7 +16889,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:24:05.439Z"
+    "updatedAt": "2026-10-15T16:24:10.428Z"
   },
   "settings": {
     "audioEnabled": true,
