@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T11:58:47.925Z",
+  "exportedAt": "2026-10-15T11:58:53.491Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -10758,13 +10758,13 @@
         "countryId": "CPV",
         "attributeId": "capital",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 1.5499999999999996,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 1.5999999999999996,
+        "intervalDays": 1,
+        "reps": 2,
         "lapses": 5,
-        "lastReviewedAt": "2026-10-14T14:00:57.570Z",
-        "nextDueAt": "2026-10-14T14:00:57.570Z",
+        "lastReviewedAt": "2026-10-15T11:58:49.114Z",
+        "nextDueAt": "2026-10-16T11:58:49.114Z",
         "history": [
           {
             "timestamp": "2026-10-06T11:48:05.435Z",
@@ -10807,9 +10807,16 @@
             "userAnswer": "Lusaka",
             "isCorrect": false,
             "timeSpentMs": 4024
+          },
+          {
+            "timestamp": "2026-10-15T11:58:49.114Z",
+            "inputMode": "typing",
+            "userAnswer": "Praia",
+            "isCorrect": true,
+            "timeSpentMs": 3968
           }
         ],
-        "consecutiveRecallCorrect": 0
+        "consecutiveRecallCorrect": 1
       }
     ],
     [
@@ -16541,8 +16548,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1229,
-    "totalCorrect": 905,
+    "totalReviews": 1230,
+    "totalCorrect": 906,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16574,7 +16581,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T11:58:44.353Z"
+    "updatedAt": "2026-10-15T11:58:49.116Z"
   },
   "settings": {
     "audioEnabled": true,
