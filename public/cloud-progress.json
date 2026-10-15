@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:22:00.435Z",
+  "exportedAt": "2026-10-15T16:22:11.310Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16717,11 +16717,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "PRY:location",
+      {
+        "id": "PRY:location",
+        "countryId": "PRY",
+        "attributeId": "location",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-15T16:22:07.305Z",
+        "nextDueAt": "2026-10-16T16:22:07.305Z",
+        "history": [
+          {
+            "timestamp": "2026-10-15T16:22:07.305Z",
+            "inputMode": "map_click",
+            "userAnswer": "Paraguay",
+            "isCorrect": true,
+            "timeSpentMs": 8769
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1241,
-    "totalCorrect": 912,
+    "totalReviews": 1242,
+    "totalCorrect": 913,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16734,7 +16760,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 47
+        "learning": 48
       },
       "Asia": {
         "total": 96,
@@ -16753,7 +16779,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:21:57.064Z"
+    "updatedAt": "2026-10-15T16:22:07.307Z"
   },
   "settings": {
     "audioEnabled": true,
