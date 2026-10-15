@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T17:53:13.940Z",
+  "exportedAt": "2026-10-15T17:53:22.913Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13904,13 +13904,13 @@
         "countryId": "ZAF",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 25,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-09T20:11:31.587Z",
-        "nextDueAt": "2026-10-16T20:11:31.587Z",
+        "lastReviewedAt": "2026-10-15T17:53:19.777Z",
+        "nextDueAt": "2026-11-09T17:53:19.777Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:29:54.736Z",
@@ -13932,11 +13932,21 @@
             "userAnswer": "South Africa",
             "isCorrect": true,
             "timeSpentMs": 1757
+          },
+          {
+            "timestamp": "2026-10-15T17:53:19.777Z",
+            "inputMode": "map_click",
+            "userAnswer": "South Africa",
+            "isCorrect": true,
+            "timeSpentMs": 3114,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 3.54
+        "stability": 25,
+        "difficulty": 3.34,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -18195,8 +18205,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1304,
-    "totalCorrect": 956,
+    "totalReviews": 1305,
+    "totalCorrect": 957,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -18228,7 +18238,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T17:53:10.695Z"
+    "updatedAt": "2026-10-15T17:53:19.779Z"
   },
   "settings": {
     "audioEnabled": true,
