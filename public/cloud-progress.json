@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:27:19.287Z",
+  "exportedAt": "2026-10-15T16:27:28.062Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -803,14 +803,14 @@
         "id": "LTU:location",
         "countryId": "LTU",
         "attributeId": "location",
-        "stage": 2,
-        "step": 2,
-        "easeFactor": 2.299999999999999,
-        "intervalDays": 7,
+        "stage": 1,
+        "step": 0,
+        "easeFactor": 2.0999999999999988,
+        "intervalDays": 0,
         "reps": 4,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-10T13:38:57.774Z",
-        "nextDueAt": "2026-10-17T13:38:57.774Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-15T16:27:25.103Z",
+        "nextDueAt": "2026-10-15T16:27:25.103Z",
         "history": [
           {
             "timestamp": "2026-10-04T14:47:49.645Z",
@@ -853,9 +853,16 @@
             "userAnswer": "Lithuania",
             "isCorrect": true,
             "timeSpentMs": 2943
+          },
+          {
+            "timestamp": "2026-10-15T16:27:25.103Z",
+            "inputMode": "map_click",
+            "userAnswer": "Slovenia",
+            "isCorrect": false,
+            "timeSpentMs": 7501
           }
         ],
-        "consecutiveRecallCorrect": 2
+        "consecutiveRecallCorrect": 0
       }
     ],
     [
@@ -17018,7 +17025,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1270,
+    "totalReviews": 1271,
     "totalCorrect": 932,
     "currentStreak": 2,
     "longestStreak": 3,
@@ -17041,8 +17048,8 @@
       },
       "Europe": {
         "total": 90,
-        "mastered": 55,
-        "learning": 35
+        "mastered": 54,
+        "learning": 36
       },
       "Oceania": {
         "total": 28,
@@ -17051,7 +17058,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:27:15.971Z"
+    "updatedAt": "2026-10-15T16:27:25.107Z"
   },
   "settings": {
     "audioEnabled": true,
