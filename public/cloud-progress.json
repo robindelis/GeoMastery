@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T11:59:26.484Z",
+  "exportedAt": "2026-10-15T16:21:26.936Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16644,11 +16644,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "CUB:capital",
+      {
+        "id": "CUB:capital",
+        "countryId": "CUB",
+        "attributeId": "capital",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-15T16:21:23.920Z",
+        "nextDueAt": "2026-10-16T16:21:23.920Z",
+        "history": [
+          {
+            "timestamp": "2026-10-15T16:21:23.920Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Havana",
+            "isCorrect": true,
+            "timeSpentMs": 4800
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1236,
-    "totalCorrect": 910,
+    "totalReviews": 1237,
+    "totalCorrect": 911,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16661,7 +16687,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 46
+        "learning": 47
       },
       "Asia": {
         "total": 96,
@@ -16680,7 +16706,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T11:59:22.747Z"
+    "updatedAt": "2026-10-15T16:21:23.925Z"
   },
   "settings": {
     "audioEnabled": true,
