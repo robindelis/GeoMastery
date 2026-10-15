@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:25:38.906Z",
+  "exportedAt": "2026-10-15T16:25:53.363Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16961,11 +16961,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "KNA:location",
+      {
+        "id": "KNA:location",
+        "countryId": "KNA",
+        "attributeId": "location",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-15T16:25:49.265Z",
+        "nextDueAt": "2026-10-16T16:25:49.265Z",
+        "history": [
+          {
+            "timestamp": "2026-10-15T16:25:49.265Z",
+            "inputMode": "map_click",
+            "userAnswer": "Saint Kitts and Nevis",
+            "isCorrect": true,
+            "timeSpentMs": 13282
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1265,
-    "totalCorrect": 928,
+    "totalReviews": 1266,
+    "totalCorrect": 929,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16978,7 +17004,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 54
+        "learning": 55
       },
       "Asia": {
         "total": 96,
@@ -16997,7 +17023,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:25:35.181Z"
+    "updatedAt": "2026-10-15T16:25:49.268Z"
   },
   "settings": {
     "audioEnabled": true,
