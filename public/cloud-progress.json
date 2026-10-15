@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T16:25:53.363Z",
+  "exportedAt": "2026-10-15T16:26:27.994Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6273,13 +6273,13 @@
         "countryId": "TUV",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1999999999999993,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 1.9999999999999993,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-08T17:49:33.727Z",
-        "nextDueAt": "2026-10-09T17:49:33.727Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-15T16:26:24.864Z",
+        "nextDueAt": "2026-10-15T16:26:24.864Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:28:04.840Z",
@@ -6308,9 +6308,16 @@
             "userAnswer": "Tuvalu",
             "isCorrect": true,
             "timeSpentMs": 4590
+          },
+          {
+            "timestamp": "2026-10-15T16:26:24.864Z",
+            "inputMode": "map_click",
+            "userAnswer": "Nauru",
+            "isCorrect": false,
+            "timeSpentMs": 8206
           }
         ],
-        "consecutiveRecallCorrect": 1
+        "consecutiveRecallCorrect": 0
       }
     ],
     [
@@ -16990,7 +16997,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1266,
+    "totalReviews": 1267,
     "totalCorrect": 929,
     "currentStreak": 2,
     "longestStreak": 3,
@@ -17023,7 +17030,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T16:25:49.268Z"
+    "updatedAt": "2026-10-15T16:26:24.866Z"
   },
   "settings": {
     "audioEnabled": true,
