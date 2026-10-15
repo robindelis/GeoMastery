@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T11:58:53.491Z",
+  "exportedAt": "2026-10-15T11:58:57.964Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16545,10 +16545,36 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "NIC:location",
+      {
+        "id": "NIC:location",
+        "countryId": "NIC",
+        "attributeId": "location",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-15T11:58:54.868Z",
+        "nextDueAt": "2026-10-15T11:58:54.868Z",
+        "history": [
+          {
+            "timestamp": "2026-10-15T11:58:54.868Z",
+            "inputMode": "map_click",
+            "userAnswer": "Costa Rica",
+            "isCorrect": false,
+            "timeSpentMs": 5125
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1230,
+    "totalReviews": 1231,
     "totalCorrect": 906,
     "currentStreak": 2,
     "longestStreak": 3,
@@ -16581,7 +16607,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T11:58:49.116Z"
+    "updatedAt": "2026-10-15T11:58:54.869Z"
   },
   "settings": {
     "audioEnabled": true,
