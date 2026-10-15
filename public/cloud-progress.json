@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T11:58:44.219Z",
+  "exportedAt": "2026-10-15T11:58:47.925Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16512,11 +16512,37 @@
         ],
         "consecutiveRecallCorrect": 0
       }
+    ],
+    [
+      "BRA:location",
+      {
+        "id": "BRA:location",
+        "countryId": "BRA",
+        "attributeId": "location",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-15T11:58:44.349Z",
+        "nextDueAt": "2026-10-16T11:58:44.349Z",
+        "history": [
+          {
+            "timestamp": "2026-10-15T11:58:44.349Z",
+            "inputMode": "map_click",
+            "userAnswer": "Brazil",
+            "isCorrect": true,
+            "timeSpentMs": 1665
+          }
+        ],
+        "consecutiveRecallCorrect": 0
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1228,
-    "totalCorrect": 904,
+    "totalReviews": 1229,
+    "totalCorrect": 905,
     "currentStreak": 2,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-15",
@@ -16529,7 +16555,7 @@
       "Americas": {
         "total": 70,
         "mastered": 15,
-        "learning": 44
+        "learning": 45
       },
       "Asia": {
         "total": 96,
@@ -16548,7 +16574,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T11:58:40.896Z"
+    "updatedAt": "2026-10-15T11:58:44.353Z"
   },
   "settings": {
     "audioEnabled": true,
