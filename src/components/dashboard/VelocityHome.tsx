@@ -116,9 +116,11 @@ interface HorizonCardEntry {
   id: string;
   entityId: string;
   entityName: string;
+  plateCode: string;
   flagOrEmblem: string;
   continent: TrainingCategory;
   subregion: string;
+  coordText: string;
   attribute: 'capital' | 'location';
   attributeGlyph: string;
   attributeLabel: string;
@@ -127,9 +129,11 @@ interface HorizonCardEntry {
   category: HorizonCategory;
   statusBadge: string;
   shortBadge: string;
+  trophyGlyph: string;
   isDue: boolean;
   lastReviewedAt: string | null;
   reps: number;
+  intervalDays: number;
 }
 
 const HORIZON_CATEGORY_ORDER: HorizonCategory[] = ['mastered', 'recall', 'learning', 'unseen'];
@@ -664,11 +668,24 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   }, [data.mastery, data.regions]);
 
   const [selectedHorizonCategory, setSelectedHorizonCategory] = useState<HorizonCategory | null>(null);
+  const [glanceStageFilter, setGlanceStageFilter] = useState<HorizonCategory | 'mix'>('mix');
   const [horizonAttrFilter, setHorizonAttrFilter] = useState<'all' | 'capital' | 'location'>('all');
   const [horizonSearch, setHorizonSearch] = useState('');
   const [revealHorizonCapitals, setRevealHorizonCapitals] = useState(false);
   const [isHorizonModalOpen, setIsHorizonModalOpen] = useState(false);
   const [modalContinentFilter, setModalContinentFilter] = useState<TrainingCategory>('All');
+  const [albumPage, setAlbumPage] = useState(1);
+  const albumScrollRef = useRef<HTMLDivElement | null>(null);
+
+  const openTrophyAlbum = useCallback((cat: HorizonCategory | null) => {
+    soundFx.playClick();
+    setSelectedHorizonCategory(cat);
+    setAlbumPage(1);
+    setIsHorizonModalOpen(true);
+    requestAnimationFrame(() => {
+      if (albumScrollRef.current) albumScrollRef.current.scrollTop = 0;
+    });
+  }, []);
 
   const horizonCatalog = useMemo(() => {
     const nowIso = new Date().toISOString();
@@ -683,6 +700,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       category: HorizonCategory;
       statusBadge: string;
       shortBadge: string;
+      trophyGlyph: string;
       isDue: boolean;
     } => {
       if (!item) {
@@ -690,6 +708,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
           category: 'unseen',
           statusBadge: 'Unseen',
           shortBadge: 'New',
+          trophyGlyph: '✨',
           isDue: true
         };
       }
@@ -699,6 +718,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
           category: 'mastered',
           statusBadge: '2/2 Mastered',
           shortBadge: '2/2',
+          trophyGlyph: '🏆',
           isDue
         };
       }
@@ -707,6 +727,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
           category: 'recall',
           statusBadge: '1/2 Recall',
           shortBadge: '1/2',
+          trophyGlyph: '⚡',
           isDue
         };
       }
@@ -715,6 +736,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
           category: 'learning',
           statusBadge: '0/2 Recall',
           shortBadge: '0/2',
+          trophyGlyph: '🧭',
           isDue
         };
       }
@@ -722,6 +744,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
         category: 'learning',
         statusBadge: 'L0 Recognition',
         shortBadge: 'L0',
+        trophyGlyph: '🧭',
         isDue
       };
     };
@@ -730,14 +753,16 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       for (const attr of ['capital', 'location'] as const) {
         const cardId = `${country.id}:${attr}`;
         const item = srsItemsMap.get(cardId);
-        const { category, statusBadge, shortBadge, isDue } = categorizeItem(item);
+        const { category, statusBadge, shortBadge, trophyGlyph, isDue } = categorizeItem(item);
         byCategory[category].push({
           id: cardId,
           entityId: country.id,
           entityName: country.name,
+          plateCode: `#${country.numericId} · ${country.id}`,
           flagOrEmblem: country.flagEmoji,
           continent: country.continent,
           subregion: country.subregion || country.continent,
+          coordText: formatCoordinates(country.coordinates),
           attribute: attr,
           attributeGlyph: attr === 'capital' ? '🏛️' : '🧭',
           attributeLabel: attr === 'capital' ? 'Capital' : 'Location',
@@ -746,9 +771,11 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
           category,
           statusBadge,
           shortBadge,
+          trophyGlyph,
           isDue,
           lastReviewedAt: item?.lastReviewedAt || null,
-          reps: item?.reps || 0
+          reps: item?.reps || 0,
+          intervalDays: item?.intervalDays || 0
         });
       }
     }
@@ -756,15 +783,17 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     for (const wb of WATER_BODIES) {
       const cardId = `${wb.id}:location`;
       const item = srsItemsMap.get(cardId);
-      const { category, statusBadge, shortBadge, isDue } = categorizeItem(item);
+      const { category, statusBadge, shortBadge, trophyGlyph, isDue } = categorizeItem(item);
       const typeLabel = wb.type.charAt(0).toUpperCase() + wb.type.slice(1);
       byCategory[category].push({
         id: cardId,
         entityId: wb.id,
         entityName: wb.name,
+        plateCode: `SEA · ${wb.type.toUpperCase()}`,
         flagOrEmblem: '🌊',
         continent: 'Oceans',
         subregion: `${typeLabel} · Oceans`,
+        coordText: formatCoordinates(wb.coordinates),
         attribute: 'location',
         attributeGlyph: '🌊',
         attributeLabel: 'Maritime',
@@ -773,9 +802,11 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
         category,
         statusBadge,
         shortBadge,
+        trophyGlyph,
         isDue,
         lastReviewedAt: item?.lastReviewedAt || null,
-        reps: item?.reps || 0
+        reps: item?.reps || 0,
+        intervalDays: item?.intervalDays || 0
       });
     }
 
@@ -797,15 +828,15 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     });
     byCategory.unseen.sort((a, b) => a.entityName.localeCompare(b.entityName));
 
-    // Build a balanced default "Glance" sample interleaving active categories
+    // Build a balanced 6-card default "Glance" sample interleaving active categories
     const glanceMix: HorizonCardEntry[] = [];
     const pools = [byCategory.recall, byCategory.learning, byCategory.mastered, byCategory.unseen].filter(
       (p) => p.length > 0
     );
     let idx = 0;
-    while (glanceMix.length < 18 && pools.some((p) => idx < p.length)) {
+    while (glanceMix.length < 6 && pools.some((p) => idx < p.length)) {
       for (const pool of pools) {
-        if (idx < pool.length && glanceMix.length < 18) {
+        if (idx < pool.length && glanceMix.length < 6) {
           glanceMix.push(pool[idx]);
         }
       }
@@ -813,9 +844,9 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     }
 
     const allCards = [
+      ...byCategory.mastered,
       ...byCategory.recall,
       ...byCategory.learning,
-      ...byCategory.mastered,
       ...byCategory.unseen
     ];
 
@@ -826,26 +857,12 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     };
   }, [srsItemsMap]);
 
-  const displayedHorizonCards = useMemo(() => {
-    const query = horizonSearch.trim().toLowerCase();
-    const baseList =
-      selectedHorizonCategory !== null
-        ? horizonCatalog.byCategory[selectedHorizonCategory]
-        : query.length > 0 || horizonAttrFilter !== 'all'
-          ? horizonCatalog.allCards
-          : horizonCatalog.glanceMix;
-
-    return baseList.filter((card) => {
-      if (horizonAttrFilter !== 'all' && card.attribute !== horizonAttrFilter) return false;
-      if (query.length > 0) {
-        const matchEntity = card.entityName.toLowerCase().includes(query);
-        const matchSub = card.subregion.toLowerCase().includes(query);
-        const matchAnswer = card.answerText.toLowerCase().includes(query);
-        if (!matchEntity && !matchSub && !matchAnswer) return false;
-      }
-      return true;
-    });
-  }, [horizonCatalog, selectedHorizonCategory, horizonAttrFilter, horizonSearch]);
+  const glanceShowcaseCards = useMemo(() => {
+    if (glanceStageFilter === 'mix') {
+      return horizonCatalog.glanceMix.slice(0, 6);
+    }
+    return horizonCatalog.byCategory[glanceStageFilter].slice(0, 6);
+  }, [horizonCatalog, glanceStageFilter]);
 
   const modalHorizonCards = useMemo(() => {
     const query = horizonSearch.trim().toLowerCase();
@@ -1212,7 +1229,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             </div>
 
             {/* Section 2: Memory Horizon & Smart Queue Intelligence Card (Flex-1) */}
-            <div className="relative flex-1 min-h-0 flex flex-col gap-2 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
+            <div className="relative flex-1 min-h-0 flex flex-col gap-2.5 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
               {/* Header + Mastery Ring */}
               <div className="shrink-0 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
@@ -1258,78 +1275,61 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                     {cardTelemetry.mastered + cardTelemetry.recall}/{cardTelemetry.total}
                   </span>
                   <button
-                    onClick={() => {
-                      soundFx.playClick();
-                      setIsHorizonModalOpen(true);
-                    }}
-                    title="Expand full Global Memory Horizon Dossier"
-                    className="flex h-7 w-7 items-center justify-center rounded-full border border-[#F6EFE2]/15 bg-[#0C1D2B] text-[#D6CBB9] transition-colors hover:border-[#E9C46A] hover:text-[#E9C46A]"
+                    type="button"
+                    onClick={() => openTrophyAlbum(selectedHorizonCategory || 'mastered')}
+                    title="Open Cartographer's Trophy Album"
+                    className="flex items-center gap-1 rounded-full border border-[#E9C46A]/40 bg-[#E9C46A]/15 px-2.5 py-1 text-[10px] font-extrabold text-[#E9C46A] transition-all hover:bg-[#E9C46A] hover:text-[#142534] active:scale-95 cursor-pointer"
                   >
-                    <Maximize2 className="h-3.5 w-3.5" />
+                    <Trophy className="h-3 w-3" />
+                    <span className="hidden sm:inline">Album</span>
                   </button>
                 </div>
               </div>
 
-              {/* 4-Stage Segmented Progress Bar + Clickable Category Tiles */}
+              {/* 4-Stage Segmented Progress Bar + Clickable Category Tiles (Opens Trophy Album) */}
               <div className="shrink-0 flex flex-col gap-1.5">
                 <div className="flex h-2.5 overflow-hidden rounded-full bg-[#0C1D2B] p-0.5 shadow-inner">
                   <div
-                    onClick={() => {
-                      soundFx.playClick();
-                      setSelectedHorizonCategory((prev) => (prev === 'mastered' ? null : 'mastered'));
-                    }}
+                    onClick={() => openTrophyAlbum('mastered')}
                     className="h-full cursor-pointer rounded-l-full bg-[#10B981] transition-all duration-500 hover:brightness-110"
                     style={{ width: `${(cardTelemetry.mastered / cardTelemetry.total) * 100}%` }}
-                    title={`Click to inspect Mastered: ${cardTelemetry.mastered}`}
+                    title={`Click to open Mastered Trophy Album (${cardTelemetry.mastered} cards)`}
                   />
                   <div
-                    onClick={() => {
-                      soundFx.playClick();
-                      setSelectedHorizonCategory((prev) => (prev === 'recall' ? null : 'recall'));
-                    }}
+                    onClick={() => openTrophyAlbum('recall')}
                     className="h-full cursor-pointer bg-[#E9C46A] transition-all duration-500 hover:brightness-110"
                     style={{ width: `${(cardTelemetry.recall / cardTelemetry.total) * 100}%` }}
-                    title={`Click to inspect Recall (1/2): ${cardTelemetry.recall}`}
+                    title={`Click to open Recall Trophy Album (${cardTelemetry.recall} cards)`}
                   />
                   <div
-                    onClick={() => {
-                      soundFx.playClick();
-                      setSelectedHorizonCategory((prev) => (prev === 'learning' ? null : 'learning'));
-                    }}
+                    onClick={() => openTrophyAlbum('learning')}
                     className="h-full cursor-pointer bg-[#F4A261] transition-all duration-500 hover:brightness-110"
                     style={{ width: `${(cardTelemetry.learning / cardTelemetry.total) * 100}%` }}
-                    title={`Click to inspect Learning (0/2): ${cardTelemetry.learning}`}
+                    title={`Click to open Learning Trophy Album (${cardTelemetry.learning} cards)`}
                   />
                   <div
-                    onClick={() => {
-                      soundFx.playClick();
-                      setSelectedHorizonCategory((prev) => (prev === 'unseen' ? null : 'unseen'));
-                    }}
+                    onClick={() => openTrophyAlbum('unseen')}
                     className="h-full cursor-pointer rounded-r-full bg-[#38BDF8]/40 transition-all duration-500 hover:brightness-110"
                     style={{ width: `${(cardTelemetry.unseen / cardTelemetry.total) * 100}%` }}
-                    title={`Click to inspect Unseen: ${cardTelemetry.unseen}`}
+                    title={`Click to open Unseen Trophy Album (${cardTelemetry.unseen} cards)`}
                   />
                 </div>
 
-                {/* 4 Interactive Category Mini-Tiles */}
+                {/* 4 Interactive Category Mini-Tiles -> Click Opens Trophy Album Sub-Window */}
                 <div className="grid grid-cols-4 gap-1.5">
                   {HORIZON_CATEGORY_ORDER.map((cat) => {
                     const meta = HORIZON_CATEGORY_META[cat];
-                    const isSelected = selectedHorizonCategory === cat;
+                    const isGlanceActive = glanceStageFilter === cat;
                     const count = cardTelemetry[cat];
 
                     return (
                       <button
                         key={cat}
                         type="button"
-                        onClick={() => {
-                          soundFx.playClick();
-                          setSelectedHorizonCategory((prev) => (prev === cat ? null : cat));
-                        }}
-                        aria-pressed={isSelected}
-                        title={`Click to ${isSelected ? 'return to Horizon Glance' : `view all ${count} ${meta.label} cards`}`}
-                        className={`group rounded-xl border p-2 text-left flex flex-col justify-between transition-all cursor-pointer active:scale-[0.98] ${
-                          isSelected ? meta.tileActiveCls : meta.tileIdleCls
+                        onClick={() => openTrophyAlbum(cat)}
+                        title={`Click to open ${meta.label} Trophy Album (${count} cards)`}
+                        className={`group rounded-xl border p-2 text-left flex flex-col justify-between transition-all cursor-pointer active:scale-[0.97] ${
+                          isGlanceActive ? meta.tileActiveCls : meta.tileIdleCls
                         }`}
                       >
                         <div className="flex items-center justify-between gap-1 w-full">
@@ -1337,14 +1337,9 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                             <span className={`h-1.5 w-1.5 rounded-full ${meta.dotCls}`} />
                             {meta.label}
                           </span>
-                          <span
-                            className={`text-[8px] font-extrabold uppercase tracking-wider px-1 py-0.2 rounded transition-opacity ${
-                              isSelected
-                                ? `${meta.badgeCls} opacity-100`
-                                : 'text-[#8FA6B8] opacity-60 group-hover:opacity-100'
-                            }`}
-                          >
-                            {isSelected ? 'Active' : 'View'}
+                          <span className="flex items-center gap-0.5 text-[8px] font-extrabold uppercase tracking-wider text-[#9FB3C4] opacity-75 group-hover:opacity-100 group-hover:text-[#F6EFE2] transition-opacity">
+                            <span>Album</span>
+                            <Maximize2 className="h-2 w-2" />
                           </span>
                         </div>
                         <span className="font-mono text-base font-black text-[#F6EFE2] mt-0.5 leading-tight">
@@ -1357,111 +1352,52 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 </div>
               </div>
 
-              {/* In-Card Horizon Card Deck (Fills Empty Middle Space + Shows Glance or Selected Category) */}
-              <div className="flex-1 min-h-0 flex flex-col overflow-hidden rounded-xl border border-[#F6EFE2]/12 bg-[#0A1926]/75 p-2.5 shadow-inner">
-                {/* Deck Header & Filter Bar */}
-                <div className="shrink-0 flex flex-wrap items-center justify-between gap-1.5 border-b border-[#F6EFE2]/10 pb-1.5">
+              {/* Default 6-Card Trophy Showcase Glance (Never Squishes, Fills Middle Space Cleanly) */}
+              <div className="flex-1 min-h-0 flex flex-col justify-between overflow-hidden rounded-xl border border-[#F6EFE2]/12 bg-[#0A1926]/80 p-2.5 shadow-inner">
+                {/* Glance Showcase Toolbar */}
+                <div className="shrink-0 flex items-center justify-between gap-2 pb-1.5 border-b border-[#F6EFE2]/10">
                   <div className="flex items-center gap-1.5 min-w-0">
-                    {selectedHorizonCategory ? (
-                      <>
-                        <span
-                          className={`h-2 w-2 shrink-0 rounded-full ${HORIZON_CATEGORY_META[selectedHorizonCategory].dotCls}`}
-                        />
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#F6EFE2] truncate">
-                          {HORIZON_CATEGORY_META[selectedHorizonCategory].label} Cards
-                        </span>
-                        <span
-                          className={`rounded-full border px-1.5 py-0.2 font-mono text-[9px] font-bold ${HORIZON_CATEGORY_META[selectedHorizonCategory].badgeCls}`}
-                        >
-                          {displayedHorizonCards.length}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            soundFx.playClick();
-                            setSelectedHorizonCategory(null);
-                            setHorizonSearch('');
-                          }}
-                          className="ml-0.5 rounded-full border border-[#F6EFE2]/15 bg-[#132D42] px-2 py-0.5 text-[9px] font-bold text-[#D6CBB9] hover:border-[#E9C46A] hover:text-white transition-colors"
-                          title="Return to mixed Horizon Glance"
-                        >
-                          × Glance
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <Layers className="h-3 w-3 shrink-0 text-[#E9C46A]" />
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#F6EFE2]">
-                          Horizon Glance
-                        </span>
-                        <span className="hidden xl:inline text-[9px] font-medium text-[#8FA6B8]">
-                          · Click a stage above to inspect all cards
-                        </span>
-                      </>
-                    )}
+                    <Trophy className="h-3.5 w-3.5 shrink-0 text-[#E9C46A]" />
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#F6EFE2] truncate">
+                      Horizon Glance
+                    </span>
+                    <div className="hidden sm:flex items-center gap-1 ml-1">
+                      {(['mix', 'mastered', 'recall', 'learning'] as const).map((mode) => {
+                        const active = glanceStageFilter === mode;
+                        const label =
+                          mode === 'mix'
+                            ? 'Mix'
+                            : HORIZON_CATEGORY_META[mode].label;
+                        return (
+                          <button
+                            key={mode}
+                            type="button"
+                            onClick={() => {
+                              soundFx.playClick();
+                              setGlanceStageFilter(mode);
+                            }}
+                            className={`rounded-full px-2 py-0.5 text-[9px] font-bold transition-colors cursor-pointer ${
+                              active
+                                ? 'bg-[#E9C46A] text-[#142534]'
+                                : 'bg-[#102637] text-[#9FB3C4] hover:text-white'
+                            }`}
+                          >
+                            {label}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
 
-                  {/* Right Filter Controls */}
-                  <div className="flex items-center gap-1">
-                    {/* Compact Search Box */}
-                    <div className="relative flex items-center">
-                      <Search className="pointer-events-none absolute left-2 h-2.5 w-2.5 text-[#8FA6B8]" />
-                      <input
-                        type="text"
-                        value={horizonSearch}
-                        onChange={(e) => setHorizonSearch(e.target.value)}
-                        placeholder="Filter…"
-                        className="w-20 sm:w-24 rounded-full border border-[#F6EFE2]/15 bg-[#0E2231] pl-5 pr-4 py-0.5 text-[9px] font-medium text-[#F6EFE2] placeholder:text-[#8FA6B8]/70 focus:border-[#E9C46A] focus:outline-none"
-                      />
-                      {horizonSearch && (
-                        <button
-                          type="button"
-                          onClick={() => setHorizonSearch('')}
-                          className="absolute right-1.5 text-[#8FA6B8] hover:text-white"
-                          title="Clear search"
-                        >
-                          <X className="h-2.5 w-2.5" />
-                        </button>
-                      )}
-                    </div>
-
-                    {/* Attribute Filter Pills */}
-                    <div className="flex items-center rounded-full border border-[#F6EFE2]/15 bg-[#0E2231] p-0.5 text-[9px] font-bold">
-                      {(['all', 'capital', 'location'] as const).map((attr) => (
-                        <button
-                          key={attr}
-                          type="button"
-                          onClick={() => {
-                            soundFx.playClick();
-                            setHorizonAttrFilter(attr);
-                          }}
-                          className={`rounded-full px-1.5 py-0.2 transition-colors ${
-                            horizonAttrFilter === attr
-                              ? 'bg-[#E9C46A] text-[#142534]'
-                              : 'text-[#9FB3C4] hover:text-white'
-                          }`}
-                          title={
-                            attr === 'all'
-                              ? 'Show both Capitals & Locations'
-                              : attr === 'capital'
-                                ? 'Filter Capitals only'
-                                : 'Filter Locations & Seas only'
-                          }
-                        >
-                          {attr === 'all' ? 'All' : attr === 'capital' ? '🏛️' : '🧭'}
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Capital Spoiler Toggle */}
+                  <div className="flex items-center gap-1.5 shrink-0">
                     <button
                       type="button"
                       onClick={() => {
                         soundFx.playClick();
                         setRevealHorizonCapitals((v) => !v);
                       }}
-                      title={revealHorizonCapitals ? 'Hide unmastered capital names' : 'Reveal all capital names'}
-                      className={`flex h-5 w-5 items-center justify-center rounded-full border transition-colors ${
+                      title={revealHorizonCapitals ? 'Hide unmastered capitals' : 'Reveal capitals'}
+                      className={`flex h-5 w-5 items-center justify-center rounded-full border transition-colors cursor-pointer ${
                         revealHorizonCapitals
                           ? 'border-[#E9C46A] bg-[#E9C46A]/20 text-[#E9C46A]'
                           : 'border-[#F6EFE2]/15 bg-[#0E2231] text-[#9FB3C4] hover:text-white'
@@ -1470,118 +1406,89 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       {revealHorizonCapitals ? <EyeOff className="h-2.5 w-2.5" /> : <Eye className="h-2.5 w-2.5" />}
                     </button>
 
-                    {/* Expand Full Modal Button */}
                     <button
                       type="button"
-                      onClick={() => {
-                        soundFx.playClick();
-                        setIsHorizonModalOpen(true);
-                      }}
-                      title="Open full multi-column Category Dossier"
-                      className="flex h-5 items-center gap-0.5 rounded-full border border-[#F6EFE2]/15 bg-[#0E2231] px-1.5 text-[9px] font-bold text-[#D6CBB9] hover:border-[#E9C46A] hover:text-[#E9C46A] transition-colors"
+                      onClick={() =>
+                        openTrophyAlbum(glanceStageFilter === 'mix' ? 'mastered' : glanceStageFilter)
+                      }
+                      className="flex items-center gap-1 rounded-full border border-[#E9C46A]/40 bg-[#E9C46A]/15 px-2.5 py-0.5 text-[9px] font-extrabold text-[#E9C46A] hover:bg-[#E9C46A] hover:text-[#142534] transition-colors cursor-pointer"
                     >
-                      <Maximize2 className="h-2.5 w-2.5" />
-                      <span className="hidden sm:inline">All</span>
+                      <span>Open Trophy Album</span>
+                      <ChevronRight className="h-2.5 w-2.5" />
                     </button>
                   </div>
                 </div>
 
-                {/* Scrollable 2-Column Card Grid */}
-                {displayedHorizonCards.length === 0 ? (
-                  <div className="flex-1 flex flex-col items-center justify-center text-center p-3">
-                    <p className="text-[11px] font-bold text-[#9FB3C4]">
-                      {selectedHorizonCategory
-                        ? `No cards in ${HORIZON_CATEGORY_META[selectedHorizonCategory].label} match the current filter.`
-                        : 'No cards match your filter.'}
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        soundFx.playClick();
-                        setSelectedHorizonCategory(null);
-                        setHorizonAttrFilter('all');
-                        setHorizonSearch('');
-                      }}
-                      className="mt-1.5 rounded-full border border-[#E9C46A]/45 bg-[#E9C46A]/15 px-3 py-0.5 text-[10px] font-bold text-[#E9C46A] hover:bg-[#E9C46A]/25"
-                    >
-                      Reset to Horizon Glance
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex-1 min-h-0 overflow-y-auto pr-1 pt-1.5 grid grid-cols-2 gap-1.5 content-start">
-                    {displayedHorizonCards.map((card) => {
-                      const catMeta = HORIZON_CATEGORY_META[card.category];
-                      const isGlobeLocked = activeRegionLock?.id === card.entityId;
-                      const showAnswer =
-                        card.attribute === 'location' ||
-                        card.category === 'mastered' ||
-                        revealHorizonCapitals;
+                {/* Fixed 2x3 (6-Card) High-Readability Showcase Grid */}
+                <div className="flex-1 min-h-0 pt-2 grid grid-cols-2 grid-rows-3 gap-2">
+                  {glanceShowcaseCards.map((card) => {
+                    const catMeta = HORIZON_CATEGORY_META[card.category];
+                    const isGlobeLocked = activeRegionLock?.id === card.entityId;
+                    const showAnswer =
+                      card.attribute === 'location' ||
+                      card.category === 'mastered' ||
+                      revealHorizonCapitals;
 
-                      return (
-                        <button
-                          key={card.id}
-                          type="button"
-                          onClick={() => {
-                            soundFx.playClick();
-                            setActiveRegionLock({
-                              id: card.entityId,
-                              label: card.entityName,
-                              coords: card.coordinates
-                            });
-                          }}
-                          title={`${card.entityName} (${card.attributeLabel}) · ${card.statusBadge} · Click to center on 3D Globe`}
-                          className={`group relative flex items-center justify-between gap-1.5 overflow-hidden rounded-lg border px-2 py-1.5 text-left transition-all cursor-pointer ${
-                            isGlobeLocked
-                              ? 'border-[#E9C46A] bg-[#1A3E58] shadow-sm'
-                              : 'border-[#F6EFE2]/10 bg-[#102637]/90 hover:border-[#F6EFE2]/35 hover:bg-[#163349]'
-                          }`}
-                        >
-                          {/* Left Category Pigment Spine */}
+                    return (
+                      <button
+                        key={card.id}
+                        type="button"
+                        onClick={() => {
+                          soundFx.playClick();
+                          setActiveRegionLock({
+                            id: card.entityId,
+                            label: card.entityName,
+                            coords: card.coordinates
+                          });
+                        }}
+                        onDoubleClick={() => openTrophyAlbum(card.category)}
+                        title={`${card.entityName} (${card.attributeLabel}) · Click to center on Globe · Double-click to open Trophy Album`}
+                        className={`group relative min-h-0 flex items-center justify-between gap-2.5 overflow-hidden rounded-xl border px-3 py-1.5 text-left transition-all cursor-pointer ${
+                          isGlobeLocked
+                            ? 'border-[#E9C46A] bg-[#1A3E58] shadow-md'
+                            : 'border-[#F6EFE2]/12 bg-gradient-to-r from-[#122B3E] to-[#0E2232] hover:border-[#E9C46A]/55 hover:from-[#17374F] hover:to-[#112A3D]'
+                        }`}
+                      >
+                        {/* Left Category Pigment Spine */}
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute inset-y-0 left-0 w-1.5"
+                          style={{ background: catMeta.color }}
+                        />
+
+                        <div className="flex items-center gap-2.5 min-w-0 pl-1">
+                          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-[#F6EFE2]/15 bg-[#091622] text-base shadow-inner select-none">
+                            {card.flagOrEmblem}
+                          </span>
+                          <div className="min-w-0">
+                            <span className={`${serifDisplay} block truncate text-xs font-black leading-tight text-[#F6EFE2]`}>
+                              {card.entityName}
+                            </span>
+                            <span className="mt-0.5 block truncate text-[10px] font-semibold text-[#9FB3C4]">
+                              {card.attributeGlyph}{' '}
+                              {showAnswer ? card.answerText : '• • • • • •'}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col items-end gap-0.5 shrink-0">
                           <span
-                            aria-hidden="true"
-                            className="pointer-events-none absolute inset-y-0 left-0 w-1"
-                            style={{ background: catMeta.color }}
-                          />
-
-                          <div className="flex items-center gap-1.5 min-w-0 pl-1">
-                            <span className="text-sm leading-none shrink-0 select-none">
-                              {card.flagOrEmblem}
-                            </span>
-                            <div className="min-w-0">
-                              <div className="flex items-center gap-1">
-                                <span className="truncate text-[10px] font-extrabold leading-tight text-[#F6EFE2]">
-                                  {card.entityName}
-                                </span>
-                              </div>
-                              <span className="block truncate text-[9px] font-medium text-[#9FB3C4]">
-                                {card.attributeGlyph}{' '}
-                                {showAnswer ? card.answerText : '• • • • •'}
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-1 shrink-0">
-                            {card.isDue && card.category !== 'mastered' && (
-                              <span
-                                className="h-1.5 w-1.5 rounded-full bg-[#D94E34]"
-                                title="Due in Smart Queue"
-                              />
-                            )}
-                            <span
-                              className={`rounded px-1.5 py-0.2 font-mono text-[8px] font-bold border ${catMeta.badgeCls}`}
-                            >
-                              {card.shortBadge}
-                            </span>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
+                            className={`rounded-md border px-1.5 py-0.5 font-mono text-[9px] font-extrabold ${catMeta.badgeCls}`}
+                          >
+                            {card.trophyGlyph} {card.shortBadge}
+                          </span>
+                          <span className="text-[8px] font-bold uppercase tracking-wider text-[#8FA6B8]">
+                            {card.continent}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Smart Queue Algorithm Breakdown Strip */}
-              <div className="shrink-0 pt-1.5 border-t border-[#F6EFE2]/10 flex items-center justify-between text-[10px]">
+              <div className="shrink-0 pt-1 border-t border-[#F6EFE2]/10 flex items-center justify-between text-[10px]">
                 <span className="font-extrabold uppercase tracking-wider text-[#9FB3C4] flex items-center gap-1">
                   <Target className="h-3 w-3 text-[#E9C46A]" />
                   Next 15-Card Mix:
@@ -1957,33 +1864,79 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
         </div>
       </div>
 
-      {/* ── EXPANDED HORIZON CATEGORY DOSSIER MODAL ────────────────────── */}
+      {/* ── ANIMATED HIGH-DEFINITION TROPHY ALBUM SUB-WINDOW (15 Cards / View) ── */}
       {isHorizonModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#06111A]/80 backdrop-blur-sm p-4 sm:p-6"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#040B11]/85 backdrop-blur-md p-3 sm:p-5"
+          style={{ animation: 'trophyBackdropIn 220ms cubic-bezier(0.16, 1, 0.3, 1) forwards' }}
           onClick={() => setIsHorizonModalOpen(false)}
         >
+          <style>{`
+            @keyframes trophyBackdropIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            @keyframes trophyWindowPopIn {
+              0% {
+                opacity: 0;
+                transform: scale(0.92) translateY(18px);
+              }
+              100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+              }
+            }
+            @keyframes trophyCardReveal {
+              0% {
+                opacity: 0;
+                transform: translateY(10px) scale(0.97);
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+              }
+            }
+          `}</style>
+
           <div
-            className="relative flex max-h-[86vh] w-full max-w-5xl flex-col overflow-hidden rounded-[1.5rem] border border-[#E9C46A]/35 bg-gradient-to-b from-[#143146] to-[#0C1D2B] p-5 text-[#F6EFE2] shadow-2xl"
+            className="relative flex h-[88vh] max-h-[860px] w-full max-w-[1440px] flex-col justify-between overflow-hidden rounded-[1.75rem] border-2 border-[#E9C46A]/45 bg-gradient-to-b from-[#16364D] via-[#102739] to-[#0A1824] p-5 text-[#F6EFE2] shadow-[0_25px_80px_rgba(0,0,0,0.75)]"
+            style={{ animation: 'trophyWindowPopIn 320ms cubic-bezier(0.16, 1, 0.3, 1) forwards' }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Top Header */}
-            <div className="shrink-0 flex flex-wrap items-center justify-between gap-3 border-b border-[#F6EFE2]/12 pb-3.5">
-              <div>
-                <div className="flex items-center gap-2">
-                  <Target className="h-4 w-4 text-[#10B981]" />
-                  <h2 className={`${serifDisplay} text-lg font-black text-[#F6EFE2]`}>
-                    Global Memory Horizon · Card Dossier
-                  </h2>
-                  <span className="rounded-full border border-[#10B981]/30 bg-[#10B981]/15 px-2.5 py-0.5 font-mono text-xs font-bold text-[#10B981]">
-                    {modalHorizonCards.length} cards shown
-                  </span>
+            {/* Ambient Gold & Emerald Trophy Vault Glow */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-24 left-1/3 h-56 w-96 rounded-full bg-[#E9C46A]/10 blur-3xl"
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -bottom-24 right-1/4 h-56 w-96 rounded-full bg-[#10B981]/10 blur-3xl"
+            />
+
+            {/* 1. Trophy Album Top Header */}
+            <div className="relative z-10 shrink-0 flex flex-wrap items-center justify-between gap-3 border-b border-[#F6EFE2]/12 pb-3">
+              <div className="flex items-center gap-3">
+                <div className="grid h-11 w-11 place-items-center rounded-2xl border border-[#E9C46A]/45 bg-gradient-to-br from-[#E9C46A]/25 to-[#D94E34]/20 text-[#E9C46A] shadow-inner">
+                  <Trophy className="h-5 w-5" />
                 </div>
-                <p className="mt-0.5 text-xs text-[#9FB3C4]">
-                  {selectedHorizonCategory
-                    ? HORIZON_CATEGORY_META[selectedHorizonCategory].description
-                    : 'Inspecting all 432 capital & location cards across every SRS memory stage.'}
-                </p>
+                <div>
+                  <div className="flex items-center gap-2.5">
+                    <h2 className={`${serifDisplay} text-xl font-black tracking-tight text-[#F6EFE2]`}>
+                      Cartographer’s Trophy Album
+                    </h2>
+                    <span className="rounded-full border border-[#E9C46A]/40 bg-[#E9C46A]/15 px-3 py-0.5 font-mono text-xs font-extrabold text-[#E9C46A]">
+                      {modalHorizonCards.length} Cards
+                    </span>
+                    <span className="hidden md:inline-flex items-center gap-1 rounded-full border border-[#F6EFE2]/15 bg-[#0C1D2B] px-2.5 py-0.5 text-[10px] font-bold text-[#9FB3C4]">
+                      15 High-Def Plates / View · Scrollable
+                    </span>
+                  </div>
+                  <p className="mt-0.5 text-xs font-medium text-[#9FB3C4]">
+                    {selectedHorizonCategory
+                      ? HORIZON_CATEGORY_META[selectedHorizonCategory].description
+                      : 'Complete world collection across all 4 memory horizon stages. Click any plate to lock onto the 3D Globe.'}
+                  </p>
+                </div>
               </div>
 
               <div className="flex items-center gap-2">
@@ -1993,47 +1946,55 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                     soundFx.playClick();
                     setRevealHorizonCapitals((v) => !v);
                   }}
-                  className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-bold transition-colors ${
+                  className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-extrabold transition-colors cursor-pointer ${
                     revealHorizonCapitals
                       ? 'border-[#E9C46A] bg-[#E9C46A]/20 text-[#E9C46A]'
                       : 'border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] hover:text-white'
                   }`}
                 >
                   {revealHorizonCapitals ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-                  <span>{revealHorizonCapitals ? 'Hide Capitals' : 'Reveal Capitals'}</span>
+                  <span>{revealHorizonCapitals ? 'Hide Unmastered Capitals' : 'Reveal All Capitals'}</span>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => setIsHorizonModalOpen(false)}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] hover:border-[#E9C46A] hover:text-white transition-colors"
-                  title="Close Dossier"
+                  onClick={() => {
+                    soundFx.playClick();
+                    setIsHorizonModalOpen(false);
+                  }}
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[#F6EFE2]/20 bg-[#0E2231] text-[#D6CBB9] hover:border-[#D94E34] hover:bg-[#D94E34] hover:text-white transition-all cursor-pointer"
+                  title="Close Trophy Album"
                 >
                   <X className="h-4 w-4" />
                 </button>
               </div>
             </div>
 
-            {/* Category Stage Tabs + Search & Continent Filter Row */}
-            <div className="shrink-0 my-3 flex flex-col gap-2.5">
-              {/* Stage Category Selector */}
+            {/* 2. Stage Category Tabs + Continent & Search Filter Bar */}
+            <div className="relative z-10 shrink-0 my-2.5 flex flex-col gap-2">
+              {/* 5 Stage Vault Selector Tabs */}
               <div className="grid grid-cols-5 gap-2">
                 <button
                   type="button"
                   onClick={() => {
                     soundFx.playClick();
                     setSelectedHorizonCategory(null);
+                    setAlbumPage(1);
+                    if (albumScrollRef.current) albumScrollRef.current.scrollTop = 0;
                   }}
                   className={`rounded-xl border px-3 py-2 text-left transition-all cursor-pointer ${
                     selectedHorizonCategory === null
-                      ? 'border-[#E9C46A] bg-[#E9C46A]/20 ring-1 ring-[#E9C46A]/50'
-                      : 'border-[#F6EFE2]/15 bg-[#0E2231]/80 hover:border-[#F6EFE2]/40'
+                      ? 'border-[#E9C46A] bg-[#E9C46A]/20 ring-1 ring-[#E9C46A]/50 shadow-md'
+                      : 'border-[#F6EFE2]/15 bg-[#0C1D2B]/85 hover:border-[#F6EFE2]/40'
                   }`}
                 >
-                  <span className="block text-[10px] font-bold uppercase tracking-wider text-[#E9C46A]">
-                    All Stages
-                  </span>
-                  <span className="font-mono text-base font-black text-[#F6EFE2]">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#E9C46A]">
+                      All Stages
+                    </span>
+                    <span className="text-[9px] font-bold text-[#9FB3C4]">Full Vault</span>
+                  </div>
+                  <span className="font-mono text-lg font-black text-[#F6EFE2]">
                     {cardTelemetry.total}
                   </span>
                 </button>
@@ -2047,22 +2008,24 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       type="button"
                       onClick={() => {
                         soundFx.playClick();
-                        setSelectedHorizonCategory((prev) => (prev === cat ? null : cat));
+                        setSelectedHorizonCategory(cat);
+                        setAlbumPage(1);
+                        if (albumScrollRef.current) albumScrollRef.current.scrollTop = 0;
                       }}
                       className={`rounded-xl border px-3 py-2 text-left transition-all cursor-pointer ${
                         active ? meta.tileActiveCls : meta.tileIdleCls
                       }`}
                     >
-                      <span className={`flex items-center gap-1.5 text-[10px] font-bold ${meta.textCls}`}>
-                        <span className={`h-2 w-2 rounded-full ${meta.dotCls}`} />
-                        {meta.label}
-                      </span>
-                      <div className="flex items-baseline justify-between gap-1">
-                        <span className="font-mono text-base font-black text-[#F6EFE2]">
-                          {cardTelemetry[cat]}
+                      <div className="flex items-center justify-between">
+                        <span className={`flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider ${meta.textCls}`}>
+                          <span className={`h-2 w-2 rounded-full ${meta.dotCls}`} />
+                          {meta.label}
                         </span>
-                        <span className="text-[9px] text-[#9FB3C4] truncate">{meta.subtitle}</span>
+                        <span className="text-[9px] font-semibold text-[#9FB3C4]">{meta.subtitle}</span>
                       </div>
+                      <span className="font-mono text-lg font-black text-[#F6EFE2]">
+                        {cardTelemetry[cat]}
+                      </span>
                     </button>
                   );
                 })}
@@ -2081,11 +2044,13 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                           onClick={() => {
                             soundFx.playClick();
                             setModalContinentFilter(cont);
+                            setAlbumPage(1);
+                            if (albumScrollRef.current) albumScrollRef.current.scrollTop = 0;
                           }}
-                          className={`rounded-full border px-2.5 py-1 text-[10px] font-bold transition-colors ${
+                          className={`rounded-full border px-3 py-1 text-[10px] font-extrabold transition-colors cursor-pointer ${
                             active
                               ? 'border-[#F6EFE2] bg-[#F6EFE2] text-[#142534]'
-                              : 'border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] hover:text-white'
+                              : 'border-[#F6EFE2]/15 bg-[#0C1D2B] text-[#D6CBB9] hover:text-white'
                           }`}
                         >
                           {cont}
@@ -2096,7 +2061,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center rounded-full border border-[#F6EFE2]/15 bg-[#0E2231] p-0.5 text-[10px] font-bold">
+                  <div className="flex items-center rounded-full border border-[#F6EFE2]/15 bg-[#0C1D2B] p-0.5 text-[10px] font-bold">
                     {(['all', 'capital', 'location'] as const).map((attr) => (
                       <button
                         key={attr}
@@ -2104,14 +2069,16 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         onClick={() => {
                           soundFx.playClick();
                           setHorizonAttrFilter(attr);
+                          setAlbumPage(1);
+                          if (albumScrollRef.current) albumScrollRef.current.scrollTop = 0;
                         }}
-                        className={`rounded-full px-2.5 py-0.5 transition-colors ${
+                        className={`rounded-full px-2.5 py-0.5 transition-colors cursor-pointer ${
                           horizonAttrFilter === attr
                             ? 'bg-[#E9C46A] text-[#142534]'
                             : 'text-[#9FB3C4] hover:text-white'
                         }`}
                       >
-                        {attr === 'all' ? 'All Cards' : attr === 'capital' ? '🏛️ Capitals' : '🧭 Locations'}
+                        {attr === 'all' ? 'All Plates' : attr === 'capital' ? '🏛️ Capitals' : '🧭 Locations'}
                       </button>
                     ))}
                   </div>
@@ -2121,14 +2088,22 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                     <input
                       type="text"
                       value={horizonSearch}
-                      onChange={(e) => setHorizonSearch(e.target.value)}
+                      onChange={(e) => {
+                        setHorizonSearch(e.target.value);
+                        setAlbumPage(1);
+                        if (albumScrollRef.current) albumScrollRef.current.scrollTop = 0;
+                      }}
                       placeholder="Search country, capital, sea…"
-                      className="w-44 sm:w-56 rounded-full border border-[#F6EFE2]/20 bg-[#0E2231] pl-8 pr-7 py-1 text-xs font-medium text-[#F6EFE2] placeholder:text-[#8FA6B8]/70 focus:border-[#E9C46A] focus:outline-none"
+                      className="w-48 sm:w-60 rounded-full border border-[#F6EFE2]/20 bg-[#0C1D2B] pl-8 pr-7 py-1 text-xs font-medium text-[#F6EFE2] placeholder:text-[#8FA6B8]/70 focus:border-[#E9C46A] focus:outline-none"
                     />
                     {horizonSearch && (
                       <button
                         type="button"
-                        onClick={() => setHorizonSearch('')}
+                        onClick={() => {
+                          setHorizonSearch('');
+                          setAlbumPage(1);
+                          if (albumScrollRef.current) albumScrollRef.current.scrollTop = 0;
+                        }}
                         className="absolute right-2.5 text-[#8FA6B8] hover:text-white"
                       >
                         <X className="h-3.5 w-3.5" />
@@ -2139,62 +2114,191 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               </div>
             </div>
 
-            {/* Modal Multi-Column Scrollable Card Grid */}
-            <div className="flex-1 min-h-0 overflow-y-auto pr-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 content-start">
-              {modalHorizonCards.map((card) => {
-                const catMeta = HORIZON_CATEGORY_META[card.category];
-                const showAnswer =
-                  card.attribute === 'location' ||
-                  card.category === 'mastered' ||
-                  revealHorizonCapitals;
+            {/* 3. High-Definition 15-Cards-Per-View (5 Cols × 3 Rows) Scrollable Trophy Grid */}
+            {modalHorizonCards.length === 0 ? (
+              <div className="relative z-10 flex-1 flex flex-col items-center justify-center rounded-2xl border border-[#F6EFE2]/10 bg-[#08131E]/60 p-8 text-center">
+                <Trophy className="h-10 w-10 text-[#E9C46A]/45 mb-2" />
+                <p className={`${serifDisplay} text-base font-bold text-[#F6EFE2]`}>
+                  No Trophy Plates in This View
+                </p>
+                <p className="mt-1 text-xs text-[#9FB3C4]">
+                  Try selecting another stage tab above or clearing your search filter.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    soundFx.playClick();
+                    setSelectedHorizonCategory(null);
+                    setModalContinentFilter('All');
+                    setHorizonAttrFilter('all');
+                    setHorizonSearch('');
+                  }}
+                  className="mt-3 rounded-xl bg-[#E9C46A] px-4 py-1.5 text-xs font-extrabold text-[#142534] hover:bg-[#F3D999] cursor-pointer"
+                >
+                  Show All 432 Plates
+                </button>
+              </div>
+            ) : (
+              <div
+                ref={albumScrollRef}
+                onScroll={(e) => {
+                  const el = e.currentTarget;
+                  if (el.clientHeight > 0) {
+                    const page = Math.max(1, Math.round(el.scrollTop / el.clientHeight) + 1);
+                    if (page !== albumPage) setAlbumPage(page);
+                  }
+                }}
+                className="relative z-10 flex-1 min-h-0 overflow-y-auto pr-1.5 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 lg:auto-rows-[calc((100%-1.5rem)/3)] gap-3 snap-y snap-mandatory"
+              >
+                {modalHorizonCards.map((card, index) => {
+                  const catMeta = HORIZON_CATEGORY_META[card.category];
+                  const showAnswer =
+                    card.attribute === 'location' ||
+                    card.category === 'mastered' ||
+                    revealHorizonCapitals;
+                  const animDelay = `${(index % 15) * 18}ms`;
 
-                return (
-                  <button
-                    key={card.id}
-                    type="button"
-                    onClick={() => {
-                      soundFx.playClick();
-                      setActiveRegionLock({
-                        id: card.entityId,
-                        label: card.entityName,
-                        coords: card.coordinates
-                      });
-                      setIsHorizonModalOpen(false);
-                    }}
-                    title="Click to pinpoint on the 3D Globe"
-                    className="group relative flex items-center justify-between gap-2 overflow-hidden rounded-xl border border-[#F6EFE2]/12 bg-[#102637] p-2.5 text-left transition-all hover:border-[#E9C46A]/65 hover:bg-[#17364D] cursor-pointer"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-y-0 left-0 w-1.5"
-                      style={{ background: catMeta.color }}
-                    />
-                    <div className="flex items-center gap-2 min-w-0 pl-1.5">
-                      <span className="text-lg leading-none shrink-0 select-none">
-                        {card.flagOrEmblem}
-                      </span>
-                      <div className="min-w-0">
-                        <span className="block truncate text-xs font-extrabold text-[#F6EFE2]">
-                          {card.entityName}
-                        </span>
-                        <span className="block truncate text-[10px] font-medium text-[#9FB3C4]">
-                          {card.attributeGlyph} {showAnswer ? card.answerText : '• • • • • •'}
+                  return (
+                    <div
+                      key={card.id}
+                      style={{
+                        animation: `trophyCardReveal 280ms cubic-bezier(0.16, 1, 0.3, 1) ${animDelay} both`
+                      }}
+                      onClick={() => {
+                        soundFx.playClick();
+                        setActiveRegionLock({
+                          id: card.entityId,
+                          label: card.entityName,
+                          coords: card.coordinates
+                        });
+                        setIsHorizonModalOpen(false);
+                      }}
+                      title="Click to pinpoint on the 3D Globe"
+                      className="group relative snap-start min-h-[124px] flex flex-col justify-between overflow-hidden rounded-2xl border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132E42] via-[#0E2333] to-[#0A1824] p-3 text-left shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:border-[#E9C46A]/80 hover:shadow-[0_10px_28px_rgba(0,0,0,0.45)] cursor-pointer"
+                    >
+                      {/* Top Stage Metallic Accent Bar */}
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-x-0 top-0 h-1"
+                        style={{ background: catMeta.color }}
+                      />
+
+                      {/* Row 1: Framed Flag Medallion + Plate Code + Stage Trophy Badge */}
+                      <div className="flex items-start justify-between gap-2 pt-0.5">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-[#F6EFE2]/20 bg-[#08131E] text-xl shadow-inner select-none group-hover:scale-105 transition-transform">
+                            {card.flagOrEmblem}
+                          </span>
+                          <div className="min-w-0">
+                            <span className="block font-mono text-[9px] font-bold uppercase tracking-wider text-[#8FA6B8] truncate">
+                              {card.plateCode}
+                            </span>
+                            <span className="block text-[9px] font-extrabold uppercase tracking-wider text-[#E9C46A] truncate">
+                              {card.continent}
+                            </span>
+                          </div>
+                        </div>
+
+                        <span
+                          className={`shrink-0 rounded-lg border px-2 py-0.5 font-mono text-[9px] font-black shadow-sm ${catMeta.badgeCls}`}
+                        >
+                          {card.trophyGlyph} {card.shortBadge}
                         </span>
                       </div>
+
+                      {/* Row 2: High-Definition Entity Title & Coordinates */}
+                      <div className="my-1 min-w-0">
+                        <h4 className={`${serifDisplay} truncate text-sm font-black leading-snug text-[#F6EFE2] group-hover:text-[#FFF3B0] transition-colors`}>
+                          {card.entityName}
+                        </h4>
+                        <p className="truncate text-[10px] font-medium text-[#9FB3C4]">
+                          {card.subregion} · <span className="font-mono text-[9px] text-[#8FA6B8]">{card.coordText}</span>
+                        </p>
+                      </div>
+
+                      {/* Row 3: Inset Velvet Attribute Plate & SRS Telemetry */}
+                      <div className="flex items-center justify-between gap-1.5 rounded-xl border border-[#F6EFE2]/12 bg-[#07111B]/90 px-2.5 py-1.5">
+                        <div className="min-w-0 flex-1">
+                          <span className="block text-[8px] font-extrabold uppercase tracking-wider text-[#8FA6B8]">
+                            {card.attributeGlyph} {card.attributeLabel}
+                          </span>
+                          <span className="block truncate text-[11px] font-extrabold text-[#F6EFE2]">
+                            {showAnswer ? card.answerText : '• • • • • •'}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-1 shrink-0">
+                          {card.attribute === 'capital' && showAnswer && (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                soundFx.playClick();
+                                speechEngine.speak(card.answerText);
+                              }}
+                              title={`Pronounce ${card.answerText}`}
+                              className="flex h-6 w-6 items-center justify-center rounded-lg border border-[#F6EFE2]/15 bg-[#122B3E] text-[#D6CBB9] hover:bg-[#D94E34] hover:text-white transition-colors"
+                            >
+                              <Volume2 className="h-3 w-3" />
+                            </button>
+                          )}
+                          <span className="rounded-md bg-[#102637] px-1.5 py-0.5 font-mono text-[9px] font-bold text-[#9FB3C4]">
+                            {card.reps > 0 ? `${card.reps}×` : 'New'}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex flex-col items-end gap-1 shrink-0">
-                      <span
-                        className={`rounded-md border px-1.5 py-0.5 font-mono text-[9px] font-bold ${catMeta.badgeCls}`}
-                      >
-                        {card.statusBadge}
-                      </span>
-                      <span className="text-[8px] font-bold uppercase tracking-wider text-[#8FA6B8] group-hover:text-[#E9C46A]">
-                        {card.continent}
-                      </span>
-                    </div>
-                  </button>
-                );
-              })}
+                  );
+                })}
+              </div>
+            )}
+
+            {/* 4. Trophy Album Footer Navigation (15 Cards per View Pager) */}
+            <div className="relative z-10 shrink-0 mt-3 pt-2.5 border-t border-[#F6EFE2]/12 flex flex-wrap items-center justify-between gap-2 text-xs">
+              <div className="flex items-center gap-2 text-[#9FB3C4]">
+                <span className="font-mono text-[11px] font-bold text-[#F6EFE2]">
+                  Page {albumPage} of {Math.max(1, Math.ceil(modalHorizonCards.length / 15))}
+                </span>
+                <span>·</span>
+                <span className="text-[11px]">
+                  Showing <strong>15 high-definition plates per view</strong> ({modalHorizonCards.length} total matching)
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  disabled={albumPage <= 1}
+                  onClick={() => {
+                    soundFx.playClick();
+                    if (albumScrollRef.current) {
+                      albumScrollRef.current.scrollBy({
+                        top: -albumScrollRef.current.clientHeight,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                  className="rounded-xl border border-[#F6EFE2]/15 bg-[#0C1D2B] px-3 py-1 text-xs font-extrabold text-[#F6EFE2] disabled:opacity-35 hover:border-[#E9C46A] transition-colors cursor-pointer disabled:cursor-default"
+                >
+                  ← Prev 15
+                </button>
+                <button
+                  type="button"
+                  disabled={albumPage >= Math.ceil(modalHorizonCards.length / 15)}
+                  onClick={() => {
+                    soundFx.playClick();
+                    if (albumScrollRef.current) {
+                      albumScrollRef.current.scrollBy({
+                        top: albumScrollRef.current.clientHeight,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                  className="rounded-xl border border-[#F6EFE2]/15 bg-[#0C1D2B] px-3 py-1 text-xs font-extrabold text-[#F6EFE2] disabled:opacity-35 hover:border-[#E9C46A] transition-colors cursor-pointer disabled:cursor-default"
+                >
+                  Next 15 →
+                </button>
+              </div>
             </div>
           </div>
         </div>
