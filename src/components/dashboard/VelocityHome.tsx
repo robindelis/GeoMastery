@@ -669,6 +669,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   }, [data.mastery, data.regions]);
 
   const [selectedHorizonCategory, setSelectedHorizonCategory] = useState<HorizonCategory | null>(null);
+  const [glanceStageFilter, setGlanceStageFilter] = useState<HorizonCategory | 'mix'>('mix');
   const [horizonAttrFilter, setHorizonAttrFilter] = useState<'all' | 'capital' | 'location'>('all');
   const [horizonSearch, setHorizonSearch] = useState('');
   const [revealHorizonCapitals, setRevealHorizonCapitals] = useState(false);
@@ -833,6 +834,21 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     });
     byCategory.unseen.sort((a, b) => a.entityName.localeCompare(b.entityName));
 
+    // Build a balanced 6-card default "Glance" sample interleaving active categories
+    const glanceMix: HorizonCardEntry[] = [];
+    const pools = [byCategory.recall, byCategory.learning, byCategory.mastered, byCategory.unseen].filter(
+      (p) => p.length > 0
+    );
+    let idx = 0;
+    while (glanceMix.length < 6 && pools.some((p) => idx < p.length)) {
+      for (const pool of pools) {
+        if (idx < pool.length && glanceMix.length < 6) {
+          glanceMix.push(pool[idx]);
+        }
+      }
+      idx++;
+    }
+
     const allCards = [
       ...byCategory.mastered,
       ...byCategory.recall,
@@ -842,9 +858,17 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
     return {
       byCategory,
+      glanceMix,
       allCards
     };
   }, [srsItemsMap]);
+
+  const glanceShowcaseCards = useMemo(() => {
+    if (glanceStageFilter === 'mix') {
+      return horizonCatalog.glanceMix.slice(0, 6);
+    }
+    return horizonCatalog.byCategory[glanceStageFilter].slice(0, 6);
+  }, [horizonCatalog, glanceStageFilter]);
 
   /**
    * Real composition of the upcoming training session.
@@ -1127,8 +1151,8 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
         <div className="flex-1 min-h-0 grid grid-cols-12 gap-3.5 overflow-hidden">
           {/* ══ LEFT COLUMN (5 Cols): 3 PURPOSEFUL STACKED SECTIONS ══ */}
           <div className="col-span-12 lg:col-span-5 flex flex-col justify-between gap-2.5 min-h-0 overflow-hidden">
-            {/* Section 1: Expedition Launch Deck (Flexible Hero Card) */}
-            <div className="relative flex-1 min-h-0 flex flex-col overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
+            {/* Section 1: Expedition Launch Deck (Shrink-0, Content Sized) */}
+            <div className="relative shrink-0 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
               <div className="shrink-0">
                 {/* Eyebrow badge */}
                 <div className="inline-flex items-center gap-1.5 rounded-full border border-[#D94E34]/35 bg-[#D94E34]/15 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#F4A261]">
@@ -1186,22 +1210,20 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 </div>
               </div>
 
-              {/* Hero Call-To-Action: Start Training (Fills the deck's free space) */}
-              <div className="flex min-h-0 flex-1 flex-col justify-center py-2.5">
-                <button
-                  onClick={() => {
-                    soundFx.playClick();
-                    onStartSession('All', selectedAttributes, data.isCaughtUp('All'));
-                  }}
-                  className="group flex max-h-64 min-h-[5rem] w-full flex-1 items-center justify-center gap-3 rounded-2xl border border-[#F4A261]/50 bg-gradient-to-r from-[#E05A3D] via-[#D94E34] to-[#BB3D24] px-6 py-4 text-lg font-black uppercase tracking-[0.06em] text-[#FFF8E7] shadow-[0_14px_34px_-10px_rgba(217,78,52,0.95)] transition-all hover:brightness-110 hover:shadow-[0_16px_40px_-10px_rgba(217,78,52,1)] active:scale-[0.985]"
-                >
-                  <Play className="h-6 w-6 shrink-0 fill-current" />
-                  <span>{data.isCaughtUp('All') ? 'Practice World' : 'Start Training'}</span>
-                  <span className="rounded-full bg-black/30 px-3 py-1 font-mono text-sm font-bold">
-                    {data.isCaughtUp('All') ? data.totalWorldEntities : dueValue}
-                  </span>
-                </button>
-              </div>
+              {/* Hero Call-To-Action: Start Training (Normal-Sized Primary Button) */}
+              <button
+                onClick={() => {
+                  soundFx.playClick();
+                  onStartSession('All', selectedAttributes, data.isCaughtUp('All'));
+                }}
+                className="group mt-3.5 flex w-full items-center justify-center gap-2.5 rounded-xl border border-[#F4A261]/50 bg-gradient-to-r from-[#E05A3D] via-[#D94E34] to-[#BB3D24] px-5 py-2.5 text-sm font-black uppercase tracking-[0.06em] text-[#FFF8E7] shadow-[0_8px_20px_-10px_rgba(217,78,52,0.95)] transition-all hover:brightness-110 hover:shadow-[0_10px_24px_-10px_rgba(217,78,52,1)] active:scale-[0.985]"
+              >
+                <Play className="h-4 w-4 shrink-0 fill-current" />
+                <span>{data.isCaughtUp('All') ? 'Practice World' : 'Start Training'}</span>
+                <span className="rounded-full bg-black/30 px-2.5 py-0.5 font-mono text-xs font-bold">
+                  {data.isCaughtUp('All') ? data.totalWorldEntities : dueValue}
+                </span>
+              </button>
 
               {/* Real Next-Session Mix (computed from the live SRS queue builder) */}
               <div className="mt-2.5 shrink-0 flex flex-wrap items-center justify-between gap-1.5 text-[10px]">
@@ -1245,8 +1267,8 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               </div>
             </div>
 
-            {/* Section 2: Memory Horizon & Smart Queue Intelligence Card (Compact) */}
-            <div className="relative shrink-0 flex flex-col gap-2.5 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
+            {/* Section 2: Memory Horizon & Smart Queue Intelligence Card (Flex-1, Absorbs Free Height) */}
+            <div className="relative flex-1 min-h-0 flex flex-col gap-2.5 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
               {/* Header + Mastery Ring */}
               <div className="shrink-0 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
@@ -1336,6 +1358,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 <div className="grid grid-cols-4 gap-1.5">
                   {HORIZON_CATEGORY_ORDER.map((cat) => {
                     const meta = HORIZON_CATEGORY_META[cat];
+                    const isGlanceActive = glanceStageFilter === cat;
                     const count = cardTelemetry[cat];
 
                     return (
@@ -1344,7 +1367,9 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         type="button"
                         onClick={() => openTrophyAlbum(cat)}
                         title={`Click to open ${meta.label} Trophy Album (${count} cards)`}
-                        className={`group rounded-xl border px-2 py-1.5 text-left flex flex-col justify-between transition-all cursor-pointer active:scale-[0.97] ${meta.tileIdleCls}`}
+                        className={`group rounded-xl border px-2 py-1.5 text-left flex flex-col justify-between transition-all cursor-pointer active:scale-[0.97] ${
+                          isGlanceActive ? meta.tileActiveCls : meta.tileIdleCls
+                        }`}
                       >
                         <div className="flex items-center justify-between gap-1 w-full">
                           <span className={`text-[10px] font-bold ${meta.textCls} flex items-center gap-1 min-w-0 truncate`}>
@@ -1360,6 +1385,140 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                           <span className="flex shrink-0 items-center gap-0.5 text-[8px] font-extrabold uppercase tracking-wider text-[#9FB3C4] opacity-75 group-hover:opacity-100 group-hover:text-[#F6EFE2] transition-opacity">
                             <span>Album</span>
                             <Maximize2 className="h-2 w-2" />
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Default 6-Card Trophy Showcase Glance (Never Squishes, Fills Middle Space Cleanly) */}
+              <div className="flex-1 min-h-0 flex flex-col justify-between overflow-hidden rounded-xl border border-[#F6EFE2]/12 bg-[#0A1926]/80 p-2.5 shadow-inner">
+                {/* Glance Showcase Toolbar */}
+                <div className="shrink-0 flex items-center justify-between gap-2 pb-1.5 border-b border-[#F6EFE2]/10">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <Trophy className="h-3.5 w-3.5 shrink-0 text-[#E9C46A]" />
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#F6EFE2] truncate">
+                      Horizon Glance
+                    </span>
+                    <div className="hidden sm:flex items-center gap-1 ml-1">
+                      {(['mix', 'mastered', 'recall', 'learning'] as const).map((mode) => {
+                        const active = glanceStageFilter === mode;
+                        const label =
+                          mode === 'mix'
+                            ? 'Mix'
+                            : HORIZON_CATEGORY_META[mode].label;
+                        return (
+                          <button
+                            key={mode}
+                            type="button"
+                            onClick={() => {
+                              soundFx.playClick();
+                              setGlanceStageFilter(mode);
+                            }}
+                            className={`rounded-full px-2 py-0.5 text-[9px] font-bold transition-colors cursor-pointer ${
+                              active
+                                ? 'bg-[#E9C46A] text-[#142534]'
+                                : 'bg-[#102637] text-[#9FB3C4] hover:text-white'
+                            }`}
+                          >
+                            {label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        soundFx.playClick();
+                        setRevealHorizonCapitals((v) => !v);
+                      }}
+                      title={revealHorizonCapitals ? 'Hide unmastered capitals' : 'Reveal capitals'}
+                      className={`flex h-5 w-5 items-center justify-center rounded-full border transition-colors cursor-pointer ${
+                        revealHorizonCapitals
+                          ? 'border-[#E9C46A] bg-[#E9C46A]/20 text-[#E9C46A]'
+                          : 'border-[#F6EFE2]/15 bg-[#0E2231] text-[#9FB3C4] hover:text-white'
+                      }`}
+                    >
+                      {revealHorizonCapitals ? <EyeOff className="h-2.5 w-2.5" /> : <Eye className="h-2.5 w-2.5" />}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        openTrophyAlbum(glanceStageFilter === 'mix' ? 'mastered' : glanceStageFilter)
+                      }
+                      className="flex items-center gap-1 rounded-full border border-[#E9C46A]/40 bg-[#E9C46A]/15 px-2.5 py-0.5 text-[9px] font-extrabold text-[#E9C46A] hover:bg-[#E9C46A] hover:text-[#142534] transition-colors cursor-pointer"
+                    >
+                      <span>Open Trophy Album</span>
+                      <ChevronRight className="h-2.5 w-2.5" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Fixed 2x3 (6-Card) Compact Glance Grid */}
+                <div className="flex-1 min-h-0 pt-1.5 grid grid-cols-2 grid-rows-3 gap-1.5">
+                  {glanceShowcaseCards.map((card) => {
+                    const catMeta = HORIZON_CATEGORY_META[card.category];
+                    const isGlobeLocked = activeRegionLock?.id === card.entityId;
+                    const showAnswer =
+                      card.attribute === 'location' ||
+                      card.category === 'mastered' ||
+                      revealHorizonCapitals;
+
+                    return (
+                      <button
+                        key={card.id}
+                        type="button"
+                        onClick={() => {
+                          soundFx.playClick();
+                          setActiveRegionLock({
+                            id: card.entityId,
+                            label: card.entityName,
+                            coords: card.coordinates
+                          });
+                        }}
+                        onDoubleClick={() => openTrophyAlbum(card.category)}
+                        title={`${card.entityName} (${card.attributeLabel}) · Click to center on Globe · Double-click to open Trophy Album`}
+                        className={`group relative min-h-0 flex items-center justify-between gap-2.5 overflow-hidden rounded-lg border py-1 pl-3 pr-2.5 text-left transition-all cursor-pointer ${
+                          isGlobeLocked
+                            ? 'border-[#E9C46A] bg-[#1A3E58] shadow-md'
+                            : 'border-[#F6EFE2]/12 bg-gradient-to-r from-[#122B3E] to-[#0E2232] hover:border-[#E9C46A]/55 hover:from-[#17374F] hover:to-[#112A3D]'
+                        }`}
+                      >
+                        {/* Left Category Pigment Spine */}
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute inset-y-0 left-0 w-1"
+                          style={{ background: catMeta.color }}
+                        />
+
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md border border-[#F6EFE2]/15 bg-[#091622] text-sm shadow-inner select-none">
+                            {card.flagOrEmblem}
+                          </span>
+                          <div className="min-w-0">
+                            <span className={`${serifDisplay} block truncate text-xs font-black leading-tight text-[#F6EFE2]`}>
+                              {card.entityName}
+                            </span>
+                            <span className="block truncate text-[10px] font-semibold text-[#9FB3C4]">
+                              {card.attributeGlyph} {showAnswer ? card.answerText : '• • • • • •'}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col items-end gap-0.5 shrink-0">
+                          <span
+                            className={`rounded-md border px-1.5 py-0.5 font-mono text-[8px] font-extrabold ${catMeta.badgeCls}`}
+                          >
+                            {card.trophyGlyph} {card.shortBadge}
+                          </span>
+                          <span className="text-[8px] font-bold uppercase tracking-wider text-[#8FA6B8]">
+                            {card.continent}
                           </span>
                         </div>
                       </button>
