@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-16T20:15:34.493Z",
+  "exportedAt": "2026-10-16T20:15:41.176Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11010,14 +11010,14 @@
         "id": "WATER_SEA_NORTH:location",
         "countryId": "WATER_SEA_NORTH",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.65,
+        "intervalDays": 28,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-06T13:15:09.361Z",
-        "nextDueAt": "2026-10-07T13:15:09.361Z",
+        "lastReviewedAt": "2026-10-16T20:15:38.067Z",
+        "nextDueAt": "2026-11-13T20:15:38.067Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:18:12.063Z",
@@ -11032,11 +11032,21 @@
             "userAnswer": "North Sea",
             "isCorrect": true,
             "timeSpentMs": 4364
+          },
+          {
+            "timestamp": "2026-10-16T20:15:38.067Z",
+            "inputMode": "map_click",
+            "userAnswer": "North Sea",
+            "isCorrect": true,
+            "timeSpentMs": 5362,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 4.26
+        "stability": 28.24,
+        "difficulty": 4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -18341,8 +18351,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1318,
-    "totalCorrect": 965,
+    "totalReviews": 1319,
+    "totalCorrect": 966,
     "currentStreak": 3,
     "longestStreak": 3,
     "lastReviewDate": "2026-10-16",
@@ -18374,7 +18384,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-16T20:15:31.207Z"
+    "updatedAt": "2026-10-16T20:15:38.070Z"
   },
   "settings": {
     "audioEnabled": true,
