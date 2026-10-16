@@ -642,7 +642,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   } = props;
 
   const data = useHomeData(srsItemsMap, stats, selectedAttributes);
-  const due = useDueBreakdown(srsItemsMap, selectedAttributes);
+  const due = useDueBreakdown(srsItemsMap, ['capital', 'location']);
 
   const [revealCapital, setRevealCapital] = useState(false);
   const [showToken, setShowToken] = useState(false);
@@ -882,6 +882,11 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
    * surfaces the card that is next in line to enter it (recall -> mastered,
    * learning -> recall, unseen -> learning) so the column never reads as broken.
    */
+  const deckSlotCount = useMemo(
+    () => Math.max(DECK_MAX_CARDS, Math.min(9, Math.round(deckAreaHeight / 58))),
+    [deckAreaHeight]
+  );
+
   const horizonDeckPeek = useMemo(
     () =>
       HORIZON_CATEGORY_ORDER.map((category) => {
@@ -897,12 +902,12 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
         return {
           category,
-          cards: cards.slice(0, DECK_MAX_CARDS),
+          cards: cards.slice(0, deckSlotCount),
           hasCards: cards.length > 0,
           nextInLine
         };
       }),
-    [horizonCatalog]
+    [horizonCatalog, deckSlotCount]
   );
 
   /**
@@ -991,18 +996,60 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const capBadge = getSpotlightCardBadge(spotlightCapItem);
   const locBadge = getSpotlightCardBadge(spotlightLocItem);
 
+  const attributeTelemetry = useMemo(() => {
+    let capMastered = 0;
+    let locMastered = 0;
+
+    for (const country of COUNTRIES) {
+      if (classifyCardHorizon(srsItemsMap.get(`${country.id}:capital`)) === 'mastered') {
+        capMastered += 1;
+      }
+      if (classifyCardHorizon(srsItemsMap.get(`${country.id}:location`)) === 'mastered') {
+        locMastered += 1;
+      }
+    }
+    for (const wb of WATER_BODIES) {
+      if (classifyCardHorizon(srsItemsMap.get(`${wb.id}:location`)) === 'mastered') {
+        locMastered += 1;
+      }
+    }
+
+    const capTotal = COUNTRIES.length;
+    const locTotal = COUNTRIES.length + WATER_BODIES.length;
+    return {
+      capital: {
+        mastered: capMastered,
+        total: capTotal,
+        pct: Math.round((capMastered / capTotal) * 100)
+      },
+      location: {
+        mastered: locMastered,
+        total: locTotal,
+        pct: Math.round((locMastered / locTotal) * 100)
+      }
+    };
+  }, [srsItemsMap]);
+
   const focusOptions = [
     {
       attr: 'capital' as const,
       label: 'Capitals',
+      subtitle: 'Active recall & typing',
       detail: `${due.capital} due`,
-      glyph: '🏛️'
+      glyph: '🏛️',
+      mastered: attributeTelemetry.capital.mastered,
+      total: attributeTelemetry.capital.total,
+      pct: attributeTelemetry.capital.pct
     },
     {
       attr: 'location' as const,
       label: 'Locations',
+      subtitle: 'Map & globe pinpointing',
       detail: `${due.location} due`,
-      glyph: '🧭'
+      glyph: '🧭',
+      mastered: attributeTelemetry.location.mastered,
+      total: attributeTelemetry.location.total,
+      pct: attributeTelemetry.location.pct
     }
   ];
 
@@ -1186,10 +1233,10 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
         <div className="flex-1 min-h-0 grid grid-cols-12 gap-3.5 overflow-hidden">
           {/* ══ LEFT COLUMN (5 Cols): 3 PURPOSEFUL STACKED SECTIONS ══ */}
           <div className="col-span-12 lg:col-span-5 flex flex-col justify-between gap-2.5 min-h-0 overflow-hidden">
-            {/* Section 1: Expedition Launch Deck (Shares the Column Height with the Memory Horizon Card) */}
-            <div className="relative flex min-h-[20rem] flex-1 flex-col justify-between gap-2.5 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
+            {/* Section 1: Expedition Launch Deck (Content-Sized, Zero Dead Space) */}
+            <div className="relative flex shrink-0 flex-col gap-3 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
+              {/* Top Header */}
               <div className="shrink-0">
-                {/* Eyebrow badge */}
                 <div className="inline-flex items-center gap-1.5 rounded-full border border-[#D94E34]/35 bg-[#D94E34]/15 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#F4A261]">
                   <Sparkles className="h-3 w-3 text-[#E9C46A]" />
                   <span>
@@ -1199,108 +1246,211 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                   </span>
                 </div>
 
-                {/* Title */}
-                <h1 className={`${serifDisplay} mt-2 text-2xl xl:text-[1.75rem] font-black leading-tight tracking-tight text-[#F6EFE2]`}>
+                <h1 className={`${serifDisplay} mt-1.5 text-2xl xl:text-[1.75rem] font-black leading-tight tracking-tight text-[#F6EFE2]`}>
                   Learn the World <span className="italic font-bold text-[#E9C46A]">by Heart.</span>
                 </h1>
 
-                {/* Subtitle */}
                 <p className="mt-1 text-xs font-medium leading-snug text-[#9FB3C4]">
                   FSRS-6 DSR & ACT-R latency scheduling adapts stability (S) and retrievability (R) per card while weaving in long-term retention checks.
                 </p>
+              </div>
 
-                {/* Study Focus Toggles */}
-                <div className="mt-2.5 flex flex-wrap items-center gap-2">
-                  <span className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#8FA6B8]">
-                    Focus:
-                  </span>
-                  {focusOptions.map((opt) => {
-                    const active = selectedAttributes.includes(opt.attr);
-                    return (
-                      <button
-                        key={opt.attr}
-                        onClick={() => {
-                          soundFx.playClick();
-                          onToggleAttribute(opt.attr);
-                        }}
-                        aria-pressed={active}
-                        className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold transition-all active:scale-95 ${
-                          active
-                            ? 'border-[#E9C46A] bg-[#E9C46A]/20 text-[#F6EFE2] shadow-sm'
-                            : 'border-[#F6EFE2]/15 bg-[#0C1D2B] text-[#9FB3C4] hover:border-[#F6EFE2]/40'
-                        }`}
-                      >
-                        <span>{opt.glyph}</span>
-                        <span>{opt.label}</span>
+              {/* 2-Column Interactive Study Focus Deck */}
+              <div className="grid shrink-0 grid-cols-2 gap-2.5">
+                {focusOptions.map((opt) => {
+                  const active = selectedAttributes.includes(opt.attr);
+                  return (
+                    <button
+                      key={opt.attr}
+                      type="button"
+                      onClick={() => {
+                        soundFx.playClick();
+                        onToggleAttribute(opt.attr);
+                      }}
+                      aria-pressed={active}
+                      className={`group relative flex flex-col justify-between gap-2 overflow-hidden rounded-xl border px-3.5 py-2.5 text-left transition-all cursor-pointer active:scale-[0.98] ${
+                        active
+                          ? 'border-[#E9C46A]/65 bg-gradient-to-b from-[#E9C46A]/18 to-[#0C1D2B]/90 text-[#F6EFE2] shadow-sm'
+                          : 'border-[#F6EFE2]/15 bg-[#0C1D2B]/70 text-[#9FB3C4] opacity-75 hover:border-[#F6EFE2]/35 hover:opacity-100'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span
+                            className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg border text-base ${
+                              active
+                                ? 'border-[#E9C46A]/50 bg-[#091622] shadow-inner'
+                                : 'border-[#F6EFE2]/10 bg-[#091622]/60'
+                            }`}
+                          >
+                            {opt.glyph}
+                          </span>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5">
+                              <span className="truncate text-xs font-extrabold text-[#F6EFE2]">
+                                {opt.label}
+                              </span>
+                              <span
+                                className={`h-1.5 w-1.5 shrink-0 rounded-full ${
+                                  active ? 'bg-[#E9C46A]' : 'bg-[#8FA6B8]/40'
+                                }`}
+                              />
+                            </div>
+                            <p className="truncate text-[10px] font-medium text-[#9FB3C4]">
+                              {opt.subtitle}
+                            </p>
+                          </div>
+                        </div>
+
                         <span
-                          className={`rounded-full px-1.5 py-0.2 font-mono text-[10px] font-bold ${
-                            active ? 'bg-[#E9C46A] text-[#142534]' : 'bg-[#153247] text-[#9FB3C4]'
+                          className={`shrink-0 rounded-full px-2.5 py-0.5 font-mono text-[10px] font-extrabold ${
+                            active
+                              ? 'bg-[#E9C46A] text-[#142534]'
+                              : 'bg-[#153247] text-[#9FB3C4]'
                           }`}
                         >
                           {opt.detail}
                         </span>
-                      </button>
-                    );
-                  })}
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#091622]">
+                          <div
+                            className={`h-full rounded-full transition-all duration-500 ${
+                              active ? 'bg-[#E9C46A]' : 'bg-[#8FA6B8]/50'
+                            }`}
+                            style={{ width: `${opt.pct}%` }}
+                          />
+                        </div>
+                        <span className="shrink-0 font-mono text-[9px] font-bold text-[#9FB3C4]">
+                          {opt.mastered}/{opt.total} ({opt.pct}%)
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Recessed Session Launch Console (Anchors Start Training + Next-Session Mix Together) */}
+              <div className="flex shrink-0 flex-col gap-2.5 rounded-2xl border border-[#F6EFE2]/12 bg-[#0A1926]/80 p-3 shadow-inner">
+                {/* Primary Hero CTA: Start Training */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    soundFx.playClick();
+                    onStartSession('All', selectedAttributes, data.isCaughtUp('All'));
+                  }}
+                  className="group flex w-full items-center justify-center gap-3 rounded-xl border border-[#F4A261]/55 bg-gradient-to-r from-[#E05A3D] via-[#D94E34] to-[#BB3D24] px-5 py-3 text-sm xl:text-base font-black uppercase tracking-[0.07em] text-[#FFF8E7] shadow-[0_10px_24px_-10px_rgba(217,78,52,0.95)] transition-all hover:brightness-110 hover:shadow-[0_12px_28px_-8px_rgba(217,78,52,1)] active:scale-[0.985] cursor-pointer"
+                >
+                  <Play className="h-4 w-4 xl:h-5 xl:w-5 shrink-0 fill-current transition-transform group-hover:translate-x-0.5" />
+                  <span>{data.isCaughtUp('All') ? 'Practice World' : 'Start Training'}</span>
+                  <span className="rounded-full bg-black/30 px-2.5 py-0.5 font-mono text-xs font-bold">
+                    {data.isCaughtUp('All') ? data.totalWorldEntities : dueValue}
+                  </span>
+                </button>
+
+                {/* Next-Session 15-Card Queue Briefing + 4-Stage Proportional Breakdown */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex items-center justify-between gap-2 text-[10px]">
+                    <span className="flex items-center gap-1.5 font-extrabold uppercase tracking-wider text-[#D6CBB9]">
+                      <Target className="h-3 w-3 text-[#E9C46A]" />
+                      Next Session Queue · {nextSessionMix.total} Cards
+                    </span>
+                    <div className="flex h-1.5 w-32 sm:w-40 overflow-hidden rounded-full bg-[#0C1D2B] p-[1px]">
+                      {nextSessionMix.total > 0 && (
+                        <>
+                          <div
+                            className="h-full bg-[#38BDF8] transition-all duration-300"
+                            style={{ width: `${(nextSessionMix.unseen / nextSessionMix.total) * 100}%` }}
+                          />
+                          <div
+                            className="h-full bg-[#F4A261] transition-all duration-300"
+                            style={{ width: `${(nextSessionMix.learning / nextSessionMix.total) * 100}%` }}
+                          />
+                          <div
+                            className="h-full bg-[#E9C46A] transition-all duration-300"
+                            style={{ width: `${(nextSessionMix.recall / nextSessionMix.total) * 100}%` }}
+                          />
+                          <div
+                            className="h-full bg-[#10B981] transition-all duration-300"
+                            style={{ width: `${(nextSessionMix.mastered / nextSessionMix.total) * 100}%` }}
+                          />
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-1.5">
+                    <div className="flex flex-col justify-between gap-0.5 rounded-xl border border-[#38BDF8]/30 bg-[#38BDF8]/10 px-2.5 py-1.5">
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="truncate text-[10px] font-bold text-[#38BDF8]">🎯 Unseen</span>
+                        <span className="font-mono text-sm font-black leading-none text-[#F6EFE2]">
+                          {nextSessionMix.unseen}
+                        </span>
+                      </div>
+                      <span className="truncate text-[8px] font-semibold uppercase tracking-wider text-[#8FA6B8]">
+                        Fresh discovery
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col justify-between gap-0.5 rounded-xl border border-[#F4A261]/30 bg-[#F4A261]/10 px-2.5 py-1.5">
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="truncate text-[10px] font-bold text-[#F4A261]">🌱 Learning</span>
+                        <span className="font-mono text-sm font-black leading-none text-[#F6EFE2]">
+                          {nextSessionMix.learning}
+                        </span>
+                      </div>
+                      <span className="truncate text-[8px] font-semibold uppercase tracking-wider text-[#8FA6B8]">
+                        L0–L1 acquire
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col justify-between gap-0.5 rounded-xl border border-[#E9C46A]/30 bg-[#E9C46A]/10 px-2.5 py-1.5">
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="truncate text-[10px] font-bold text-[#E9C46A]">🧠 Recall</span>
+                        <span className="font-mono text-sm font-black leading-none text-[#F6EFE2]">
+                          {nextSessionMix.recall}
+                        </span>
+                      </div>
+                      <span className="truncate text-[8px] font-semibold uppercase tracking-wider text-[#8FA6B8]">
+                        Due FSRS queue
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col justify-between gap-0.5 rounded-xl border border-[#10B981]/30 bg-[#10B981]/10 px-2.5 py-1.5">
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="truncate text-[10px] font-bold text-[#10B981]">🛡️ Mastered</span>
+                        <span className="font-mono text-sm font-black leading-none text-[#F6EFE2]">
+                          {nextSessionMix.mastered}
+                        </span>
+                      </div>
+                      <span className="truncate text-[8px] font-semibold uppercase tracking-wider text-[#8FA6B8]">
+                        Retention check
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Hero Call-To-Action: Start Training (Normal-Sized Primary Button) */}
-              <button
-                onClick={() => {
-                  soundFx.playClick();
-                  onStartSession('All', selectedAttributes, data.isCaughtUp('All'));
-                }}
-                className="group flex w-full items-center justify-center gap-2.5 rounded-xl border border-[#F4A261]/50 bg-gradient-to-r from-[#E05A3D] via-[#D94E34] to-[#BB3D24] px-5 py-2.5 text-sm font-black uppercase tracking-[0.06em] text-[#FFF8E7] shadow-[0_8px_20px_-10px_rgba(217,78,52,0.95)] transition-all hover:brightness-110 hover:shadow-[0_10px_24px_-10px_rgba(217,78,52,1)] active:scale-[0.985]"
-              >
-                <Play className="h-4 w-4 shrink-0 fill-current" />
-                <span>{data.isCaughtUp('All') ? 'Practice World' : 'Start Training'}</span>
-                <span className="rounded-full bg-black/30 px-2.5 py-0.5 font-mono text-xs font-bold">
-                  {data.isCaughtUp('All') ? data.totalWorldEntities : dueValue}
-                </span>
-              </button>
+              {/* Secondary Deck Shortcuts */}
+              <div className="shrink-0 grid grid-cols-2 gap-2.5">
+                <button
+                  type="button"
+                  onClick={onOpenAtlas}
+                  className="flex items-center justify-center gap-1.5 rounded-xl border border-[#F6EFE2]/15 bg-[#0C1D2B] px-3 py-2 text-xs font-extrabold uppercase tracking-[0.05em] text-[#F6EFE2] transition-colors hover:border-[#E9C46A] hover:text-[#E9C46A] cursor-pointer"
+                >
+                  <Compass className="h-3.5 w-3.5" />
+                  <span>Atlas</span>
+                </button>
 
-              <div className="flex flex-col gap-2">
-                {/* Real Next-Session Mix (computed from the live SRS queue builder) */}
-                <div className="flex flex-wrap items-center justify-between gap-1.5 text-[10px]">
-                  <span className="font-extrabold uppercase tracking-wider text-[#9FB3C4] flex items-center gap-1">
-                    <Target className="h-3 w-3 text-[#E9C46A]" />
-                    Next Session · {nextSessionMix.total} Cards:
-                  </span>
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="px-2 py-0.5 rounded-full bg-[#38BDF8]/15 border border-[#38BDF8]/30 font-bold text-[#38BDF8]">
-                      🎯 {nextSessionMix.unseen} Unseen
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full bg-[#F4A261]/15 border border-[#F4A261]/30 font-bold text-[#F4A261]">
-                      🌱 {nextSessionMix.learning} Learning
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full bg-[#E9C46A]/15 border border-[#E9C46A]/30 font-bold text-[#E9C46A]">
-                      🧠 {nextSessionMix.recall} Recall
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full bg-[#10B981]/15 border border-[#10B981]/30 font-bold text-[#10B981]">
-                      🛡️ {nextSessionMix.mastered} Mastered
-                    </span>
-                  </div>
-                </div>
-
-                {/* Secondary Deck Shortcuts */}
-                <div className="grid grid-cols-2 gap-2.5">
-                  <button
-                    onClick={onOpenAtlas}
-                    className="flex items-center justify-center gap-1.5 rounded-xl border border-[#F6EFE2]/15 bg-[#0C1D2B] px-3 py-2 text-xs font-extrabold uppercase tracking-[0.05em] text-[#F6EFE2] transition-colors hover:border-[#E9C46A] hover:text-[#E9C46A]"
-                  >
-                    <Compass className="h-3.5 w-3.5" />
-                    <span>Atlas</span>
-                  </button>
-
-                  <button
-                    onClick={onOpenArcade}
-                    className="flex items-center justify-center gap-1.5 rounded-xl border border-[#D94E34]/40 bg-[#D94E34]/15 px-3 py-2 text-xs font-extrabold uppercase tracking-[0.05em] text-[#F6EFE2] transition-colors hover:bg-[#D94E34]/30"
-                  >
-                    <Zap className="h-3.5 w-3.5 fill-[#D94E34] text-[#D94E34]" />
-                    <span>Arcade</span>
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={onOpenArcade}
+                  className="flex items-center justify-center gap-1.5 rounded-xl border border-[#D94E34]/40 bg-[#D94E34]/15 px-3 py-2 text-xs font-extrabold uppercase tracking-[0.05em] text-[#F6EFE2] transition-colors hover:bg-[#D94E34]/30 cursor-pointer"
+                >
+                  <Zap className="h-3.5 w-3.5 fill-[#D94E34] text-[#D94E34]" />
+                  <span>Arcade</span>
+                </button>
               </div>
             </div>
 
@@ -1440,23 +1590,27 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                   const showAnswer =
                     faceCard?.attribute === 'location' || category === 'mastered' || revealHorizonCapitals;
 
-                  /* The showcased cards share the drawer height, so five cards stay readable */
+                  /* The showcased cards share the drawer height, so cards stay readable */
                   const following = sliverCards.length;
+                  const cardHeight = Math.min(
+                    72,
+                    Math.max(DECK_FACE_HEIGHT, Math.ceil(deckAreaHeight / deckSlotCount))
+                  );
                   const peek =
                     following > 0
                       ? Math.min(
-                          DECK_FACE_HEIGHT,
+                          cardHeight,
                           Math.max(
                             DECK_MIN_PEEK,
-                            Math.floor((deckAreaHeight - DECK_FACE_HEIGHT) / following)
+                            Math.ceil((deckAreaHeight - cardHeight) / following)
                           )
                         )
                       : 0;
                   const showDissolve =
-                    hasCards && following > 0 && DECK_FACE_HEIGHT + following * peek >= deckAreaHeight - 6;
+                    hasCards && following > 0 && cardHeight + following * peek >= deckAreaHeight - 6;
 
                   return (
-                    <div key={category} className="relative min-h-0 overflow-hidden">
+                    <div key={category} className="relative min-h-0 flex flex-col overflow-hidden">
                       {faceCard ? (
                         <button
                           type="button"
@@ -1477,7 +1631,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                             isGhostFace ? 'border-dashed' : 'hover:brightness-110'
                           } ${isGlobeLocked ? 'ring-1 ring-[#E9C46A]' : ''}`}
                           style={{
-                            height: DECK_FACE_HEIGHT,
+                            height: cardHeight,
                             borderColor: isGhostFace ? `${meta.color}40` : `${meta.color}66`,
                             background: isGhostFace
                               ? 'rgba(12,29,43,0.6)'
@@ -1532,7 +1686,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       ) : (
                         <div
                           className="relative flex w-full shrink-0 flex-col items-center justify-center gap-1 overflow-hidden rounded-t-xl border border-dashed border-[#F6EFE2]/20 bg-[#0C1D2B]/60"
-                          style={{ height: DECK_FACE_HEIGHT }}
+                          style={{ height: cardHeight }}
                         >
                           <span className={`text-[10px] font-extrabold uppercase tracking-wider ${meta.textCls}`}>
                             {DECK_EMPTY_LABEL[category]}
@@ -1547,10 +1701,10 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       {sliverCards.map((card, index) => (
                         <div
                           key={card.id}
-                          className="relative w-full shrink-0 overflow-hidden rounded-t-lg border border-b-0"
+                          className="relative flex w-full shrink-0 flex-col overflow-hidden rounded-t-lg border border-b-0"
                           style={{
-                            height: DECK_FACE_HEIGHT,
-                            marginTop: index === 0 ? 0 : -(DECK_FACE_HEIGHT - peek),
+                            height: cardHeight,
+                            marginTop: index === 0 ? 0 : -(cardHeight - peek),
                             borderColor: `${meta.color}3A`,
                             background: `linear-gradient(180deg, ${meta.color}1C, ${meta.color}06)`
                           }}
