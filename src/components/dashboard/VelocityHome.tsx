@@ -139,10 +139,10 @@ interface HorizonCardEntry {
 
 const HORIZON_CATEGORY_ORDER: HorizonCategory[] = ['mastered', 'recall', 'learning', 'unseen'];
 
-/* Card-deck peek geometry (px): fully visible top card + 16px card-top slivers behind it */
+/* Card-deck peek geometry (px): fully visible top card + readable card tops behind it */
 const DECK_FACE_HEIGHT = 60;
-const DECK_SLIVER_HEIGHT = 20;
-const DECK_SLIVER_PEEK = DECK_SLIVER_HEIGHT - 4;
+const DECK_MAX_CARDS = 5;
+const DECK_MIN_PEEK = 16;
 
 /** Copy for a drawer that holds no card yet — it advertises the card next in line instead. */
 const DECK_EMPTY_LABEL: Record<HorizonCategory, string> = {
@@ -691,23 +691,16 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const albumScrollRef = useRef<HTMLDivElement | null>(null);
 
   /**
-   * Card-deck peek: how many card tops fit in each category drawer.
-   * The stack is clipped by its container, so the visible deck depth adapts
-   * to the available height instead of leaving dead space.
+   * Card-deck peek: how much room each category drawer has to work with.
+   * The five showcased cards share that height, so their tops stay readable.
    */
   const deckStackRef = useRef<HTMLDivElement | null>(null);
-  const [deckSlotCount, setDeckSlotCount] = useState(6);
   const [deckAreaHeight, setDeckAreaHeight] = useState(0);
 
   useEffect(() => {
     const el = deckStackRef.current;
     if (!el) return;
-    const measure = () => {
-      const height = el.clientHeight;
-      const needed = Math.ceil(Math.max(0, height - DECK_FACE_HEIGHT) / DECK_SLIVER_PEEK) + 2;
-      setDeckAreaHeight(height);
-      setDeckSlotCount(Math.min(40, Math.max(5, needed)));
-    };
+    const measure = () => setDeckAreaHeight(el.clientHeight);
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(el);
@@ -904,12 +897,12 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
         return {
           category,
-          cards: cards.slice(0, deckSlotCount),
+          cards: cards.slice(0, DECK_MAX_CARDS),
           hasCards: cards.length > 0,
           nextInLine
         };
       }),
-    [horizonCatalog, deckSlotCount]
+    [horizonCatalog]
   );
 
   /**
@@ -1193,8 +1186,8 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
         <div className="flex-1 min-h-0 grid grid-cols-12 gap-3.5 overflow-hidden">
           {/* ══ LEFT COLUMN (5 Cols): 3 PURPOSEFUL STACKED SECTIONS ══ */}
           <div className="col-span-12 lg:col-span-5 flex flex-col justify-between gap-2.5 min-h-0 overflow-hidden">
-            {/* Section 1: Expedition Launch Deck (Shrink-0, Heightened Only When the Viewport Can Afford It) */}
-            <div className="relative flex shrink-0 flex-col justify-between gap-3 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl [@media(min-height:900px)]:min-h-[23rem]">
+            {/* Section 1: Expedition Launch Deck (Shares the Column Height with the Memory Horizon Card) */}
+            <div className="relative flex min-h-[20rem] flex-1 flex-col justify-between gap-2.5 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
               <div className="shrink-0">
                 {/* Eyebrow badge */}
                 <div className="inline-flex items-center gap-1.5 rounded-full border border-[#D94E34]/35 bg-[#D94E34]/15 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#F4A261]">
@@ -1212,12 +1205,12 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 </h1>
 
                 {/* Subtitle */}
-                <p className="mt-1 text-xs font-medium leading-relaxed text-[#9FB3C4]">
+                <p className="mt-1 text-xs font-medium leading-snug text-[#9FB3C4]">
                   FSRS-6 DSR & ACT-R latency scheduling adapts stability (S) and retrievability (R) per card while weaving in long-term retention checks.
                 </p>
 
                 {/* Study Focus Toggles */}
-                <div className="mt-3 flex flex-wrap items-center gap-2">
+                <div className="mt-2.5 flex flex-wrap items-center gap-2">
                   <span className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#8FA6B8]">
                     Focus:
                   </span>
@@ -1267,7 +1260,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 </span>
               </button>
 
-              <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-2">
                 {/* Real Next-Session Mix (computed from the live SRS queue builder) */}
                 <div className="flex flex-wrap items-center justify-between gap-1.5 text-[10px]">
                   <span className="font-extrabold uppercase tracking-wider text-[#9FB3C4] flex items-center gap-1">
@@ -1446,9 +1439,21 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                   const isGlobeLocked = faceCard ? activeRegionLock?.id === faceCard.entityId : false;
                   const showAnswer =
                     faceCard?.attribute === 'location' || category === 'mastered' || revealHorizonCapitals;
-                  // The dissolve only makes sense when the deck truly overflows the drawer
+
+                  /* The showcased cards share the drawer height, so five cards stay readable */
+                  const following = sliverCards.length;
+                  const peek =
+                    following > 0
+                      ? Math.min(
+                          DECK_FACE_HEIGHT,
+                          Math.max(
+                            DECK_MIN_PEEK,
+                            Math.floor((deckAreaHeight - DECK_FACE_HEIGHT) / following)
+                          )
+                        )
+                      : 0;
                   const showDissolve =
-                    hasCards && cards.length >= deckSlotCount && deckAreaHeight >= DECK_FACE_HEIGHT + 40;
+                    hasCards && following > 0 && DECK_FACE_HEIGHT + following * peek >= deckAreaHeight - 6;
 
                   return (
                     <div key={category} className="relative min-h-0 overflow-hidden">
@@ -1538,28 +1543,34 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         </div>
                       )}
 
-                      {/* Following card tops: each one only shows its top edge */}
+                      {/* Following card tops: each one shares the drawer height so it stays readable */}
                       {sliverCards.map((card, index) => (
                         <div
                           key={card.id}
-                          className={`relative w-full shrink-0 overflow-hidden rounded-t-md border border-b-0 ${
-                            index === 0 ? 'mt-0' : '-mt-1'
-                          }`}
+                          className="relative w-full shrink-0 overflow-hidden rounded-t-lg border border-b-0"
                           style={{
-                            height: DECK_SLIVER_HEIGHT,
-                            borderColor: `${meta.color}40`,
-                            background: `${meta.color}12`
+                            height: DECK_FACE_HEIGHT,
+                            marginTop: index === 0 ? 0 : -(DECK_FACE_HEIGHT - peek),
+                            borderColor: `${meta.color}3A`,
+                            background: `linear-gradient(180deg, ${meta.color}1C, ${meta.color}06)`
                           }}
                         >
-                          <div className="flex h-full items-center gap-1.5 pl-2.5 pr-2">
-                            <span className="text-[10px] leading-none opacity-85">{card.flagOrEmblem}</span>
-                            <span className="min-w-0 truncate text-[8px] font-bold text-[#9FB3C4]">
+                          <div className="flex h-[22px] shrink-0 items-center gap-1.5 pl-2.5 pr-2">
+                            <span className="text-[11px] leading-none opacity-90">{card.flagOrEmblem}</span>
+                            <span
+                              className={`${serifDisplay} min-w-0 truncate text-[10px] font-black leading-none text-[#F6EFE2] opacity-90`}
+                            >
                               {card.entityName}
                             </span>
                             <span
-                              className={`ml-auto shrink-0 font-mono text-[7px] font-extrabold ${meta.textCls} opacity-80`}
+                              className={`ml-auto shrink-0 font-mono text-[7px] font-extrabold ${meta.textCls} opacity-85`}
                             >
                               {card.shortBadge}
+                            </span>
+                          </div>
+                          <div className="flex min-h-0 flex-1 items-center pl-2.5 pr-2">
+                            <span className="truncate text-[8px] font-bold text-[#9FB3C4]">
+                              {card.attributeGlyph} {showAnswer ? card.answerText : '• • • • • •'}
                             </span>
                           </div>
                         </div>
