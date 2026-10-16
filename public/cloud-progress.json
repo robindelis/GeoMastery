@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-15T18:29:30.408Z",
+  "exportedAt": "2026-10-16T20:14:42.759Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6000,14 +6000,14 @@
         "id": "PLW:location",
         "countryId": "PLW",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 1.6499999999999995,
-        "intervalDays": 1,
-        "reps": 3,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 1.7,
+        "intervalDays": 7,
+        "reps": 4,
         "lapses": 5,
-        "lastReviewedAt": "2026-10-15T16:22:27.405Z",
-        "nextDueAt": "2026-10-16T16:22:27.405Z",
+        "lastReviewedAt": "2026-10-16T20:14:39.269Z",
+        "nextDueAt": "2026-10-23T20:14:39.269Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:26:05.988Z",
@@ -6064,11 +6064,21 @@
             "userAnswer": "Palau",
             "isCorrect": true,
             "timeSpentMs": 7900
+          },
+          {
+            "timestamp": "2026-10-16T20:14:39.269Z",
+            "inputMode": "map_click",
+            "userAnswer": "Palau",
+            "isCorrect": true,
+            "timeSpentMs": 5412,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 10
+        "stability": 7,
+        "difficulty": 9.28,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -18265,11 +18275,11 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1311,
-    "totalCorrect": 961,
-    "currentStreak": 2,
+    "totalReviews": 1312,
+    "totalCorrect": 962,
+    "currentStreak": 3,
     "longestStreak": 3,
-    "lastReviewDate": "2026-10-15",
+    "lastReviewDate": "2026-10-16",
     "continentMastery": {
       "Africa": {
         "total": 108,
@@ -18293,12 +18303,12 @@
       },
       "Oceania": {
         "total": 28,
-        "mastered": 6,
-        "learning": 22
+        "mastered": 7,
+        "learning": 21
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-15T18:29:27.209Z"
+    "updatedAt": "2026-10-16T20:14:39.281Z"
   },
   "settings": {
     "audioEnabled": true,
