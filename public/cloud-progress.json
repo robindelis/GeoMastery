@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-16T20:15:17.105Z",
+  "exportedAt": "2026-10-16T20:15:25.026Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6435,14 +6435,14 @@
         "id": "VUT:location",
         "countryId": "VUT",
         "attributeId": "location",
-        "stage": 2,
-        "step": 2,
-        "easeFactor": 2.0499999999999994,
-        "intervalDays": 7,
+        "stage": 1,
+        "step": 0,
+        "easeFactor": 1.85,
+        "intervalDays": 0,
         "reps": 3,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-09T19:13:23.762Z",
-        "nextDueAt": "2026-10-16T19:13:23.762Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-10-16T20:15:22.045Z",
+        "nextDueAt": "2026-10-16T20:15:22.045Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:26:51.840Z",
@@ -6485,11 +6485,23 @@
             "userAnswer": "Vanuatu",
             "isCorrect": true,
             "timeSpentMs": 6166
+          },
+          {
+            "timestamp": "2026-10-16T20:15:22.045Z",
+            "inputMode": "map_click",
+            "userAnswer": "Pacific Ocean",
+            "isCorrect": false,
+            "timeSpentMs": 5582,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 8.04
+        "stability": 1.12,
+        "difficulty": 8.06,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "WATER_OCEAN_PACIFIC"
+        ]
       }
     ],
     [
@@ -18319,7 +18331,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1316,
+    "totalReviews": 1317,
     "totalCorrect": 964,
     "currentStreak": 3,
     "longestStreak": 3,
@@ -18347,12 +18359,12 @@
       },
       "Oceania": {
         "total": 28,
-        "mastered": 7,
-        "learning": 21
+        "mastered": 6,
+        "learning": 22
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-16T20:15:14.094Z"
+    "updatedAt": "2026-10-16T20:15:22.049Z"
   },
   "settings": {
     "audioEnabled": true,
