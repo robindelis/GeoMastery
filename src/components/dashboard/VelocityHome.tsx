@@ -1175,58 +1175,36 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 })}
               </div>
 
-              {/* Action Row */}
-              <div className="mt-3.5 flex flex-wrap items-center gap-2">
-                <button
-                  onClick={() => {
-                    soundFx.playClick();
-                    onStartSession('All', selectedAttributes, data.isCaughtUp('All'));
-                  }}
-                  className="group flex items-center gap-2 rounded-xl bg-[#D94E34] px-4 py-2 text-xs font-black uppercase tracking-[0.05em] text-[#FFF8E7] shadow-md transition-all hover:bg-[#C54128] active:scale-[0.98]"
-                >
-                  <Play className="h-3.5 w-3.5 fill-current" />
-                  <span>{data.isCaughtUp('All') ? 'Practice World' : 'Begin Expedition'}</span>
-                  <span className="rounded-full bg-black/25 px-2 py-0.5 font-mono text-[10px] font-bold">
-                    {data.isCaughtUp('All') ? '236' : dueValue}
-                  </span>
-                </button>
+              {/* Hero Call-To-Action: Start Training */}
+              <button
+                onClick={() => {
+                  soundFx.playClick();
+                  onStartSession('All', selectedAttributes, data.isCaughtUp('All'));
+                }}
+                className="group mt-3.5 flex w-full items-center justify-center gap-3 rounded-2xl border border-[#F4A261]/50 bg-gradient-to-r from-[#E05A3D] via-[#D94E34] to-[#BB3D24] px-6 py-4 text-lg font-black uppercase tracking-[0.06em] text-[#FFF8E7] shadow-[0_14px_34px_-10px_rgba(217,78,52,0.95)] transition-all hover:brightness-110 hover:shadow-[0_16px_40px_-10px_rgba(217,78,52,1)] active:scale-[0.985]"
+              >
+                <Play className="h-6 w-6 shrink-0 fill-current" />
+                <span>{data.isCaughtUp('All') ? 'Practice World' : 'Start Training'}</span>
+                <span className="rounded-full bg-black/30 px-3 py-1 font-mono text-sm font-bold">
+                  {data.isCaughtUp('All') ? data.totalWorldEntities : dueValue}
+                </span>
+              </button>
 
-                {data.priorityRegion && data.priorityRegion.unlearnedCount > 0 && (
-                  <button
-                    onClick={() => {
-                      soundFx.playClick();
-                      onStartSession(
-                        data.priorityRegion.id,
-                        data.priorityRegion.isWater ? ['location'] : selectedAttributes,
-                        false
-                      );
-                    }}
-                    className="flex items-center gap-1.5 rounded-xl border border-[#E9C46A]/50 bg-[#E9C46A]/15 px-3 py-2 text-xs font-black uppercase tracking-[0.05em] text-[#E9C46A] hover:bg-[#E9C46A]/25 transition-all active:scale-95 shadow-sm"
-                  >
-                    <Compass className="h-3 w-3" />
-                    <span>
-                      Focus {data.priorityRegion.shortName} (
-                      {data.priorityRegion.unseenCards > 0
-                        ? `${data.priorityRegion.unseenCards} unseen`
-                        : `${data.priorityRegion.dueCount} due`}
-                      )
-                    </span>
-                  </button>
-                )}
-
+              {/* Secondary Deck Shortcuts */}
+              <div className="mt-2.5 grid grid-cols-2 gap-2.5">
                 <button
                   onClick={onOpenAtlas}
-                  className="flex items-center gap-1 rounded-xl border border-[#F6EFE2]/15 bg-[#0C1D2B] px-3 py-2 text-xs font-extrabold uppercase tracking-[0.05em] text-[#F6EFE2] transition-colors hover:border-[#E9C46A] hover:text-[#E9C46A]"
+                  className="flex items-center justify-center gap-1.5 rounded-xl border border-[#F6EFE2]/15 bg-[#0C1D2B] px-3 py-2 text-xs font-extrabold uppercase tracking-[0.05em] text-[#F6EFE2] transition-colors hover:border-[#E9C46A] hover:text-[#E9C46A]"
                 >
-                  <Compass className="h-3 w-3" />
+                  <Compass className="h-3.5 w-3.5" />
                   <span>Atlas</span>
                 </button>
 
                 <button
                   onClick={onOpenArcade}
-                  className="flex items-center gap-1 rounded-xl border border-[#D94E34]/40 bg-[#D94E34]/15 px-3 py-2 text-xs font-extrabold uppercase tracking-[0.05em] text-[#F6EFE2] transition-colors hover:bg-[#D94E34]/30"
+                  className="flex items-center justify-center gap-1.5 rounded-xl border border-[#D94E34]/40 bg-[#D94E34]/15 px-3 py-2 text-xs font-extrabold uppercase tracking-[0.05em] text-[#F6EFE2] transition-colors hover:bg-[#D94E34]/30"
                 >
-                  <Zap className="h-3 w-3 fill-[#D94E34] text-[#D94E34]" />
+                  <Zap className="h-3.5 w-3.5 fill-[#D94E34] text-[#D94E34]" />
                   <span>Arcade</span>
                 </button>
               </div>
@@ -1238,8 +1216,8 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               <div className="shrink-0 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   {/* Compact SVG Ring */}
-                  <div className="relative flex h-12 w-12 shrink-0 items-center justify-center">
-                    <svg className="h-12 w-12 -rotate-90" viewBox="0 0 68 68">
+                  <div className="relative flex h-11 w-11 shrink-0 items-center justify-center">
+                    <svg className="h-11 w-11 -rotate-90" viewBox="0 0 68 68">
                       <circle cx="34" cy="34" r={ringRadius} stroke="#0C1D2B" strokeWidth="6" fill="transparent" />
                       <circle
                         cx="34"
@@ -1332,24 +1310,26 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         type="button"
                         onClick={() => openTrophyAlbum(cat)}
                         title={`Click to open ${meta.label} Trophy Album (${count} cards)`}
-                        className={`group rounded-xl border p-2 text-left flex flex-col justify-between transition-all cursor-pointer active:scale-[0.97] ${
+                        className={`group rounded-xl border px-2 py-1.5 text-left flex flex-col justify-between transition-all cursor-pointer active:scale-[0.97] ${
                           isGlanceActive ? meta.tileActiveCls : meta.tileIdleCls
                         }`}
                       >
                         <div className="flex items-center justify-between gap-1 w-full">
-                          <span className={`text-[10px] font-bold ${meta.textCls} flex items-center gap-1`}>
-                            <span className={`h-1.5 w-1.5 rounded-full ${meta.dotCls}`} />
-                            {meta.label}
+                          <span className={`text-[10px] font-bold ${meta.textCls} flex items-center gap-1 min-w-0 truncate`}>
+                            <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${meta.dotCls}`} />
+                            <span className="truncate">{meta.label}</span>
                           </span>
-                          <span className="flex items-center gap-0.5 text-[8px] font-extrabold uppercase tracking-wider text-[#9FB3C4] opacity-75 group-hover:opacity-100 group-hover:text-[#F6EFE2] transition-opacity">
+                          <span className="shrink-0 font-mono text-sm font-black leading-none text-[#F6EFE2]">
+                            {count}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between gap-1 w-full">
+                          <span className="text-[9px] text-[#9FB3C4] truncate">{meta.subtitle}</span>
+                          <span className="flex shrink-0 items-center gap-0.5 text-[8px] font-extrabold uppercase tracking-wider text-[#9FB3C4] opacity-75 group-hover:opacity-100 group-hover:text-[#F6EFE2] transition-opacity">
                             <span>Album</span>
                             <Maximize2 className="h-2 w-2" />
                           </span>
                         </div>
-                        <span className="font-mono text-base font-black text-[#F6EFE2] mt-0.5 leading-tight">
-                          {count}
-                        </span>
-                        <span className="text-[9px] text-[#9FB3C4] truncate">{meta.subtitle}</span>
                       </button>
                     );
                   })}
@@ -1423,8 +1403,8 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                   </div>
                 </div>
 
-                {/* Fixed 2x3 (6-Card) High-Readability Showcase Grid */}
-                <div className="flex-1 min-h-0 pt-2 grid grid-cols-2 grid-rows-3 gap-2">
+                {/* Fixed 2x3 (6-Card) Compact Glance Grid */}
+                <div className="flex-1 min-h-0 pt-1.5 grid grid-cols-2 grid-rows-3 gap-1.5">
                   {glanceShowcaseCards.map((card) => {
                     const catMeta = HORIZON_CATEGORY_META[card.category];
                     const isGlobeLocked = activeRegionLock?.id === card.entityId;
@@ -1447,7 +1427,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         }}
                         onDoubleClick={() => openTrophyAlbum(card.category)}
                         title={`${card.entityName} (${card.attributeLabel}) · Click to center on Globe · Double-click to open Trophy Album`}
-                        className={`group relative min-h-0 flex items-center justify-between gap-2.5 overflow-hidden rounded-xl border px-3 py-1.5 text-left transition-all cursor-pointer ${
+                        className={`group relative min-h-0 flex items-center justify-between gap-2.5 overflow-hidden rounded-lg border py-1 pl-3 pr-2.5 text-left transition-all cursor-pointer ${
                           isGlobeLocked
                             ? 'border-[#E9C46A] bg-[#1A3E58] shadow-md'
                             : 'border-[#F6EFE2]/12 bg-gradient-to-r from-[#122B3E] to-[#0E2232] hover:border-[#E9C46A]/55 hover:from-[#17374F] hover:to-[#112A3D]'
@@ -1456,28 +1436,27 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         {/* Left Category Pigment Spine */}
                         <span
                           aria-hidden="true"
-                          className="pointer-events-none absolute inset-y-0 left-0 w-1.5"
+                          className="pointer-events-none absolute inset-y-0 left-0 w-1"
                           style={{ background: catMeta.color }}
                         />
 
-                        <div className="flex items-center gap-2.5 min-w-0 pl-1">
-                          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-[#F6EFE2]/15 bg-[#091622] text-base shadow-inner select-none">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md border border-[#F6EFE2]/15 bg-[#091622] text-sm shadow-inner select-none">
                             {card.flagOrEmblem}
                           </span>
                           <div className="min-w-0">
                             <span className={`${serifDisplay} block truncate text-xs font-black leading-tight text-[#F6EFE2]`}>
                               {card.entityName}
                             </span>
-                            <span className="mt-0.5 block truncate text-[10px] font-semibold text-[#9FB3C4]">
-                              {card.attributeGlyph}{' '}
-                              {showAnswer ? card.answerText : '• • • • • •'}
+                            <span className="block truncate text-[10px] font-semibold text-[#9FB3C4]">
+                              {card.attributeGlyph} {showAnswer ? card.answerText : '• • • • • •'}
                             </span>
                           </div>
                         </div>
 
                         <div className="flex flex-col items-end gap-0.5 shrink-0">
                           <span
-                            className={`rounded-md border px-1.5 py-0.5 font-mono text-[9px] font-extrabold ${catMeta.badgeCls}`}
+                            className={`rounded-md border px-1.5 py-0.5 font-mono text-[8px] font-extrabold ${catMeta.badgeCls}`}
                           >
                             {card.trophyGlyph} {card.shortBadge}
                           </span>
@@ -1488,25 +1467,6 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       </button>
                     );
                   })}
-                </div>
-              </div>
-
-              {/* Smart Queue Algorithm Breakdown Strip */}
-              <div className="shrink-0 pt-1 border-t border-[#F6EFE2]/10 flex items-center justify-between text-[10px]">
-                <span className="font-extrabold uppercase tracking-wider text-[#9FB3C4] flex items-center gap-1">
-                  <Target className="h-3 w-3 text-[#E9C46A]" />
-                  Next 15-Card Mix:
-                </span>
-                <div className="flex items-center gap-1.5">
-                  <span className="px-2 py-0.5 rounded-full bg-[#38BDF8]/15 border border-[#38BDF8]/30 font-bold text-[#38BDF8]">
-                    🎯 ~6 Unseen
-                  </span>
-                  <span className="px-2 py-0.5 rounded-full bg-[#F4A261]/15 border border-[#F4A261]/30 font-bold text-[#F4A261]">
-                    🧠 ~7 Active Recall (FSRS)
-                  </span>
-                  <span className="px-2 py-0.5 rounded-full bg-[#10B981]/15 border border-[#10B981]/30 font-bold text-[#10B981]">
-                    🛡️ 1–2 Mastered
-                  </span>
                 </div>
               </div>
             </div>
