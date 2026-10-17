@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-17T14:02:13.213Z",
+  "exportedAt": "2026-10-17T14:02:30.140Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8654,13 +8654,13 @@
         "countryId": "BGD",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1999999999999993,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-09T20:08:21.079Z",
-        "nextDueAt": "2026-10-10T20:08:21.079Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-17T14:02:26.990Z",
+        "nextDueAt": "2026-10-17T14:02:26.990Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:30:50.951Z",
@@ -8689,11 +8689,21 @@
             "userAnswer": "Dhaka",
             "isCorrect": true,
             "timeSpentMs": 4432
+          },
+          {
+            "timestamp": "2026-10-17T14:02:26.990Z",
+            "inputMode": "typing",
+            "userAnswer": "Dakkha",
+            "isCorrect": false,
+            "timeSpentMs": 3695,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 6.93
+        "stability": 0.79,
+        "difficulty": 7.37,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -18517,7 +18527,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1335,
+    "totalReviews": 1336,
     "totalCorrect": 978,
     "currentStreak": 4,
     "longestStreak": 4,
@@ -18550,7 +18560,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-17T14:02:10.146Z"
+    "updatedAt": "2026-10-17T14:02:26.993Z"
   },
   "settings": {
     "audioEnabled": true,
