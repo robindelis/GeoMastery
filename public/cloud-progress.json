@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-16T20:17:11.390Z",
+  "exportedAt": "2026-10-17T14:00:45.094Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -2795,14 +2795,14 @@
         "id": "SRB:capital",
         "countryId": "SRB",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.249999999999999,
-        "intervalDays": 1,
-        "reps": 3,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.3,
+        "intervalDays": 7,
+        "reps": 4,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-15T16:28:43.503Z",
-        "nextDueAt": "2026-10-16T16:28:43.503Z",
+        "lastReviewedAt": "2026-10-17T14:00:41.989Z",
+        "nextDueAt": "2026-10-24T14:00:41.989Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:59:55.590Z",
@@ -2838,11 +2838,21 @@
             "userAnswer": "Belgrade",
             "isCorrect": true,
             "timeSpentMs": 3183
+          },
+          {
+            "timestamp": "2026-10-17T14:00:41.989Z",
+            "inputMode": "typing",
+            "userAnswer": "Belgrade",
+            "isCorrect": true,
+            "timeSpentMs": 4750,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 7.31
+        "stability": 7.03,
+        "difficulty": 6.81,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -18423,11 +18433,11 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1326,
-    "totalCorrect": 971,
-    "currentStreak": 3,
-    "longestStreak": 3,
-    "lastReviewDate": "2026-10-16",
+    "totalReviews": 1327,
+    "totalCorrect": 972,
+    "currentStreak": 4,
+    "longestStreak": 4,
+    "lastReviewDate": "2026-10-17",
     "continentMastery": {
       "Africa": {
         "total": 108,
@@ -18446,8 +18456,8 @@
       },
       "Europe": {
         "total": 90,
-        "mastered": 58,
-        "learning": 32
+        "mastered": 59,
+        "learning": 31
       },
       "Oceania": {
         "total": 28,
@@ -18456,7 +18466,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-16T20:17:08.331Z"
+    "updatedAt": "2026-10-17T14:00:41.997Z"
   },
   "settings": {
     "audioEnabled": true,
