@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-17T14:01:02.911Z",
+  "exportedAt": "2026-10-17T14:01:07.647Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -14623,14 +14623,14 @@
         "id": "CAF:location",
         "countryId": "CAF",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 23,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-06T12:32:56.636Z",
-        "nextDueAt": "2026-10-07T12:32:56.636Z",
+        "lastReviewedAt": "2026-10-17T14:01:04.370Z",
+        "nextDueAt": "2026-11-09T14:01:04.370Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:32:56.636Z",
@@ -14638,11 +14638,21 @@
             "userAnswer": "Central African Republic",
             "isCorrect": true,
             "timeSpentMs": 5591
+          },
+          {
+            "timestamp": "2026-10-17T14:01:04.370Z",
+            "inputMode": "map_click",
+            "userAnswer": "Central African Republic",
+            "isCorrect": true,
+            "timeSpentMs": 4192,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 4.49
+        "stability": 23,
+        "difficulty": 4.21,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -18453,16 +18463,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1329,
-    "totalCorrect": 974,
+    "totalReviews": 1330,
+    "totalCorrect": 975,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-17",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 30,
-        "learning": 78
+        "mastered": 31,
+        "learning": 77
       },
       "Americas": {
         "total": 70,
@@ -18486,7 +18496,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-17T14:00:59.853Z"
+    "updatedAt": "2026-10-17T14:01:04.373Z"
   },
   "settings": {
     "audioEnabled": true,
