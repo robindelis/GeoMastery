@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-17T14:02:08.702Z",
+  "exportedAt": "2026-10-17T14:02:13.213Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -5343,13 +5343,13 @@
         "countryId": "SAU",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.73,
+        "intervalDays": 42,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-09T19:20:16.864Z",
-        "nextDueAt": "2026-10-16T19:20:16.864Z",
+        "lastReviewedAt": "2026-10-17T14:02:10.143Z",
+        "nextDueAt": "2026-11-28T14:02:10.143Z",
         "history": [
           {
             "timestamp": "2026-10-04T18:44:21.935Z",
@@ -5371,11 +5371,21 @@
             "userAnswer": "Saudi Arabia",
             "isCorrect": true,
             "timeSpentMs": 1840
+          },
+          {
+            "timestamp": "2026-10-17T14:02:10.143Z",
+            "inputMode": "map_click",
+            "userAnswer": "Saudi Arabia",
+            "isCorrect": true,
+            "timeSpentMs": 2209,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 3.54
+        "stability": 42,
+        "difficulty": 2.37,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -18507,8 +18517,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1334,
-    "totalCorrect": 977,
+    "totalReviews": 1335,
+    "totalCorrect": 978,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-17",
@@ -18540,7 +18550,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-17T14:02:05.544Z"
+    "updatedAt": "2026-10-17T14:02:10.146Z"
   },
   "settings": {
     "audioEnabled": true,
