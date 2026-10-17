@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-17T14:01:07.647Z",
+  "exportedAt": "2026-10-17T14:01:23.267Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11979,13 +11979,13 @@
         "countryId": "LBR",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 1.5999999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 1.4,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 5,
-        "lastReviewedAt": "2026-10-15T11:59:22.746Z",
-        "nextDueAt": "2026-10-16T11:59:22.746Z",
+        "lapses": 6,
+        "lastReviewedAt": "2026-10-17T14:01:19.954Z",
+        "nextDueAt": "2026-10-17T14:01:19.954Z",
         "history": [
           {
             "timestamp": "2026-10-06T11:48:47.950Z",
@@ -12035,11 +12035,23 @@
             "userAnswer": "Liberia",
             "isCorrect": true,
             "timeSpentMs": 7190
+          },
+          {
+            "timestamp": "2026-10-17T14:01:19.954Z",
+            "inputMode": "map_click",
+            "userAnswer": "Lesotho",
+            "isCorrect": false,
+            "timeSpentMs": 14214,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 10
+        "stability": 0.62,
+        "difficulty": 9.28,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "LSO"
+        ]
       }
     ],
     [
@@ -18463,7 +18475,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1330,
+    "totalReviews": 1331,
     "totalCorrect": 975,
     "currentStreak": 4,
     "longestStreak": 4,
@@ -18496,7 +18508,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-17T14:01:04.373Z"
+    "updatedAt": "2026-10-17T14:01:19.957Z"
   },
   "settings": {
     "audioEnabled": true,
