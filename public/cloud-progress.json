@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:21:09.897Z",
+  "exportedAt": "2026-10-21T12:21:13.571Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20600,10 +20600,42 @@
           "PLW"
         ]
       }
+    ],
+    [
+      "RWA:flag",
+      {
+        "id": "RWA:flag",
+        "countryId": "RWA",
+        "attributeId": "flag",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T12:21:10.230Z",
+        "nextDueAt": "2026-10-21T12:21:10.230Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:21:10.230Z",
+            "inputMode": "typing",
+            "userAnswer": "Uganda",
+            "isCorrect": false,
+            "timeSpentMs": 2247,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "UGA"
+        ]
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1477,
+    "totalReviews": 1478,
     "totalCorrect": 1065,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -20642,7 +20674,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T12:21:06.465Z"
+    "updatedAt": "2026-10-21T12:21:10.232Z"
   },
   "settings": {
     "audioEnabled": true,
