@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:34:45.509Z",
+  "exportedAt": "2026-10-21T11:34:51.214Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13849,14 +13849,14 @@
         "id": "DZA:location",
         "countryId": "DZA",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.68,
+        "intervalDays": 30,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-14T21:16:43.085Z",
-        "nextDueAt": "2026-10-15T21:16:43.085Z",
+        "lastReviewedAt": "2026-10-21T11:34:50.649Z",
+        "nextDueAt": "2026-11-20T11:34:50.649Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:27:20.432Z",
@@ -13871,11 +13871,21 @@
             "userAnswer": "Algeria",
             "isCorrect": true,
             "timeSpentMs": 2348
+          },
+          {
+            "timestamp": "2026-10-21T11:34:50.649Z",
+            "inputMode": "map_click",
+            "userAnswer": "Algeria",
+            "isCorrect": true,
+            "timeSpentMs": 1424,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 4.26
+        "stability": 30.5,
+        "difficulty": 3.14,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -18134,14 +18144,14 @@
         "id": "CUB:location",
         "countryId": "CUB",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.4,
+        "intervalDays": 14,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-14T21:22:25.078Z",
-        "nextDueAt": "2026-10-15T21:22:25.078Z",
+        "lastReviewedAt": "2026-10-21T11:34:47.973Z",
+        "nextDueAt": "2026-11-04T11:34:47.973Z",
         "history": [
           {
             "timestamp": "2026-10-14T21:20:23.391Z",
@@ -18156,11 +18166,21 @@
             "userAnswer": "Cuba",
             "isCorrect": true,
             "timeSpentMs": 2333
+          },
+          {
+            "timestamp": "2026-10-21T11:34:47.973Z",
+            "inputMode": "map_click",
+            "userAnswer": "Cuba",
+            "isCorrect": true,
+            "timeSpentMs": 3866,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 5.82
+        "stability": 14.26,
+        "difficulty": 5.43,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -18724,21 +18744,21 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1355,
-    "totalCorrect": 989,
+    "totalReviews": 1357,
+    "totalCorrect": 991,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 34,
-        "learning": 74
+        "mastered": 35,
+        "learning": 73
       },
       "Americas": {
         "total": 70,
-        "mastered": 19,
-        "learning": 51
+        "mastered": 20,
+        "learning": 50
       },
       "Asia": {
         "total": 96,
@@ -18757,7 +18777,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:34:42.124Z"
+    "updatedAt": "2026-10-21T11:34:50.651Z"
   },
   "settings": {
     "audioEnabled": true,
