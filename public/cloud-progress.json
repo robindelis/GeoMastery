@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:31:17.122Z",
+  "exportedAt": "2026-10-21T11:31:24.395Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6383,13 +6383,13 @@
         "countryId": "KIR",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1999999999999993,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-08T17:49:46.926Z",
-        "nextDueAt": "2026-10-09T17:49:46.926Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-21T11:31:21.357Z",
+        "nextDueAt": "2026-10-21T11:31:21.357Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:26:43.015Z",
@@ -6418,11 +6418,23 @@
             "userAnswer": "Kiribati",
             "isCorrect": true,
             "timeSpentMs": 2435
+          },
+          {
+            "timestamp": "2026-10-21T11:31:21.357Z",
+            "inputMode": "map_click",
+            "userAnswer": "Pacific Ocean",
+            "isCorrect": false,
+            "timeSpentMs": 5614,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 6.93
+        "stability": 0.91,
+        "difficulty": 7.37,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "WATER_OCEAN_PACIFIC"
+        ]
       }
     ],
     [
@@ -18557,7 +18569,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1339,
+    "totalReviews": 1340,
     "totalCorrect": 980,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -18590,7 +18602,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:31:13.969Z"
+    "updatedAt": "2026-10-21T11:31:21.359Z"
   },
   "settings": {
     "audioEnabled": true,
