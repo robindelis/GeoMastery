@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-17T14:02:30.140Z",
+  "exportedAt": "2026-10-21T11:30:57.694Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15119,12 +15119,12 @@
         "attributeId": "capital",
         "stage": 1,
         "step": 0,
-        "easeFactor": 2.3499999999999996,
+        "easeFactor": 2.15,
         "intervalDays": 0,
         "reps": 1,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-11T23:08:50.528Z",
-        "nextDueAt": "2026-10-11T23:08:50.528Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-21T11:30:54.535Z",
+        "nextDueAt": "2026-10-21T11:30:54.535Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:35:23.363Z",
@@ -15139,11 +15139,21 @@
             "userAnswer": "iu",
             "isCorrect": false,
             "timeSpentMs": 46724
+          },
+          {
+            "timestamp": "2026-10-21T11:30:54.535Z",
+            "inputMode": "typing",
+            "userAnswer": "u",
+            "isCorrect": false,
+            "timeSpentMs": 37935,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 6.42
+        "stability": 0.6,
+        "difficulty": 7.06,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -18527,11 +18537,11 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1336,
+    "totalReviews": 1337,
     "totalCorrect": 978,
-    "currentStreak": 4,
+    "currentStreak": 1,
     "longestStreak": 4,
-    "lastReviewDate": "2026-10-17",
+    "lastReviewDate": "2026-10-21",
     "continentMastery": {
       "Africa": {
         "total": 108,
@@ -18560,7 +18570,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-17T14:02:26.993Z"
+    "updatedAt": "2026-10-21T11:30:54.538Z"
   },
   "settings": {
     "audioEnabled": true,
