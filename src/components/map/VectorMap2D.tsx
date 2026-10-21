@@ -152,6 +152,10 @@ const pulseRose = {
   fill: d3.interpolateRgb('#e63946', '#f43f5e'),
   stroke: d3.interpolateRgb('#fecdd3', '#fff1f2'),
 };
+const pulseAmber = {
+  fill: d3.interpolateRgb('#d97706', '#fbbf24'),
+  stroke: d3.interpolateRgb('#fef08a', '#ffffff'),
+};
 
 const isVisible = (b: BBox, x0: number, y0: number, x1: number, y1: number) =>
   b[2] >= x0 && b[0] <= x1 && b[3] >= y0 && b[1] <= y1;
@@ -367,10 +371,18 @@ function drawOverlay(
       ctx.fillStyle = pulseEmerald.fill(pulse);
       ctx.strokeStyle = pulseEmerald.stroke(pulse);
       ctx.lineWidth = (2 + 2 * pulse) / k;
+    } else if (fb === 'incorrect' && isTarget) {
+      ctx.fillStyle = pulseEmerald.fill(pulse);
+      ctx.strokeStyle = pulseEmerald.stroke(pulse);
+      ctx.lineWidth = (2 + 2 * pulse) / k;
     } else if (fb === 'incorrect' && isSelected) {
       ctx.fillStyle = pulseRose.fill(pulse);
       ctx.strokeStyle = pulseRose.stroke(pulse);
       ctx.lineWidth = (2 + 2 * pulse) / k;
+    } else if (!fb && isTarget) {
+      ctx.fillStyle = pulseAmber.fill(pulse);
+      ctx.strokeStyle = pulseAmber.stroke(pulse);
+      ctx.lineWidth = (2.2 + 1.8 * pulse) / k;
     } else if (isHovered) {
       ctx.fillStyle = '#fff3b0';
       ctx.strokeStyle = '#d94e34';
@@ -841,8 +853,8 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         }
       }
 
-      if (country.id === selectedCountryId) {
-        return '#f4a261';
+      if (country.id === selectedCountryId || country.id === targetCountryId) {
+        return '#f59e0b';
       }
 
       if (heatmapItemsMap) {
@@ -1234,9 +1246,17 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     if (!coords) return;
 
     const [cx, cy] = coords;
-    const targetScale = wb ? (wb.type === 'strait' || wb.type === 'channel' ? 5.5 : 3.0) : 3.5;
+    const poly = geometry.polyById.get(c.id);
+    const span = poly ? Math.hypot(poly.bbox[2] - poly.bbox[0], poly.bbox[3] - poly.bbox[1]) : 0;
+    const adaptiveLandScale =
+      span > 180 ? 2.4 : span > 80 ? 3.2 : span > 25 ? 4.2 : 5.5;
+    const targetScale = wb
+      ? wb.type === 'strait' || wb.type === 'channel'
+        ? 5.5
+        : 3.0
+      : adaptiveLandScale;
     const transform = d3.zoomIdentity
-      .translate(dimensions.width / 2, dimensions.height / 2)
+      .translate(dimensions.width / 2, dimensions.height * 0.42)
       .scale(targetScale)
       .translate(-cx, -cy);
 

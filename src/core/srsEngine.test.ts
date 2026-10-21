@@ -415,6 +415,31 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     expect(indices.length).toBe(2);
     expect(indices[1] - indices[0]).toBeGreaterThanOrEqual(4);
   });
+
+  it('always uses typing recall for country (Map -> Name) and flag (Flag -> Name) questions across all stages', () => {
+    const france = COUNTRIES_BY_ID.get('FRA')!;
+    let countryItem = createInitialSRSItem('FRA', 'country');
+    let flagItem = createInitialSRSItem('FRA', 'flag');
+
+    const qCountry0 = buildQuestion(countryItem, france, COUNTRIES);
+    expect(qCountry0.expectedInputMode).toBe('typing');
+    expect(qCountry0.options).toBeUndefined();
+    expect(qCountry0.correctAnswer).toBe('France');
+    expect(qCountry0.prompt).toContain('highlighted on the map');
+
+    const qFlag0 = buildQuestion(flagItem, france, COUNTRIES);
+    expect(qFlag0.expectedInputMode).toBe('typing');
+    expect(qFlag0.options).toBeUndefined();
+    expect(qFlag0.correctAnswer).toBe('France');
+    expect(qFlag0.prompt).toContain('flag');
+
+    // Progress through Stage 0 -> Stage 1 -> Stage 2 via typing answers
+    countryItem = processAnswer(countryItem, true, 'typing', 'France', 1800).updatedItem;
+    expect(countryItem.stage).toBe(1);
+    countryItem = processAnswer(countryItem, true, 'typing', 'France', 2000).updatedItem;
+    countryItem = processAnswer(countryItem, true, 'typing', 'France', 1800).updatedItem;
+    expect(countryItem.stage).toBe(2);
+  });
 });
 
 

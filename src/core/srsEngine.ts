@@ -507,6 +507,9 @@ export function buildQuestion(
   if (srsItem.stage === 0) {
     if (srsItem.attributeId === 'location') {
       expectedInputMode = 'map_click';
+    } else if (srsItem.attributeId === 'country' || srsItem.attributeId === 'flag') {
+      expectedInputMode = 'typing';
+      options = undefined;
     } else {
       expectedInputMode = 'multiple_choice';
       if (attrDef) {
@@ -820,12 +823,13 @@ export function prepareSessionQueue(
   const computeCandidateWeight = (cand: QueueCandidate): number => {
     const base = Math.max(0.15, regionWeights.get(getRegion(cand)) ?? 1);
     const item = cand.existing;
-    const siblingAttr = cand.attributeId === 'capital' ? 'location' : 'capital';
-    const siblingItem = existingItemsMap.get(`${cand.country.id}:${siblingAttr}`);
+    const siblingAttrs = ['capital', 'location', 'country', 'flag'].filter((a) => a !== cand.attributeId);
+    const hasSiblingInLearning = siblingAttrs.some(
+      (attr) => existingItemsMap.get(`${cand.country.id}:${attr}`)?.stage === 1
+    );
 
     // Paivio Dual-Coding Synergy: boost if sibling attribute is in active learning or in session
-    const hasDualCodingSynergy =
-      selectedCountryIds.has(cand.country.id) || Boolean(siblingItem && siblingItem.stage === 1);
+    const hasDualCodingSynergy = selectedCountryIds.has(cand.country.id) || hasSiblingInLearning;
     const dualCodingBoost = hasDualCodingSynergy ? 1.55 : 1.0;
 
     if (!item) {

@@ -223,7 +223,27 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
                   {getMasteryBadge('location')}
                 </div>
 
-                {/* Future Extensible Attributes (Starter Data) */}
+                {/* Map -> Country Name & National Flag Mastery */}
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="bg-[#ECE2CE] border border-[#D8CBB5] p-2.5 rounded-2xl flex items-center justify-between gap-1.5">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <Compass className="w-4 h-4 text-[#D48C1C] shrink-0" />
+                      <div className="text-[10px] uppercase tracking-wider text-[#5B7083] font-extrabold truncate">
+                        Map → Name
+                      </div>
+                    </div>
+                    {getMasteryBadge('country')}
+                  </div>
+                  <div className="bg-[#ECE2CE] border border-[#D8CBB5] p-2.5 rounded-2xl flex items-center justify-between gap-1.5">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-sm leading-none shrink-0">{selectedCountry.flagEmoji}</span>
+                      <div className="text-[10px] uppercase tracking-wider text-[#5B7083] font-extrabold truncate">
+                        Flag
+                      </div>
+                    </div>
+                    {getMasteryBadge('flag')}
+                  </div>
+                </div>
                 {selectedCountry.facts.politicalRegime && (
                   <div className="bg-[#ECE2CE]/70 border border-[#D8CBB5] p-2.5 rounded-2xl flex items-center gap-2.5">
                     <Scale className="w-4 h-4 text-[#D48C1C]" />

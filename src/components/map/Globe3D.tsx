@@ -191,7 +191,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         if (country.id === selectedCountryId) return '#e63946';
       }
 
-      if (country.id === selectedCountryId) return '#f4a261';
+      if (country.id === selectedCountryId || country.id === targetCountryId) return '#fbbf24';
       if (hoveredCountry?.id === country.id) return '#fff3b0';
 
       if (showHeatmap && srsItemsMap) {

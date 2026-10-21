@@ -1,7 +1,7 @@
 import type { MapViewMode, SRSItem, AppSettings, UserStats, TrainingCategory } from '../../core/types';
 
 /** Card attributes the learner can focus a session on. */
-export type FocusAttribute = 'capital' | 'location';
+export type FocusAttribute = 'capital' | 'location' | 'country' | 'flag';
 
 /**
  * Every home-page template receives exactly the same props, so a template can be

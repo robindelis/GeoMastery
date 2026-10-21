@@ -366,13 +366,16 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       });
     }
 
-    // Vocal reading of the capital city when asking for capital or location on the map
-    const isCapitalOrLocation =
-      question.attributeId === 'capital' || question.attributeId === 'location';
+    // Vocal reading of the capital city when asking for capital, location, country, or flag
+    const shouldSpeakCapital =
+      question.attributeId === 'capital' ||
+      question.attributeId === 'location' ||
+      question.attributeId === 'country' ||
+      question.attributeId === 'flag';
     const isCountry = Boolean(question.country && !question.country.id?.startsWith('WATER_'));
     const capitalToSpeak = isCountry ? question.country.capital : null;
 
-    if (isCapitalOrLocation && capitalToSpeak) {
+    if (shouldSpeakCapital && capitalToSpeak) {
       if (speechTimerRef.current) {
         clearTimeout(speechTimerRef.current);
       }
@@ -648,7 +651,11 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
                 <span className="text-[10px] font-bold uppercase tracking-wider px-2 sm:px-2.5 py-1 rounded-full border bg-amber-950/50 border-amber-700/50 text-amber-300">
                   <span className="sm:hidden">L0</span>
                   <span className="hidden sm:inline">
-                    {currentQuestion.expectedInputMode === 'map_click' ? 'L0 Recognition (Map)' : 'L0 Recognition (MCQ)'}
+                    {currentQuestion.expectedInputMode === 'map_click'
+                      ? 'L0 Recognition (Map)'
+                      : currentQuestion.expectedInputMode === 'typing'
+                      ? 'L0 Initial Recall (Type)'
+                      : 'L0 Recognition (MCQ)'}
                   </span>
                 </span>
               );
@@ -682,10 +689,12 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
         <MapContainer
           mapMode={mapMode}
           onToggleMapMode={onToggleMapMode}
-          targetCountryId={isSubmitted ? currentQuestion.country.id : null}
+          targetCountryId={
+            isSubmitted || currentQuestion.attributeId === 'country' ? currentQuestion.country.id : null
+          }
           selectedCountryId={selectedMapCountry?.id || null}
           feedbackState={feedbackState}
-          disableAutoZoom={!isSubmitted}
+          disableAutoZoom={!(isSubmitted || currentQuestion.attributeId === 'country')}
           hideHoverTooltip={!isSubmitted}
           srsItemsMap={srsItemsMap}
           onSelectCountry={handleMapCountrySelect}
@@ -713,6 +722,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
               <TypingRecallPrompt
                 key={`${currentQuestion.srsItemId}-${currentIndex}`}
                 country={currentQuestion.country}
+                attributeId={currentQuestion.attributeId}
                 promptText={currentQuestion.prompt}
                 correctAnswer={currentQuestion.correctAnswer}
                 isSubmitted={isSubmitted}

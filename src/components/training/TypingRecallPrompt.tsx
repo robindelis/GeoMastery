@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Country } from '../../core/types';
-import { Send, HelpCircle, ArrowRight, Volume2 } from 'lucide-react';
+import { Send, HelpCircle, ArrowRight, Volume2, Compass, Flag } from 'lucide-react';
 import { speechEngine } from '../../core/speechEngine';
 
 interface TypingRecallPromptProps {
   country: Country;
+  attributeId?: string;
   promptText: string;
   correctAnswer: string;
   isSubmitted: boolean;
@@ -18,6 +19,7 @@ interface TypingRecallPromptProps {
 
 export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
   country,
+  attributeId = 'capital',
   promptText,
   correctAnswer,
   isSubmitted,
@@ -30,13 +32,23 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [hintCount, setHintCount] = useState(0);
+  const [flagImageError, setFlagImageError] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const isMapCountryIdentify = attributeId === 'country';
+  const isFlagIdentify = attributeId === 'flag';
+  const isCountryNameTarget = isMapCountryIdentify || isFlagIdentify;
+  const flagImgUrl =
+    country.iso2 && country.iso2 !== 'WB'
+      ? `https://flagcdn.com/w320/${country.iso2.toLowerCase()}.png`
+      : null;
 
   // Auto-clear input on question transition (safeguard against sticking values)
   useEffect(() => {
     setInputValue('');
     setHintCount(0);
-  }, [country.id, promptText]);
+    setFlagImageError(false);
+  }, [country.id, promptText, attributeId]);
 
   // Auto focus input when active
   useEffect(() => {
@@ -81,17 +93,67 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
       {/* Header Card */}
       <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-3.5 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col items-center text-center gap-1.5 sm:gap-2">
         <div className="flex items-center gap-2">
-          <span className="text-2xl sm:text-3xl">{country.flagEmoji}</span>
+          {isMapCountryIdentify && !isSubmitted ? (
+            <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
+              <Compass className="w-4 h-4 sm:w-5 sm:h-5" />
+            </span>
+          ) : isFlagIdentify && !isSubmitted ? (
+            <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-sky-500/20 border border-sky-400/50 flex items-center justify-center text-sky-400">
+              <Flag className="w-4 h-4 sm:w-5 sm:h-5" />
+            </span>
+          ) : (
+            <span className="text-2xl sm:text-3xl">{country.flagEmoji}</span>
+          )}
           <span className="text-[11px] sm:text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 font-semibold border border-cyan-800/60">
             {country.continent} • {country.subregion}
           </span>
         </div>
+
+        {/* Prominent Flag Plate for Flag-to-Country questions */}
+        {isFlagIdentify && (
+          <div className="my-1.5 flex flex-col items-center justify-center">
+            {flagImgUrl && !flagImageError ? (
+              <div className="rounded-xl overflow-hidden border-2 border-slate-600/80 bg-slate-950/80 shadow-xl p-1">
+                <img
+                  src={flagImgUrl}
+                  alt={isSubmitted ? `${country.name} flag` : 'Mystery national flag'}
+                  draggable={false}
+                  onError={() => setFlagImageError(true)}
+                  className="h-16 sm:h-24 w-auto object-contain rounded-lg select-none"
+                />
+              </div>
+            ) : (
+              <div className="px-5 py-2 rounded-2xl bg-slate-800/80 border border-slate-700 text-5xl sm:text-6xl leading-none select-none shadow-inner">
+                {country.flagEmoji}
+              </div>
+            )}
+          </div>
+        )}
+
         <h2 className="text-lg sm:text-2xl font-bold text-white tracking-tight mt-0.5 sm:mt-1">
           {promptText}
         </h2>
-        <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-sky-400 font-medium">
-          <span>Level 1: Active Recall (Direct Memory Retrieval)</span>
-        </div>
+
+        {isSubmitted && isCountryNameTarget ? (
+          <div className="flex items-center gap-2 text-xs text-slate-300">
+            <span>{country.flagEmoji}</span>
+            <span className="font-bold text-white">{country.name}</span>
+            <span>•</span>
+            <span>
+              Capital: <strong className="text-sky-300">{country.capital}</strong>
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-sky-400 font-medium">
+            <span>
+              {isMapCountryIdentify
+                ? 'Highlighted in gold on the map • Type the country name'
+                : isFlagIdentify
+                ? 'National Flag Recall • Type the country name'
+                : 'Active Recall (Direct Memory Retrieval)'}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Typing Form */}
@@ -106,6 +168,8 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
             placeholder={
               isSubmitted && userAnswer === '__DONT_KNOW__'
                 ? `Did not know (Answer: ${correctAnswer})`
+                : isCountryNameTarget
+                ? 'Type country name...'
                 : 'Type answer here...'
             }
             className={`w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl text-base sm:text-lg font-medium bg-slate-900/90 border transition-all outline-none shadow-xl ${

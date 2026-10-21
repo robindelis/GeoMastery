@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import { COUNTRIES, COUNTRIES_BY_ID } from '../assets/data/countries';
-import { LeaderAttribute, PoliticalRegimeAttribute, CuisineAttribute } from './attributes';
+import {
+  LeaderAttribute,
+  PoliticalRegimeAttribute,
+  CuisineAttribute,
+  CountryAttribute,
+  FlagAttribute
+} from './attributes';
 
 describe('Country Facts & Attribute Definitions', () => {
   it('ensures all 196 countries have verified, non-empty fact fields', () => {
@@ -94,5 +100,27 @@ describe('Country Facts & Attribute Definitions', () => {
     const distractors = LeaderAttribute.generateDistractors(usa, COUNTRIES, 3);
     expect(distractors).toHaveLength(3);
     expect(distractors).not.toContain(usa.facts.headOfState);
+  });
+
+  it('validates CountryAttribute (Map -> Name) and FlagAttribute (Flag -> Name) with aliases and fuzzy matching', () => {
+    const gbr = COUNTRIES_BY_ID.get('GBR')!;
+    const usa = COUNTRIES_BY_ID.get('USA')!;
+    const civ = COUNTRIES_BY_ID.get('CIV')!;
+
+    expect(CountryAttribute.getValue(gbr)).toBe('United Kingdom');
+    expect(FlagAttribute.getValue(gbr)).toBe('United Kingdom');
+
+    // Exact match
+    expect(CountryAttribute.validateAnswer('United Kingdom', 'United Kingdom', gbr).isCorrect).toBe(true);
+    // Natural alias and abbreviation match
+    expect(CountryAttribute.validateAnswer('UK', 'United Kingdom', gbr).isCorrect).toBe(true);
+    expect(CountryAttribute.validateAnswer('Great Britain', 'United Kingdom', gbr).isCorrect).toBe(true);
+    expect(FlagAttribute.validateAnswer('USA', 'United States', usa).isCorrect).toBe(true);
+    expect(FlagAttribute.validateAnswer('Ivory Coast', "Côte d'Ivoire", civ).isCorrect).toBe(true);
+    // Typo tolerance on full country name
+    expect(CountryAttribute.validateAnswer('United Kingdm', 'United Kingdom', gbr).isCorrect).toBe(true);
+    // Rejects wrong country or short non-matching input
+    expect(CountryAttribute.validateAnswer('France', 'United Kingdom', gbr).isCorrect).toBe(false);
+    expect(CountryAttribute.validateAnswer('UN', 'United Kingdom', gbr).isCorrect).toBe(false);
   });
 });

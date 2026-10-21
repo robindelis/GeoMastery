@@ -14,6 +14,7 @@ import {
   Target,
   Award,
   Compass,
+  Flag,
   Star,
   Sparkles,
   ArrowRight
@@ -364,14 +365,14 @@ export const SessionCompletedView: React.FC<SessionCompletedViewProps> = ({
               const isLocationQuestion = question.attributeId === 'location';
 
               // Format answer labels
-              let displayUserAnswer = userAnswer;
+              let displayUserAnswer = userAnswer === '__DONT_KNOW__' ? 'Gave up' : userAnswer;
               if (isLocationQuestion) {
                 // If map click, lookup clicked country name if available
                 const clickedCountry = COUNTRIES_BY_ID.get(userAnswer.toUpperCase());
                 if (clickedCountry) {
                   displayUserAnswer = clickedCountry.name;
-                } else if (userAnswer === 'skip') {
-                  displayUserAnswer = 'Skipped';
+                } else if (userAnswer === 'skip' || userAnswer === '__DONT_KNOW__') {
+                  displayUserAnswer = 'Gave up';
                 }
               }
 
@@ -402,6 +403,16 @@ export const SessionCompletedView: React.FC<SessionCompletedViewProps> = ({
                             <>
                               <MapPin className="w-3 h-3 text-sky-400" />
                               <span>Map Location</span>
+                            </>
+                          ) : question.attributeId === 'country' ? (
+                            <>
+                              <Compass className="w-3 h-3 text-emerald-400" />
+                              <span>Map → Name</span>
+                            </>
+                          ) : question.attributeId === 'flag' ? (
+                            <>
+                              <Flag className="w-3 h-3 text-purple-400" />
+                              <span>National Flag</span>
                             </>
                           ) : (
                             <>

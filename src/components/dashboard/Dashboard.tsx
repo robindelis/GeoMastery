@@ -33,7 +33,12 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const [srsItemsMap, setSrsItemsMap] = useState<Map<string, SRSItem>>(() => StorageService.loadSRSItems());
   const [stats, setStats] = useState<UserStats>(() => StorageService.loadStats());
   const [settings, setSettings] = useState<AppSettings>(() => StorageService.loadSettings());
-  const [selectedAttributeFilter, setSelectedAttributeFilter] = useState<string[]>(['capital', 'location']);
+  const [selectedAttributeFilter, setSelectedAttributeFilter] = useState<string[]>([
+    'capital',
+    'location',
+    'country',
+    'flag'
+  ]);
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncStatusMessage, setSyncStatusMessage] = useState<string | null>(null);
 

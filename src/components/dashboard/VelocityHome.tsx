@@ -122,7 +122,7 @@ interface HorizonCardEntry {
   continent: TrainingCategory;
   subregion: string;
   coordText: string;
-  attribute: 'capital' | 'location';
+  attribute: 'capital' | 'location' | 'country' | 'flag';
   attributeGlyph: string;
   attributeLabel: string;
   answerText: string;
@@ -642,7 +642,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   } = props;
 
   const data = useHomeData(srsItemsMap, stats, selectedAttributes);
-  const due = useDueBreakdown(srsItemsMap, ['capital', 'location']);
+  const due = useDueBreakdown(srsItemsMap, ['capital', 'location', 'country', 'flag']);
 
   const [revealCapital, setRevealCapital] = useState(false);
   const [showToken, setShowToken] = useState(false);
@@ -682,7 +682,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   }, [data.mastery, data.regions]);
 
   const [selectedHorizonCategory, setSelectedHorizonCategory] = useState<HorizonCategory | null>(null);
-  const [horizonAttrFilter, setHorizonAttrFilter] = useState<'all' | 'capital' | 'location'>('all');
+  const [horizonAttrFilter, setHorizonAttrFilter] = useState<'all' | 'capital' | 'location' | 'country' | 'flag'>('all');
   const [horizonSearch, setHorizonSearch] = useState('');
   const [revealHorizonCapitals, setRevealHorizonCapitals] = useState(false);
   const [isHorizonModalOpen, setIsHorizonModalOpen] = useState(false);
@@ -785,10 +785,28 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     };
 
     for (const country of COUNTRIES) {
-      for (const attr of ['capital', 'location'] as const) {
+      for (const attr of ['capital', 'location', 'country', 'flag'] as const) {
         const cardId = `${country.id}:${attr}`;
         const item = srsItemsMap.get(cardId);
+        // Include core capital/location cards unconditionally, and country/flag cards when active or reviewed
+        if (
+          (attr === 'country' || attr === 'flag') &&
+          !item &&
+          !selectedAttributes.includes(attr)
+        ) {
+          continue;
+        }
         const { category, statusBadge, shortBadge, trophyGlyph, isDue } = categorizeItem(item);
+        const attributeGlyph =
+          attr === 'capital' ? '🏛️' : attr === 'location' ? '🧭' : attr === 'country' ? '🗺️' : '🏳️';
+        const attributeLabel =
+          attr === 'capital'
+            ? 'Capital'
+            : attr === 'location'
+            ? 'Location'
+            : attr === 'country'
+            ? 'Map → Name'
+            : 'Flag';
         byCategory[category].push({
           id: cardId,
           entityId: country.id,
@@ -799,9 +817,14 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
           subregion: country.subregion || country.continent,
           coordText: formatCoordinates(country.coordinates),
           attribute: attr,
-          attributeGlyph: attr === 'capital' ? '🏛️' : '🧭',
-          attributeLabel: attr === 'capital' ? 'Capital' : 'Location',
-          answerText: attr === 'capital' ? country.capital : country.subregion || country.continent,
+          attributeGlyph,
+          attributeLabel,
+          answerText:
+            attr === 'capital'
+              ? country.capital
+              : attr === 'location'
+              ? country.subregion || country.continent
+              : country.name,
           coordinates: country.coordinates,
           category,
           statusBadge,
@@ -999,6 +1022,8 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const attributeTelemetry = useMemo(() => {
     let capMastered = 0;
     let locMastered = 0;
+    let countryMastered = 0;
+    let flagMastered = 0;
 
     for (const country of COUNTRIES) {
       if (classifyCardHorizon(srsItemsMap.get(`${country.id}:capital`)) === 'mastered') {
@@ -1006,6 +1031,12 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       }
       if (classifyCardHorizon(srsItemsMap.get(`${country.id}:location`)) === 'mastered') {
         locMastered += 1;
+      }
+      if (classifyCardHorizon(srsItemsMap.get(`${country.id}:country`)) === 'mastered') {
+        countryMastered += 1;
+      }
+      if (classifyCardHorizon(srsItemsMap.get(`${country.id}:flag`)) === 'mastered') {
+        flagMastered += 1;
       }
     }
     for (const wb of WATER_BODIES) {
@@ -1026,6 +1057,16 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
         mastered: locMastered,
         total: locTotal,
         pct: Math.round((locMastered / locTotal) * 100)
+      },
+      country: {
+        mastered: countryMastered,
+        total: capTotal,
+        pct: Math.round((countryMastered / capTotal) * 100)
+      },
+      flag: {
+        mastered: flagMastered,
+        total: capTotal,
+        pct: Math.round((flagMastered / capTotal) * 100)
       }
     };
   }, [srsItemsMap]);
@@ -1034,7 +1075,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     {
       attr: 'capital' as const,
       label: 'Capitals',
-      subtitle: 'Active recall & typing',
+      subtitle: 'Type capital city',
       detail: `${due.capital} due`,
       glyph: '🏛️',
       mastered: attributeTelemetry.capital.mastered,
@@ -1044,12 +1085,32 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     {
       attr: 'location' as const,
       label: 'Locations',
-      subtitle: 'Map & globe pinpointing',
+      subtitle: 'Pinpoint on map',
       detail: `${due.location} due`,
       glyph: '🧭',
       mastered: attributeTelemetry.location.mastered,
       total: attributeTelemetry.location.total,
       pct: attributeTelemetry.location.pct
+    },
+    {
+      attr: 'country' as const,
+      label: 'Map → Name',
+      subtitle: 'Name highlighted nation',
+      detail: `${due.country} due`,
+      glyph: '🗺️',
+      mastered: attributeTelemetry.country.mastered,
+      total: attributeTelemetry.country.total,
+      pct: attributeTelemetry.country.pct
+    },
+    {
+      attr: 'flag' as const,
+      label: 'Flags',
+      subtitle: 'Name nation from flag',
+      detail: `${due.flag} due`,
+      glyph: '🏳️',
+      mastered: attributeTelemetry.flag.mastered,
+      total: attributeTelemetry.flag.total,
+      pct: attributeTelemetry.flag.pct
     }
   ];
 
@@ -1255,8 +1316,8 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 </p>
               </div>
 
-              {/* 2-Column Interactive Study Focus Deck */}
-              <div className="grid shrink-0 grid-cols-2 gap-2.5">
+              {/* 2x2 Interactive Study Focus Deck */}
+              <div className="grid shrink-0 grid-cols-2 gap-2">
                 {focusOptions.map((opt) => {
                   const active = selectedAttributes.includes(opt.attr);
                   return (
@@ -1268,16 +1329,16 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         onToggleAttribute(opt.attr);
                       }}
                       aria-pressed={active}
-                      className={`group relative flex flex-col justify-between gap-2 overflow-hidden rounded-xl border px-3.5 py-2.5 text-left transition-all cursor-pointer active:scale-[0.98] ${
+                      className={`group relative flex flex-col justify-between gap-1.5 overflow-hidden rounded-xl border px-3 py-1.5 text-left transition-all cursor-pointer active:scale-[0.98] ${
                         active
                           ? 'border-[#E9C46A]/65 bg-gradient-to-b from-[#E9C46A]/18 to-[#0C1D2B]/90 text-[#F6EFE2] shadow-sm'
                           : 'border-[#F6EFE2]/15 bg-[#0C1D2B]/70 text-[#9FB3C4] opacity-75 hover:border-[#F6EFE2]/35 hover:opacity-100'
                       }`}
                     >
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="flex items-center justify-between gap-1.5">
+                        <div className="flex items-center gap-2 min-w-0">
                           <span
-                            className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg border text-base ${
+                            className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg border text-sm ${
                               active
                                 ? 'border-[#E9C46A]/50 bg-[#091622] shadow-inner'
                                 : 'border-[#F6EFE2]/10 bg-[#091622]/60'
@@ -1286,7 +1347,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                             {opt.glyph}
                           </span>
                           <div className="min-w-0">
-                            <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-1">
                               <span className="truncate text-xs font-extrabold text-[#F6EFE2]">
                                 {opt.label}
                               </span>
@@ -1296,14 +1357,14 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                                 }`}
                               />
                             </div>
-                            <p className="truncate text-[10px] font-medium text-[#9FB3C4]">
+                            <p className="truncate text-[9px] font-medium text-[#9FB3C4]">
                               {opt.subtitle}
                             </p>
                           </div>
                         </div>
 
                         <span
-                          className={`shrink-0 rounded-full px-2.5 py-0.5 font-mono text-[10px] font-extrabold ${
+                          className={`shrink-0 rounded-full px-2 py-0.5 font-mono text-[9px] font-extrabold ${
                             active
                               ? 'bg-[#E9C46A] text-[#142534]'
                               : 'bg-[#153247] text-[#9FB3C4]'
@@ -1314,7 +1375,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#091622]">
+                        <div className="h-1 flex-1 overflow-hidden rounded-full bg-[#091622]">
                           <div
                             className={`h-full rounded-full transition-all duration-500 ${
                               active ? 'bg-[#E9C46A]' : 'bg-[#8FA6B8]/50'
@@ -2311,7 +2372,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
                 <div className="flex items-center gap-2">
                   <div className="flex items-center rounded-full border border-[#F6EFE2]/15 bg-[#0C1D2B] p-0.5 text-[10px] font-bold">
-                    {(['all', 'capital', 'location'] as const).map((attr) => (
+                    {(['all', 'capital', 'location', 'country', 'flag'] as const).map((attr) => (
                       <button
                         key={attr}
                         type="button"
@@ -2327,7 +2388,15 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                             : 'text-[#9FB3C4] hover:text-white'
                         }`}
                       >
-                        {attr === 'all' ? 'All Plates' : attr === 'capital' ? '🏛️ Capitals' : '🧭 Locations'}
+                        {attr === 'all'
+                          ? 'All Plates'
+                          : attr === 'capital'
+                          ? '🏛️ Capitals'
+                          : attr === 'location'
+                          ? '🧭 Locations'
+                          : attr === 'country'
+                          ? '🗺️ Map → Name'
+                          : '🏳️ Flags'}
                       </button>
                     ))}
                   </div>

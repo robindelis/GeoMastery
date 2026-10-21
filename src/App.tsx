@@ -15,7 +15,12 @@ export const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>('dashboard');
   const [mapMode, setMapMode] = useState<MapViewMode>(() => StorageService.loadSettings().mapMode);
   const [selectedContinent, setSelectedContinent] = useState<TrainingCategory>('All');
-  const [selectedAttributes, setSelectedAttributes] = useState<string[]>(['capital', 'location']);
+  const [selectedAttributes, setSelectedAttributes] = useState<string[]>([
+    'capital',
+    'location',
+    'country',
+    'flag'
+  ]);
   const [initialPracticeMode, setInitialPracticeMode] = useState<boolean>(false);
   const [targetCountryId, setTargetCountryId] = useState<string | undefined>(undefined);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(() => StorageService.loadSettings().audioEnabled);
@@ -159,7 +164,7 @@ export const App: React.FC = () => {
         {/* Right Action Icons */}
         <div className="flex items-center gap-2 sm:gap-3">
           <button
-            onClick={() => handleStartSession('All', ['capital', 'location'])}
+            onClick={() => handleStartSession('All', selectedAttributes)}
             className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#D94E34] hover:bg-[#C54128] text-[#FFF8E7] font-extrabold text-xs shadow-md transition-all active:scale-95"
           >
             <Play className="w-3.5 h-3.5 fill-current" />

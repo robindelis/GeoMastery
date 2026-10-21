@@ -1,6 +1,102 @@
 import { Country, AttributeDefinition, AttributeValidationResult } from './types';
-import { fuzzyMatch } from './fuzzyMatch';
+import { fuzzyMatch, normalizeString } from './fuzzyMatch';
 import { shuffleArray } from './srsEngine';
+
+/**
+ * Common English synonyms, short forms, and abbreviations for sovereign nations
+ * so typing recall accepts natural variants (e.g. "UK" or "Britain" for United Kingdom).
+ */
+export const COUNTRY_NAME_ALIASES: Record<string, string[]> = {
+  USA: ['USA', 'US', 'United States of America', 'America'],
+  GBR: ['UK', 'Great Britain', 'Britain'],
+  ARE: ['UAE', 'Emirates'],
+  COD: ['DRC', 'DR Congo', 'Democratic Republic of Congo', 'Congo Kinshasa'],
+  COG: ['Republic of Congo', 'Congo Republic', 'Congo Brazzaville', 'Congo'],
+  CIV: ['Ivory Coast', "Cote d'Ivoire"],
+  CZE: ['Czech Republic', 'Czechia'],
+  TLS: ['East Timor', 'Timor Leste'],
+  SWZ: ['Swaziland', 'eSwatini'],
+  CPV: ['Cape Verde', 'Cabo Verde'],
+  MMR: ['Burma', 'Myanmar'],
+  VAT: ['Vatican', 'The Vatican', 'Holy See'],
+  MKD: ['Macedonia', 'North Macedonia'],
+  BIH: ['Bosnia', 'Bosnia Herzegovina'],
+  CAF: ['CAR', 'Central African Rep'],
+  STP: ['Sao Tome', 'Sao Tome and Principe'],
+  VCT: ['St Vincent', 'Saint Vincent', 'Saint Vincent and the Grenadines'],
+  KNA: ['St Kitts', 'Saint Kitts', 'Saint Kitts and Nevis'],
+  LCA: ['St Lucia', 'Saint Lucia'],
+  ATG: ['Antigua', 'Antigua and Barbuda'],
+  TTO: ['Trinidad', 'Trinidad and Tobago'],
+  GNB: ['Guinea Bissau'],
+  FSM: ['Micronesia', 'Federated States of Micronesia'],
+  GMB: ['Gambia', 'The Gambia'],
+  BHS: ['Bahamas', 'The Bahamas'],
+  NLD: ['Holland', 'The Netherlands'],
+  PRK: ['DPRK', 'North Korea'],
+  KOR: ['ROK', 'South Korea'],
+  PSE: ['State of Palestine', 'Palestine'],
+  BRN: ['Brunei Darussalam', 'Brunei'],
+  LAO: ['Lao PDR', 'Laos'],
+  RUS: ['Russian Federation', 'Russia'],
+  PNG: ['PNG', 'Papua New Guinea'],
+  ZAF: ['RSA', 'South Africa'],
+  SLB: ['Solomons', 'Solomon Islands'],
+  MHL: ['Marshalls', 'Marshall Islands']
+};
+
+/**
+ * Validates a typed country name against common name, official name, and natural aliases.
+ * Short acronyms (<= 3 chars, like "US", "UK", "UAE", "DRC") require an exact normalized match
+ * so short typos never false-positive against an abbreviation.
+ */
+export function validateCountryNameAnswer(
+  userAnswer: string,
+  correctValue: string,
+  targetCountry?: Country,
+  tolerance: number = 1
+): AttributeValidationResult {
+  const displayTarget = targetCountry?.name || correctValue;
+  const normInput = normalizeString(userAnswer);
+  if (!normInput) {
+    return {
+      isCorrect: false,
+      score: 0,
+      feedback: `The country is ${displayTarget}`
+    };
+  }
+
+  const aliases = targetCountry ? COUNTRY_NAME_ALIASES[targetCountry.id] || [] : [];
+  const shortAliases = aliases.filter((a) => normalizeString(a).length <= 3);
+  for (const shortAlias of shortAliases) {
+    if (normInput === normalizeString(shortAlias)) {
+      return {
+        isCorrect: true,
+        score: 1,
+        matchedText: displayTarget,
+        feedback: `Correct! (${displayTarget})`
+      };
+    }
+  }
+
+  const fullCandidates = [
+    correctValue,
+    ...(targetCountry ? [targetCountry.name, targetCountry.officialName] : []),
+    ...aliases.filter((a) => normalizeString(a).length > 3)
+  ].filter(Boolean);
+
+  const res = fuzzyMatch(userAnswer, fullCandidates, tolerance);
+  return {
+    isCorrect: res.isMatch,
+    score: res.isMatch ? 1 : 0,
+    matchedText: res.bestMatch,
+    feedback: res.isMatch
+      ? res.distance > 0
+        ? `Accepted (close spelling: ${displayTarget})`
+        : `Correct! (${displayTarget})`
+      : `The country is ${displayTarget}`
+  };
+}
 
 /**
  * Intelligent distractor generator:
@@ -100,8 +196,8 @@ export const LocationAttribute: AttributeDefinition<string> = {
 
     // If answered via typing (e.g. identify highlighted country):
     if (targetCountry) {
-      const match = fuzzyMatch(userAnswer, [targetCountry.name, targetCountry.officialName]);
-      if (match.isMatch) {
+      const val = validateCountryNameAnswer(userAnswer, targetCountry.name, targetCountry, 1);
+      if (val.isCorrect) {
         return { isCorrect: true, score: 1, feedback: 'Correct country identified!' };
       }
     }
@@ -111,6 +207,64 @@ export const LocationAttribute: AttributeDefinition<string> = {
       score: 0,
       feedback: targetCountry ? `Target was ${targetCountry.name}` : 'Incorrect location'
     };
+  }
+};
+
+/**
+ * Identify Country on Map Attribute (Map -> Country Name)
+ */
+export const CountryAttribute: AttributeDefinition<string> = {
+  id: 'country',
+  label: 'Country Name',
+  category: 'geography',
+  icon: 'Compass',
+  description: 'Identify the highlighted country shown on the map by typing its name.',
+  activeByDefault: true,
+  supportsMultipleChoice: true,
+  supportsTypingRecall: true,
+  supportsMapClick: false,
+  promptTemplate: (_country: Country) => 'Which country is highlighted on the map?',
+  getValue: (c: Country) => c.name,
+  renderValue: (val: string) => val,
+  generateDistractors: (target: Country, all: Country[], count: number = 3) => {
+    return getRegionalDistractors(target, all, (c) => c.name, count);
+  },
+  validateAnswer: (
+    userAnswer: string,
+    correctValue: string,
+    targetCountry?: Country,
+    tolerance: number = 1
+  ): AttributeValidationResult => {
+    return validateCountryNameAnswer(userAnswer, correctValue, targetCountry, tolerance);
+  }
+};
+
+/**
+ * National Flag Attribute (Flag -> Country Name)
+ */
+export const FlagAttribute: AttributeDefinition<string> = {
+  id: 'flag',
+  label: 'National Flag',
+  category: 'geography',
+  icon: 'Flag',
+  description: 'Identify the sovereign nation from its national flag by typing its name.',
+  activeByDefault: true,
+  supportsMultipleChoice: true,
+  supportsTypingRecall: true,
+  supportsMapClick: false,
+  promptTemplate: (_country: Country) => 'Which country does this flag belong to?',
+  getValue: (c: Country) => c.name,
+  renderValue: (val: string) => val,
+  generateDistractors: (target: Country, all: Country[], count: number = 3) => {
+    return getRegionalDistractors(target, all, (c) => c.name, count);
+  },
+  validateAnswer: (
+    userAnswer: string,
+    correctValue: string,
+    targetCountry?: Country,
+    tolerance: number = 1
+  ): AttributeValidationResult => {
+    return validateCountryNameAnswer(userAnswer, correctValue, targetCountry, tolerance);
   }
 };
 
@@ -236,6 +390,8 @@ export const CuisineAttribute: AttributeDefinition<string> = {
 export const ALL_ATTRIBUTES: AttributeDefinition[] = [
   CapitalAttribute,
   LocationAttribute,
+  CountryAttribute,
+  FlagAttribute,
   LeaderAttribute,
   PoliticalRegimeAttribute,
   CuisineAttribute
