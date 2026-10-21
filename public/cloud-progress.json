@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:31:52.031Z",
+  "exportedAt": "2026-10-21T11:32:03.973Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16727,12 +16727,12 @@
         "attributeId": "location",
         "stage": 1,
         "step": 0,
-        "easeFactor": 2.1499999999999995,
+        "easeFactor": 1.95,
         "intervalDays": 0,
         "reps": 1,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-10T13:54:26.763Z",
-        "nextDueAt": "2026-10-10T13:54:26.763Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-21T11:32:00.580Z",
+        "nextDueAt": "2026-10-21T11:32:00.580Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:47:52.663Z",
@@ -16754,11 +16754,23 @@
             "userAnswer": "Antigua and Barbuda",
             "isCorrect": false,
             "timeSpentMs": 9466
+          },
+          {
+            "timestamp": "2026-10-21T11:32:00.580Z",
+            "inputMode": "map_click",
+            "userAnswer": "Antigua and Barbuda",
+            "isCorrect": false,
+            "timeSpentMs": 6123,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 7.15
+        "stability": 0.6,
+        "difficulty": 7.51,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "ATG"
+        ]
       }
     ],
     [
@@ -18598,7 +18610,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1343,
+    "totalReviews": 1344,
     "totalCorrect": 982,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -18631,7 +18643,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:31:48.701Z"
+    "updatedAt": "2026-10-21T11:32:00.583Z"
   },
   "settings": {
     "audioEnabled": true,
