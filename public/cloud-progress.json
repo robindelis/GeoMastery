@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T22:15:57.637Z",
+  "exportedAt": "2026-10-21T22:16:10.510Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8371,13 +8371,13 @@
         "countryId": "NPL",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.35,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-04T20:26:55.274Z",
-        "nextDueAt": "2026-10-05T20:26:55.274Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T22:16:07.467Z",
+        "nextDueAt": "2026-10-21T22:16:07.467Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:26:55.274Z",
@@ -8385,11 +8385,21 @@
             "userAnswer": "Kathmandu",
             "isCorrect": true,
             "timeSpentMs": 2048
+          },
+          {
+            "timestamp": "2026-10-21T22:16:07.467Z",
+            "inputMode": "typing",
+            "userAnswer": "Naipidaw",
+            "isCorrect": false,
+            "timeSpentMs": 12308,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 3.99
+        "stability": 0.6,
+        "difficulty": 5.55,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -21051,7 +21061,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1507,
+    "totalReviews": 1508,
     "totalCorrect": 1078,
     "currentStreak": 2,
     "longestStreak": 4,
@@ -21090,7 +21100,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T22:15:54.411Z"
+    "updatedAt": "2026-10-21T22:16:07.470Z"
   },
   "settings": {
     "audioEnabled": true,
