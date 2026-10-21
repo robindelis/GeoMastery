@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:15:47.024Z",
+  "exportedAt": "2026-10-21T12:15:51.961Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19812,11 +19812,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "MMR:country",
+      {
+        "id": "MMR:country",
+        "countryId": "MMR",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T12:15:48.354Z",
+        "nextDueAt": "2026-10-22T12:15:48.354Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:15:48.354Z",
+            "inputMode": "typing",
+            "userAnswer": "Myanmar",
+            "isCorrect": true,
+            "timeSpentMs": 4534,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1448,
-    "totalCorrect": 1045,
+    "totalReviews": 1449,
+    "totalCorrect": 1046,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -19854,7 +19884,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T12:15:43.590Z"
+    "updatedAt": "2026-10-21T12:15:48.356Z"
   },
   "settings": {
     "audioEnabled": true,
