@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:38:41.845Z",
+  "exportedAt": "2026-10-21T11:39:21.872Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16211,13 +16211,13 @@
         "countryId": "WATER_STRAIT_BAB_EL_MANDEB",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 27,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-14T09:55:53.216Z",
-        "nextDueAt": "2026-10-21T09:55:53.216Z",
+        "lastReviewedAt": "2026-10-21T11:39:18.631Z",
+        "nextDueAt": "2026-11-17T11:39:18.631Z",
         "history": [
           {
             "timestamp": "2026-10-06T13:18:07.451Z",
@@ -16239,11 +16239,21 @@
             "userAnswer": "Bab-el-Mandeb Strait",
             "isCorrect": true,
             "timeSpentMs": 3260
+          },
+          {
+            "timestamp": "2026-10-21T11:39:18.631Z",
+            "inputMode": "map_click",
+            "userAnswer": "Bab-el-Mandeb Strait",
+            "isCorrect": true,
+            "timeSpentMs": 5820,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 27,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -18934,8 +18944,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1376,
-    "totalCorrect": 1003,
+    "totalReviews": 1377,
+    "totalCorrect": 1004,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -18967,7 +18977,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:38:38.162Z"
+    "updatedAt": "2026-10-21T11:39:18.634Z"
   },
   "settings": {
     "audioEnabled": true,
