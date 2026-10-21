@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:20:56.579Z",
+  "exportedAt": "2026-10-21T12:21:00.692Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20538,10 +20538,40 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "AFG:flag",
+      {
+        "id": "AFG:flag",
+        "countryId": "AFG",
+        "attributeId": "flag",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T12:20:57.159Z",
+        "nextDueAt": "2026-10-21T12:20:57.159Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:20:57.159Z",
+            "inputMode": "typing",
+            "userAnswer": "u",
+            "isCorrect": false,
+            "timeSpentMs": 3659,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1475,
+    "totalReviews": 1476,
     "totalCorrect": 1065,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -20580,7 +20610,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T12:20:53.124Z"
+    "updatedAt": "2026-10-21T12:20:57.161Z"
   },
   "settings": {
     "audioEnabled": true,
