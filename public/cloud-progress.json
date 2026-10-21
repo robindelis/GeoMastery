@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:46:15.942Z",
+  "exportedAt": "2026-10-21T11:46:44.222Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11524,14 +11524,14 @@
         "id": "WATER_SEA_CASPIAN:location",
         "countryId": "WATER_SEA_CASPIAN",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.33,
+        "intervalDays": 11,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-06T13:09:48.745Z",
-        "nextDueAt": "2026-10-07T13:09:48.745Z",
+        "lastReviewedAt": "2026-10-21T11:46:40.584Z",
+        "nextDueAt": "2026-11-01T11:46:40.584Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:24:36.792Z",
@@ -11546,11 +11546,21 @@
             "userAnswer": "Caspian Sea",
             "isCorrect": true,
             "timeSpentMs": 3143
+          },
+          {
+            "timestamp": "2026-10-21T11:46:40.584Z",
+            "inputMode": "map_click",
+            "userAnswer": "Caspian Sea",
+            "isCorrect": true,
+            "timeSpentMs": 24799,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 6.42
+        "stability": 11.05,
+        "difficulty": 6.52,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
       }
     ],
     [
@@ -19220,8 +19230,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1404,
-    "totalCorrect": 1018,
+    "totalReviews": 1405,
+    "totalCorrect": 1019,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -19253,7 +19263,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:46:12.377Z"
+    "updatedAt": "2026-10-21T11:46:40.587Z"
   },
   "settings": {
     "audioEnabled": true,
