@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:35:41.222Z",
+  "exportedAt": "2026-10-21T11:36:04.656Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7468,14 +7468,14 @@
         "id": "SLB:location",
         "countryId": "SLB",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.38,
+        "intervalDays": 10,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-14T19:36:09.816Z",
-        "nextDueAt": "2026-10-15T19:36:09.816Z",
+        "lastReviewedAt": "2026-10-21T11:36:01.284Z",
+        "nextDueAt": "2026-10-31T11:36:01.284Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:59:00.489Z",
@@ -7497,11 +7497,21 @@
             "userAnswer": "Solomon Islands",
             "isCorrect": true,
             "timeSpentMs": 7256
+          },
+          {
+            "timestamp": "2026-10-21T11:36:01.284Z",
+            "inputMode": "map_click",
+            "userAnswer": "Solomon Islands",
+            "isCorrect": true,
+            "timeSpentMs": 17145,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 6.2
+        "stability": 10.16,
+        "difficulty": 6.35,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
       }
     ],
     [
@@ -18794,8 +18804,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1362,
-    "totalCorrect": 995,
+    "totalReviews": 1363,
+    "totalCorrect": 996,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -18822,12 +18832,12 @@
       },
       "Oceania": {
         "total": 28,
-        "mastered": 7,
-        "learning": 21
+        "mastered": 8,
+        "learning": 20
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:35:37.998Z"
+    "updatedAt": "2026-10-21T11:36:01.286Z"
   },
   "settings": {
     "audioEnabled": true,
