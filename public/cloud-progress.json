@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:37:27.563Z",
+  "exportedAt": "2026-10-21T11:37:37.294Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -14219,13 +14219,13 @@
         "countryId": "ZAF",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.2,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-10T09:00:52.919Z",
-        "nextDueAt": "2026-10-11T09:00:52.919Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-21T11:37:34.187Z",
+        "nextDueAt": "2026-10-21T11:37:34.187Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:29:02.490Z",
@@ -14247,11 +14247,23 @@
             "userAnswer": "Pretoria",
             "isCorrect": true,
             "timeSpentMs": 32104
+          },
+          {
+            "timestamp": "2026-10-21T11:37:34.187Z",
+            "inputMode": "typing",
+            "userAnswer": "Liberia",
+            "isCorrect": false,
+            "timeSpentMs": 8375,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 6.2
+        "stability": 0.88,
+        "difficulty": 6.92,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "LBR"
+        ]
       }
     ],
     [
@@ -18844,7 +18856,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1367,
+    "totalReviews": 1368,
     "totalCorrect": 998,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -18877,7 +18889,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:37:24.403Z"
+    "updatedAt": "2026-10-21T11:37:34.189Z"
   },
   "settings": {
     "audioEnabled": true,
