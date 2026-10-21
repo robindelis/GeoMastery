@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:38:14.699Z",
+  "exportedAt": "2026-10-21T11:38:28.257Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6587,14 +6587,14 @@
         "id": "VUT:location",
         "countryId": "VUT",
         "attributeId": "location",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 1.85,
-        "intervalDays": 0,
-        "reps": 3,
+        "stage": 2,
+        "step": 1,
+        "easeFactor": 1.9,
+        "intervalDays": 8,
+        "reps": 4,
         "lapses": 4,
-        "lastReviewedAt": "2026-10-16T20:15:22.045Z",
-        "nextDueAt": "2026-10-16T20:15:22.045Z",
+        "lastReviewedAt": "2026-10-21T11:38:24.836Z",
+        "nextDueAt": "2026-10-29T11:38:24.836Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:26:51.840Z",
@@ -6645,12 +6645,20 @@
             "isCorrect": false,
             "timeSpentMs": 5582,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-21T11:38:24.836Z",
+            "inputMode": "map_click",
+            "userAnswer": "Vanuatu",
+            "isCorrect": true,
+            "timeSpentMs": 3886,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 1.12,
-        "difficulty": 8.06,
-        "lastLatencyGrade": 1,
+        "stability": 8,
+        "difficulty": 7.5,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "WATER_OCEAN_PACIFIC"
         ]
@@ -18908,8 +18916,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1373,
-    "totalCorrect": 1001,
+    "totalReviews": 1374,
+    "totalCorrect": 1002,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -18936,12 +18944,12 @@
       },
       "Oceania": {
         "total": 28,
-        "mastered": 8,
-        "learning": 20
+        "mastered": 9,
+        "learning": 19
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:38:11.339Z"
+    "updatedAt": "2026-10-21T11:38:24.840Z"
   },
   "settings": {
     "audioEnabled": true,
