@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:33:39.316Z",
+  "exportedAt": "2026-10-21T11:34:17.473Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -68,13 +68,13 @@
         "countryId": "BGR",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 1.98,
+        "intervalDays": 4,
+        "reps": 3,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-17T14:01:43.813Z",
-        "nextDueAt": "2026-10-17T14:01:43.813Z",
+        "lastReviewedAt": "2026-10-21T11:34:14.089Z",
+        "nextDueAt": "2026-10-25T11:34:14.089Z",
         "history": [
           {
             "timestamp": "2026-10-04T14:33:27.073Z",
@@ -111,12 +111,20 @@
             "isCorrect": false,
             "timeSpentMs": 16396,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-21T11:34:14.089Z",
+            "inputMode": "map_click",
+            "userAnswer": "Bulgaria",
+            "isCorrect": true,
+            "timeSpentMs": 13748,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.88,
-        "difficulty": 7.75,
-        "lastLatencyGrade": 1,
+        "stability": 4.15,
+        "difficulty": 7.55,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "HUN"
         ]
@@ -18686,8 +18694,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1351,
-    "totalCorrect": 985,
+    "totalReviews": 1352,
+    "totalCorrect": 986,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -18719,7 +18727,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:33:35.829Z"
+    "updatedAt": "2026-10-21T11:34:14.091Z"
   },
   "settings": {
     "audioEnabled": true,
