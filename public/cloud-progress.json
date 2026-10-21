@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T22:17:56.521Z",
+  "exportedAt": "2026-10-21T22:18:00.116Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -21136,11 +21136,41 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "HTI:country",
+      {
+        "id": "HTI:country",
+        "countryId": "HTI",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T22:17:57.005Z",
+        "nextDueAt": "2026-10-22T22:17:57.005Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T22:17:57.005Z",
+            "inputMode": "typing",
+            "userAnswer": "Haiti",
+            "isCorrect": true,
+            "timeSpentMs": 3358,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1512,
-    "totalCorrect": 1082,
+    "totalReviews": 1513,
+    "totalCorrect": 1083,
     "currentStreak": 2,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-22",
@@ -21178,7 +21208,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T22:17:53.342Z"
+    "updatedAt": "2026-10-21T22:17:57.009Z"
   },
   "settings": {
     "audioEnabled": true,
