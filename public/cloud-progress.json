@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:44:17.151Z",
+  "exportedAt": "2026-10-21T11:44:26.006Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -5831,13 +5831,13 @@
         "countryId": "IND",
         "attributeId": "capital",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 36,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T16:16:37.781Z",
-        "nextDueAt": "2026-10-17T16:16:37.781Z",
+        "lastReviewedAt": "2026-10-21T11:44:22.899Z",
+        "nextDueAt": "2026-11-26T11:44:22.899Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:10:12.737Z",
@@ -5859,11 +5859,21 @@
             "userAnswer": "New Delhi",
             "isCorrect": true,
             "timeSpentMs": 3477
+          },
+          {
+            "timestamp": "2026-10-21T11:44:22.899Z",
+            "inputMode": "typing",
+            "userAnswer": "New Delhi",
+            "isCorrect": true,
+            "timeSpentMs": 3344,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 36,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -19090,8 +19100,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1391,
-    "totalCorrect": 1009,
+    "totalReviews": 1392,
+    "totalCorrect": 1010,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -19123,7 +19133,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:44:13.891Z"
+    "updatedAt": "2026-10-21T11:44:22.901Z"
   },
   "settings": {
     "audioEnabled": true,
