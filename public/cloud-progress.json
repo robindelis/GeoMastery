@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T22:11:28.799Z",
+  "exportedAt": "2026-10-21T22:12:08.931Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20912,11 +20912,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "ALB:country",
+      {
+        "id": "ALB:country",
+        "countryId": "ALB",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T22:12:05.713Z",
+        "nextDueAt": "2026-10-22T22:12:05.713Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T22:12:05.713Z",
+            "inputMode": "typing",
+            "userAnswer": "Albania",
+            "isCorrect": true,
+            "timeSpentMs": 39173,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 1,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1496,
-    "totalCorrect": 1071,
+    "totalReviews": 1497,
+    "totalCorrect": 1072,
     "currentStreak": 2,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-22",
@@ -20954,7 +20984,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T22:11:25.567Z"
+    "updatedAt": "2026-10-21T22:12:05.719Z"
   },
   "settings": {
     "audioEnabled": true,
