@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T19:21:25.133Z",
+  "exportedAt": "2026-10-21T19:21:30.600Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20774,11 +20774,41 @@
         "lastLatencyGrade": 1,
         "confusedWith": []
       }
+    ],
+    [
+      "ISR:country",
+      {
+        "id": "ISR:country",
+        "countryId": "ISR",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T19:21:27.372Z",
+        "nextDueAt": "2026-10-22T19:21:27.372Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T19:21:27.372Z",
+            "inputMode": "typing",
+            "userAnswer": "Israel",
+            "isCorrect": true,
+            "timeSpentMs": 3084,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.9,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1484,
-    "totalCorrect": 1065,
+    "totalReviews": 1485,
+    "totalCorrect": 1066,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -20816,7 +20846,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T19:21:21.688Z"
+    "updatedAt": "2026-10-21T19:21:27.377Z"
   },
   "settings": {
     "audioEnabled": true,
