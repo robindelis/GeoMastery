@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:48:27.261Z",
+  "exportedAt": "2026-10-21T11:49:13.125Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -9542,13 +9542,13 @@
         "countryId": "BTN",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 1.9999999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 1.8,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-15T11:53:56.492Z",
-        "nextDueAt": "2026-10-16T11:53:56.492Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-10-21T11:49:07.895Z",
+        "nextDueAt": "2026-10-21T11:49:07.895Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:33:00.533Z",
@@ -9584,11 +9584,23 @@
             "userAnswer": "Bhutan",
             "isCorrect": true,
             "timeSpentMs": 4194
+          },
+          {
+            "timestamp": "2026-10-21T11:49:07.895Z",
+            "inputMode": "map_click",
+            "userAnswer": "Brunei",
+            "isCorrect": false,
+            "timeSpentMs": 37647,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 8.86
+        "stability": 0.74,
+        "difficulty": 8.57,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "BRN"
+        ]
       }
     ],
     [
@@ -19286,7 +19298,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1410,
+    "totalReviews": 1411,
     "totalCorrect": 1021,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -19319,7 +19331,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:48:23.877Z"
+    "updatedAt": "2026-10-21T11:49:07.898Z"
   },
   "settings": {
     "audioEnabled": true,
