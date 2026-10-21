@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:39:25.573Z",
+  "exportedAt": "2026-10-21T11:39:30.305Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8735,13 +8735,13 @@
         "countryId": "TLS",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 1.9999999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 1.8,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-14T20:59:45.808Z",
-        "nextDueAt": "2026-10-15T20:59:45.808Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-10-21T11:39:26.894Z",
+        "nextDueAt": "2026-10-21T11:39:26.894Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:30:18.836Z",
@@ -8777,11 +8777,21 @@
             "userAnswer": "Kili",
             "isCorrect": true,
             "timeSpentMs": 7122
+          },
+          {
+            "timestamp": "2026-10-21T11:39:26.894Z",
+            "inputMode": "typing",
+            "userAnswer": "u",
+            "isCorrect": false,
+            "timeSpentMs": 3522,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 8.26
+        "stability": 0.76,
+        "difficulty": 8.2,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -18954,7 +18964,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1378,
+    "totalReviews": 1379,
     "totalCorrect": 1005,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -18987,7 +18997,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:39:22.418Z"
+    "updatedAt": "2026-10-21T11:39:26.897Z"
   },
   "settings": {
     "audioEnabled": true,
