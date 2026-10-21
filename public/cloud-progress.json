@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:54:05.146Z",
+  "exportedAt": "2026-10-21T11:54:27.250Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7345,13 +7345,13 @@
         "countryId": "FSM",
         "attributeId": "location",
         "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.4,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-08T17:50:20.594Z",
-        "nextDueAt": "2026-10-09T17:50:20.594Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T11:54:24.006Z",
+        "nextDueAt": "2026-10-21T11:54:24.006Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:55:52.962Z",
@@ -7366,11 +7366,23 @@
             "userAnswer": "Micronesia",
             "isCorrect": true,
             "timeSpentMs": 2626
+          },
+          {
+            "timestamp": "2026-10-21T11:54:24.006Z",
+            "inputMode": "map_click",
+            "userAnswer": "Fiji",
+            "isCorrect": false,
+            "timeSpentMs": 10976,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 4.26
+        "stability": 0.93,
+        "difficulty": 5.71,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "FJI"
+        ]
       }
     ],
     [
@@ -19431,7 +19443,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1424,
+    "totalReviews": 1425,
     "totalCorrect": 1029,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -19464,7 +19476,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:54:01.818Z"
+    "updatedAt": "2026-10-21T11:54:24.009Z"
   },
   "settings": {
     "audioEnabled": true,
