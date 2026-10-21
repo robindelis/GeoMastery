@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:32:42.310Z",
+  "exportedAt": "2026-10-21T11:32:57.945Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6934,13 +6934,13 @@
         "countryId": "TON",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.2,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-08T17:49:43.573Z",
-        "nextDueAt": "2026-10-09T17:49:43.573Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-21T11:32:54.544Z",
+        "nextDueAt": "2026-10-21T11:32:54.544Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:55:38.545Z",
@@ -6962,11 +6962,23 @@
             "userAnswer": "Tonga",
             "isCorrect": true,
             "timeSpentMs": 2428
+          },
+          {
+            "timestamp": "2026-10-21T11:32:54.544Z",
+            "inputMode": "map_click",
+            "userAnswer": "Fiji",
+            "isCorrect": false,
+            "timeSpentMs": 4014,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 5.6
+        "stability": 0.92,
+        "difficulty": 6.55,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "FJI"
+        ]
       }
     ],
     [
@@ -18642,7 +18654,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1347,
+    "totalReviews": 1348,
     "totalCorrect": 984,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -18675,7 +18687,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:32:38.848Z"
+    "updatedAt": "2026-10-21T11:32:54.547Z"
   },
   "settings": {
     "audioEnabled": true,
