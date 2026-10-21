@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:46:09.134Z",
+  "exportedAt": "2026-10-21T11:46:15.942Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -18005,13 +18005,13 @@
         "countryId": "LCA",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.15,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-14T19:37:22.585Z",
-        "nextDueAt": "2026-10-15T19:37:22.585Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-21T11:46:12.375Z",
+        "nextDueAt": "2026-10-21T11:46:12.375Z",
         "history": [
           {
             "timestamp": "2026-10-14T19:32:53.251Z",
@@ -18026,11 +18026,23 @@
             "userAnswer": "Castries",
             "isCorrect": true,
             "timeSpentMs": 2315
+          },
+          {
+            "timestamp": "2026-10-21T11:46:12.375Z",
+            "inputMode": "typing",
+            "userAnswer": "Freetown",
+            "isCorrect": false,
+            "timeSpentMs": 6500,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 5.82
+        "stability": 0.6,
+        "difficulty": 6.68,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "SLE"
+        ]
       }
     ],
     [
@@ -19208,7 +19220,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1403,
+    "totalReviews": 1404,
     "totalCorrect": 1018,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -19241,7 +19253,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:46:05.272Z"
+    "updatedAt": "2026-10-21T11:46:12.377Z"
   },
   "settings": {
     "audioEnabled": true,
