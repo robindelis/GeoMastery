@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:15:12.980Z",
+  "exportedAt": "2026-10-21T12:15:18.402Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19662,11 +19662,71 @@
         "lastLatencyGrade": 1,
         "confusedWith": []
       }
+    ],
+    [
+      "AUS:country",
+      {
+        "id": "AUS:country",
+        "countryId": "AUS",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T12:15:14.832Z",
+        "nextDueAt": "2026-10-22T12:15:14.832Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:15:14.832Z",
+            "inputMode": "typing",
+            "userAnswer": "Australia",
+            "isCorrect": true,
+            "timeSpentMs": 4153,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "BLZ:country",
+      {
+        "id": "BLZ:country",
+        "countryId": "BLZ",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T12:15:17.881Z",
+        "nextDueAt": "2026-10-22T12:15:17.881Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:15:17.881Z",
+            "inputMode": "typing",
+            "userAnswer": "Belize",
+            "isCorrect": true,
+            "timeSpentMs": 2690,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.9,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1443,
-    "totalCorrect": 1040,
+    "totalReviews": 1445,
+    "totalCorrect": 1042,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -19704,7 +19764,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T12:15:09.484Z"
+    "updatedAt": "2026-10-21T12:15:17.883Z"
   },
   "settings": {
     "audioEnabled": true,
