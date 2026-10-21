@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:51:30.483Z",
+  "exportedAt": "2026-10-21T11:51:43.486Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -5184,13 +5184,13 @@
         "countryId": "MMR",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1999999999999993,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-08T17:44:04.487Z",
-        "nextDueAt": "2026-10-09T17:44:04.487Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-21T11:51:39.982Z",
+        "nextDueAt": "2026-10-21T11:51:39.982Z",
         "history": [
           {
             "timestamp": "2026-10-04T18:42:29.244Z",
@@ -5219,11 +5219,23 @@
             "userAnswer": "Myanmar",
             "isCorrect": true,
             "timeSpentMs": 7528
+          },
+          {
+            "timestamp": "2026-10-21T11:51:39.982Z",
+            "inputMode": "map_click",
+            "userAnswer": "Vietnam",
+            "isCorrect": false,
+            "timeSpentMs": 4299,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 6.93
+        "stability": 0.91,
+        "difficulty": 7.37,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "VNM"
+        ]
       }
     ],
     [
@@ -19347,7 +19359,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1416,
+    "totalReviews": 1417,
     "totalCorrect": 1023,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -19380,7 +19392,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:51:27.143Z"
+    "updatedAt": "2026-10-21T11:51:39.984Z"
   },
   "settings": {
     "audioEnabled": true,
