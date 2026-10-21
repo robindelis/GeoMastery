@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:59:43.337Z",
+  "exportedAt": "2026-10-21T12:00:06.134Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16674,13 +16674,13 @@
         "countryId": "WATER_SEA_BALTIC",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.63,
+        "intervalDays": 22,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T08:58:26.893Z",
-        "nextDueAt": "2026-10-17T08:58:26.893Z",
+        "lastReviewedAt": "2026-10-21T12:00:02.718Z",
+        "nextDueAt": "2026-11-12T12:00:02.718Z",
         "history": [
           {
             "timestamp": "2026-10-06T13:17:54.471Z",
@@ -16702,11 +16702,21 @@
             "userAnswer": "Baltic Sea",
             "isCorrect": true,
             "timeSpentMs": 2906
+          },
+          {
+            "timestamp": "2026-10-21T12:00:02.718Z",
+            "inputMode": "map_click",
+            "userAnswer": "Baltic Sea",
+            "isCorrect": true,
+            "timeSpentMs": 10594,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 22.45,
+        "difficulty": 4.69,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
       }
     ],
     [
@@ -19575,8 +19585,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1438,
-    "totalCorrect": 1037,
+    "totalReviews": 1439,
+    "totalCorrect": 1038,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -19608,7 +19618,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:59:40.037Z"
+    "updatedAt": "2026-10-21T12:00:02.720Z"
   },
   "settings": {
     "audioEnabled": true,
