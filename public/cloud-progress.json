@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:43:07.677Z",
+  "exportedAt": "2026-10-21T11:43:23.578Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11745,13 +11745,13 @@
         "countryId": "MDG",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.35,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-06T10:43:42.936Z",
-        "nextDueAt": "2026-10-07T10:43:42.936Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T11:43:20.330Z",
+        "nextDueAt": "2026-10-21T11:43:20.330Z",
         "history": [
           {
             "timestamp": "2026-10-06T10:43:42.936Z",
@@ -11759,11 +11759,23 @@
             "userAnswer": "Madagascar",
             "isCorrect": true,
             "timeSpentMs": 9752
+          },
+          {
+            "timestamp": "2026-10-21T11:43:20.330Z",
+            "inputMode": "map_click",
+            "userAnswer": "Bahamas",
+            "isCorrect": false,
+            "timeSpentMs": 7080,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 5.09
+        "stability": 0.6,
+        "difficulty": 6.23,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "BHS"
+        ]
       }
     ],
     [
@@ -19038,7 +19050,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1386,
+    "totalReviews": 1387,
     "totalCorrect": 1006,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -19071,7 +19083,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:43:04.233Z"
+    "updatedAt": "2026-10-21T11:43:20.332Z"
   },
   "settings": {
     "audioEnabled": true,
