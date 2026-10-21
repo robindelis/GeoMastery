@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T22:12:31.111Z",
+  "exportedAt": "2026-10-21T22:12:34.145Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20966,10 +20966,40 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "LBN:country",
+      {
+        "id": "LBN:country",
+        "countryId": "LBN",
+        "attributeId": "country",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T22:12:34.040Z",
+        "nextDueAt": "2026-10-21T22:12:34.040Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T22:12:34.040Z",
+            "inputMode": "typing",
+            "userAnswer": "Liban",
+            "isCorrect": false,
+            "timeSpentMs": 2735,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1500,
+    "totalReviews": 1501,
     "totalCorrect": 1074,
     "currentStreak": 2,
     "longestStreak": 4,
@@ -21008,7 +21038,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T22:12:30.938Z"
+    "updatedAt": "2026-10-21T22:12:34.044Z"
   },
   "settings": {
     "audioEnabled": true,
