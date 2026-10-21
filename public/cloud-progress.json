@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:57:15.358Z",
+  "exportedAt": "2026-10-21T11:57:20.688Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -17852,13 +17852,13 @@
         "countryId": "PER",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 33,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-11T22:54:47.139Z",
-        "nextDueAt": "2026-10-18T22:54:47.139Z",
+        "lastReviewedAt": "2026-10-21T11:57:17.271Z",
+        "nextDueAt": "2026-11-23T11:57:17.271Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:55:34.220Z",
@@ -17880,11 +17880,21 @@
             "userAnswer": "Peru",
             "isCorrect": true,
             "timeSpentMs": 2788
+          },
+          {
+            "timestamp": "2026-10-21T11:57:17.271Z",
+            "inputMode": "map_click",
+            "userAnswer": "Peru",
+            "isCorrect": true,
+            "timeSpentMs": 3390,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 33,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -19503,8 +19513,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1431,
-    "totalCorrect": 1033,
+    "totalReviews": 1432,
+    "totalCorrect": 1034,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -19536,7 +19546,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:57:12.148Z"
+    "updatedAt": "2026-10-21T11:57:17.275Z"
   },
   "settings": {
     "audioEnabled": true,
