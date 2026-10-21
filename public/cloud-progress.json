@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:59:28.081Z",
+  "exportedAt": "2026-10-21T11:59:34.030Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19131,13 +19131,13 @@
         "countryId": "VEN",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.35,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-15T11:53:46.246Z",
-        "nextDueAt": "2026-10-16T11:53:46.246Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T11:59:30.526Z",
+        "nextDueAt": "2026-10-21T11:59:30.526Z",
         "history": [
           {
             "timestamp": "2026-10-15T11:53:46.246Z",
@@ -19145,11 +19145,23 @@
             "userAnswer": "Caracas",
             "isCorrect": true,
             "timeSpentMs": 2956
+          },
+          {
+            "timestamp": "2026-10-21T11:59:30.526Z",
+            "inputMode": "typing",
+            "userAnswer": "Maputo",
+            "isCorrect": false,
+            "timeSpentMs": 4329,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 4.49
+        "stability": 0.6,
+        "difficulty": 5.86,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "MOZ"
+        ]
       }
     ],
     [
@@ -19553,7 +19565,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1436,
+    "totalReviews": 1437,
     "totalCorrect": 1037,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -19586,7 +19598,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:59:24.668Z"
+    "updatedAt": "2026-10-21T11:59:30.528Z"
   },
   "settings": {
     "audioEnabled": true,
