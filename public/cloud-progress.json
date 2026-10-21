@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:15:56.134Z",
+  "exportedAt": "2026-10-21T12:16:02.335Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19872,11 +19872,71 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "STP:country",
+      {
+        "id": "STP:country",
+        "countryId": "STP",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T12:15:58.752Z",
+        "nextDueAt": "2026-10-22T12:15:58.752Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:15:58.752Z",
+            "inputMode": "typing",
+            "userAnswer": "Sao tome and principle",
+            "isCorrect": true,
+            "timeSpentMs": 5495,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "GRC:country",
+      {
+        "id": "GRC:country",
+        "countryId": "GRC",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T12:16:01.536Z",
+        "nextDueAt": "2026-10-22T12:16:01.536Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:16:01.536Z",
+            "inputMode": "typing",
+            "userAnswer": "Greece",
+            "isCorrect": true,
+            "timeSpentMs": 2380,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.9,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1450,
-    "totalCorrect": 1047,
+    "totalReviews": 1452,
+    "totalCorrect": 1049,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -19914,7 +19974,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T12:15:52.767Z"
+    "updatedAt": "2026-10-21T12:16:01.537Z"
   },
   "settings": {
     "audioEnabled": true,
