@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:33:25.503Z",
+  "exportedAt": "2026-10-21T11:33:33.151Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -17780,13 +17780,13 @@
         "countryId": "KNA",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.35,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-14T21:15:39.146Z",
-        "nextDueAt": "2026-10-15T21:15:39.146Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T11:33:29.538Z",
+        "nextDueAt": "2026-10-21T11:33:29.538Z",
         "history": [
           {
             "timestamp": "2026-10-14T21:15:39.146Z",
@@ -17794,11 +17794,21 @@
             "userAnswer": "Basseterre",
             "isCorrect": true,
             "timeSpentMs": 4207
+          },
+          {
+            "timestamp": "2026-10-21T11:33:29.538Z",
+            "inputMode": "typing",
+            "userAnswer": "Port LUis",
+            "isCorrect": false,
+            "timeSpentMs": 4611,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 4.49
+        "stability": 0.6,
+        "difficulty": 5.86,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -18666,7 +18676,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1349,
+    "totalReviews": 1350,
     "totalCorrect": 984,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -18699,7 +18709,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:33:22.157Z"
+    "updatedAt": "2026-10-21T11:33:29.541Z"
   },
   "settings": {
     "audioEnabled": true,
