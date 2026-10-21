@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:50:38.089Z",
+  "exportedAt": "2026-10-21T11:51:30.483Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8390,12 +8390,12 @@
         "attributeId": "location",
         "stage": 1,
         "step": 0,
-        "easeFactor": 1.95,
+        "easeFactor": 1.75,
         "intervalDays": 0,
         "reps": 1,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-16T20:16:24.097Z",
-        "nextDueAt": "2026-10-16T20:16:24.097Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-10-21T11:51:27.141Z",
+        "nextDueAt": "2026-10-21T11:51:27.141Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:28:24.679Z",
@@ -8425,13 +8425,22 @@
             "isCorrect": false,
             "timeSpentMs": 14348,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-21T11:51:27.141Z",
+            "inputMode": "map_click",
+            "userAnswer": "Kuwait",
+            "isCorrect": false,
+            "timeSpentMs": 13802,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
         "stability": 0.6,
-        "difficulty": 7.88,
+        "difficulty": 7.96,
         "lastLatencyGrade": 1,
         "confusedWith": [
+          "KWT",
           "QAT"
         ]
       }
@@ -19338,7 +19347,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1415,
+    "totalReviews": 1416,
     "totalCorrect": 1023,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -19371,7 +19380,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:50:33.750Z"
+    "updatedAt": "2026-10-21T11:51:27.143Z"
   },
   "settings": {
     "audioEnabled": true,
