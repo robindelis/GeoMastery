@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:53:58.923Z",
+  "exportedAt": "2026-10-21T11:54:05.146Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11665,13 +11665,13 @@
         "countryId": "WATER_OCEAN_SOUTHERN",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 40,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:17:21.810Z",
-        "nextDueAt": "2026-10-15T20:17:21.810Z",
+        "lastReviewedAt": "2026-10-21T11:54:01.815Z",
+        "nextDueAt": "2026-11-30T11:54:01.815Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:25:00.042Z",
@@ -11693,11 +11693,21 @@
             "userAnswer": "Southern Ocean",
             "isCorrect": true,
             "timeSpentMs": 2377
+          },
+          {
+            "timestamp": "2026-10-21T11:54:01.815Z",
+            "inputMode": "map_click",
+            "userAnswer": "Southern Ocean",
+            "isCorrect": true,
+            "timeSpentMs": 3889,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 40,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -19421,8 +19431,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1423,
-    "totalCorrect": 1028,
+    "totalReviews": 1424,
+    "totalCorrect": 1029,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -19454,7 +19464,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:53:55.699Z"
+    "updatedAt": "2026-10-21T11:54:01.818Z"
   },
   "settings": {
     "audioEnabled": true,
