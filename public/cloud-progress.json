@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:45:44.133Z",
+  "exportedAt": "2026-10-21T11:45:47.575Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -4882,13 +4882,13 @@
         "countryId": "AFG",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.2,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 2.25,
+        "intervalDays": 3,
+        "reps": 3,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-21T11:42:06.473Z",
-        "nextDueAt": "2026-10-21T11:42:06.473Z",
+        "lastReviewedAt": "2026-10-21T11:45:44.162Z",
+        "nextDueAt": "2026-10-24T11:45:44.162Z",
         "history": [
           {
             "timestamp": "2026-10-04T18:41:26.733Z",
@@ -4918,12 +4918,20 @@
             "isCorrect": false,
             "timeSpentMs": 14783,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-21T11:45:44.162Z",
+            "inputMode": "map_click",
+            "userAnswer": "Afghanistan",
+            "isCorrect": true,
+            "timeSpentMs": 2450,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.92,
-        "difficulty": 6.92,
-        "lastLatencyGrade": 1,
+        "stability": 2.5,
+        "difficulty": 6.45,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "AZE"
         ]
@@ -19158,8 +19166,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1398,
-    "totalCorrect": 1015,
+    "totalReviews": 1399,
+    "totalCorrect": 1016,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -19191,7 +19199,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:45:40.625Z"
+    "updatedAt": "2026-10-21T11:45:44.164Z"
   },
   "settings": {
     "audioEnabled": true,
