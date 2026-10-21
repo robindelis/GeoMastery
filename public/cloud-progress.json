@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:18:01.480Z",
+  "exportedAt": "2026-10-21T12:18:18.106Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19939,14 +19939,14 @@
         "id": "ERI:country",
         "countryId": "ERI",
         "attributeId": "country",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.38,
+        "intervalDays": 1,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-21T12:16:05.261Z",
-        "nextDueAt": "2026-10-21T12:16:05.261Z",
+        "lastReviewedAt": "2026-10-21T12:18:17.431Z",
+        "nextDueAt": "2026-10-22T12:18:17.431Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:16:05.261Z",
@@ -19955,11 +19955,19 @@
             "isCorrect": false,
             "timeSpentMs": 3278,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-21T12:18:17.431Z",
+            "inputMode": "typing",
+            "userAnswer": "Eritrea",
+            "isCorrect": true,
+            "timeSpentMs": 2277,
+            "grade": 4
           }
         ],
-        "difficulty": 5.99,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 4.99,
+        "stability": 1.9,
+        "lastLatencyGrade": 4,
         "confusedWith": []
       }
     ],
@@ -20052,11 +20060,41 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "BOL:country",
+      {
+        "id": "BOL:country",
+        "countryId": "BOL",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T12:18:14.743Z",
+        "nextDueAt": "2026-10-22T12:18:14.743Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:18:14.743Z",
+            "inputMode": "typing",
+            "userAnswer": "Bolivia",
+            "isCorrect": true,
+            "timeSpentMs": 2630,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.9,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1456,
-    "totalCorrect": 1051,
+    "totalReviews": 1458,
+    "totalCorrect": 1053,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -20094,7 +20132,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T12:17:58.435Z"
+    "updatedAt": "2026-10-21T12:18:17.434Z"
   },
   "settings": {
     "audioEnabled": true,
