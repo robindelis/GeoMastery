@@ -11,7 +11,9 @@ import {
   interleaveSessionQueue,
   classifyCardHorizon,
   calibrateSRSItem,
-  MASTERY_STABILITY_DAYS
+  MASTERY_STABILITY_DAYS,
+  buildFlagStudyCohort,
+  buildFlagCohortQuestions
 } from './srsEngine';
 import { COUNTRIES, COUNTRIES_BY_ID } from '../assets/data/countries';
 import { WATER_BODIES } from '../assets/data/waterBodies';
@@ -439,6 +441,28 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     countryItem = processAnswer(countryItem, true, 'typing', 'France', 2000).updatedItem;
     countryItem = processAnswer(countryItem, true, 'typing', 'France', 1800).updatedItem;
     expect(countryItem.stage).toBe(2);
+  });
+
+  it('builds a 50-flag study cohort that includes all upcoming session flag questions and generates roll-through questions', () => {
+    const itemsMap = new Map();
+    const sessionQueue = prepareSessionQueue(itemsMap, 'All', ['capital', 'flag'], 15, false);
+    const cohort = buildFlagStudyCohort(itemsMap, 'All', sessionQueue, 50);
+
+    expect(cohort.length).toBe(50);
+
+    const cohortIds = new Set(cohort.map((c) => c.id));
+    for (const q of sessionQueue) {
+      if (q.attributeId === 'flag') {
+        expect(cohortIds.has(q.country.id)).toBe(true);
+      }
+    }
+
+    const rollQueue = buildFlagCohortQuestions(itemsMap, cohort);
+    expect(rollQueue.length).toBe(50);
+    for (const q of rollQueue) {
+      expect(q.attributeId).toBe('flag');
+      expect(q.expectedInputMode).toBe('typing');
+    }
   });
 });
 

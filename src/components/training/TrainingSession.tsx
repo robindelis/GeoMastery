@@ -9,7 +9,9 @@ import {
   buildQuestion,
   createInitialSRSItem,
   waterBodyToCountry,
-  inferStability
+  inferStability,
+  buildFlagStudyCohort,
+  buildFlagCohortQuestions
 } from '../../core/srsEngine';
 import { getWaterBodyById } from '../../assets/data/waterBodies';
 import { ATTRIBUTE_REGISTRY } from '../../core/attributes';
@@ -20,7 +22,8 @@ import { MapContainer } from '../map/MapContainer';
 import { MultipleChoicePrompt } from './MultipleChoicePrompt';
 import { TypingRecallPrompt } from './TypingRecallPrompt';
 import { MapClickPrompt } from './MapClickPrompt';
-import { Flame, Sparkles, Zap } from 'lucide-react';
+import { FlagStudyRecap } from './FlagStudyRecap';
+import { Flame, Sparkles, Zap, Flag } from 'lucide-react';
 import { AmbientBackground } from '../common/AmbientBackground';
 import { SessionCompletedView, SessionAnswerRecord } from './SessionCompletedView';
 
@@ -78,6 +81,12 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
   // Synchronously build initial session queue so the first render never flashes "All Caught Up!"
   const [queue, setQueue] = useState<TrainingQuestion[]>(() =>
     createInitialSessionQueue(srsItemsMap, continentFilter, attributeFilter, initialPracticeMode, targetCountryId)
+  );
+  const shouldShowFlagRecap =
+    attributeFilter.includes('flag') && continentFilter !== 'Oceans' && !targetCountryId;
+  const [isStudyingFlags, setIsStudyingFlags] = useState<boolean>(() => shouldShowFlagRecap);
+  const [flagStudyCohort, setFlagStudyCohort] = useState<Country[]>(() =>
+    shouldShowFlagRecap ? buildFlagStudyCohort(srsItemsMap, continentFilter, queue, 50) : []
   );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -148,6 +157,10 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     );
 
     setQueue(newQueue);
+    const showRecap =
+      attributeFilter.includes('flag') && continentFilter !== 'Oceans' && !targetCountryId;
+    setIsStudyingFlags(showRecap);
+    setFlagStudyCohort(showRecap ? buildFlagStudyCohort(items, continentFilter, newQueue, 50) : []);
     setCurrentIndex(0);
     setIsCompleted(false);
     setIsSubmitted(false);
@@ -181,6 +194,9 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       );
       if (refreshedQueue.length > 0) {
         setQueue(refreshedQueue);
+        if (attributeFilter.includes('flag') && continentFilter !== 'Oceans' && !targetCountryId) {
+          setFlagStudyCohort(buildFlagStudyCohort(items, continentFilter, refreshedQueue, 50));
+        }
         setCurrentIndex(0);
         setQuestionStartTime(Date.now());
         questionStartTimeRef.current = Date.now();
@@ -444,6 +460,10 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     const items = StorageService.loadSRSItems();
     const newQueue = prepareSessionQueue(items, continentFilter, attributeFilter, 15, isPracticeMode);
     setQueue(newQueue);
+    const showRecap =
+      attributeFilter.includes('flag') && continentFilter !== 'Oceans' && !targetCountryId;
+    setIsStudyingFlags(showRecap);
+    setFlagStudyCohort(showRecap ? buildFlagStudyCohort(items, continentFilter, newQueue, 50) : []);
     setCurrentIndex(0);
     setIsCompleted(false);
     setIsSubmitted(false);
@@ -483,6 +503,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     const retryQueue = Array.from(uniqueMap.values());
 
     setQueue(retryQueue);
+    setIsStudyingFlags(false);
     setCurrentIndex(0);
     setIsCompleted(false);
     setIsSubmitted(false);
@@ -509,6 +530,10 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     const items = StorageService.loadSRSItems();
     const practiceQueue = prepareSessionQueue(items, continentFilter, attributeFilter, 15, true);
     setQueue(practiceQueue);
+    const showRecap =
+      attributeFilter.includes('flag') && continentFilter !== 'Oceans' && !targetCountryId;
+    setIsStudyingFlags(showRecap);
+    setFlagStudyCohort(showRecap ? buildFlagStudyCohort(items, continentFilter, practiceQueue, 50) : []);
     setCurrentIndex(0);
     setIsPracticeMode(true);
     isPracticeModeRef.current = true;
@@ -568,6 +593,50 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
           </div>
         </div>
       </AmbientBackground>
+    );
+  }
+
+  // Pre-Session 50-Flag Study Recap Screen
+  if (isStudyingFlags && flagStudyCohort.length > 0 && !isCompleted && currentQuestion) {
+    const sessionFlagIds = new Set(
+      queue.filter((q) => q.attributeId === 'flag').map((q) => q.country.id)
+    );
+    const isOnlyFlagAttribute = attributeFilter.length === 1 && attributeFilter[0] === 'flag';
+
+    return (
+      <FlagStudyRecap
+        continentFilter={continentFilter}
+        cohortCountries={flagStudyCohort}
+        sessionFlagCountryIds={sessionFlagIds}
+        srsItemsMap={srsItemsMap}
+        sessionQueueLength={queue.length}
+        isOnlyFlagAttribute={isOnlyFlagAttribute}
+        onStartRollThroughAll={(selectedCountries) => {
+          const items = StorageService.loadSRSItems();
+          const rollQueue = buildFlagCohortQuestions(items, selectedCountries);
+          setQueue(rollQueue);
+          setCurrentIndex(0);
+          setIsStudyingFlags(false);
+          setIsSubmitted(false);
+          isSubmittedRef.current = false;
+          setUserAnswer('');
+          setIsCurrentCorrect(undefined);
+          setFeedbackState(null);
+          setSelectedMapCountry(null);
+          const now = Date.now();
+          setSessionStartTime(now);
+          setQuestionStartTime(now);
+          questionStartTimeRef.current = now;
+        }}
+        onStartStandardQueue={() => {
+          setIsStudyingFlags(false);
+          const now = Date.now();
+          setSessionStartTime(now);
+          setQuestionStartTime(now);
+          questionStartTimeRef.current = now;
+        }}
+        onExit={onFinishSession}
+      />
     );
   }
 

@@ -951,6 +951,95 @@ export function prepareSessionQueue(
 }
 
 /**
+ * Builds a pre-session Flag Study Cohort of up to `limit` (default 50) countries.
+ * Guarantees that every country with a `'flag'` question in `sessionQueue` is included first,
+ * then fills remaining slots up to `limit` with due/unseen `'flag'` cards from `continentFilter`.
+ */
+export function buildFlagStudyCohort(
+  existingItemsMap: Map<string, SRSItem>,
+  continentFilter: TrainingCategory,
+  sessionQueue: TrainingQuestion[],
+  limit: number = 50
+): Country[] {
+  if (continentFilter === 'Oceans') return [];
+
+  const eligibleCountries =
+    continentFilter === 'All'
+      ? COUNTRIES
+      : COUNTRIES.filter((c) => c.continent === continentFilter);
+
+  const targetCount = Math.min(limit, eligibleCountries.length);
+  const selectedMap = new Map<string, Country>();
+
+  // 1. Always include all countries that appear as flag questions in the upcoming session queue
+  for (const q of sessionQueue) {
+    if (q.attributeId === 'flag' && !q.country.id.startsWith('WATER_')) {
+      selectedMap.set(q.country.id, q.country);
+      if (selectedMap.size >= targetCount) break;
+    }
+  }
+
+  // 2. Also include other countries in the session queue if space remains
+  if (selectedMap.size < targetCount) {
+    for (const q of sessionQueue) {
+      if (!q.country.id.startsWith('WATER_') && !selectedMap.has(q.country.id)) {
+        selectedMap.set(q.country.id, q.country);
+        if (selectedMap.size >= targetCount) break;
+      }
+    }
+  }
+
+  if (selectedMap.size >= targetCount) {
+    return Array.from(selectedMap.values());
+  }
+
+  // 3. Fill remaining slots up to `targetCount` prioritizing learning/unseen/due flag cards
+  const now = new Date().toISOString();
+  const learningPool: Country[] = [];
+  const unseenPool: Country[] = [];
+  const recallDuePool: Country[] = [];
+  const otherPool: Country[] = [];
+
+  for (const c of shuffleArray(eligibleCountries)) {
+    if (selectedMap.has(c.id)) continue;
+    const item = existingItemsMap.get(`${c.id}:flag`);
+    if (!item) {
+      unseenPool.push(c);
+    } else if (item.stage === 0 || classifyCardHorizon(item) === 'learning') {
+      learningPool.push(c);
+    } else if (item.nextDueAt <= now || item.intervalDays === 0) {
+      recallDuePool.push(c);
+    } else {
+      otherPool.push(c);
+    }
+  }
+
+  for (const pool of [learningPool, unseenPool, recallDuePool, otherPool]) {
+    for (const c of pool) {
+      selectedMap.set(c.id, c);
+      if (selectedMap.size >= targetCount) break;
+    }
+    if (selectedMap.size >= targetCount) break;
+  }
+
+  return Array.from(selectedMap.values());
+}
+
+/**
+ * Builds an active-recall Flag question queue from a studied cohort of countries.
+ */
+export function buildFlagCohortQuestions(
+  existingItemsMap: Map<string, SRSItem>,
+  cohortCountries: Country[]
+): TrainingQuestion[] {
+  const questions = cohortCountries.map((country) => {
+    const item = existingItemsMap.get(`${country.id}:flag`) || createInitialSRSItem(country.id, 'flag');
+    return buildQuestion(item, country, COUNTRIES);
+  });
+  return shuffleArray(questions);
+}
+
+/**
  * Anti-Priming Interleaved Session Scheduler:
  * Ensures that two cards for the same entity (e.g. `FRA:location` and `FRA:capital`)
  * are separated by at least `minGap` intervening questions so one does not
