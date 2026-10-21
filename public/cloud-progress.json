@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:20:05.846Z",
+  "exportedAt": "2026-10-21T12:20:17.501Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20350,11 +20350,41 @@
         "lastLatencyGrade": 1,
         "confusedWith": []
       }
+    ],
+    [
+      "JAM:country",
+      {
+        "id": "JAM:country",
+        "countryId": "JAM",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T12:20:13.996Z",
+        "nextDueAt": "2026-10-22T12:20:13.996Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:20:13.996Z",
+            "inputMode": "typing",
+            "userAnswer": "Jamaica",
+            "isCorrect": true,
+            "timeSpentMs": 6018,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1468,
-    "totalCorrect": 1060,
+    "totalReviews": 1469,
+    "totalCorrect": 1061,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -20392,7 +20422,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T12:20:02.520Z"
+    "updatedAt": "2026-10-21T12:20:13.998Z"
   },
   "settings": {
     "audioEnabled": true,
