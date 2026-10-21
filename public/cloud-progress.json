@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:32:57.945Z",
+  "exportedAt": "2026-10-21T11:33:25.503Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16655,13 +16655,13 @@
         "countryId": "COL",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.4499999999999993,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.25,
+        "intervalDays": 0,
         "reps": 3,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-10T13:52:01.930Z",
-        "nextDueAt": "2026-10-11T13:52:01.930Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-21T11:33:22.155Z",
+        "nextDueAt": "2026-10-21T11:33:22.155Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:46:39.916Z",
@@ -16690,11 +16690,23 @@
             "userAnswer": "Colombia",
             "isCorrect": true,
             "timeSpentMs": 3560
+          },
+          {
+            "timestamp": "2026-10-21T11:33:22.155Z",
+            "inputMode": "map_click",
+            "userAnswer": "Venezuela",
+            "isCorrect": false,
+            "timeSpentMs": 6688,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 5.98
+        "stability": 0.88,
+        "difficulty": 6.78,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "VEN"
+        ]
       }
     ],
     [
@@ -18654,7 +18666,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1348,
+    "totalReviews": 1349,
     "totalCorrect": 984,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -18687,7 +18699,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:32:54.547Z"
+    "updatedAt": "2026-10-21T11:33:22.157Z"
   },
   "settings": {
     "audioEnabled": true,
