@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:39:30.305Z",
+  "exportedAt": "2026-10-21T11:39:43.300Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -10146,13 +10146,13 @@
         "countryId": "WATER_CANAL_SUEZ",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1999999999999993,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-06T13:13:01.305Z",
-        "nextDueAt": "2026-10-07T13:13:01.305Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-21T11:39:40.061Z",
+        "nextDueAt": "2026-10-21T11:39:40.061Z",
         "history": [
           {
             "timestamp": "2026-10-05T09:45:09.291Z",
@@ -10181,11 +10181,23 @@
             "userAnswer": "Suez Canal",
             "isCorrect": true,
             "timeSpentMs": 3658
+          },
+          {
+            "timestamp": "2026-10-21T11:39:40.061Z",
+            "inputMode": "map_click",
+            "userAnswer": "Strait of Hormuz",
+            "isCorrect": false,
+            "timeSpentMs": 3547,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 7.53
+        "stability": 0.95,
+        "difficulty": 7.75,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "WATER_STRAIT_HORMUZ"
+        ]
       }
     ],
     [
@@ -18964,7 +18976,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1379,
+    "totalReviews": 1380,
     "totalCorrect": 1005,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -18997,7 +19009,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:39:26.897Z"
+    "updatedAt": "2026-10-21T11:39:40.063Z"
   },
   "settings": {
     "audioEnabled": true,
