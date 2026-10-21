@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:45:59.372Z",
+  "exportedAt": "2026-10-21T11:46:04.515Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -1369,13 +1369,13 @@
         "countryId": "AND",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.2,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-06T10:23:41.359Z",
-        "nextDueAt": "2026-10-07T10:23:41.359Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-21T11:46:00.558Z",
+        "nextDueAt": "2026-10-21T11:46:00.558Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:07:07.613Z",
@@ -1397,11 +1397,21 @@
             "userAnswer": "Andorra La Vella",
             "isCorrect": true,
             "timeSpentMs": 4806
+          },
+          {
+            "timestamp": "2026-10-21T11:46:00.558Z",
+            "inputMode": "typing",
+            "userAnswer": "Andorra",
+            "isCorrect": false,
+            "timeSpentMs": 2762,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 5.6
+        "stability": 0.97,
+        "difficulty": 6.55,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -19188,7 +19198,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1401,
+    "totalReviews": 1402,
     "totalCorrect": 1017,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -19221,7 +19231,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:45:55.886Z"
+    "updatedAt": "2026-10-21T11:46:00.561Z"
   },
   "settings": {
     "audioEnabled": true,
