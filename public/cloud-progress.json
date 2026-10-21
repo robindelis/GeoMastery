@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:47:13.123Z",
+  "exportedAt": "2026-10-21T11:47:35.318Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8892,12 +8892,12 @@
         "attributeId": "location",
         "stage": 1,
         "step": 0,
-        "easeFactor": 2.3499999999999996,
+        "easeFactor": 2.15,
         "intervalDays": 0,
         "reps": 1,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-14T21:15:09.861Z",
-        "nextDueAt": "2026-10-14T21:15:09.861Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-21T11:47:31.908Z",
+        "nextDueAt": "2026-10-21T11:47:31.908Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:30:26.859Z",
@@ -8912,11 +8912,23 @@
             "userAnswer": "Turkmenistan",
             "isCorrect": false,
             "timeSpentMs": 889808
+          },
+          {
+            "timestamp": "2026-10-21T11:47:31.908Z",
+            "inputMode": "map_click",
+            "userAnswer": "Turkmenistan",
+            "isCorrect": false,
+            "timeSpentMs": 15884,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 6.42
+        "stability": 0.6,
+        "difficulty": 7.06,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "TKM"
+        ]
       }
     ],
     [
@@ -19242,7 +19254,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1406,
+    "totalReviews": 1407,
     "totalCorrect": 1019,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -19275,7 +19287,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:47:09.641Z"
+    "updatedAt": "2026-10-21T11:47:31.911Z"
   },
   "settings": {
     "audioEnabled": true,
