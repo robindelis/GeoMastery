@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:18:55.143Z",
+  "exportedAt": "2026-10-21T12:18:59.794Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20184,11 +20184,41 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "COM:country",
+      {
+        "id": "COM:country",
+        "countryId": "COM",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T12:18:56.648Z",
+        "nextDueAt": "2026-10-22T12:18:56.648Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:18:56.648Z",
+            "inputMode": "typing",
+            "userAnswer": "Comores",
+            "isCorrect": true,
+            "timeSpentMs": 3380,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1461,
-    "totalCorrect": 1054,
+    "totalReviews": 1462,
+    "totalCorrect": 1055,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -20226,7 +20256,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T12:18:51.917Z"
+    "updatedAt": "2026-10-21T12:18:56.651Z"
   },
   "settings": {
     "audioEnabled": true,
