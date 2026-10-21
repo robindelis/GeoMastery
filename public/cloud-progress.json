@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:21:25.634Z",
+  "exportedAt": "2026-10-21T12:21:50.443Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20664,10 +20664,42 @@
           "BHS"
         ]
       }
+    ],
+    [
+      "BHR:flag",
+      {
+        "id": "BHR:flag",
+        "countryId": "BHR",
+        "attributeId": "flag",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T12:21:47.180Z",
+        "nextDueAt": "2026-10-21T12:21:47.180Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:21:47.180Z",
+            "inputMode": "typing",
+            "userAnswer": "Qatar",
+            "isCorrect": false,
+            "timeSpentMs": 2243,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "QAT"
+        ]
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1479,
+    "totalReviews": 1480,
     "totalCorrect": 1065,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -20706,7 +20738,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T12:21:22.201Z"
+    "updatedAt": "2026-10-21T12:21:47.183Z"
   },
   "settings": {
     "audioEnabled": true,
