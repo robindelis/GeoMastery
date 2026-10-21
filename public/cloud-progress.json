@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:39:21.872Z",
+  "exportedAt": "2026-10-21T11:39:25.573Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -3519,14 +3519,14 @@
         "id": "GRC:location",
         "countryId": "GRC",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.68,
+        "intervalDays": 56,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-06T10:29:39.155Z",
-        "nextDueAt": "2026-10-07T10:29:39.155Z",
+        "lastReviewedAt": "2026-10-21T11:39:22.415Z",
+        "nextDueAt": "2026-12-16T11:39:22.415Z",
         "history": [
           {
             "timestamp": "2026-10-04T17:02:31.940Z",
@@ -3541,11 +3541,21 @@
             "userAnswer": "Greece",
             "isCorrect": true,
             "timeSpentMs": 2541
+          },
+          {
+            "timestamp": "2026-10-21T11:39:22.415Z",
+            "inputMode": "map_click",
+            "userAnswer": "Greece",
+            "isCorrect": true,
+            "timeSpentMs": 2297,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 3.76
+        "stability": 56,
+        "difficulty": 2.61,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -18944,8 +18954,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1377,
-    "totalCorrect": 1004,
+    "totalReviews": 1378,
+    "totalCorrect": 1005,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -18967,8 +18977,8 @@
       },
       "Europe": {
         "total": 90,
-        "mastered": 60,
-        "learning": 30
+        "mastered": 61,
+        "learning": 29
       },
       "Oceania": {
         "total": 28,
@@ -18977,7 +18987,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:39:18.634Z"
+    "updatedAt": "2026-10-21T11:39:22.418Z"
   },
   "settings": {
     "audioEnabled": true,
