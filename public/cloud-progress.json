@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:37:37.294Z",
+  "exportedAt": "2026-10-21T11:37:48.180Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -713,13 +713,13 @@
         "countryId": "DEU",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.73,
+        "intervalDays": 56,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:07:42.089Z",
-        "nextDueAt": "2026-10-15T20:07:42.089Z",
+        "lastReviewedAt": "2026-10-21T11:37:48.104Z",
+        "nextDueAt": "2026-12-16T11:37:48.104Z",
         "history": [
           {
             "timestamp": "2026-10-04T14:46:55.644Z",
@@ -741,11 +741,21 @@
             "userAnswer": "Germany",
             "isCorrect": true,
             "timeSpentMs": 1638
+          },
+          {
+            "timestamp": "2026-10-21T11:37:48.104Z",
+            "inputMode": "map_click",
+            "userAnswer": "Germany",
+            "isCorrect": true,
+            "timeSpentMs": 1670,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 56.45,
+        "difficulty": 2.91,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -17743,14 +17753,14 @@
         "id": "SLV:location",
         "countryId": "SLV",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.4,
+        "intervalDays": 14,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-14T19:35:54.510Z",
-        "nextDueAt": "2026-10-15T19:35:54.510Z",
+        "lastReviewedAt": "2026-10-21T11:37:44.968Z",
+        "nextDueAt": "2026-11-04T11:37:44.968Z",
         "history": [
           {
             "timestamp": "2026-10-14T19:33:41.212Z",
@@ -17765,11 +17775,21 @@
             "userAnswer": "El Salvador",
             "isCorrect": true,
             "timeSpentMs": 2894
+          },
+          {
+            "timestamp": "2026-10-21T11:37:44.968Z",
+            "inputMode": "map_click",
+            "userAnswer": "El Salvador",
+            "isCorrect": true,
+            "timeSpentMs": 4499,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 5.82
+        "stability": 14.35,
+        "difficulty": 5.43,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -18856,8 +18876,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1368,
-    "totalCorrect": 998,
+    "totalReviews": 1370,
+    "totalCorrect": 1000,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -18869,8 +18889,8 @@
       },
       "Americas": {
         "total": 70,
-        "mastered": 21,
-        "learning": 49
+        "mastered": 22,
+        "learning": 48
       },
       "Asia": {
         "total": 96,
@@ -18889,7 +18909,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:37:34.189Z"
+    "updatedAt": "2026-10-21T11:37:48.107Z"
   },
   "settings": {
     "audioEnabled": true,
