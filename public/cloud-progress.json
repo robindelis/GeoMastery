@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:21:50.443Z",
+  "exportedAt": "2026-10-21T12:22:09.299Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20696,10 +20696,40 @@
           "QAT"
         ]
       }
+    ],
+    [
+      "LBY:flag",
+      {
+        "id": "LBY:flag",
+        "countryId": "LBY",
+        "attributeId": "flag",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T12:22:05.732Z",
+        "nextDueAt": "2026-10-21T12:22:05.732Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:22:05.732Z",
+            "inputMode": "typing",
+            "userAnswer": "u",
+            "isCorrect": false,
+            "timeSpentMs": 6179,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1480,
+    "totalReviews": 1481,
     "totalCorrect": 1065,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -20738,7 +20768,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T12:21:47.183Z"
+    "updatedAt": "2026-10-21T12:22:05.735Z"
   },
   "settings": {
     "audioEnabled": true,
