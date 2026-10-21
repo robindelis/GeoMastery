@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T19:21:30.600Z",
+  "exportedAt": "2026-10-21T19:21:35.172Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13409,13 +13409,13 @@
         "countryId": "SWZ",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.15,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-06T12:19:38.643Z",
-        "nextDueAt": "2026-10-07T12:19:38.643Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-21T19:21:31.718Z",
+        "nextDueAt": "2026-10-21T19:21:31.718Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:15:28.405Z",
@@ -13430,11 +13430,21 @@
             "userAnswer": "Mbabane",
             "isCorrect": true,
             "timeSpentMs": 10093
+          },
+          {
+            "timestamp": "2026-10-21T19:21:31.718Z",
+            "inputMode": "typing",
+            "userAnswer": "Eswatini",
+            "isCorrect": false,
+            "timeSpentMs": 3787,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 6.42
+        "stability": 0.6,
+        "difficulty": 7.06,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -20807,7 +20817,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1485,
+    "totalReviews": 1486,
     "totalCorrect": 1066,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -20846,7 +20856,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T19:21:27.377Z"
+    "updatedAt": "2026-10-21T19:21:31.720Z"
   },
   "settings": {
     "audioEnabled": true,
