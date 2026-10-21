@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:20:30.129Z",
+  "exportedAt": "2026-10-21T12:20:49.705Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20418,11 +20418,101 @@
         "lastLatencyGrade": 1,
         "confusedWith": []
       }
+    ],
+    [
+      "USA:flag",
+      {
+        "id": "USA:flag",
+        "countryId": "USA",
+        "attributeId": "flag",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T12:20:41.878Z",
+        "nextDueAt": "2026-10-22T12:20:41.878Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:20:41.878Z",
+            "inputMode": "typing",
+            "userAnswer": "United States",
+            "isCorrect": true,
+            "timeSpentMs": 5003,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "PAK:flag",
+      {
+        "id": "PAK:flag",
+        "countryId": "PAK",
+        "attributeId": "flag",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T12:20:44.293Z",
+        "nextDueAt": "2026-10-22T12:20:44.293Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:20:44.293Z",
+            "inputMode": "typing",
+            "userAnswer": "Pakistan",
+            "isCorrect": true,
+            "timeSpentMs": 1973,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.9,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
+    ],
+    [
+      "ERI:flag",
+      {
+        "id": "ERI:flag",
+        "countryId": "ERI",
+        "attributeId": "flag",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T12:20:46.350Z",
+        "nextDueAt": "2026-10-21T12:20:46.350Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:20:46.350Z",
+            "inputMode": "typing",
+            "userAnswer": "u",
+            "isCorrect": false,
+            "timeSpentMs": 1529,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1471,
-    "totalCorrect": 1062,
+    "totalReviews": 1474,
+    "totalCorrect": 1064,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -20460,7 +20550,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T12:20:26.621Z"
+    "updatedAt": "2026-10-21T12:20:46.352Z"
   },
   "settings": {
     "audioEnabled": true,
