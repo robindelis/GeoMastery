@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:16:08.754Z",
+  "exportedAt": "2026-10-21T12:16:13.159Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19962,11 +19962,41 @@
         "lastLatencyGrade": 1,
         "confusedWith": []
       }
+    ],
+    [
+      "QAT:country",
+      {
+        "id": "QAT:country",
+        "countryId": "QAT",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-21T12:16:09.759Z",
+        "nextDueAt": "2026-10-22T12:16:09.759Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:16:09.759Z",
+            "inputMode": "typing",
+            "userAnswer": "Qatar",
+            "isCorrect": true,
+            "timeSpentMs": 3563,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1453,
-    "totalCorrect": 1049,
+    "totalReviews": 1454,
+    "totalCorrect": 1050,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -20004,7 +20034,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T12:16:05.263Z"
+    "updatedAt": "2026-10-21T12:16:09.761Z"
   },
   "settings": {
     "audioEnabled": true,
