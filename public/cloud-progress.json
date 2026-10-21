@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:39:55.668Z",
+  "exportedAt": "2026-10-21T11:41:26.063Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15734,13 +15734,13 @@
         "countryId": "ERI",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1999999999999993,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-10T09:03:58.652Z",
-        "nextDueAt": "2026-10-11T09:03:58.652Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-21T11:41:22.767Z",
+        "nextDueAt": "2026-10-21T11:41:22.767Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:35:52.303Z",
@@ -15769,11 +15769,21 @@
             "userAnswer": "Asmara",
             "isCorrect": true,
             "timeSpentMs": 5166
+          },
+          {
+            "timestamp": "2026-10-21T11:41:22.767Z",
+            "inputMode": "typing",
+            "userAnswer": "wt",
+            "isCorrect": false,
+            "timeSpentMs": 60221,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 7.53
+        "stability": 0.87,
+        "difficulty": 7.75,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -18988,7 +18998,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1381,
+    "totalReviews": 1382,
     "totalCorrect": 1005,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -19021,7 +19031,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:39:52.380Z"
+    "updatedAt": "2026-10-21T11:41:22.770Z"
   },
   "settings": {
     "audioEnabled": true,
