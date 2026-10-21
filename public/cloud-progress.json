@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:39:43.300Z",
+  "exportedAt": "2026-10-21T11:39:55.668Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -9521,13 +9521,13 @@
         "countryId": "SGP",
         "attributeId": "location",
         "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.4,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:34:15.320Z",
-        "nextDueAt": "2026-10-09T20:34:15.320Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T11:39:52.377Z",
+        "nextDueAt": "2026-10-21T11:39:52.377Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:34:20.615Z",
@@ -9542,11 +9542,23 @@
             "userAnswer": "Singapore",
             "isCorrect": true,
             "timeSpentMs": 12360
+          },
+          {
+            "timestamp": "2026-10-21T11:39:52.377Z",
+            "inputMode": "map_click",
+            "userAnswer": "Timor-Leste",
+            "isCorrect": false,
+            "timeSpentMs": 6407,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 4.86
+        "stability": 0.92,
+        "difficulty": 6.09,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "TLS"
+        ]
       }
     ],
     [
@@ -18976,7 +18988,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1380,
+    "totalReviews": 1381,
     "totalCorrect": 1005,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -19009,7 +19021,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:39:40.063Z"
+    "updatedAt": "2026-10-21T11:39:52.380Z"
   },
   "settings": {
     "audioEnabled": true,
