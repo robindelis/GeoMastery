@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:34:51.214Z",
+  "exportedAt": "2026-10-21T11:34:57.742Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7398,12 +7398,12 @@
         "attributeId": "capital",
         "stage": 1,
         "step": 0,
-        "easeFactor": 2.1499999999999995,
+        "easeFactor": 1.95,
         "intervalDays": 0,
         "reps": 1,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-15T16:22:59.241Z",
-        "nextDueAt": "2026-10-15T16:22:59.241Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-21T11:34:54.287Z",
+        "nextDueAt": "2026-10-21T11:34:54.287Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:58:52.905Z",
@@ -7425,11 +7425,21 @@
             "userAnswer": "Port of spain",
             "isCorrect": false,
             "timeSpentMs": 3748
+          },
+          {
+            "timestamp": "2026-10-21T11:34:54.287Z",
+            "inputMode": "typing",
+            "userAnswer": "sn",
+            "isCorrect": false,
+            "timeSpentMs": 2566,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 7.75
+        "stability": 0.6,
+        "difficulty": 7.88,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -18744,7 +18754,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1357,
+    "totalReviews": 1358,
     "totalCorrect": 991,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -18777,7 +18787,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:34:50.651Z"
+    "updatedAt": "2026-10-21T11:34:54.289Z"
   },
   "settings": {
     "audioEnabled": true,
