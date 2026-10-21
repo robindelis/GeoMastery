@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T11:47:35.318Z",
+  "exportedAt": "2026-10-21T11:47:46.399Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -614,14 +614,14 @@
         "id": "MKD:location",
         "countryId": "MKD",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.38,
+        "intervalDays": 16,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-05T22:35:21.844Z",
-        "nextDueAt": "2026-10-06T22:35:21.844Z",
+        "lastReviewedAt": "2026-10-21T11:47:43.082Z",
+        "nextDueAt": "2026-11-06T11:47:43.082Z",
         "history": [
           {
             "timestamp": "2026-10-04T14:37:00.081Z",
@@ -643,11 +643,21 @@
             "userAnswer": "North Macedonia",
             "isCorrect": true,
             "timeSpentMs": 3545
+          },
+          {
+            "timestamp": "2026-10-21T11:47:43.082Z",
+            "inputMode": "map_click",
+            "userAnswer": "North Macedonia",
+            "isCorrect": true,
+            "timeSpentMs": 8216,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 6.2
+        "stability": 16.18,
+        "difficulty": 6.35,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
       }
     ],
     [
@@ -19254,8 +19264,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1407,
-    "totalCorrect": 1019,
+    "totalReviews": 1408,
+    "totalCorrect": 1020,
     "currentStreak": 1,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-21",
@@ -19277,8 +19287,8 @@
       },
       "Europe": {
         "total": 90,
-        "mastered": 61,
-        "learning": 29
+        "mastered": 62,
+        "learning": 28
       },
       "Oceania": {
         "total": 28,
@@ -19287,7 +19297,7 @@
       }
     },
     "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T11:47:31.911Z"
+    "updatedAt": "2026-10-21T11:47:43.085Z"
   },
   "settings": {
     "audioEnabled": true,
