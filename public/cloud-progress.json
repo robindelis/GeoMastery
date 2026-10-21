@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:18:18.106Z",
+  "exportedAt": "2026-10-21T12:18:20.769Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20090,10 +20090,42 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "ITA:country",
+      {
+        "id": "ITA:country",
+        "countryId": "ITA",
+        "attributeId": "country",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T12:18:20.119Z",
+        "nextDueAt": "2026-10-21T12:18:20.119Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:18:20.119Z",
+            "inputMode": "typing",
+            "userAnswer": "Greece",
+            "isCorrect": false,
+            "timeSpentMs": 2297,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "GRC"
+        ]
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1458,
+    "totalReviews": 1459,
     "totalCorrect": 1053,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -20132,7 +20164,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-21T12:18:17.434Z"
+    "updatedAt": "2026-10-21T12:18:20.121Z"
   },
   "settings": {
     "audioEnabled": true,
