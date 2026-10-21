@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-21T12:01:41.537Z",
+  "exportedAt": "2026-10-21T12:15:07.459Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19600,10 +19600,42 @@
         "stability": 1.2,
         "difficulty": 5.09
       }
+    ],
+    [
+      "BHS:country",
+      {
+        "id": "BHS:country",
+        "countryId": "BHS",
+        "attributeId": "country",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-21T12:15:03.599Z",
+        "nextDueAt": "2026-10-21T12:15:03.599Z",
+        "history": [
+          {
+            "timestamp": "2026-10-21T12:15:03.599Z",
+            "inputMode": "typing",
+            "userAnswer": "Fiji",
+            "isCorrect": false,
+            "timeSpentMs": 32685,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "FJI"
+        ]
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1441,
+    "totalReviews": 1442,
     "totalCorrect": 1040,
     "currentStreak": 1,
     "longestStreak": 4,
@@ -19635,8 +19667,14 @@
         "learning": 19
       }
     },
-    "timeAttackRecords": {},
-    "updatedAt": "2026-10-21T12:01:37.671Z"
+    "timeAttackRecords": {
+      "Europe": {
+        "highStreak": 11400,
+        "bestTimeSeconds": 60,
+        "date": "2026-10-21T12:03:01.279Z"
+      }
+    },
+    "updatedAt": "2026-10-21T12:15:03.601Z"
   },
   "settings": {
     "audioEnabled": true,
