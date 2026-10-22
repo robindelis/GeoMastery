@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-22T10:02:39.173Z",
+  "exportedAt": "2026-10-22T10:02:43.063Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -21496,11 +21496,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "ZWE:country",
+      {
+        "id": "ZWE:country",
+        "countryId": "ZWE",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-22T10:02:39.404Z",
+        "nextDueAt": "2026-10-23T10:02:39.404Z",
+        "history": [
+          {
+            "timestamp": "2026-10-22T10:02:39.404Z",
+            "inputMode": "typing",
+            "userAnswer": "Zimbabwe",
+            "isCorrect": true,
+            "timeSpentMs": 5122,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1534,
-    "totalCorrect": 1100,
+    "totalReviews": 1535,
+    "totalCorrect": 1101,
     "currentStreak": 2,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-22",
@@ -21538,7 +21568,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-22T10:02:32.867Z"
+    "updatedAt": "2026-10-22T10:02:39.407Z"
   },
   "settings": {
     "audioEnabled": true,
