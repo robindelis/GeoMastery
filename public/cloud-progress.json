@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-22T10:03:21.078Z",
+  "exportedAt": "2026-10-22T10:03:27.218Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -941,14 +941,14 @@
         "id": "LTU:location",
         "countryId": "LTU",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.15,
-        "intervalDays": 3,
-        "reps": 5,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.2,
+        "intervalDays": 12,
+        "reps": 6,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-15T17:52:57.680Z",
-        "nextDueAt": "2026-10-18T17:52:57.680Z",
+        "lastReviewedAt": "2026-10-22T10:03:22.322Z",
+        "nextDueAt": "2026-11-03T10:03:22.322Z",
         "history": [
           {
             "timestamp": "2026-10-04T14:47:49.645Z",
@@ -1006,11 +1006,19 @@
             "isCorrect": true,
             "timeSpentMs": 5035,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-22T10:03:22.322Z",
+            "inputMode": "map_click",
+            "userAnswer": "Lithuania",
+            "isCorrect": true,
+            "timeSpentMs": 5364,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 2.58,
-        "difficulty": 7.83,
+        "stability": 12.33,
+        "difficulty": 7.28,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -21577,8 +21585,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1538,
-    "totalCorrect": 1103,
+    "totalReviews": 1539,
+    "totalCorrect": 1104,
     "currentStreak": 2,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-22",
@@ -21600,8 +21608,8 @@
       },
       "Europe": {
         "total": 90,
-        "mastered": 65,
-        "learning": 25
+        "mastered": 66,
+        "learning": 24
       },
       "Oceania": {
         "total": 28,
@@ -21616,7 +21624,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-22T10:03:16.491Z"
+    "updatedAt": "2026-10-22T10:03:22.325Z"
   },
   "settings": {
     "audioEnabled": true,
