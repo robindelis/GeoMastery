@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-22T10:03:08.986Z",
+  "exportedAt": "2026-10-22T10:03:17.028Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -3598,13 +3598,13 @@
         "countryId": "UKR",
         "attributeId": "capital",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.73,
+        "intervalDays": 56,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-09T20:08:16.429Z",
-        "nextDueAt": "2026-10-16T20:08:16.429Z",
+        "lastReviewedAt": "2026-10-22T10:03:16.488Z",
+        "nextDueAt": "2026-12-17T10:03:16.488Z",
         "history": [
           {
             "timestamp": "2026-10-04T17:02:28.769Z",
@@ -3626,11 +3626,21 @@
             "userAnswer": "Kyiv",
             "isCorrect": true,
             "timeSpentMs": 3289
+          },
+          {
+            "timestamp": "2026-10-22T10:03:16.488Z",
+            "inputMode": "typing",
+            "userAnswer": "Kyiv",
+            "isCorrect": true,
+            "timeSpentMs": 2190,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 56.24,
+        "difficulty": 2.91,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -21534,11 +21544,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "TLS:country",
+      {
+        "id": "TLS:country",
+        "countryId": "TLS",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-22T10:03:12.965Z",
+        "nextDueAt": "2026-10-23T10:03:12.965Z",
+        "history": [
+          {
+            "timestamp": "2026-10-22T10:03:12.965Z",
+            "inputMode": "typing",
+            "userAnswer": "Timor Leste",
+            "isCorrect": true,
+            "timeSpentMs": 6603,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1536,
-    "totalCorrect": 1101,
+    "totalReviews": 1538,
+    "totalCorrect": 1103,
     "currentStreak": 2,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-22",
@@ -21576,7 +21616,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-22T10:03:04.924Z"
+    "updatedAt": "2026-10-22T10:03:16.491Z"
   },
   "settings": {
     "audioEnabled": true,
