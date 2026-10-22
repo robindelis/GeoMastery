@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-22T10:05:40.222Z",
+  "exportedAt": "2026-10-22T10:05:45.940Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -18634,13 +18634,13 @@
         "countryId": "HTI",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.35,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-14T19:32:48.512Z",
-        "nextDueAt": "2026-10-15T19:32:48.512Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-22T10:05:41.206Z",
+        "nextDueAt": "2026-10-22T10:05:41.206Z",
         "history": [
           {
             "timestamp": "2026-10-14T19:32:48.512Z",
@@ -18648,11 +18648,21 @@
             "userAnswer": "Port-au-Prince",
             "isCorrect": true,
             "timeSpentMs": 6411
+          },
+          {
+            "timestamp": "2026-10-22T10:05:41.206Z",
+            "inputMode": "typing",
+            "userAnswer": "u",
+            "isCorrect": false,
+            "timeSpentMs": 2894,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 4.49
+        "stability": 0.6,
+        "difficulty": 5.86,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -21715,7 +21725,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1544,
+    "totalReviews": 1545,
     "totalCorrect": 1106,
     "currentStreak": 2,
     "longestStreak": 4,
@@ -21754,7 +21764,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-22T10:05:35.041Z"
+    "updatedAt": "2026-10-22T10:05:41.209Z"
   },
   "settings": {
     "audioEnabled": true,
