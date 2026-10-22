@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-22T10:02:19.275Z",
+  "exportedAt": "2026-10-22T10:02:27.277Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -21456,11 +21456,41 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "UGA:country",
+      {
+        "id": "UGA:country",
+        "countryId": "UGA",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 1,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-22T10:02:22.821Z",
+        "nextDueAt": "2026-10-23T10:02:22.821Z",
+        "history": [
+          {
+            "timestamp": "2026-10-22T10:02:22.821Z",
+            "inputMode": "typing",
+            "userAnswer": "Ouganda",
+            "isCorrect": true,
+            "timeSpentMs": 5400,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1532,
-    "totalCorrect": 1098,
+    "totalReviews": 1533,
+    "totalCorrect": 1099,
     "currentStreak": 2,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-22",
@@ -21498,7 +21528,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-22T10:02:15.306Z"
+    "updatedAt": "2026-10-22T10:02:22.825Z"
   },
   "settings": {
     "audioEnabled": true,
