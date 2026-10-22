@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-22T10:03:27.218Z",
+  "exportedAt": "2026-10-22T10:03:38.020Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -21582,10 +21582,40 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "TJK:country",
+      {
+        "id": "TJK:country",
+        "countryId": "TJK",
+        "attributeId": "country",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-22T10:03:33.828Z",
+        "nextDueAt": "2026-10-22T10:03:33.828Z",
+        "history": [
+          {
+            "timestamp": "2026-10-22T10:03:33.828Z",
+            "inputMode": "typing",
+            "userAnswer": "Kirgizistan",
+            "isCorrect": false,
+            "timeSpentMs": 9279,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1539,
+    "totalReviews": 1540,
     "totalCorrect": 1104,
     "currentStreak": 2,
     "longestStreak": 4,
@@ -21624,7 +21654,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-22T10:03:22.325Z"
+    "updatedAt": "2026-10-22T10:03:33.831Z"
   },
   "settings": {
     "audioEnabled": true,
