@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:33:55.520Z",
+  "exportedAt": "2026-10-23T11:34:14.702Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11245,13 +11245,13 @@
         "countryId": "WATER_SEA_TASMAN",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.0499999999999994,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 1.85,
+        "intervalDays": 0,
         "reps": 3,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-10T13:40:00.382Z",
-        "nextDueAt": "2026-10-11T13:40:00.382Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-10-23T11:34:11.523Z",
+        "nextDueAt": "2026-10-23T11:44:11.523Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:49:52.103Z",
@@ -11294,11 +11294,23 @@
             "userAnswer": "Tasman Sea",
             "isCorrect": true,
             "timeSpentMs": 2712
+          },
+          {
+            "timestamp": "2026-10-23T11:34:11.523Z",
+            "inputMode": "map_click",
+            "userAnswer": "Gulf of Aden",
+            "isCorrect": false,
+            "timeSpentMs": 15989,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 8.64
+        "stability": 0.91,
+        "difficulty": 8.43,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "WATER_GULF_ADEN"
+        ]
       }
     ],
     [
@@ -22297,7 +22309,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1591,
+    "totalReviews": 1592,
     "totalCorrect": 1137,
     "currentStreak": 3,
     "longestStreak": 4,
@@ -22336,7 +22348,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:33:55.170Z"
+    "updatedAt": "2026-10-23T11:34:11.527Z"
   },
   "settings": {
     "audioEnabled": true,
