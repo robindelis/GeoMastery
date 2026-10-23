@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:35:48.435Z",
+  "exportedAt": "2026-10-23T11:36:45.420Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11766,13 +11766,13 @@
         "countryId": "WATER_STRAIT_MALACCA",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 1.9999999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 1.8,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-06T13:16:42.119Z",
-        "nextDueAt": "2026-10-07T13:16:42.119Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-10-23T11:36:42.006Z",
+        "nextDueAt": "2026-10-23T11:46:42.006Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:17:12.671Z",
@@ -11808,11 +11808,23 @@
             "userAnswer": "Strait of Malacca",
             "isCorrect": true,
             "timeSpentMs": 2057
+          },
+          {
+            "timestamp": "2026-10-23T11:36:42.006Z",
+            "inputMode": "map_click",
+            "userAnswer": "Mexico",
+            "isCorrect": false,
+            "timeSpentMs": 39521,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 8.86
+        "stability": 0.98,
+        "difficulty": 8.57,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "MEX"
+        ]
       }
     ],
     [
@@ -22571,7 +22583,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1605,
+    "totalReviews": 1606,
     "totalCorrect": 1148,
     "currentStreak": 3,
     "longestStreak": 4,
@@ -22610,7 +22622,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:35:44.548Z"
+    "updatedAt": "2026-10-23T11:36:42.009Z"
   },
   "settings": {
     "audioEnabled": true,
