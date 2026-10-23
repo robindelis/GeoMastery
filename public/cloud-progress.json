@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:46:18.382Z",
+  "exportedAt": "2026-10-23T11:46:33.891Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -17297,14 +17297,14 @@
         "id": "WATER_SEA_ARABIAN:location",
         "countryId": "WATER_SEA_ARABIAN",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.45,
+        "intervalDays": 27,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:20:07.193Z",
-        "nextDueAt": "2026-10-09T20:20:07.193Z",
+        "lastReviewedAt": "2026-10-23T11:46:30.531Z",
+        "nextDueAt": "2026-11-19T11:46:30.531Z",
         "history": [
           {
             "timestamp": "2026-10-06T13:17:40.273Z",
@@ -17326,11 +17326,21 @@
             "userAnswer": "Arabian Sea",
             "isCorrect": true,
             "timeSpentMs": 12184
+          },
+          {
+            "timestamp": "2026-10-23T11:46:30.531Z",
+            "inputMode": "map_click",
+            "userAnswer": "Arabian Sea",
+            "isCorrect": true,
+            "timeSpentMs": 3996,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 6.2
+        "stability": 27,
+        "difficulty": 5.78,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -23309,8 +23319,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1650,
-    "totalCorrect": 1177,
+    "totalReviews": 1651,
+    "totalCorrect": 1178,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -23348,7 +23358,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:46:14.480Z"
+    "updatedAt": "2026-10-23T11:46:30.535Z"
   },
   "settings": {
     "audioEnabled": true,
