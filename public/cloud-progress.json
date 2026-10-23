@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:44:50.635Z",
+  "exportedAt": "2026-10-23T11:45:10.060Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -2459,13 +2459,13 @@
         "countryId": "BHR",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.1999999999999993,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-08T17:41:32.572Z",
-        "nextDueAt": "2026-10-09T17:41:32.572Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-23T11:45:06.926Z",
+        "nextDueAt": "2026-10-23T11:55:06.926Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:11:13.976Z",
@@ -2494,11 +2494,21 @@
             "userAnswer": "Manama",
             "isCorrect": true,
             "timeSpentMs": 2831
+          },
+          {
+            "timestamp": "2026-10-23T11:45:06.926Z",
+            "inputMode": "typing",
+            "userAnswer": "Bahrain",
+            "isCorrect": false,
+            "timeSpentMs": 15006,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 6.93
+        "stability": 0.95,
+        "difficulty": 7.37,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -23231,7 +23241,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1644,
+    "totalReviews": 1645,
     "totalCorrect": 1175,
     "currentStreak": 3,
     "longestStreak": 4,
@@ -23270,7 +23280,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:44:47.594Z"
+    "updatedAt": "2026-10-23T11:45:06.930Z"
   },
   "settings": {
     "audioEnabled": true,
