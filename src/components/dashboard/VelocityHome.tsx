@@ -40,7 +40,7 @@ import { useHomeData, useDueBreakdown } from './homeData';
 import { useCountUp } from './useCountUp';
 import type { HomeViewProps } from './homeTypes';
 import type { TrainingCategory, SRSItem } from '../../core/types';
-import { classifyCardHorizon, inferStability, computeRetrievability, prepareSessionQueue } from '../../core/srsEngine';
+import { classifyCardHorizon, inferStability, computeRetrievability } from '../../core/srsEngine';
 import { soundFx } from '../../core/soundFx';
 import { speechEngine } from '../../core/speechEngine';
 import { formatCoordinates } from '../../core/geoUtils';
@@ -654,32 +654,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     coords: [number, number];
   } | null>(null);
 
-  const masteryValue = useCountUp(data.mastery.masteryPercentage);
   const dueValue = useCountUp(data.totalDueCount, 650);
-
-  const ringRadius = 28;
-  const ringCircumference = 2 * Math.PI * ringRadius;
-  const ringOffset = ringCircumference - (masteryValue / 100) * ringCircumference;
-
-  const cardTelemetry = useMemo(() => {
-    let mastered = data.mastery.globalStage2;
-    let recall = 0;
-    let learning = 0;
-    let unseen = 0;
-    for (const r of data.regions) {
-      recall += r.recall1Cards;
-      learning += r.stage0Cards + r.recall0Cards;
-      unseen += r.unseenCards;
-    }
-    const total = data.mastery.grandTotal;
-    return {
-      mastered,
-      recall,
-      learning,
-      unseen,
-      total
-    };
-  }, [data.mastery, data.regions]);
 
   const [selectedHorizonCategory, setSelectedHorizonCategory] = useState<HorizonCategory | null>(null);
   const [horizonAttrFilter, setHorizonAttrFilter] = useState<'all' | 'capital' | 'location' | 'country' | 'flag'>('all');
@@ -788,14 +763,6 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       for (const attr of ['capital', 'location', 'country', 'flag'] as const) {
         const cardId = `${country.id}:${attr}`;
         const item = srsItemsMap.get(cardId);
-        // Include core capital/location cards unconditionally, and country/flag cards when active or reviewed
-        if (
-          (attr === 'country' || attr === 'flag') &&
-          !item &&
-          !selectedAttributes.includes(attr)
-        ) {
-          continue;
-        }
         const { category, statusBadge, shortBadge, trophyGlyph, isDue } = categorizeItem(item);
         const attributeGlyph =
           attr === 'capital' ? '🏛️' : attr === 'location' ? '🧭' : attr === 'country' ? '🗺️' : '🏳️';
@@ -899,6 +866,48 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     };
   }, [srsItemsMap]);
 
+  const cardTelemetry = useMemo(() => {
+    const byCategory: Record<
+      HorizonCategory,
+      { capital: number; location: number; country: number; flag: number; total: number }
+    > = {
+      mastered: { capital: 0, location: 0, country: 0, flag: 0, total: 0 },
+      recall: { capital: 0, location: 0, country: 0, flag: 0, total: 0 },
+      learning: { capital: 0, location: 0, country: 0, flag: 0, total: 0 },
+      unseen: { capital: 0, location: 0, country: 0, flag: 0, total: 0 }
+    };
+
+    for (const cat of HORIZON_CATEGORY_ORDER) {
+      for (const card of horizonCatalog.byCategory[cat]) {
+        byCategory[cat][card.attribute] += 1;
+        byCategory[cat].total += 1;
+      }
+    }
+
+    const mastered = byCategory.mastered.total;
+    const recall = byCategory.recall.total;
+    const learning = byCategory.learning.total;
+    const unseen = byCategory.unseen.total;
+    const total = horizonCatalog.allCards.length;
+
+    return {
+      mastered,
+      recall,
+      learning,
+      unseen,
+      total,
+      byCategory
+    };
+  }, [horizonCatalog]);
+
+  const horizonMasteryPct =
+    cardTelemetry.total > 0 ? Math.round((cardTelemetry.mastered / cardTelemetry.total) * 100) : 0;
+  const masteryValue = useCountUp(horizonMasteryPct);
+
+  const ringRadius = 28;
+  const ringCircumference = 2 * Math.PI * ringRadius;
+  const ringOffset = ringCircumference - (masteryValue / 100) * ringCircumference;
+
   /**
    * Card-deck peek per category drawer.
    * Non-empty drawers expose the top edges of their next cards; an empty drawer
@@ -932,39 +941,6 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       }),
     [horizonCatalog, deckSlotCount]
   );
-
-  /**
-   * Real composition of the upcoming training session.
-   * Uses the exact same queue builder the training view uses
-   * (`prepareSessionQueue`, 15-card batch), then classifies each card by its
-   * live SRS state — so the pills can never drift from the actual session.
-   */
-  const nextSessionMix = useMemo(() => {
-    const practiceMode = data.isCaughtUp('All');
-    const queue = prepareSessionQueue(
-      srsItemsMap,
-      'All',
-      selectedAttributes.length > 0 ? selectedAttributes : ['capital', 'location'],
-      15,
-      practiceMode
-    );
-    let unseen = 0;
-    let learning = 0;
-    let recall = 0;
-    let mastered = 0;
-    for (const question of queue) {
-      const item = srsItemsMap.get(`${question.country.id}:${question.attributeId}`);
-      if (!item) {
-        unseen += 1;
-        continue;
-      }
-      const bucket = classifyCardHorizon(item);
-      if (bucket === 'mastered') mastered += 1;
-      else if (bucket === 'recall') recall += 1;
-      else learning += 1;
-    }
-    return { total: queue.length, unseen, learning, recall, mastered, practiceMode };
-  }, [srsItemsMap, selectedAttributes, data]);
 
   const modalHorizonCards = useMemo(() => {
     const query = horizonSearch.trim().toLowerCase();
@@ -1392,106 +1368,21 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 })}
               </div>
 
-              {/* Recessed Session Launch Console (Anchors Start Training + Next-Session Mix Together) */}
-              <div className="flex shrink-0 flex-col gap-2.5 rounded-2xl border border-[#F6EFE2]/12 bg-[#0A1926]/80 p-3 shadow-inner">
-                {/* Primary Hero CTA: Start Training */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    soundFx.playClick();
-                    onStartSession('All', selectedAttributes, data.isCaughtUp('All'));
-                  }}
-                  className="group flex w-full items-center justify-center gap-3 rounded-xl border border-[#F4A261]/55 bg-gradient-to-r from-[#E05A3D] via-[#D94E34] to-[#BB3D24] px-5 py-3 text-sm xl:text-base font-black uppercase tracking-[0.07em] text-[#FFF8E7] shadow-[0_10px_24px_-10px_rgba(217,78,52,0.95)] transition-all hover:brightness-110 hover:shadow-[0_12px_28px_-8px_rgba(217,78,52,1)] active:scale-[0.985] cursor-pointer"
-                >
-                  <Play className="h-4 w-4 xl:h-5 xl:w-5 shrink-0 fill-current transition-transform group-hover:translate-x-0.5" />
-                  <span>{data.isCaughtUp('All') ? 'Practice World' : 'Start Training'}</span>
-                  <span className="rounded-full bg-black/30 px-2.5 py-0.5 font-mono text-xs font-bold">
-                    {data.isCaughtUp('All') ? data.totalWorldEntities : dueValue}
-                  </span>
-                </button>
-
-                {/* Next-Session 15-Card Queue Briefing + 4-Stage Proportional Breakdown */}
-                <div className="flex flex-col gap-1.5">
-                  <div className="flex items-center justify-between gap-2 text-[10px]">
-                    <span className="flex items-center gap-1.5 font-extrabold uppercase tracking-wider text-[#D6CBB9]">
-                      <Target className="h-3 w-3 text-[#E9C46A]" />
-                      Next Session Queue · {nextSessionMix.total} Cards
-                    </span>
-                    <div className="flex h-1.5 w-32 sm:w-40 overflow-hidden rounded-full bg-[#0C1D2B] p-[1px]">
-                      {nextSessionMix.total > 0 && (
-                        <>
-                          <div
-                            className="h-full bg-[#38BDF8] transition-all duration-300"
-                            style={{ width: `${(nextSessionMix.unseen / nextSessionMix.total) * 100}%` }}
-                          />
-                          <div
-                            className="h-full bg-[#F4A261] transition-all duration-300"
-                            style={{ width: `${(nextSessionMix.learning / nextSessionMix.total) * 100}%` }}
-                          />
-                          <div
-                            className="h-full bg-[#E9C46A] transition-all duration-300"
-                            style={{ width: `${(nextSessionMix.recall / nextSessionMix.total) * 100}%` }}
-                          />
-                          <div
-                            className="h-full bg-[#10B981] transition-all duration-300"
-                            style={{ width: `${(nextSessionMix.mastered / nextSessionMix.total) * 100}%` }}
-                          />
-                        </>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-4 gap-1.5">
-                    <div className="flex flex-col justify-between gap-0.5 rounded-xl border border-[#38BDF8]/30 bg-[#38BDF8]/10 px-2.5 py-1.5">
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="truncate text-[10px] font-bold text-[#38BDF8]">🎯 Unseen</span>
-                        <span className="font-mono text-sm font-black leading-none text-[#F6EFE2]">
-                          {nextSessionMix.unseen}
-                        </span>
-                      </div>
-                      <span className="truncate text-[8px] font-semibold uppercase tracking-wider text-[#8FA6B8]">
-                        Fresh discovery
-                      </span>
-                    </div>
-
-                    <div className="flex flex-col justify-between gap-0.5 rounded-xl border border-[#F4A261]/30 bg-[#F4A261]/10 px-2.5 py-1.5">
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="truncate text-[10px] font-bold text-[#F4A261]">🌱 Learning</span>
-                        <span className="font-mono text-sm font-black leading-none text-[#F6EFE2]">
-                          {nextSessionMix.learning}
-                        </span>
-                      </div>
-                      <span className="truncate text-[8px] font-semibold uppercase tracking-wider text-[#8FA6B8]">
-                        L0–L1 acquire
-                      </span>
-                    </div>
-
-                    <div className="flex flex-col justify-between gap-0.5 rounded-xl border border-[#E9C46A]/30 bg-[#E9C46A]/10 px-2.5 py-1.5">
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="truncate text-[10px] font-bold text-[#E9C46A]">🧠 Recall</span>
-                        <span className="font-mono text-sm font-black leading-none text-[#F6EFE2]">
-                          {nextSessionMix.recall}
-                        </span>
-                      </div>
-                      <span className="truncate text-[8px] font-semibold uppercase tracking-wider text-[#8FA6B8]">
-                        Due FSRS queue
-                      </span>
-                    </div>
-
-                    <div className="flex flex-col justify-between gap-0.5 rounded-xl border border-[#10B981]/30 bg-[#10B981]/10 px-2.5 py-1.5">
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="truncate text-[10px] font-bold text-[#10B981]">🛡️ Mastered</span>
-                        <span className="font-mono text-sm font-black leading-none text-[#F6EFE2]">
-                          {nextSessionMix.mastered}
-                        </span>
-                      </div>
-                      <span className="truncate text-[8px] font-semibold uppercase tracking-wider text-[#8FA6B8]">
-                        Retention check
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* Primary Hero CTA: Start Training */}
+              <button
+                type="button"
+                onClick={() => {
+                  soundFx.playClick();
+                  onStartSession('All', selectedAttributes, data.isCaughtUp('All'));
+                }}
+                className="group shrink-0 flex w-full items-center justify-center gap-3 rounded-xl border border-[#F4A261]/55 bg-gradient-to-r from-[#E05A3D] via-[#D94E34] to-[#BB3D24] px-5 py-3 text-sm xl:text-base font-black uppercase tracking-[0.07em] text-[#FFF8E7] shadow-[0_10px_24px_-10px_rgba(217,78,52,0.95)] transition-all hover:brightness-110 hover:shadow-[0_12px_28px_-8px_rgba(217,78,52,1)] active:scale-[0.985] cursor-pointer"
+              >
+                <Play className="h-4 w-4 xl:h-5 xl:w-5 shrink-0 fill-current transition-transform group-hover:translate-x-0.5" />
+                <span>{data.isCaughtUp('All') ? 'Practice World' : 'Start Training'}</span>
+                <span className="rounded-full bg-black/30 px-2.5 py-0.5 font-mono text-xs font-bold">
+                  {data.isCaughtUp('All') ? data.totalWorldEntities : dueValue}
+                </span>
+              </button>
 
               {/* Secondary Deck Shortcuts */}
               <div className="shrink-0 grid grid-cols-2 gap-2.5">
@@ -1606,31 +1497,75 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 <div className="grid grid-cols-4 gap-1.5">
                   {HORIZON_CATEGORY_ORDER.map((cat) => {
                     const meta = HORIZON_CATEGORY_META[cat];
-                    const count = cardTelemetry[cat];
+                    const catCounts = cardTelemetry.byCategory[cat];
 
                     return (
                       <button
                         key={cat}
                         type="button"
                         onClick={() => openTrophyAlbum(cat)}
-                        title={`Click to open ${meta.label} Trophy Album (${count} cards)`}
-                        className={`group rounded-xl border px-2 py-1.5 text-left flex flex-col justify-between transition-all cursor-pointer active:scale-[0.97] ${meta.tileIdleCls}`}
+                        title={`Click to open ${meta.label} Trophy Album (${catCounts.capital} Capitals, ${catCounts.location} Locations, ${catCounts.country} Map → Name, ${catCounts.flag} Flags)`}
+                        className={`group rounded-xl border px-2 py-1.5 text-left flex flex-col justify-between gap-1.5 transition-all cursor-pointer active:scale-[0.97] ${meta.tileIdleCls}`}
                       >
                         <div className="flex items-center justify-between gap-1 w-full">
                           <span className={`text-[10px] font-bold ${meta.textCls} flex items-center gap-1 min-w-0 truncate`}>
                             <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${meta.dotCls}`} />
                             <span className="truncate">{meta.label}</span>
                           </span>
-                          <span className="shrink-0 font-mono text-sm font-black leading-none text-[#F6EFE2]">
-                            {count}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between gap-1 w-full">
-                          <span className="text-[9px] text-[#9FB3C4] truncate">{meta.subtitle}</span>
                           <span className="flex shrink-0 items-center gap-0.5 text-[8px] font-extrabold uppercase tracking-wider text-[#9FB3C4] opacity-75 group-hover:opacity-100 group-hover:text-[#F6EFE2] transition-opacity">
-                            <span>Album</span>
+                            <span>{meta.subtitle}</span>
                             <Maximize2 className="h-2 w-2" />
                           </span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-1 w-full">
+                          <div
+                            title="Capitals"
+                            className="flex items-center justify-between gap-1 rounded-md border border-[#F6EFE2]/10 bg-[#07131D]/80 px-1.5 py-0.5"
+                          >
+                            <span className="flex items-center gap-1 text-[8px] font-bold text-[#9FB3C4] truncate">
+                              <span>🏛️</span>
+                              <span className="truncate">Cap</span>
+                            </span>
+                            <span className="font-mono text-[10px] font-black leading-none text-[#F6EFE2]">
+                              {catCounts.capital}
+                            </span>
+                          </div>
+                          <div
+                            title="Locations"
+                            className="flex items-center justify-between gap-1 rounded-md border border-[#F6EFE2]/10 bg-[#07131D]/80 px-1.5 py-0.5"
+                          >
+                            <span className="flex items-center gap-1 text-[8px] font-bold text-[#9FB3C4] truncate">
+                              <span>🧭</span>
+                              <span className="truncate">Loc</span>
+                            </span>
+                            <span className="font-mono text-[10px] font-black leading-none text-[#F6EFE2]">
+                              {catCounts.location}
+                            </span>
+                          </div>
+                          <div
+                            title="Map → Name"
+                            className="flex items-center justify-between gap-1 rounded-md border border-[#F6EFE2]/10 bg-[#07131D]/80 px-1.5 py-0.5"
+                          >
+                            <span className="flex items-center gap-1 text-[8px] font-bold text-[#9FB3C4] truncate">
+                              <span>🗺️</span>
+                              <span className="truncate">Map</span>
+                            </span>
+                            <span className="font-mono text-[10px] font-black leading-none text-[#F6EFE2]">
+                              {catCounts.country}
+                            </span>
+                          </div>
+                          <div
+                            title="Flags"
+                            className="flex items-center justify-between gap-1 rounded-md border border-[#F6EFE2]/10 bg-[#07131D]/80 px-1.5 py-0.5"
+                          >
+                            <span className="flex items-center gap-1 text-[8px] font-bold text-[#9FB3C4] truncate">
+                              <span>🏳️</span>
+                              <span className="truncate">Flag</span>
+                            </span>
+                            <span className="font-mono text-[10px] font-black leading-none text-[#F6EFE2]">
+                              {catCounts.flag}
+                            </span>
+                          </div>
                         </div>
                       </button>
                     );
@@ -2312,6 +2247,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 {HORIZON_CATEGORY_ORDER.map((cat) => {
                   const meta = HORIZON_CATEGORY_META[cat];
                   const active = selectedHorizonCategory === cat;
+                  const catCounts = cardTelemetry.byCategory[cat];
                   return (
                     <button
                       key={cat}
@@ -2333,9 +2269,12 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         </span>
                         <span className="text-[9px] font-semibold text-[#9FB3C4]">{meta.subtitle}</span>
                       </div>
-                      <span className="font-mono text-lg font-black text-[#F6EFE2]">
-                        {cardTelemetry[cat]}
-                      </span>
+                      <div className="mt-1 grid grid-cols-4 gap-1 font-mono text-[10px] font-extrabold text-[#F6EFE2]">
+                        <span title="Capitals">🏛️{catCounts.capital}</span>
+                        <span title="Locations">🧭{catCounts.location}</span>
+                        <span title="Map → Name">🗺️{catCounts.country}</span>
+                        <span title="Flags">🏳️{catCounts.flag}</span>
+                      </div>
                     </button>
                   );
                 })}
@@ -2453,7 +2392,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                   }}
                   className="mt-3 rounded-xl bg-[#E9C46A] px-4 py-1.5 text-xs font-extrabold text-[#142534] hover:bg-[#F3D999] cursor-pointer"
                 >
-                  Show All 432 Plates
+                  Show All {cardTelemetry.total} Plates
                 </button>
               </div>
             ) : (
