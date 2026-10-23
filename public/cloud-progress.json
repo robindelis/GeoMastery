@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:34:49.207Z",
+  "exportedAt": "2026-10-23T11:34:56.852Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -22434,11 +22434,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "VEN:country",
+      {
+        "id": "VEN:country",
+        "countryId": "VEN",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-23T11:34:53.723Z",
+        "nextDueAt": "2026-10-23T11:49:53.723Z",
+        "history": [
+          {
+            "timestamp": "2026-10-23T11:34:53.723Z",
+            "inputMode": "typing",
+            "userAnswer": "Venezuela",
+            "isCorrect": true,
+            "timeSpentMs": 3954,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1597,
-    "totalCorrect": 1142,
+    "totalReviews": 1598,
+    "totalCorrect": 1143,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -22476,7 +22506,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:34:45.765Z"
+    "updatedAt": "2026-10-23T11:34:53.726Z"
   },
   "settings": {
     "audioEnabled": true,
