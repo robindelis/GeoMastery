@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:41:29.478Z",
+  "exportedAt": "2026-10-23T11:42:07.228Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20711,14 +20711,14 @@
         "id": "GRC:country",
         "countryId": "GRC",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.66,
+        "intervalDays": 13,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-21T12:16:01.536Z",
-        "nextDueAt": "2026-10-22T12:16:01.536Z",
+        "lastReviewedAt": "2026-10-23T11:42:07.069Z",
+        "nextDueAt": "2026-11-05T11:42:07.069Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:16:01.536Z",
@@ -20727,10 +20727,18 @@
             "isCorrect": true,
             "timeSpentMs": 2380,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-23T11:42:07.069Z",
+            "inputMode": "typing",
+            "userAnswer": "Greece",
+            "isCorrect": true,
+            "timeSpentMs": 3022,
+            "grade": 4
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.9,
+        "difficulty": 2.46,
+        "stability": 13,
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
@@ -22954,11 +22962,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "ISL:country",
+      {
+        "id": "ISL:country",
+        "countryId": "ISL",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-23T11:42:03.732Z",
+        "nextDueAt": "2026-10-23T11:57:03.732Z",
+        "history": [
+          {
+            "timestamp": "2026-10-23T11:42:03.732Z",
+            "inputMode": "typing",
+            "userAnswer": "Iceland",
+            "isCorrect": true,
+            "timeSpentMs": 2825,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1630,
-    "totalCorrect": 1165,
+    "totalReviews": 1632,
+    "totalCorrect": 1167,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -22996,7 +23034,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:41:26.081Z"
+    "updatedAt": "2026-10-23T11:42:07.072Z"
   },
   "settings": {
     "audioEnabled": true,
