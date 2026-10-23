@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:41:05.283Z",
+  "exportedAt": "2026-10-23T11:41:09.915Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -22908,11 +22908,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "GTM:country",
+      {
+        "id": "GTM:country",
+        "countryId": "GTM",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-23T11:41:06.792Z",
+        "nextDueAt": "2026-10-23T11:56:06.792Z",
+        "history": [
+          {
+            "timestamp": "2026-10-23T11:41:06.792Z",
+            "inputMode": "typing",
+            "userAnswer": "Guatemala",
+            "isCorrect": true,
+            "timeSpentMs": 4033,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1627,
-    "totalCorrect": 1163,
+    "totalReviews": 1628,
+    "totalCorrect": 1164,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -22950,7 +22980,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:41:01.802Z"
+    "updatedAt": "2026-10-23T11:41:06.797Z"
   },
   "settings": {
     "audioEnabled": true,
