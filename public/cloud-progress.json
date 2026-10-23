@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:40:11.154Z",
+  "exportedAt": "2026-10-23T11:40:23.007Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -22808,11 +22808,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "TUN:country",
+      {
+        "id": "TUN:country",
+        "countryId": "TUN",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-23T11:40:18.155Z",
+        "nextDueAt": "2026-10-23T11:55:18.155Z",
+        "history": [
+          {
+            "timestamp": "2026-10-23T11:40:18.155Z",
+            "inputMode": "typing",
+            "userAnswer": "Tunisia",
+            "isCorrect": true,
+            "timeSpentMs": 4474,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1621,
-    "totalCorrect": 1159,
+    "totalReviews": 1622,
+    "totalCorrect": 1160,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -22850,7 +22880,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:40:08.118Z"
+    "updatedAt": "2026-10-23T11:40:18.158Z"
   },
   "settings": {
     "audioEnabled": true,
