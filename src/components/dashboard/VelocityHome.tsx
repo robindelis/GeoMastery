@@ -672,6 +672,26 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const [timelineScaleMode, setTimelineScaleMode] = useState<'full' | 'active'>('full');
   const [hoveredTimelineIdx, setHoveredTimelineIdx] = useState<number | null>(null);
 
+  const timelinePlotRef = useRef<HTMLDivElement | null>(null);
+  const [timelinePlotSize, setTimelinePlotSize] = useState<{ width: number; height: number }>({
+    width: 420,
+    height: 150
+  });
+
+  useEffect(() => {
+    const el = timelinePlotRef.current;
+    if (!el) return;
+    const measure = () => {
+      const w = Math.max(200, Math.round(el.clientWidth));
+      const h = Math.max(90, Math.round(el.clientHeight));
+      setTimelinePlotSize((prev) => (prev.width === w && prev.height === h ? prev : { width: w, height: h }));
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   /**
    * Card-deck peek: how much room each category drawer has to work with.
    * The five showcased cards share that height, so their tops stay readable.
@@ -1081,14 +1101,13 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       const dayEndMs = dayStartMs + 86400000 - 1;
       const d = new Date(dayStartMs);
       const isToday = idx === numDays - 1;
+      const shortMonthDay = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       return {
         idx,
         dayStartMs,
         dayEndMs,
-        dateLabel: isToday
-          ? 'Today'
-          : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        shortLabel: isToday ? 'Now' : `${d.getMonth() + 1}/${d.getDate()}`,
+        dateLabel: isToday ? `Today · ${shortMonthDay}` : shortMonthDay,
+        shortLabel: isToday ? 'Today' : shortMonthDay,
         mastered: 0,
         recall: 0,
         learning: 0,
@@ -1169,19 +1188,27 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     const lastPt = points[points.length - 1];
     const masteredDelta = lastPt.mastered - firstPt.mastered;
     const recallDelta = lastPt.recall - firstPt.recall;
+    const learningDelta = lastPt.learning - firstPt.learning;
+    const unseenDelta = lastPt.unseen - firstPt.unseen;
     const activeTotal = lastPt.mastered + lastPt.recall + lastPt.learning;
     const maxActiveInWindow = Math.max(
       ...points.map((p) => p.mastered + p.recall + p.learning),
       Math.ceil(totalCards * 0.15)
     );
+    const maxReviews = Math.max(1, ...points.map((p) => p.reviews));
+    const totalReviewsInWindow = points.reduce((acc, p) => acc + p.reviews, 0);
 
     return {
       points,
       totalCards,
       masteredDelta,
       recallDelta,
+      learningDelta,
+      unseenDelta,
       activeTotal,
-      maxActiveInWindow
+      maxActiveInWindow,
+      maxReviews,
+      totalReviewsInWindow
     };
   }, [srsItemsMap, timelineAttrFilter, timelineRange]);
 
@@ -2241,28 +2268,26 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             </div>
 
             {/* Bottom Section (Flex-1): Interactive 4-Stage Remembrance Progression Timeline */}
-            <div className="relative flex-1 min-h-0 flex flex-col justify-between gap-2 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-3.5 text-[#F6EFE2] shadow-xl">
-              {/* Row 1: Header + Timeframe Controls */}
+            <div className="relative flex-1 min-h-0 flex flex-col justify-between gap-2.5 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
+              {/* Row 1: Header + Scale & Horizon Controls */}
               <div className="shrink-0 flex items-center justify-between gap-2">
                 <div className="min-w-0">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-2">
                     <TrendingUp className="h-3.5 w-3.5 shrink-0 text-[#10B981]" />
                     <span className="text-xs font-black uppercase tracking-wider text-[#F6EFE2] truncate">
                       Remembrance Timeline
                     </span>
-                    {remembranceTimeline.masteredDelta > 0 && (
-                      <span className="shrink-0 font-mono text-[9px] font-extrabold text-[#10B981] tabular-nums">
-                        +{remembranceTimeline.masteredDelta} Mastered
-                      </span>
-                    )}
+                    <span className="hidden sm:inline font-mono text-[10px] font-semibold text-[#8FA6B8] tabular-nums">
+                      · {remembranceTimeline.activeTotal}/{remembranceTimeline.totalCards} active
+                    </span>
                   </div>
-                  <p className="truncate text-[10px] font-medium text-[#9FB3C4]">
-                    4-stage cumulative memory horizon progression across attributes
+                  <p className="truncate text-[10.5px] font-medium text-[#9FB3C4]">
+                    Cumulative 4-stage memory horizon & daily review cadence
                   </p>
                 </div>
 
                 {/* Timeframe & Scale Switchers */}
-                <div className="flex items-center gap-1 shrink-0">
+                <div className="flex items-center gap-1.5 shrink-0">
                   <button
                     type="button"
                     onClick={() => {
@@ -2271,10 +2296,10 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                     }}
                     title={
                       timelineScaleMode === 'full'
-                        ? 'Showing 100% total card horizon (click to zoom into active cards)'
-                        : 'Zoomed to active learning/mastered cards (click for 100% full horizon)'
+                        ? 'Showing 100% total card horizon (click to zoom into active strata)'
+                        : 'Zoomed to active strata (click for 100% total horizon)'
                     }
-                    className={`rounded-lg border px-1.5 py-0.5 text-[9px] font-extrabold transition-colors cursor-pointer whitespace-nowrap ${
+                    className={`rounded-lg border px-2 py-1 text-[9.5px] font-extrabold transition-colors cursor-pointer whitespace-nowrap ${
                       timelineScaleMode === 'active'
                         ? 'border-[#10B981]/60 bg-[#10B981]/20 text-[#10B981]'
                         : 'border-[#F6EFE2]/15 bg-[#0C1D2B] text-[#9FB3C4] hover:text-white'
@@ -2293,7 +2318,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                           setTimelineRange(rng);
                           setHoveredTimelineIdx(null);
                         }}
-                        className={`rounded-md px-1.5 py-0.5 font-mono text-[9px] font-extrabold uppercase transition-colors cursor-pointer ${
+                        className={`rounded-md px-1.5 py-0.5 font-mono text-[9.5px] font-extrabold uppercase transition-colors cursor-pointer ${
                           timelineRange === rng
                             ? 'bg-[#E9C46A] text-[#142534]'
                             : 'text-[#9FB3C4] hover:text-white'
@@ -2306,15 +2331,60 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 </div>
               </div>
 
-              {/* Row 2: Interactive Attribute Filter Tabs */}
-              <div className="shrink-0 grid grid-cols-5 gap-1 rounded-xl border border-[#F6EFE2]/10 bg-[#0C1D2B]/90 p-1">
+              {/* Row 2: Interactive Attribute Filter Tabs with Mini 4-Stage Progress Bar */}
+              <div className="shrink-0 grid grid-cols-5 gap-1 rounded-xl border border-[#F6EFE2]/10 bg-[#0A1824] p-1">
                 {(
                   [
-                    { id: 'all', label: 'All', glyph: '🌍', pct: horizonMasteryPct },
-                    { id: 'capital', label: 'Capitals', glyph: '🏛️', pct: attributeTelemetry.capital.pct },
-                    { id: 'location', label: 'Locations', glyph: '🧭', pct: attributeTelemetry.location.pct },
-                    { id: 'country', label: 'Map→Name', glyph: '🗺️', pct: attributeTelemetry.country.pct },
-                    { id: 'flag', label: 'Flags', glyph: '🏳️', pct: attributeTelemetry.flag.pct }
+                    {
+                      id: 'all',
+                      label: 'All',
+                      glyph: '🌍',
+                      pct: horizonMasteryPct,
+                      m: cardTelemetry.mastered,
+                      r: cardTelemetry.recall,
+                      l: cardTelemetry.learning,
+                      t: Math.max(1, cardTelemetry.total)
+                    },
+                    {
+                      id: 'capital',
+                      label: 'Capitals',
+                      glyph: '🏛️',
+                      pct: attributeTelemetry.capital.pct,
+                      m: attributeTelemetry.capital.mastered,
+                      r: attributeTelemetry.capital.recall,
+                      l: attributeTelemetry.capital.learning,
+                      t: Math.max(1, attributeTelemetry.capital.total)
+                    },
+                    {
+                      id: 'location',
+                      label: 'Locations',
+                      glyph: '🧭',
+                      pct: attributeTelemetry.location.pct,
+                      m: attributeTelemetry.location.mastered,
+                      r: attributeTelemetry.location.recall,
+                      l: attributeTelemetry.location.learning,
+                      t: Math.max(1, attributeTelemetry.location.total)
+                    },
+                    {
+                      id: 'country',
+                      label: 'Map→Name',
+                      glyph: '🗺️',
+                      pct: attributeTelemetry.country.pct,
+                      m: attributeTelemetry.country.mastered,
+                      r: attributeTelemetry.country.recall,
+                      l: attributeTelemetry.country.learning,
+                      t: Math.max(1, attributeTelemetry.country.total)
+                    },
+                    {
+                      id: 'flag',
+                      label: 'Flags',
+                      glyph: '🏳️',
+                      pct: attributeTelemetry.flag.pct,
+                      m: attributeTelemetry.flag.mastered,
+                      r: attributeTelemetry.flag.recall,
+                      l: attributeTelemetry.flag.learning,
+                      t: Math.max(1, attributeTelemetry.flag.total)
+                    }
                   ] as const
                 ).map((tab) => {
                   const active = timelineAttrFilter === tab.id;
@@ -2326,29 +2396,36 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         soundFx.playClick();
                         setTimelineAttrFilter(tab.id);
                       }}
-                      className={`flex flex-col items-center justify-center rounded-lg px-1.5 py-1 transition-all cursor-pointer ${
+                      className={`flex flex-col justify-between gap-1 rounded-lg px-2 py-1.5 transition-all cursor-pointer ${
                         active
-                          ? 'bg-[#173A52] text-[#F6EFE2] ring-1 ring-[#E9C46A]/60 shadow-sm'
+                          ? 'bg-[#173A52] text-[#F6EFE2] ring-1 ring-[#E9C46A]/65 shadow-sm'
                           : 'text-[#9FB3C4] hover:bg-[#132E42]/60 hover:text-[#F6EFE2]'
                       }`}
                     >
-                      <div className="flex items-center gap-1 max-w-full">
-                        <span className="text-[10px] leading-none">{tab.glyph}</span>
-                        <span className="truncate text-[9.5px] font-extrabold leading-none">{tab.label}</span>
+                      <div className="flex items-center justify-between gap-1 w-full">
+                        <span className="flex items-center gap-1 min-w-0">
+                          <span className="text-[10px] leading-none">{tab.glyph}</span>
+                          <span className="truncate text-[9.5px] font-extrabold leading-none">{tab.label}</span>
+                        </span>
+                        <span
+                          className={`font-mono text-[9px] font-extrabold leading-none tabular-nums ${
+                            active ? 'text-[#E9C46A]' : 'text-[#8FA6B8]'
+                          }`}
+                        >
+                          {tab.pct}%
+                        </span>
                       </div>
-                      <span
-                        className={`mt-0.5 font-mono text-[8.5px] font-bold leading-none tabular-nums ${
-                          active ? 'text-[#E9C46A]' : 'text-[#8FA6B8]'
-                        }`}
-                      >
-                        {tab.pct}%
-                      </span>
+                      <div className="flex h-1 w-full overflow-hidden rounded-full bg-[#07111A]">
+                        <span className="h-full bg-[#10B981]" style={{ width: `${(tab.m / tab.t) * 100}%` }} />
+                        <span className="h-full bg-[#E9C46A]" style={{ width: `${(tab.r / tab.t) * 100}%` }} />
+                        <span className="h-full bg-[#F4A261]" style={{ width: `${(tab.l / tab.t) * 100}%` }} />
+                      </div>
                     </button>
                   );
                 })}
               </div>
 
-              {/* Row 3: Interactive 4-Stage SVG Stacked Area Chart + Scrubber */}
+              {/* Row 3 & 4: 4-Stage KPI Cards + 1:1 Pixel Topographic Horizon Chart + Daily Cadence */}
               {(() => {
                 const pts = remembranceTimeline.points;
                 const total = Math.max(1, remembranceTimeline.totalCards);
@@ -2360,17 +2437,18 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
                 const yMax =
                   timelineScaleMode === 'active'
-                    ? Math.max(10, Math.min(total, Math.ceil(remembranceTimeline.maxActiveInWindow * 1.15)))
+                    ? Math.max(12, Math.min(total, Math.ceil(remembranceTimeline.maxActiveInWindow * 1.12)))
                     : total;
 
-                const W = 460;
-                const H = 112;
-                const padL = 6;
-                const padR = 6;
+                // True 1:1 pixel dimensions measured from DOM container (Zero distortion)
+                const W = timelinePlotSize.width;
+                const H = timelinePlotSize.height;
+                const padL = 2;
+                const padR = 2;
                 const padT = 8;
-                const padB = 18;
-                const plotW = W - padL - padR;
-                const plotH = H - padT - padB;
+                const padB = 2;
+                const plotW = Math.max(10, W - padL - padR);
+                const plotH = Math.max(10, H - padT - padB);
                 const baseLineY = padT + plotH;
 
                 const xFor = (i: number) =>
@@ -2378,253 +2456,361 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 const yFor = (val: number) =>
                   baseLineY - Math.min(1, Math.max(0, val / yMax)) * plotH;
 
-                const buildAreaPath = (topVals: number[], botVals: number[]) => {
-                  if (pts.length === 0) return '';
-                  const topCoords = pts.map((_, i) => `${xFor(i).toFixed(1)},${yFor(topVals[i]).toFixed(1)}`);
-                  const botCoords = [...pts]
-                    .map((_, i) => `${xFor(i).toFixed(1)},${yFor(botVals[i]).toFixed(1)}`)
-                    .reverse();
-                  return `M ${topCoords.join(' L ')} L ${botCoords.join(' L ')} Z`;
+                // Smooth horizontal cubic bezier curve generator (prevents jagged kinks and never overshoots Y)
+                const buildSmoothPoints = (vals: number[]) =>
+                  pts.map((_, i) => ({ x: xFor(i), y: yFor(vals[i]) }));
+
+                const buildSmoothLine = (coords: Array<{ x: number; y: number }>) => {
+                  if (coords.length === 0) return '';
+                  if (coords.length === 1) return `M ${coords[0].x.toFixed(1)},${coords[0].y.toFixed(1)}`;
+                  let d = `M ${coords[0].x.toFixed(1)},${coords[0].y.toFixed(1)}`;
+                  for (let i = 0; i < coords.length - 1; i++) {
+                    const p0 = coords[i];
+                    const p1 = coords[i + 1];
+                    const cpx1 = p0.x + (p1.x - p0.x) * 0.42;
+                    const cpx2 = p1.x - (p1.x - p0.x) * 0.42;
+                    d += ` C ${cpx1.toFixed(1)},${p0.y.toFixed(1)} ${cpx2.toFixed(1)},${p1.y.toFixed(1)} ${p1.x.toFixed(1)},${p1.y.toFixed(1)}`;
+                  }
+                  return d;
                 };
 
-                const buildLinePath = (vals: number[]) => {
+                const buildSmoothArea = (topVals: number[], botVals: number[]) => {
                   if (pts.length === 0) return '';
-                  return `M ${pts.map((_, i) => `${xFor(i).toFixed(1)},${yFor(vals[i]).toFixed(1)}`).join(' L ')}`;
+                  const topPts = buildSmoothPoints(topVals);
+                  const botPts = buildSmoothPoints(botVals).reverse();
+                  const topCurve = buildSmoothLine(topPts);
+                  let botCurve = ` L ${botPts[0].x.toFixed(1)},${botPts[0].y.toFixed(1)}`;
+                  for (let i = 0; i < botPts.length - 1; i++) {
+                    const p0 = botPts[i];
+                    const p1 = botPts[i + 1];
+                    const cpx1 = p0.x + (p1.x - p0.x) * 0.42;
+                    const cpx2 = p1.x - (p1.x - p0.x) * 0.42;
+                    botCurve += ` C ${cpx1.toFixed(1)},${p0.y.toFixed(1)} ${cpx2.toFixed(1)},${p1.y.toFixed(1)} ${p1.x.toFixed(1)},${p1.y.toFixed(1)}`;
+                  }
+                  return `${topCurve}${botCurve} Z`;
                 };
 
                 const zeros = pts.map(() => 0);
                 const sMastered = pts.map((p) => p.mastered);
                 const sRecall = pts.map((p) => p.mastered + p.recall);
                 const sLearning = pts.map((p) => p.mastered + p.recall + p.learning);
-                const sTotal = pts.map(() => yMax);
 
-                const masteredArea = buildAreaPath(sMastered, zeros);
-                const recallArea = buildAreaPath(sRecall, sMastered);
-                const learningArea = buildAreaPath(sLearning, sRecall);
-                const unseenArea = buildAreaPath(sTotal, sLearning);
+                const masteredArea = buildSmoothArea(sMastered, zeros);
+                const recallArea = buildSmoothArea(sRecall, sMastered);
+                const learningArea = buildSmoothArea(sLearning, sRecall);
 
-                const masteredLine = buildLinePath(sMastered);
-                const recallLine = buildLinePath(sRecall);
-                const learningLine = buildLinePath(sLearning);
+                const masteredLine = buildSmoothLine(buildSmoothPoints(sMastered));
+                const recallLine = buildSmoothLine(buildSmoothPoints(sRecall));
+                const learningLine = buildSmoothLine(buildSmoothPoints(sLearning));
 
                 const hoverX = xFor(activeIdx);
 
+                // Select 5 evenly spaced X-axis tick indices for crisp HTML date labels
+                const tickIndices: number[] = [];
+                if (pts.length <= 7) {
+                  for (let i = 0; i < pts.length; i++) tickIndices.push(i);
+                } else {
+                  const steps = 4;
+                  for (let s = 0; s <= steps; s++) {
+                    tickIndices.push(Math.round((s / steps) * (pts.length - 1)));
+                  }
+                }
+
+                const stageCards = [
+                  {
+                    id: 'mastered' as const,
+                    label: 'Mastered',
+                    count: activePt.mastered,
+                    pct: Math.round((activePt.mastered / total) * 100),
+                    delta: remembranceTimeline.masteredDelta,
+                    dotCls: 'bg-[#10B981]',
+                    textCls: 'text-[#34D399]',
+                    borderCls: 'border-[#10B981]/30 bg-[#10B981]/10 hover:border-[#10B981]/60'
+                  },
+                  {
+                    id: 'recall' as const,
+                    label: 'Recall',
+                    count: activePt.recall,
+                    pct: Math.round((activePt.recall / total) * 100),
+                    delta: remembranceTimeline.recallDelta,
+                    dotCls: 'bg-[#E9C46A]',
+                    textCls: 'text-[#FDE047]',
+                    borderCls: 'border-[#E9C46A]/30 bg-[#E9C46A]/10 hover:border-[#E9C46A]/60'
+                  },
+                  {
+                    id: 'learning' as const,
+                    label: 'Learning',
+                    count: activePt.learning,
+                    pct: Math.round((activePt.learning / total) * 100),
+                    delta: remembranceTimeline.learningDelta,
+                    dotCls: 'bg-[#F4A261]',
+                    textCls: 'text-[#FB923C]',
+                    borderCls: 'border-[#F4A261]/30 bg-[#F4A261]/10 hover:border-[#F4A261]/60'
+                  },
+                  {
+                    id: 'unseen' as const,
+                    label: 'Unseen',
+                    count: activePt.unseen,
+                    pct: Math.round((activePt.unseen / total) * 100),
+                    delta: remembranceTimeline.unseenDelta,
+                    dotCls: 'bg-[#38BDF8]',
+                    textCls: 'text-[#38BDF8]',
+                    borderCls: 'border-[#38BDF8]/25 bg-[#38BDF8]/8 hover:border-[#38BDF8]/55'
+                  }
+                ];
+
                 return (
-                  <div className="flex-1 min-h-0 flex flex-col justify-between gap-1.5">
-                    {/* Live / Hovered Date Stage Readout Bar */}
-                    <div className="shrink-0 flex items-center justify-between gap-1.5 rounded-xl border border-[#F6EFE2]/10 bg-[#091622]/90 px-2.5 py-1">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-mono text-[10px] font-extrabold text-[#E9C46A] tabular-nums">
-                          {activePt.dateLabel}
-                        </span>
-                        {activePt.reviews > 0 && (
-                          <span className="font-mono text-[9px] font-semibold text-[#8FA6B8] tabular-nums">
-                            · {activePt.reviews} rev
+                  <div className="flex-1 min-h-0 flex flex-col justify-between gap-2">
+                    {/* 4-Stage Interactive Readout Strip (Click any stage to open Trophy Album) */}
+                    <div className="shrink-0 grid grid-cols-4 gap-1.5">
+                      {stageCards.map((st) => (
+                        <button
+                          key={st.id}
+                          type="button"
+                          onClick={() => {
+                            setHorizonAttrFilter(timelineAttrFilter);
+                            openTrophyAlbum(st.id);
+                          }}
+                          title={`Click to inspect ${st.label} cards in Trophy Album`}
+                          className={`flex flex-col justify-between rounded-xl border px-2.5 py-1.5 text-left transition-all cursor-pointer ${st.borderCls}`}
+                        >
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="flex items-center gap-1.5 min-w-0">
+                              <span className={`h-2 w-2 shrink-0 rounded-full ${st.dotCls}`} />
+                              <span className="truncate text-[9.5px] font-extrabold uppercase tracking-wider text-[#F6EFE2]">
+                                {st.label}
+                              </span>
+                            </span>
+                            <span className="font-mono text-[9px] font-bold text-[#9FB3C4] tabular-nums">
+                              {st.pct}%
+                            </span>
+                          </div>
+
+                          <div className="mt-1 flex items-baseline justify-between gap-1">
+                            <span className={`${serifDisplay} font-mono text-sm font-black leading-none text-[#F6EFE2] tabular-nums`}>
+                              {st.count}
+                            </span>
+                            {st.delta !== 0 && (
+                              <span
+                                className={`font-mono text-[8.5px] font-extrabold tabular-nums ${
+                                  st.id === 'unseen'
+                                    ? st.delta < 0
+                                      ? 'text-[#38BDF8]'
+                                      : 'text-[#8FA6B8]'
+                                    : st.delta > 0
+                                    ? st.textCls
+                                    : 'text-[#8FA6B8]'
+                                }`}
+                              >
+                                {st.delta > 0 ? `+${st.delta}` : st.delta}
+                              </span>
+                            )}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Main Chart Frame: Left Y-Axis + Right 1:1 Pixel Plot + Daily Review Spark-Bars + HTML X-Axis */}
+                    <div className="relative flex-1 min-h-0 flex flex-col justify-between rounded-xl border border-[#F6EFE2]/12 bg-[#07131E] p-2.5">
+                      {/* Top Scrubber Status Bar inside Chart */}
+                      <div className="shrink-0 flex items-center justify-between gap-2 pb-1.5 border-b border-[#F6EFE2]/8">
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-[10px] font-extrabold text-[#E9C46A] tabular-nums">
+                            {activePt.dateLabel}
                           </span>
-                        )}
+                          <span className="text-[10px] text-[#8FA6B8]">·</span>
+                          <span className="font-mono text-[10px] font-bold text-[#6EE7B7] tabular-nums">
+                            {activePt.reviews} {activePt.reviews === 1 ? 'review' : 'reviews'}
+                          </span>
+                        </div>
+                        <span className="font-mono text-[9.5px] font-medium text-[#8FA6B8] tabular-nums">
+                          Window total: {remembranceTimeline.totalReviewsInWindow.toLocaleString()} rev
+                        </span>
                       </div>
 
-                      <div className="flex items-center gap-2 font-mono text-[9.5px] font-extrabold tabular-nums">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setHorizonAttrFilter(timelineAttrFilter);
-                            openTrophyAlbum('mastered');
-                          }}
-                          title="Click to inspect Mastered cards in Trophy Album"
-                          className="flex items-center gap-1 text-[#10B981] hover:underline cursor-pointer"
-                        >
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]" />
-                          <span>{activePt.mastered}</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setHorizonAttrFilter(timelineAttrFilter);
-                            openTrophyAlbum('recall');
-                          }}
-                          title="Click to inspect Recall cards in Trophy Album"
-                          className="flex items-center gap-1 text-[#E9C46A] hover:underline cursor-pointer"
-                        >
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#E9C46A]" />
-                          <span>{activePt.recall}</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setHorizonAttrFilter(timelineAttrFilter);
-                            openTrophyAlbum('learning');
-                          }}
-                          title="Click to inspect Learning cards in Trophy Album"
-                          className="flex items-center gap-1 text-[#F4A261] hover:underline cursor-pointer"
-                        >
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#F4A261]" />
-                          <span>{activePt.learning}</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setHorizonAttrFilter(timelineAttrFilter);
-                            openTrophyAlbum('unseen');
-                          }}
-                          title="Click to inspect Unseen cards in Trophy Album"
-                          className="flex items-center gap-1 text-[#38BDF8] hover:underline cursor-pointer"
-                        >
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#38BDF8]" />
-                          <span>{activePt.unseen}</span>
-                        </button>
-                      </div>
-                    </div>
+                      {/* Middle Plot Area: Y-Axis Ticks + 1:1 Pixel SVG Horizon Canvas */}
+                      <div className="flex-1 min-h-0 flex items-stretch gap-2 pt-1.5">
+                        {/* Crisp HTML Y-Axis Labels (Never stretched) */}
+                        <div className="shrink-0 flex flex-col justify-between py-0.5 text-right font-mono text-[9px] font-semibold text-[#7E99AE] tabular-nums select-none w-7">
+                          <span>{yMax}</span>
+                          <span>{Math.round(yMax * 0.75)}</span>
+                          <span>{Math.round(yMax * 0.5)}</span>
+                          <span>{Math.round(yMax * 0.25)}</span>
+                          <span>0</span>
+                        </div>
 
-                    {/* Interactive Stacked Area SVG Canvas */}
-                    <div className="relative flex-1 min-h-0 w-full overflow-hidden rounded-xl border border-[#F6EFE2]/10 bg-[#081520] px-1 pt-1">
-                      <svg
-                        viewBox={`0 0 ${W} ${H}`}
-                        preserveAspectRatio="none"
-                        className="h-full w-full select-none overflow-visible cursor-crosshair"
-                        onMouseLeave={() => setHoveredTimelineIdx(null)}
-                        onMouseMove={(e) => {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          const relX = Math.max(0, Math.min(1, (e.clientX - rect.left) / Math.max(1, rect.width)));
-                          const idx = Math.round(relX * (pts.length - 1));
-                          if (idx !== hoveredTimelineIdx) {
-                            setHoveredTimelineIdx(idx);
-                          }
-                        }}
-                      >
-                        <defs>
-                          <linearGradient id="tlMasteredGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#10B981" stopOpacity="0.62" />
-                            <stop offset="100%" stopColor="#10B981" stopOpacity="0.18" />
-                          </linearGradient>
-                          <linearGradient id="tlRecallGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#E9C46A" stopOpacity="0.55" />
-                            <stop offset="100%" stopColor="#E9C46A" stopOpacity="0.18" />
-                          </linearGradient>
-                          <linearGradient id="tlLearningGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#F4A261" stopOpacity="0.50" />
-                            <stop offset="100%" stopColor="#F4A261" stopOpacity="0.15" />
-                          </linearGradient>
-                          <linearGradient id="tlUnseenGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.16" />
-                            <stop offset="100%" stopColor="#38BDF8" stopOpacity="0.04" />
-                          </linearGradient>
-                        </defs>
+                        {/* 1:1 Pixel SVG Plot Container */}
+                        <div
+                          ref={timelinePlotRef}
+                          className="relative flex-1 min-h-0 overflow-hidden rounded-lg bg-[#050E17] border border-[#F6EFE2]/8 cursor-crosshair"
+                          onMouseLeave={() => setHoveredTimelineIdx(null)}
+                          onMouseMove={(e) => {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            const relX = Math.max(0, Math.min(1, (e.clientX - rect.left) / Math.max(1, rect.width)));
+                            const idx = Math.round(relX * (pts.length - 1));
+                            if (idx !== hoveredTimelineIdx) {
+                              setHoveredTimelineIdx(idx);
+                            }
+                          }}
+                        >
+                          <svg
+                            viewBox={`0 0 ${W} ${H}`}
+                            className="block h-full w-full select-none"
+                          >
+                            <defs>
+                              <linearGradient id="tlMasteredFill" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#10B981" stopOpacity="0.58" />
+                                <stop offset="100%" stopColor="#059669" stopOpacity="0.20" />
+                              </linearGradient>
+                              <linearGradient id="tlRecallFill" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#E9C46A" stopOpacity="0.56" />
+                                <stop offset="100%" stopColor="#D4A338" stopOpacity="0.22" />
+                              </linearGradient>
+                              <linearGradient id="tlLearningFill" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#F4A261" stopOpacity="0.56" />
+                                <stop offset="100%" stopColor="#E07A5F" stopOpacity="0.22" />
+                              </linearGradient>
+                            </defs>
 
-                        {/* Horizontal Reference Grid Lines */}
-                        {[0.25, 0.5, 0.75].map((ratio) => {
-                          const gy = padT + plotH * (1 - ratio);
-                          return (
-                            <line
-                              key={ratio}
-                              x1={padL}
-                              y1={gy}
-                              x2={W - padR}
-                              y2={gy}
-                              stroke="rgba(246, 239, 226, 0.07)"
-                              strokeDasharray="3 4"
-                              strokeWidth="1"
+                            {/* Crisp 1px Horizontal Reference Grid Lines */}
+                            {[0.25, 0.5, 0.75, 1].map((ratio) => {
+                              const gy = Math.round(padT + plotH * (1 - ratio)) + 0.5;
+                              return (
+                                <line
+                                  key={ratio}
+                                  x1={padL}
+                                  y1={gy}
+                                  x2={W - padR}
+                                  y2={gy}
+                                  stroke="rgba(246, 239, 226, 0.07)"
+                                  strokeDasharray="3 4"
+                                  strokeWidth="1"
+                                />
+                              );
+                            })}
+
+                            {/* Stacked Smooth Stage Strata */}
+                            <path d={learningArea} fill="url(#tlLearningFill)" />
+                            <path d={recallArea} fill="url(#tlRecallFill)" />
+                            <path d={masteredArea} fill="url(#tlMasteredFill)" />
+
+                            {/* Crisp Uniform Stage Crest Lines */}
+                            <path
+                              d={learningLine}
+                              fill="none"
+                              stroke="#FB923C"
+                              strokeWidth="1.75"
+                              strokeLinecap="round"
                             />
-                          );
-                        })}
+                            <path
+                              d={recallLine}
+                              fill="none"
+                              stroke="#FDE047"
+                              strokeWidth="1.75"
+                              strokeLinecap="round"
+                            />
+                            <path
+                              d={masteredLine}
+                              fill="none"
+                              stroke="#34D399"
+                              strokeWidth="2.25"
+                              strokeLinecap="round"
+                            />
 
-                        {/* 4 Stacked Stage Areas */}
-                        <path d={unseenArea} fill="url(#tlUnseenGrad)" />
-                        <path d={learningArea} fill="url(#tlLearningGrad)" />
-                        <path d={recallArea} fill="url(#tlRecallGrad)" />
-                        <path d={masteredArea} fill="url(#tlMasteredGrad)" />
-
-                        {/* Stage Horizon Contour Lines */}
-                        <path d={learningLine} fill="none" stroke="#F4A261" strokeWidth="1.4" strokeOpacity="0.85" />
-                        <path d={recallLine} fill="none" stroke="#E9C46A" strokeWidth="1.6" strokeOpacity="0.9" />
-                        <path d={masteredLine} fill="none" stroke="#10B981" strokeWidth="2.1" />
-
-                        {/* Scrubber Vertical Guide & Stage Nodes */}
-                        <line
-                          x1={hoverX}
-                          y1={padT}
-                          x2={hoverX}
-                          y2={baseLineY}
-                          stroke="rgba(246, 239, 226, 0.55)"
-                          strokeWidth="1.2"
-                          strokeDasharray="2 2"
-                        />
-                        <circle
-                          cx={hoverX}
-                          cy={yFor(sMastered[activeIdx])}
-                          r="3.2"
-                          fill="#10B981"
-                          stroke="#081520"
-                          strokeWidth="1.2"
-                        />
-                        <circle
-                          cx={hoverX}
-                          cy={yFor(sRecall[activeIdx])}
-                          r="2.8"
-                          fill="#E9C46A"
-                          stroke="#081520"
-                          strokeWidth="1.2"
-                        />
-                        <circle
-                          cx={hoverX}
-                          cy={yFor(sLearning[activeIdx])}
-                          r="2.6"
-                          fill="#F4A261"
-                          stroke="#081520"
-                          strokeWidth="1.2"
-                        />
-
-                        {/* X-Axis Date Labels */}
-                        {pts.map((pt, i) => {
-                          const showTick =
-                            i === 0 ||
-                            i === pts.length - 1 ||
-                            i === Math.floor((pts.length - 1) / 2) ||
-                            (pts.length >= 12 &&
-                              (i === Math.floor((pts.length - 1) * 0.25) ||
-                                i === Math.floor((pts.length - 1) * 0.75)));
-                          if (!showTick) return null;
-                          const tx = xFor(i);
-                          const anchor = i === 0 ? 'start' : i === pts.length - 1 ? 'end' : 'middle';
-                          return (
-                            <text
-                              key={pt.idx}
-                              x={tx}
-                              y={H - 4}
-                              textAnchor={anchor}
-                              className="fill-[#8FA6B8] font-mono text-[8.5px] font-bold"
-                            >
-                              {pt.shortLabel}
-                            </text>
-                          );
-                        })}
-                      </svg>
-                    </div>
-
-                    {/* Legend & Attribute Summary Footer */}
-                    <div className="shrink-0 flex items-center justify-between gap-2 px-0.5 text-[9px] text-[#9FB3C4]">
-                      <div className="flex items-center gap-2.5">
-                        <span className="flex items-center gap-1 font-bold text-[#10B981]">
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]" />
-                          Mastered
-                        </span>
-                        <span className="flex items-center gap-1 font-bold text-[#E9C46A]">
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#E9C46A]" />
-                          Recall
-                        </span>
-                        <span className="flex items-center gap-1 font-bold text-[#F4A261]">
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#F4A261]" />
-                          Learning
-                        </span>
-                        <span className="flex items-center gap-1 font-bold text-[#38BDF8]">
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#38BDF8]" />
-                          Unseen
-                        </span>
+                            {/* Scrubber Vertical Hairline & True Circular Node Rings */}
+                            <line
+                              x1={hoverX}
+                              y1={padT}
+                              x2={hoverX}
+                              y2={baseLineY}
+                              stroke="rgba(246, 239, 226, 0.55)"
+                              strokeWidth="1"
+                              strokeDasharray="3 3"
+                            />
+                            <circle
+                              cx={hoverX}
+                              cy={yFor(sLearning[activeIdx])}
+                              r="3.5"
+                              fill="#FB923C"
+                              stroke="#050E17"
+                              strokeWidth="1.5"
+                            />
+                            <circle
+                              cx={hoverX}
+                              cy={yFor(sRecall[activeIdx])}
+                              r="3.5"
+                              fill="#FDE047"
+                              stroke="#050E17"
+                              strokeWidth="1.5"
+                            />
+                            <circle
+                              cx={hoverX}
+                              cy={yFor(sMastered[activeIdx])}
+                              r="4"
+                              fill="#34D399"
+                              stroke="#050E17"
+                              strokeWidth="1.5"
+                            />
+                          </svg>
+                        </div>
                       </div>
 
-                      <span className="font-mono font-bold text-[#D6CBB9] tabular-nums">
-                        {remembranceTimeline.activeTotal}/{remembranceTimeline.totalCards} active
-                      </span>
+                      {/* Bottom Daily Review Cadence Spark-Bars + Crisp HTML X-Axis Dates */}
+                      <div className="shrink-0 pl-9 pt-1.5 flex flex-col gap-1">
+                        {/* Daily Review Activity Bars */}
+                        <div className="flex h-4 items-end gap-1 border-b border-[#F6EFE2]/10 pb-0.5">
+                          {pts.map((pt, i) => {
+                            const isSelected = i === activeIdx;
+                            const barHeightPct =
+                              pt.reviews > 0
+                                ? Math.max(18, Math.round((pt.reviews / remembranceTimeline.maxReviews) * 100))
+                                : 6;
+                            return (
+                              <div
+                                key={pt.idx}
+                                onMouseEnter={() => setHoveredTimelineIdx(i)}
+                                onMouseLeave={() => setHoveredTimelineIdx(null)}
+                                title={`${pt.shortLabel}: ${pt.reviews} reviews`}
+                                className="flex-1 h-full flex items-end cursor-pointer"
+                              >
+                                <div
+                                  className={`w-full rounded-t-[2px] transition-all ${
+                                    isSelected
+                                      ? 'bg-[#E9C46A]'
+                                      : pt.reviews > 0
+                                      ? 'bg-[#38BDF8]/55 hover:bg-[#38BDF8]'
+                                      : 'bg-[#F6EFE2]/8'
+                                  }`}
+                                  style={{ height: `${barHeightPct}%` }}
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Razor-Sharp HTML X-Axis Date Labels (Never blurry or stretched) */}
+                        <div className="flex items-center justify-between font-mono text-[10px] font-semibold text-[#8FA6B8] tabular-nums select-none">
+                          {tickIndices.map((idx) => {
+                            const pt = pts[idx];
+                            if (!pt) return null;
+                            const isCurrent = idx === activeIdx;
+                            return (
+                              <span
+                                key={pt.idx}
+                                className={
+                                  isCurrent
+                                    ? 'text-[#E9C46A] font-extrabold'
+                                    : idx === pts.length - 1
+                                    ? 'text-[#F6EFE2] font-bold'
+                                    : 'text-[#8FA6B8]'
+                                }
+                              >
+                                {pt.shortLabel}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 );
