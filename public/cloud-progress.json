@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:41:09.915Z",
+  "exportedAt": "2026-10-23T11:41:20.200Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -22343,14 +22343,14 @@
         "id": "STP:flag",
         "countryId": "STP",
         "attributeId": "flag",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.35,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-23T10:57:30.326Z",
-        "nextDueAt": "2026-10-23T10:57:30.326Z",
+        "lastReviewedAt": "2026-10-23T11:41:16.833Z",
+        "nextDueAt": "2026-10-23T11:56:16.833Z",
         "history": [
           {
             "timestamp": "2026-10-23T10:57:30.326Z",
@@ -22359,11 +22359,19 @@
             "isCorrect": false,
             "timeSpentMs": 1876,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-23T11:41:16.833Z",
+            "inputMode": "typing",
+            "userAnswer": "Sao tome and principle",
+            "isCorrect": true,
+            "timeSpentMs": 5352,
+            "grade": 3
           }
         ],
-        "difficulty": 5.99,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 5.59,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -22941,8 +22949,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1628,
-    "totalCorrect": 1164,
+    "totalReviews": 1629,
+    "totalCorrect": 1165,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -22980,7 +22988,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:41:06.797Z"
+    "updatedAt": "2026-10-23T11:41:16.837Z"
   },
   "settings": {
     "audioEnabled": true,
