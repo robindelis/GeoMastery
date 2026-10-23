@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T10:57:23.281Z",
+  "exportedAt": "2026-10-23T10:57:26.867Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -21247,14 +21247,14 @@
         "id": "LBY:flag",
         "countryId": "LBY",
         "attributeId": "flag",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.1,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.18,
+        "intervalDays": 1,
+        "reps": 1,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-23T10:53:26.285Z",
-        "nextDueAt": "2026-10-23T10:53:26.285Z",
+        "lastReviewedAt": "2026-10-23T10:57:23.698Z",
+        "nextDueAt": "2026-10-24T10:57:23.698Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:22:05.732Z",
@@ -21271,11 +21271,19 @@
             "isCorrect": false,
             "timeSpentMs": 7299,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-23T10:57:23.698Z",
+            "inputMode": "typing",
+            "userAnswer": "Libya",
+            "isCorrect": true,
+            "timeSpentMs": 2635,
+            "grade": 4
           }
         ],
-        "difficulty": 6.79,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 5.85,
+        "stability": 1.9,
+        "lastLatencyGrade": 4,
         "confusedWith": []
       }
     ],
@@ -21943,8 +21951,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1565,
-    "totalCorrect": 1118,
+    "totalReviews": 1566,
+    "totalCorrect": 1119,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -21982,7 +21990,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T10:57:19.881Z"
+    "updatedAt": "2026-10-23T10:57:23.700Z"
   },
   "settings": {
     "audioEnabled": true,
