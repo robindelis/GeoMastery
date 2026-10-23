@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:28:32.795Z",
+  "exportedAt": "2026-10-23T11:28:37.976Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -22058,10 +22058,40 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "ARM:flag",
+      {
+        "id": "ARM:flag",
+        "countryId": "ARM",
+        "attributeId": "flag",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-23T11:28:34.794Z",
+        "nextDueAt": "2026-10-23T11:38:34.794Z",
+        "history": [
+          {
+            "timestamp": "2026-10-23T11:28:34.794Z",
+            "inputMode": "typing",
+            "userAnswer": "Lituania",
+            "isCorrect": false,
+            "timeSpentMs": 4379,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1574,
+    "totalReviews": 1575,
     "totalCorrect": 1125,
     "currentStreak": 3,
     "longestStreak": 4,
@@ -22100,7 +22130,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:28:29.418Z"
+    "updatedAt": "2026-10-23T11:28:34.795Z"
   },
   "settings": {
     "audioEnabled": true,
