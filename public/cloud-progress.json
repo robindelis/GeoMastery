@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:34:37.187Z",
+  "exportedAt": "2026-10-23T11:34:48.478Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -22374,11 +22374,71 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "MCO:flag",
+      {
+        "id": "MCO:flag",
+        "countryId": "MCO",
+        "attributeId": "flag",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-23T11:34:42.390Z",
+        "nextDueAt": "2026-10-23T11:49:42.390Z",
+        "history": [
+          {
+            "timestamp": "2026-10-23T11:34:42.390Z",
+            "inputMode": "typing",
+            "userAnswer": "Monaco",
+            "isCorrect": true,
+            "timeSpentMs": 3180,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
+    ],
+    [
+      "PER:country",
+      {
+        "id": "PER:country",
+        "countryId": "PER",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-23T11:34:45.762Z",
+        "nextDueAt": "2026-10-23T11:49:45.762Z",
+        "history": [
+          {
+            "timestamp": "2026-10-23T11:34:45.762Z",
+            "inputMode": "typing",
+            "userAnswer": "Peru",
+            "isCorrect": true,
+            "timeSpentMs": 2240,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1595,
-    "totalCorrect": 1140,
+    "totalReviews": 1597,
+    "totalCorrect": 1142,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -22416,7 +22476,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:34:33.045Z"
+    "updatedAt": "2026-10-23T11:34:45.765Z"
   },
   "settings": {
     "audioEnabled": true,
