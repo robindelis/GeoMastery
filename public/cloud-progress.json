@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:48:56.659Z",
+  "exportedAt": "2026-10-23T11:49:08.105Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -23371,11 +23371,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "ETH:country",
+      {
+        "id": "ETH:country",
+        "countryId": "ETH",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-23T11:49:03.996Z",
+        "nextDueAt": "2026-10-23T12:04:03.996Z",
+        "history": [
+          {
+            "timestamp": "2026-10-23T11:49:03.996Z",
+            "inputMode": "typing",
+            "userAnswer": "Ethiopia",
+            "isCorrect": true,
+            "timeSpentMs": 6622,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1657,
-    "totalCorrect": 1181,
+    "totalReviews": 1658,
+    "totalCorrect": 1182,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -23413,7 +23443,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:48:52.436Z"
+    "updatedAt": "2026-10-23T11:49:04.000Z"
   },
   "settings": {
     "audioEnabled": true,
