@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:40:42.303Z",
+  "exportedAt": "2026-10-23T11:40:49.046Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -10732,13 +10732,13 @@
         "countryId": "IRQ",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.35,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-04T20:36:14.361Z",
-        "nextDueAt": "2026-10-05T20:36:14.361Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-23T11:40:45.030Z",
+        "nextDueAt": "2026-10-23T11:50:45.030Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:36:14.361Z",
@@ -10746,11 +10746,23 @@
             "userAnswer": "Baghdad",
             "isCorrect": true,
             "timeSpentMs": 4155
+          },
+          {
+            "timestamp": "2026-10-23T11:40:45.030Z",
+            "inputMode": "typing",
+            "userAnswer": "Islamabad",
+            "isCorrect": false,
+            "timeSpentMs": 4872,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 4.49
+        "stability": 0.6,
+        "difficulty": 5.86,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "PAK"
+        ]
       }
     ],
     [
@@ -22859,7 +22871,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1624,
+    "totalReviews": 1625,
     "totalCorrect": 1161,
     "currentStreak": 3,
     "longestStreak": 4,
@@ -22898,7 +22910,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:40:39.143Z"
+    "updatedAt": "2026-10-23T11:40:45.036Z"
   },
   "settings": {
     "audioEnabled": true,
