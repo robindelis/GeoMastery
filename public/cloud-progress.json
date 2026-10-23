@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:45:16.039Z",
+  "exportedAt": "2026-10-23T11:45:19.305Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -9784,13 +9784,13 @@
         "countryId": "KOR",
         "attributeId": "location",
         "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.4,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:31:00.665Z",
-        "nextDueAt": "2026-10-09T20:31:00.665Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-23T11:45:16.169Z",
+        "nextDueAt": "2026-10-23T11:55:16.169Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:32:15.799Z",
@@ -9805,11 +9805,23 @@
             "userAnswer": "South Korea",
             "isCorrect": true,
             "timeSpentMs": 2689
+          },
+          {
+            "timestamp": "2026-10-23T11:45:16.169Z",
+            "inputMode": "map_click",
+            "userAnswer": "Yellow Sea",
+            "isCorrect": false,
+            "timeSpentMs": 2650,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 4.26
+        "stability": 0.97,
+        "difficulty": 5.71,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "WATER_SEA_YELLOW"
+        ]
       }
     ],
     [
@@ -23271,7 +23283,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1646,
+    "totalReviews": 1647,
     "totalCorrect": 1176,
     "currentStreak": 3,
     "longestStreak": 4,
@@ -23310,7 +23322,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:45:12.715Z"
+    "updatedAt": "2026-10-23T11:45:16.172Z"
   },
   "settings": {
     "audioEnabled": true,
