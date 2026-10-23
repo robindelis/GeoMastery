@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:36:45.420Z",
+  "exportedAt": "2026-10-23T11:36:54.743Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11668,13 +11668,13 @@
         "countryId": "WATER_GULF_GUINEA",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.4499999999999993,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.5,
+        "intervalDays": 35,
+        "reps": 4,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:36:17.485Z",
-        "nextDueAt": "2026-10-15T20:36:17.485Z",
+        "lastReviewedAt": "2026-10-23T11:36:50.802Z",
+        "nextDueAt": "2026-11-27T11:36:50.802Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:12:09.927Z",
@@ -11703,11 +11703,21 @@
             "userAnswer": "Gulf of Guinea",
             "isCorrect": true,
             "timeSpentMs": 4233
+          },
+          {
+            "timestamp": "2026-10-23T11:36:50.802Z",
+            "inputMode": "map_click",
+            "userAnswer": "Gulf of Guinea",
+            "isCorrect": true,
+            "timeSpentMs": 3279,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 5.98
+        "stability": 35,
+        "difficulty": 5.58,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -22583,8 +22593,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1606,
-    "totalCorrect": 1148,
+    "totalReviews": 1607,
+    "totalCorrect": 1149,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -22622,7 +22632,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:36:42.009Z"
+    "updatedAt": "2026-10-23T11:36:50.804Z"
   },
   "settings": {
     "audioEnabled": true,
