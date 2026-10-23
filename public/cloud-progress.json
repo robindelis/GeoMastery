@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:33:22.357Z",
+  "exportedAt": "2026-10-23T11:33:30.788Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -21249,14 +21249,14 @@
         "id": "RWA:flag",
         "countryId": "RWA",
         "attributeId": "flag",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.38,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-21T12:21:10.230Z",
-        "nextDueAt": "2026-10-21T12:21:10.230Z",
+        "lastReviewedAt": "2026-10-23T11:33:26.818Z",
+        "nextDueAt": "2026-10-23T11:48:26.818Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:21:10.230Z",
@@ -21265,11 +21265,19 @@
             "isCorrect": false,
             "timeSpentMs": 2247,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-23T11:33:26.818Z",
+            "inputMode": "typing",
+            "userAnswer": "Rwanda",
+            "isCorrect": true,
+            "timeSpentMs": 2209,
+            "grade": 4
           }
         ],
-        "difficulty": 5.99,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 4.99,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
         "confusedWith": [
           "UGA"
         ]
@@ -22253,8 +22261,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1586,
-    "totalCorrect": 1132,
+    "totalReviews": 1587,
+    "totalCorrect": 1133,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -22292,7 +22300,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:33:19.429Z"
+    "updatedAt": "2026-10-23T11:33:26.820Z"
   },
   "settings": {
     "audioEnabled": true,
