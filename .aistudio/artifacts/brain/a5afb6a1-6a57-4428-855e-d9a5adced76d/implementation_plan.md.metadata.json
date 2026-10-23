@@ -1,0 +1,6 @@
+{
+  "summary":  "Implementation plan for transitioning GeoMastery from fixed 15-card sessions to an infinite, continuous learning stream with in-stream expanding retrieval spacing, rolling horizon replenishment, live top-bar telemetry, an on-demand Flag Study reference drawer, and an optional run recap on exit.",
+  "updatedAt":  "2026-10-23T09:45:15.090010818Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}

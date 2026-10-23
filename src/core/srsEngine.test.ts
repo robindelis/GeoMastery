@@ -13,7 +13,9 @@ import {
   calibrateSRSItem,
   MASTERY_STABILITY_DAYS,
   buildFlagStudyCohort,
-  buildFlagCohortQuestions
+  buildFlagCohortQuestions,
+  scheduleInStreamFollowUp,
+  replenishStreamQueue
 } from './srsEngine';
 import { COUNTRIES, COUNTRIES_BY_ID } from '../assets/data/countries';
 import { WATER_BODIES } from '../assets/data/waterBodies';
@@ -464,6 +466,68 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
       expect(q.expectedInputMode).toBe('typing');
     }
   });
+
+  it('re-queues newly graduated L0 -> L1 and consolidating L1 cards at expanding gaps in-stream so they can reach Mastered in one sitting', () => {
+    const itemsMap = new Map();
+    const initialStream = replenishStreamQueue([], -1, itemsMap, 'Europe', ['capital'], 24, false);
+    let queue = initialStream.queue;
+    expect(queue.length).toBe(24);
+
+    // Pick the first card at index 0 (Stage 0 MCQ)
+    const firstQ = queue[0];
+    expect(firstQ.stage).toBe(0);
+
+    // 1. Answer Stage 0 correctly -> Graduates to Stage 1
+    const item0 = createInitialSRSItem(firstQ.country.id, firstQ.attributeId);
+    const res1 = processAnswer(item0, true, firstQ.expectedInputMode, firstQ.correctAnswer, 1400);
+    itemsMap.set(res1.updatedItem.id, res1.updatedItem);
+
+    queue = scheduleInStreamFollowUp(queue, 0, firstQ, res1.updatedItem, true, false);
+    const firstFollowUpIdx = queue.findIndex((q, idx) => idx > 0 && q.srsItemId === firstQ.srsItemId);
+    expect(firstFollowUpIdx).toBeGreaterThanOrEqual(8);
+    expect(queue[firstFollowUpIdx].stage).toBe(1);
+    expect(queue[firstFollowUpIdx].expectedInputMode).toBe('typing');
+    expect(queue[firstFollowUpIdx].isRetry).toBe(false);
+
+    // 2. Answer Stage 1 active recall at firstFollowUpIdx -> Enters Recall (S >= 2.2d)
+    const followUpQ1 = queue[firstFollowUpIdx];
+    const res2 = processAnswer(res1.updatedItem, true, 'typing', followUpQ1.correctAnswer, 2000);
+    itemsMap.set(res2.updatedItem.id, res2.updatedItem);
+    expect(res2.updatedItem.stage).toBe(1);
+
+    queue = scheduleInStreamFollowUp(queue, firstFollowUpIdx, followUpQ1, res2.updatedItem, true, false);
+    const secondFollowUpIdx = queue.findIndex(
+      (q, idx) => idx > firstFollowUpIdx && q.srsItemId === firstQ.srsItemId
+    );
+    expect(secondFollowUpIdx).toBeGreaterThan(firstFollowUpIdx);
+
+    // 3. Answer second active recall -> Graduates to Stage 2 Mastered (S >= 6.0d), no further follow-up queued
+    const followUpQ2 = queue[secondFollowUpIdx];
+    const res3 = processAnswer(res2.updatedItem, true, 'typing', followUpQ2.correctAnswer, 1800);
+    expect(res3.updatedItem.stage).toBe(2);
+    expect(res3.promotedToMastered).toBe(true);
+
+    queue = scheduleInStreamFollowUp(queue, secondFollowUpIdx, followUpQ2, res3.updatedItem, true, false);
+    const thirdFollowUpIdx = queue.findIndex(
+      (q, idx) => idx > secondFollowUpIdx && q.srsItemId === firstQ.srsItemId
+    );
+    expect(thirdFollowUpIdx).toBe(-1);
+  });
+
+  it('replenishes the continuous stream without duplicating upcoming cards and seamlessly transitions to retention when caught up', () => {
+    const itemsMap = new Map();
+    const initial = replenishStreamQueue([], -1, itemsMap, 'Oceania', ['capital'], 10, false);
+    expect(initial.queue.length).toBe(10);
+
+    const replenished = replenishStreamQueue(initial.queue, 4, itemsMap, 'Oceania', ['capital'], 8, false);
+    expect(replenished.queue.length).toBeGreaterThan(10);
+
+    // Ensure no duplicate srsItemId in the active upcoming window [5..end]
+    const upcomingSlice = replenished.queue.slice(5);
+    const uniqueUpcoming = new Set(upcomingSlice.map((q) => q.srsItemId));
+    expect(uniqueUpcoming.size).toBe(upcomingSlice.length);
+  });
 });
+
 
 

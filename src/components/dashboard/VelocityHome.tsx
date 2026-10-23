@@ -996,56 +996,30 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const locBadge = getSpotlightCardBadge(spotlightLocItem);
 
   const attributeTelemetry = useMemo(() => {
-    let capMastered = 0;
-    let locMastered = 0;
-    let countryMastered = 0;
-    let flagMastered = 0;
-
-    for (const country of COUNTRIES) {
-      if (classifyCardHorizon(srsItemsMap.get(`${country.id}:capital`)) === 'mastered') {
-        capMastered += 1;
-      }
-      if (classifyCardHorizon(srsItemsMap.get(`${country.id}:location`)) === 'mastered') {
-        locMastered += 1;
-      }
-      if (classifyCardHorizon(srsItemsMap.get(`${country.id}:country`)) === 'mastered') {
-        countryMastered += 1;
-      }
-      if (classifyCardHorizon(srsItemsMap.get(`${country.id}:flag`)) === 'mastered') {
-        flagMastered += 1;
-      }
-    }
-    for (const wb of WATER_BODIES) {
-      if (classifyCardHorizon(srsItemsMap.get(`${wb.id}:location`)) === 'mastered') {
-        locMastered += 1;
-      }
-    }
+    const buildAttrStats = (attr: 'capital' | 'location' | 'country' | 'flag', total: number) => {
+      const mastered = cardTelemetry.byCategory.mastered[attr];
+      const recall = cardTelemetry.byCategory.recall[attr];
+      const learning = cardTelemetry.byCategory.learning[attr];
+      const unseen = cardTelemetry.byCategory.unseen[attr];
+      return {
+        mastered,
+        recall,
+        learning,
+        unseen,
+        total,
+        pct: Math.round((mastered / total) * 100)
+      };
+    };
 
     const capTotal = COUNTRIES.length;
     const locTotal = COUNTRIES.length + WATER_BODIES.length;
     return {
-      capital: {
-        mastered: capMastered,
-        total: capTotal,
-        pct: Math.round((capMastered / capTotal) * 100)
-      },
-      location: {
-        mastered: locMastered,
-        total: locTotal,
-        pct: Math.round((locMastered / locTotal) * 100)
-      },
-      country: {
-        mastered: countryMastered,
-        total: capTotal,
-        pct: Math.round((countryMastered / capTotal) * 100)
-      },
-      flag: {
-        mastered: flagMastered,
-        total: capTotal,
-        pct: Math.round((flagMastered / capTotal) * 100)
-      }
+      capital: buildAttrStats('capital', capTotal),
+      location: buildAttrStats('location', locTotal),
+      country: buildAttrStats('country', capTotal),
+      flag: buildAttrStats('flag', capTotal)
     };
-  }, [srsItemsMap]);
+  }, [cardTelemetry]);
 
   const focusOptions = [
     {
@@ -1054,9 +1028,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       subtitle: 'Type capital city',
       detail: `${due.capital} due`,
       glyph: '🏛️',
-      mastered: attributeTelemetry.capital.mastered,
-      total: attributeTelemetry.capital.total,
-      pct: attributeTelemetry.capital.pct
+      ...attributeTelemetry.capital
     },
     {
       attr: 'location' as const,
@@ -1064,9 +1036,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       subtitle: 'Pinpoint on map',
       detail: `${due.location} due`,
       glyph: '🧭',
-      mastered: attributeTelemetry.location.mastered,
-      total: attributeTelemetry.location.total,
-      pct: attributeTelemetry.location.pct
+      ...attributeTelemetry.location
     },
     {
       attr: 'country' as const,
@@ -1074,9 +1044,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       subtitle: 'Name highlighted nation',
       detail: `${due.country} due`,
       glyph: '🗺️',
-      mastered: attributeTelemetry.country.mastered,
-      total: attributeTelemetry.country.total,
-      pct: attributeTelemetry.country.pct
+      ...attributeTelemetry.country
     },
     {
       attr: 'flag' as const,
@@ -1084,9 +1052,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       subtitle: 'Name nation from flag',
       detail: `${due.flag} due`,
       glyph: '🏳️',
-      mastered: attributeTelemetry.flag.mastered,
-      total: attributeTelemetry.flag.total,
-      pct: attributeTelemetry.flag.pct
+      ...attributeTelemetry.flag
     }
   ];
 
@@ -1350,13 +1316,26 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <div className="h-1 flex-1 overflow-hidden rounded-full bg-[#091622]">
+                      <div
+                        className="flex items-center gap-2"
+                        title={`Mastered: ${opt.mastered} · Recall: ${opt.recall} · Learning: ${opt.learning} · Unseen: ${opt.unseen}`}
+                      >
+                        <div className="flex h-1.5 flex-1 overflow-hidden rounded-full bg-[#091622] p-[1px]">
                           <div
-                            className={`h-full rounded-full transition-all duration-500 ${
-                              active ? 'bg-[#E9C46A]' : 'bg-[#8FA6B8]/50'
-                            }`}
-                            style={{ width: `${opt.pct}%` }}
+                            className="h-full bg-[#10B981] transition-all duration-500"
+                            style={{ width: `${(opt.mastered / opt.total) * 100}%` }}
+                          />
+                          <div
+                            className="h-full bg-[#E9C46A] transition-all duration-500"
+                            style={{ width: `${(opt.recall / opt.total) * 100}%` }}
+                          />
+                          <div
+                            className="h-full bg-[#F4A261] transition-all duration-500"
+                            style={{ width: `${(opt.learning / opt.total) * 100}%` }}
+                          />
+                          <div
+                            className="h-full bg-[#38BDF8]/40 transition-all duration-500"
+                            style={{ width: `${(opt.unseen / opt.total) * 100}%` }}
                           />
                         </div>
                         <span className="shrink-0 font-mono text-[9px] font-bold text-[#9FB3C4]">

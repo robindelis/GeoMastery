@@ -39,6 +39,7 @@ interface SessionCompletedViewProps {
   results: SessionAnswerRecord[];
   sessionDurationMs: number;
   onRestart: () => void;
+  onResumeStream?: () => void;
   onRetryMissed?: (missedQuestions: TrainingQuestion[]) => void;
   onDashboard: () => void;
 }
@@ -49,6 +50,7 @@ export const SessionCompletedView: React.FC<SessionCompletedViewProps> = ({
   results,
   sessionDurationMs,
   onRestart,
+  onResumeStream,
   onRetryMissed,
   onDashboard
 }) => {
@@ -178,8 +180,8 @@ export const SessionCompletedView: React.FC<SessionCompletedViewProps> = ({
             : accuracy >= 80
             ? 'Masterful Recall!'
             : accuracy >= 60
-            ? 'Solid Practice Session!'
-            : 'Drill Completed!'}
+            ? 'Solid Training Run!'
+            : 'Training Run Recap'}
         </h1>
 
         {/* Context Eyebrow / Badges */}
@@ -192,12 +194,12 @@ export const SessionCompletedView: React.FC<SessionCompletedViewProps> = ({
           {isPracticeMode ? (
             <span className="bg-violet-950/70 border border-violet-700/70 px-3 py-1 rounded-full text-violet-300 font-semibold flex items-center gap-1.5">
               <Zap className="w-3.5 h-3.5 fill-violet-400 text-violet-400" />
-              Practice Drill <span className="text-[10px] text-violet-300/80 font-normal">(SRS Timers Frozen)</span>
+              Continuous Retention Stream <span className="text-[10px] text-violet-300/80 font-normal">(SRS Timers Frozen)</span>
             </span>
           ) : (
             <span className="bg-sky-950/70 border border-sky-700/70 px-3 py-1 rounded-full text-sky-300 font-semibold flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-sky-400" />
-              Spaced Repetition Review
+              Continuous Spaced Repetition
             </span>
           )}
 
@@ -290,7 +292,7 @@ export const SessionCompletedView: React.FC<SessionCompletedViewProps> = ({
           <div className="bg-slate-800/80 border border-slate-700/70 p-4 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group hover:border-slate-600 transition-all">
             <div className="flex items-center gap-1.5 text-xs text-slate-400 font-semibold mb-1">
               <Award className="w-3.5 h-3.5 text-purple-400" />
-              <span>Session Score</span>
+              <span>Run Score</span>
             </div>
             <span className="text-3xl font-black text-purple-400">+{totalXp}</span>
             <div className="mt-2.5">
@@ -468,17 +470,17 @@ export const SessionCompletedView: React.FC<SessionCompletedViewProps> = ({
               className="w-full sm:flex-1 py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-amber-500/20 active:scale-95"
             >
               <RotateCcw className="w-4 h-4" />
-              <span>Retry {missedResults.length} Missed {missedResults.length === 1 ? 'Country' : 'Countries'}</span>
+              <span>Focus Drill {missedResults.length} Missed</span>
             </button>
           )}
 
-          {/* Drill Again */}
+          {/* Resume Continuous Stream */}
           <button
-            onClick={onRestart}
+            onClick={onResumeStream || onRestart}
             className="w-full sm:flex-1 py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/25 active:scale-95"
           >
             <Zap className="w-4 h-4 fill-slate-950" />
-            <span>{isPracticeMode ? 'Drill Continent Again (15)' : 'Next Review Batch (15)'}</span>
+            <span>Resume Continuous Stream</span>
           </button>
 
           {/* Return to Dashboard */}
@@ -487,7 +489,7 @@ export const SessionCompletedView: React.FC<SessionCompletedViewProps> = ({
             className="w-full sm:w-auto py-3 px-5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-95"
           >
             <Home className="w-4 h-4" />
-            <span>Dashboard</span>
+            <span>Finish & Dashboard</span>
           </button>
         </div>
       </div>

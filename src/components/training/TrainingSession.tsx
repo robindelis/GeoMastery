@@ -5,6 +5,8 @@ import { COUNTRIES, COUNTRIES_BY_ID } from '../../assets/data/countries';
 import {
   TrainingQuestion,
   prepareSessionQueue,
+  replenishStreamQueue,
+  scheduleInStreamFollowUp,
   processAnswer,
   buildQuestion,
   createInitialSRSItem,
@@ -23,7 +25,7 @@ import { MultipleChoicePrompt } from './MultipleChoicePrompt';
 import { TypingRecallPrompt } from './TypingRecallPrompt';
 import { MapClickPrompt } from './MapClickPrompt';
 import { FlagStudyRecap } from './FlagStudyRecap';
-import { Flame, Sparkles, Zap, Flag } from 'lucide-react';
+import { Flame, Sparkles, Zap, Flag, BarChart3, CheckCircle2, TrendingUp } from 'lucide-react';
 import { AmbientBackground } from '../common/AmbientBackground';
 import { SessionCompletedView, SessionAnswerRecord } from './SessionCompletedView';
 
@@ -37,13 +39,17 @@ interface TrainingSessionProps {
   onFinishSession: () => void;
 }
 
-function createInitialSessionQueue(
+const STREAM_INITIAL_CHUNK = 24;
+const STREAM_LOW_WATERMARK = 12;
+const STREAM_REPLENISH_CHUNK = 18;
+
+function createInitialStreamQueue(
   items: Map<string, SRSItem>,
   continentFilter: TrainingCategory,
   attributeFilter: string[],
   isPracticeMode: boolean,
   targetCountryId?: string | null
-): TrainingQuestion[] {
+): { queue: TrainingQuestion[]; enteredRetentionStream: boolean } {
   if (targetCountryId) {
     const wb = getWaterBodyById(targetCountryId);
     const c = wb ? waterBodyToCountry(wb) : COUNTRIES_BY_ID.get(targetCountryId);
@@ -55,11 +61,29 @@ function createInitialSessionQueue(
         return buildQuestion(item, c, countryContext);
       });
       if (targetedQueue.length > 0) {
-        return targetedQueue;
+        // Follow targeted country cards with the broader continuous stream
+        const replenished = replenishStreamQueue(
+          targetedQueue,
+          -1,
+          items,
+          continentFilter,
+          attributeFilter,
+          STREAM_INITIAL_CHUNK,
+          isPracticeMode
+        );
+        return replenished;
       }
     }
   }
-  return prepareSessionQueue(items, continentFilter, attributeFilter, 15, isPracticeMode);
+  return replenishStreamQueue(
+    [],
+    -1,
+    items,
+    continentFilter,
+    attributeFilter,
+    STREAM_INITIAL_CHUNK,
+    isPracticeMode
+  );
 }
 
 export const TrainingSession: React.FC<TrainingSessionProps> = ({
@@ -71,31 +95,44 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
   onToggleMapMode,
   onFinishSession
 }) => {
-  const [isPracticeMode, setIsPracticeMode] = useState<boolean>(initialPracticeMode);
-  const isPracticeModeRef = useRef<boolean>(isPracticeMode);
-  isPracticeModeRef.current = isPracticeMode;
-
   // Persistent SRS map loaded synchronously
   const [srsItemsMap, setSrsItemsMap] = useState<Map<string, SRSItem>>(() => StorageService.loadSRSItems());
 
-  // Synchronously build initial session queue so the first render never flashes "All Caught Up!"
-  const [queue, setQueue] = useState<TrainingQuestion[]>(() =>
-    createInitialSessionQueue(srsItemsMap, continentFilter, attributeFilter, initialPracticeMode, targetCountryId)
+  // Build initial continuous stream synchronously
+  const initialStreamState = useRef(
+    createInitialStreamQueue(srsItemsMap, continentFilter, attributeFilter, initialPracticeMode, targetCountryId)
   );
-  const shouldShowFlagRecap =
-    attributeFilter.includes('flag') && continentFilter !== 'Oceans' && !targetCountryId;
-  const [isStudyingFlags, setIsStudyingFlags] = useState<boolean>(() => shouldShowFlagRecap);
+
+  const [isPracticeMode, setIsPracticeMode] = useState<boolean>(
+    initialPracticeMode || initialStreamState.current.enteredRetentionStream
+  );
+  const isPracticeModeRef = useRef<boolean>(isPracticeMode);
+  isPracticeModeRef.current = isPracticeMode;
+
+  const [enteredRetentionNotice, setEnteredRetentionNotice] = useState<boolean>(
+    !initialPracticeMode && initialStreamState.current.enteredRetentionStream
+  );
+
+  const [queue, setQueue] = useState<TrainingQuestion[]>(() => initialStreamState.current.queue);
+
+  const canStudyFlags = attributeFilter.includes('flag') && continentFilter !== 'Oceans';
+  // On-demand Flag Study Reference: starts closed so continuous stream begins immediately
+  const [isStudyingFlags, setIsStudyingFlags] = useState<boolean>(false);
   const [flagStudyCohort, setFlagStudyCohort] = useState<Country[]>(() =>
-    shouldShowFlagRecap ? buildFlagStudyCohort(srsItemsMap, continentFilter, queue, 50) : []
+    canStudyFlags ? buildFlagStudyCohort(srsItemsMap, continentFilter, initialStreamState.current.queue, 50) : []
   );
+
   const [currentIndex, setCurrentIndex] = useState(0);
+  const currentIndexRef = useRef(0);
+  currentIndexRef.current = currentIndex;
+
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [userAnswer, setUserAnswer] = useState('');
   const [isCurrentCorrect, setIsCurrentCorrect] = useState<boolean | undefined>(undefined);
   const [feedbackState, setFeedbackState] = useState<'correct' | 'incorrect' | 'neutral' | null>(null);
   const [selectedMapCountry, setSelectedMapCountry] = useState<Country | null>(null);
 
-  // Session analytics
+  // Continuous run analytics & optional recap state
   const [streak, setStreak] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [graduatedCount, setGraduatedCount] = useState(0);
@@ -126,7 +163,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     targetCountryId
   });
 
-  // Re-initialize session queue only when session filter props actually change after mount
+  // Re-initialize stream only when filter props actually change after mount
   useEffect(() => {
     const prev = prevConfigRef.current;
     if (
@@ -146,22 +183,27 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
     const items = StorageService.loadSRSItems();
     setSrsItemsMap(items);
-    setIsPracticeMode(initialPracticeMode);
-    isPracticeModeRef.current = initialPracticeMode;
-    const newQueue = createInitialSessionQueue(
+    const nextStream = createInitialStreamQueue(
       items,
       continentFilter,
       attributeFilter,
       initialPracticeMode,
       targetCountryId
     );
+    const nextPractice = initialPracticeMode || nextStream.enteredRetentionStream;
+    setIsPracticeMode(nextPractice);
+    isPracticeModeRef.current = nextPractice;
+    setEnteredRetentionNotice(!initialPracticeMode && nextStream.enteredRetentionStream);
 
-    setQueue(newQueue);
-    const showRecap =
-      attributeFilter.includes('flag') && continentFilter !== 'Oceans' && !targetCountryId;
-    setIsStudyingFlags(showRecap);
-    setFlagStudyCohort(showRecap ? buildFlagStudyCohort(items, continentFilter, newQueue, 50) : []);
+    setQueue(nextStream.queue);
+    setIsStudyingFlags(false);
+    setFlagStudyCohort(
+      attributeFilter.includes('flag') && continentFilter !== 'Oceans'
+        ? buildFlagStudyCohort(items, continentFilter, nextStream.queue, 50)
+        : []
+    );
     setCurrentIndex(0);
+    currentIndexRef.current = 0;
     setIsCompleted(false);
     setIsSubmitted(false);
     isSubmittedRef.current = false;
@@ -185,19 +227,20 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     return StorageService.subscribe(() => {
       const items = StorageService.loadSRSItems();
       setSrsItemsMap(items);
-      const refreshedQueue = createInitialSessionQueue(
+      const refreshed = createInitialStreamQueue(
         items,
         continentFilter,
         attributeFilter,
         isPracticeModeRef.current,
         targetCountryId
       );
-      if (refreshedQueue.length > 0) {
-        setQueue(refreshedQueue);
-        if (attributeFilter.includes('flag') && continentFilter !== 'Oceans' && !targetCountryId) {
-          setFlagStudyCohort(buildFlagStudyCohort(items, continentFilter, refreshedQueue, 50));
+      if (refreshed.queue.length > 0) {
+        setQueue(refreshed.queue);
+        if (attributeFilter.includes('flag') && continentFilter !== 'Oceans') {
+          setFlagStudyCohort(buildFlagStudyCohort(items, continentFilter, refreshed.queue, 50));
         }
         setCurrentIndex(0);
+        currentIndexRef.current = 0;
         setQuestionStartTime(Date.now());
         questionStartTimeRef.current = Date.now();
       }
@@ -217,7 +260,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     };
   }, []);
 
-  // Process Answer submission (immune to any closure staleness)
+  // Process Answer submission (immune to closure staleness)
   const handleAnswer = useCallback((answer: string, selectedCountryId?: string) => {
     const question = currentQuestionRef.current;
     if (isSubmittedRef.current || !question) return;
@@ -265,6 +308,9 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
     let promotedToLearning = false;
     let promotedToMastered = false;
+    let effectiveUpdatedItem: SRSItem =
+      srsItemsMapRef.current.get(question.srsItemId) ||
+      createInitialSRSItem(question.country.id, question.attributeId);
 
     // Update SRS Record (Only in standard spaced repetition mode, NOT in free practice mode or in-session retries!)
     if (!isPracticeModeRef.current && !question.isRetry) {
@@ -294,13 +340,14 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
         timeSpentMs,
         selectedCountryId
       );
-      const updatedItem = res.updatedItem;
+      effectiveUpdatedItem = res.updatedItem;
       promotedToLearning = res.promotedToLearning;
       promotedToMastered = res.promotedToMastered;
 
       // Save back to storage
       const newMap = new Map(srsItemsMapRef.current);
-      newMap.set(updatedItem.id, updatedItem);
+      newMap.set(effectiveUpdatedItem.id, effectiveUpdatedItem);
+      srsItemsMapRef.current = newMap;
       setSrsItemsMap(newMap);
       StorageService.saveSRSItems(newMap);
 
@@ -339,7 +386,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       StorageService.recordReviewEvent(correct);
     }
 
-    // Record answer attempt in session history
+    // Record answer attempt in continuous run history
     const answerRecord: SessionAnswerRecord = {
       question,
       userAnswer: answer,
@@ -358,29 +405,40 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     } else {
       soundFx.playError();
       setStreak(0);
-      // Landauer & Bjork Expanding Retrieval Practice:
-      // 1st retry is inserted at a short expanding lag (+4 cards ahead); 2nd retry goes to end of session
-      setQueue((prevQueue) => {
-        const retryCount = prevQueue.filter((q) => q.srsItemId === question.srsItemId && q.isRetry).length;
-        if (retryCount < 2) {
-          const liveItem = srsItemsMapRef.current.get(question.srsItemId) || {
-            ...createInitialSRSItem(question.country.id, question.attributeId),
-            stage: 1
-          };
-          const freshRetry = { ...buildQuestion(liveItem, question.country, COUNTRIES), isRetry: true };
-          if (retryCount === 0) {
-            const activeIdx = prevQueue.findIndex((q, idx) => idx >= currentIndex && q.srsItemId === question.srsItemId);
-            const baseIdx = activeIdx !== -1 ? activeIdx : currentIndex;
-            const insertAt = Math.min(prevQueue.length, baseIdx + 1 + 4);
-            const nextQueue = [...prevQueue];
-            nextQueue.splice(insertAt, 0, freshRetry);
-            return nextQueue;
-          }
-          return [...prevQueue, freshRetry];
-        }
-        return prevQueue;
-      });
     }
+
+    // Continuous Stream Expanding Spacing & Rolling Horizon Replenisher:
+    // 1. Inject expanding retrieval follow-ups (L0 -> L1 at +8, L1 -> L2 at +15, or missed recovery at +4 & +11)
+    // 2. If the upcoming buffer drops below STREAM_LOW_WATERMARK, replenish seamlessly
+    setQueue((prevQueue) => {
+      const idx = currentIndexRef.current;
+      let nextQueue = scheduleInStreamFollowUp(
+        prevQueue,
+        idx,
+        question,
+        effectiveUpdatedItem,
+        correct,
+        Boolean(question.isRetry)
+      );
+
+      const remainingAhead = nextQueue.length - (idx + 1);
+      if (remainingAhead < STREAM_LOW_WATERMARK) {
+        const replenished = replenishStreamQueue(
+          nextQueue,
+          idx,
+          srsItemsMapRef.current,
+          continentFilter,
+          attributeFilter,
+          STREAM_REPLENISH_CHUNK,
+          isPracticeModeRef.current
+        );
+        nextQueue = replenished.queue;
+        if (replenished.enteredRetentionStream && !isPracticeModeRef.current) {
+          setEnteredRetentionNotice(true);
+        }
+      }
+      return nextQueue;
+    });
 
     // Vocal reading of the capital city when asking for capital, location, country, or flag
     const shouldSpeakCapital =
@@ -400,17 +458,14 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
         speechTimerRef.current = null;
       }, 200);
     }
-  }, [streak]);
+  }, [streak, continentFilter, attributeFilter]);
 
-  // Next Question
+  // Next Question in the Continuous Stream (Never hits a 15-card wall)
   const handleNext = useCallback(() => {
-    // Guard: Never advance to next question if current question is unsubmitted
     if (!isSubmittedRef.current) {
       return;
     }
 
-    // Synchronously disarm submitted flag to prevent any subsequent events,
-    // double clicks, or key repeat from advancing past the next question.
     isSubmittedRef.current = false;
 
     if (speechTimerRef.current) {
@@ -419,27 +474,78 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     }
     speechEngine.cancel();
 
-    if (currentIndex + 1 < queue.length) {
-      setCurrentIndex((i) => i + 1);
-      setIsSubmitted(false);
-      setUserAnswer('');
-      setIsCurrentCorrect(undefined);
-      setFeedbackState(null);
-      setSelectedMapCountry(null);
-      setQuestionStartTime(Date.now());
-      questionStartTimeRef.current = Date.now();
-    } else {
-      setIsCompleted(true);
-      setFinalDurationMs(Date.now() - sessionStartTime);
-      soundFx.playLevelUp();
-    }
-  }, [currentIndex, queue.length, sessionStartTime]);
+    setQueue((prevQueue) => {
+      const idx = currentIndexRef.current;
+      if (prevQueue.length - (idx + 1) < STREAM_LOW_WATERMARK) {
+        const replenished = replenishStreamQueue(
+          prevQueue,
+          idx,
+          srsItemsMapRef.current,
+          continentFilter,
+          attributeFilter,
+          STREAM_REPLENISH_CHUNK,
+          isPracticeModeRef.current
+        );
+        if (replenished.enteredRetentionStream && !isPracticeModeRef.current) {
+          setEnteredRetentionNotice(true);
+        }
+        return replenished.queue;
+      }
+      return prevQueue;
+    });
+
+    setCurrentIndex((i) => {
+      const nextIdx = i + 1;
+      currentIndexRef.current = nextIdx;
+      return nextIdx;
+    });
+    setIsSubmitted(false);
+    setUserAnswer('');
+    setIsCurrentCorrect(undefined);
+    setFeedbackState(null);
+    setSelectedMapCountry(null);
+    setQuestionStartTime(Date.now());
+    questionStartTimeRef.current = Date.now();
+  }, [continentFilter, attributeFilter]);
 
   // Give up / reveal answer handler
   const handleGiveUp = useCallback(() => {
     if (isSubmittedRef.current) return;
     handleAnswer('__DONT_KNOW__');
   }, [handleAnswer]);
+
+  // Open on-demand Run Recap modal/screen
+  const handleOpenRecap = useCallback(() => {
+    if (speechTimerRef.current) {
+      clearTimeout(speechTimerRef.current);
+      speechTimerRef.current = null;
+    }
+    speechEngine.cancel();
+    setFinalDurationMs(Date.now() - sessionStartTime);
+    setIsCompleted(true);
+    soundFx.playClick();
+  }, [sessionStartTime]);
+
+  // Resume stream from Run Recap without losing place
+  const handleResumeStream = useCallback(() => {
+    setIsCompleted(false);
+    setQuestionStartTime(Date.now());
+    questionStartTimeRef.current = Date.now();
+    soundFx.playClick();
+  }, []);
+
+  // Open on-demand Flag Study Reference
+  const handleOpenFlagStudy = useCallback(() => {
+    if (speechTimerRef.current) {
+      clearTimeout(speechTimerRef.current);
+      speechTimerRef.current = null;
+    }
+    speechEngine.cancel();
+    const upcomingSlice = queue.slice(currentIndex, currentIndex + 30);
+    setFlagStudyCohort(buildFlagStudyCohort(srsItemsMapRef.current, continentFilter, upcomingSlice, 50));
+    setIsStudyingFlags(true);
+    soundFx.playClick();
+  }, [queue, currentIndex, continentFilter]);
 
   // Map Click Handler during training
   const handleMapCountrySelect = useCallback((country: Country) => {
@@ -449,7 +555,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     }
   }, [handleAnswer]);
 
-  // Handler to restart session with fresh queue
+  // Handler to restart stream with a fresh queue and reset sitting stats
   const handleRestart = useCallback(() => {
     if (speechTimerRef.current) {
       clearTimeout(speechTimerRef.current);
@@ -458,13 +564,21 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     speechEngine.cancel();
 
     const items = StorageService.loadSRSItems();
-    const newQueue = prepareSessionQueue(items, continentFilter, attributeFilter, 15, isPracticeMode);
-    setQueue(newQueue);
-    const showRecap =
-      attributeFilter.includes('flag') && continentFilter !== 'Oceans' && !targetCountryId;
-    setIsStudyingFlags(showRecap);
-    setFlagStudyCohort(showRecap ? buildFlagStudyCohort(items, continentFilter, newQueue, 50) : []);
+    setSrsItemsMap(items);
+    srsItemsMapRef.current = items;
+    const freshStream = replenishStreamQueue(
+      [],
+      -1,
+      items,
+      continentFilter,
+      attributeFilter,
+      STREAM_INITIAL_CHUNK,
+      isPracticeMode
+    );
+    setQueue(freshStream.queue);
+    setIsStudyingFlags(false);
     setCurrentIndex(0);
+    currentIndexRef.current = 0;
     setIsCompleted(false);
     setIsSubmitted(false);
     isSubmittedRef.current = false;
@@ -479,7 +593,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     soundFx.playClick();
   }, [continentFilter, attributeFilter, isPracticeMode]);
 
-  // Handler to retry only the missed questions from this session
+  // Handler to focus-drill missed questions and then seamlessly continue the infinite stream
   const handleRetryMissed = useCallback((missedQuestions: TrainingQuestion[]) => {
     if (speechTimerRef.current) {
       clearTimeout(speechTimerRef.current);
@@ -487,10 +601,10 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     }
     speechEngine.cancel();
 
-    // Reload latest persistent items to guarantee accurate stage & recall streak
     const items = StorageService.loadSRSItems();
+    setSrsItemsMap(items);
+    srsItemsMapRef.current = items;
 
-    // Deduplicate by srsItemId and rebuild each question fresh with isRetry: false
     const uniqueMap = new Map<string, TrainingQuestion>();
     missedQuestions.forEach((q) => {
       if (!uniqueMap.has(q.srsItemId)) {
@@ -500,24 +614,32 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
         uniqueMap.set(q.srsItemId, freshQ);
       }
     });
-    const retryQueue = Array.from(uniqueMap.values());
+    const retryPrefix = Array.from(uniqueMap.values());
+    const replenished = replenishStreamQueue(
+      retryPrefix,
+      -1,
+      items,
+      continentFilter,
+      attributeFilter,
+      STREAM_REPLENISH_CHUNK,
+      isPracticeModeRef.current
+    );
 
-    setQueue(retryQueue);
+    setQueue(replenished.queue);
     setIsStudyingFlags(false);
     setCurrentIndex(0);
+    currentIndexRef.current = 0;
     setIsCompleted(false);
     setIsSubmitted(false);
     isSubmittedRef.current = false;
-    setCorrectCount(0);
-    setGraduatedCount(0);
-    setStreak(0);
-    setSessionAnswers([]);
-    setSessionStartTime(Date.now());
-    setFinalDurationMs(0);
+    setUserAnswer('');
+    setIsCurrentCorrect(undefined);
+    setFeedbackState(null);
+    setSelectedMapCountry(null);
     setQuestionStartTime(Date.now());
     questionStartTimeRef.current = Date.now();
     soundFx.playClick();
-  }, []);
+  }, [continentFilter, attributeFilter]);
 
   // Handler to start Practice Drill when no reviews are due
   const handleStartPracticeDrill = useCallback(() => {
@@ -528,13 +650,19 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     speechEngine.cancel();
 
     const items = StorageService.loadSRSItems();
-    const practiceQueue = prepareSessionQueue(items, continentFilter, attributeFilter, 15, true);
-    setQueue(practiceQueue);
-    const showRecap =
-      attributeFilter.includes('flag') && continentFilter !== 'Oceans' && !targetCountryId;
-    setIsStudyingFlags(showRecap);
-    setFlagStudyCohort(showRecap ? buildFlagStudyCohort(items, continentFilter, practiceQueue, 50) : []);
+    const practiceStream = replenishStreamQueue(
+      [],
+      -1,
+      items,
+      continentFilter,
+      attributeFilter,
+      STREAM_INITIAL_CHUNK,
+      true
+    );
+    setQueue(practiceStream.queue);
+    setIsStudyingFlags(false);
     setCurrentIndex(0);
+    currentIndexRef.current = 0;
     setIsPracticeMode(true);
     isPracticeModeRef.current = true;
     setIsCompleted(false);
@@ -564,24 +692,23 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
           <div className="flex flex-col gap-2">
             <h3 className="text-2xl font-extrabold text-white tracking-tight">
-              All Caught Up on Scheduled Reviews!
+              Region Horizon Cleared!
             </h3>
             <p className="text-sm text-slate-300 leading-relaxed">
-              No cards are due for <span className="text-emerald-400 font-bold">{continentFilter}</span> right now based on your spaced repetition intervals.
+              No cards are currently due for <span className="text-emerald-400 font-bold">{continentFilter}</span>.
             </p>
             <p className="text-xs text-slate-400 mt-1">
-              Want to train anyway? You can jump straight into a <strong>Practice Drill</strong> to challenge your recall without altering your spaced repetition intervals.
+              Launch the <strong>Continuous Practice Stream</strong> to keep training indefinitely without altering your spaced repetition intervals.
             </p>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full mt-2">
             <button
               onClick={handleStartPracticeDrill}
               className="w-full sm:flex-1 py-3.5 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/25 active:scale-95"
             >
               <Zap className="w-4 h-4 fill-slate-950" />
-              <span>Start Practice Drill (15)</span>
+              <span>Start Continuous Stream</span>
             </button>
 
             <button
@@ -596,10 +723,10 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     );
   }
 
-  // Pre-Session 50-Flag Study Recap Screen
+  // On-Demand Flag Study Reference Drawer / Screen
   if (isStudyingFlags && flagStudyCohort.length > 0 && !isCompleted && currentQuestion) {
-    const sessionFlagIds = new Set(
-      queue.filter((q) => q.attributeId === 'flag').map((q) => q.country.id)
+    const upcomingFlagIds = new Set(
+      queue.slice(currentIndex, currentIndex + 25).filter((q) => q.attributeId === 'flag').map((q) => q.country.id)
     );
     const isOnlyFlagAttribute = attributeFilter.length === 1 && attributeFilter[0] === 'flag';
 
@@ -607,15 +734,20 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       <FlagStudyRecap
         continentFilter={continentFilter}
         cohortCountries={flagStudyCohort}
-        sessionFlagCountryIds={sessionFlagIds}
+        sessionFlagCountryIds={upcomingFlagIds}
         srsItemsMap={srsItemsMap}
-        sessionQueueLength={queue.length}
+        sessionQueueLength={flagStudyCohort.length}
         isOnlyFlagAttribute={isOnlyFlagAttribute}
         onStartRollThroughAll={(selectedCountries) => {
           const items = StorageService.loadSRSItems();
-          const rollQueue = buildFlagCohortQuestions(items, selectedCountries);
-          setQueue(rollQueue);
-          setCurrentIndex(0);
+          const rollQuestions = buildFlagCohortQuestions(items, selectedCountries);
+          // Splice studied flag questions right at currentIndex and replenish tail behind them
+          setQueue((prevQueue) => {
+            const prefix = prevQueue.slice(0, currentIndex);
+            const studiedIds = new Set(rollQuestions.map((q) => q.srsItemId));
+            const remainingTail = prevQueue.slice(currentIndex).filter((q) => !studiedIds.has(q.srsItemId));
+            return [...prefix, ...rollQuestions, ...remainingTail];
+          });
           setIsStudyingFlags(false);
           setIsSubmitted(false);
           isSubmittedRef.current = false;
@@ -624,14 +756,12 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
           setFeedbackState(null);
           setSelectedMapCountry(null);
           const now = Date.now();
-          setSessionStartTime(now);
           setQuestionStartTime(now);
           questionStartTimeRef.current = now;
         }}
         onStartStandardQueue={() => {
           setIsStudyingFlags(false);
           const now = Date.now();
-          setSessionStartTime(now);
           setQuestionStartTime(now);
           questionStartTimeRef.current = now;
         }}
@@ -640,7 +770,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     );
   }
 
-  // Session Completed Screen
+  // Optional Training Run Recap Screen
   if (isCompleted) {
     return (
       <AmbientBackground
@@ -653,7 +783,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
           results={
             sessionAnswers.length > 0
               ? sessionAnswers
-              : queue.map((q) => ({
+              : queue.slice(0, Math.max(1, currentIndex)).map((q) => ({
                   question: q,
                   userAnswer: '',
                   isCorrect: true,
@@ -662,6 +792,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
           }
           sessionDurationMs={finalDurationMs || Math.max(1000, Date.now() - sessionStartTime)}
           onRestart={handleRestart}
+          onResumeStream={handleResumeStream}
           onRetryMissed={handleRetryMissed}
           onDashboard={onFinishSession}
         />
@@ -669,43 +800,114 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     );
   }
 
+  const reviewedCount = sessionAnswers.length;
+  const liveAccuracy = reviewedCount > 0 ? Math.round((correctCount / reviewedCount) * 100) : 100;
+
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#0f172a]">
-      {/* Top Session Progress Bar */}
-      <div className="h-12 sm:h-14 border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md px-3 sm:px-6 flex items-center justify-between z-30 shrink-0">
-        <div className="flex items-center gap-2 sm:gap-3">
+      {/* Continuous Stream Top Telemetry Bar */}
+      <div className="h-12 sm:h-14 border-b border-slate-800/80 bg-slate-900/95 backdrop-blur-md px-3 sm:px-6 flex items-center justify-between gap-2 z-30 shrink-0">
+        {/* Left Cluster: Direct Exit + Optional Recap + Region Scope */}
+        <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
           <button
+            type="button"
             onClick={onFinishSession}
-            className="text-xs text-slate-400 hover:text-white px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 transition-colors"
+            className="text-xs font-semibold text-slate-300 hover:text-white px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700/80 transition-colors cursor-pointer shrink-0"
+            title="Exit directly to Dashboard"
           >
-            ← Exit<span className="hidden sm:inline"> Session</span>
+            ← Exit
           </button>
-          <span className="text-xs text-slate-400 font-medium hidden sm:inline">
-            Focus: <span className="text-slate-200 font-semibold">{continentFilter}</span>
+
+          {reviewedCount > 0 && (
+            <button
+              type="button"
+              onClick={handleOpenRecap}
+              className="flex items-center gap-1.5 text-xs font-bold text-emerald-300 hover:text-white px-2.5 py-1.5 rounded-lg bg-emerald-950/60 hover:bg-emerald-900/70 border border-emerald-700/60 transition-colors cursor-pointer shrink-0"
+              title="Open Training Run Recap"
+            >
+              <BarChart3 className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Recap</span>
+              <span className="font-mono text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-200">
+                {reviewedCount}
+              </span>
+            </button>
+          )}
+
+          <span className="text-xs text-slate-400 font-medium hidden md:inline truncate">
+            Scope: <span className="text-slate-200 font-semibold">{continentFilter === 'All' ? 'World' : continentFilter}</span>
           </span>
+
+          {enteredRetentionNotice && !isPracticeMode && (
+            <span className="hidden lg:inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-700/50 text-emerald-300">
+              <Sparkles className="w-3 h-3" />
+              <span>Horizon Cleared · Continuous Retention</span>
+            </span>
+          )}
         </div>
 
-        {/* Progress bar */}
-        <div className="flex items-center gap-2 sm:gap-3 max-w-xs w-full mx-2 sm:mx-4">
-          <div className="flex-1 h-2 rounded-full bg-slate-800 overflow-hidden">
-            <div
-              className="h-full bg-emerald-500 transition-all duration-300 rounded-full"
-              style={{ width: `${Math.round(((currentIndex + 1) / queue.length) * 100)}%` }}
-            />
+        {/* Center Cluster: Live Sitting Telemetry Strip (Replaces fixed 1/15 bar) */}
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
+          {/* Cards Reviewed in Sitting */}
+          <div
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-800/90 border border-slate-700/80 text-xs"
+            title="Cards reviewed in this continuous sitting"
+          >
+            <CheckCircle2 className="w-3.5 h-3.5 text-sky-400 shrink-0" />
+            <span className="font-mono font-bold text-white tabular-nums">{reviewedCount}</span>
+            <span className="text-[10px] text-slate-400 font-semibold hidden sm:inline">Reviewed</span>
           </div>
-          <span className="text-xs font-mono font-bold text-slate-300">
-            {currentIndex + 1}/{queue.length}
-          </span>
-        </div>
 
-        {/* Streak & Stage badge */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Live Sitting Accuracy */}
+          {reviewedCount > 0 && (
+            <div
+              className={`flex items-center gap-1 px-2.5 py-1 rounded-full border text-xs font-mono font-bold tabular-nums ${
+                liveAccuracy >= 85
+                  ? 'bg-emerald-950/60 border-emerald-700/60 text-emerald-300'
+                  : liveAccuracy >= 65
+                  ? 'bg-sky-950/60 border-sky-700/60 text-sky-300'
+                  : 'bg-amber-950/60 border-amber-700/60 text-amber-300'
+              }`}
+              title={`Current run accuracy: ${correctCount}/${reviewedCount} correct`}
+            >
+              <span>{liveAccuracy}%</span>
+              <span className="text-[10px] font-sans font-semibold opacity-80 hidden md:inline">Acc</span>
+            </div>
+          )}
+
+          {/* Live Promotions Counter */}
+          {graduatedCount > 0 && (
+            <div
+              className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-950/50 border border-amber-700/50 text-xs font-bold text-amber-300"
+              title="Cards promoted to Active Recall or Mastered during this run"
+            >
+              <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
+              <span className="font-mono tabular-nums">+{graduatedCount}</span>
+            </div>
+          )}
+
+          {/* Active Streak Flame */}
           {streak > 1 && (
             <div className="flex items-center gap-1 text-xs font-bold text-amber-400 bg-amber-950/60 border border-amber-800/60 px-2 sm:px-2.5 py-1 rounded-full animate-bounce">
               <Flame className="w-3.5 h-3.5 fill-amber-400" />
-              <span>x{streak}</span>
+              <span className="font-mono tabular-nums">x{streak}</span>
             </div>
           )}
+        </div>
+
+        {/* Right Cluster: On-Demand Flag Study Button & Active Card Stage Badge */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {canStudyFlags && (
+            <button
+              type="button"
+              onClick={handleOpenFlagStudy}
+              className="flex items-center gap-1.5 text-xs font-bold text-amber-300 hover:text-slate-950 bg-amber-500/15 hover:bg-amber-400 border border-amber-400/40 px-2.5 py-1 rounded-full transition-all cursor-pointer"
+              title="Open Flag Study Reference Sheet"
+            >
+              <Flag className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Study Flags</span>
+            </button>
+          )}
+
           {isPracticeMode ? (
             <span className="text-[10px] font-bold tracking-wider px-2 sm:px-3 py-1 rounded-full border bg-violet-950/60 border-violet-700/60 text-violet-300 flex items-center gap-1 shadow-sm">
               <Zap className="w-3 h-3 fill-violet-400 text-violet-400" />

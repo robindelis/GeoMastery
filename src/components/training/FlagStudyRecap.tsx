@@ -153,10 +153,10 @@ export const FlagStudyRecap: React.FC<FlagStudyRecapProps> = ({
         <div className="flex items-center gap-2.5 sm:gap-3">
           <button
             type="button"
-            onClick={onExit}
+            onClick={onStartStandardQueue}
             className="text-xs text-[#D6CBB9] hover:text-white px-2.5 py-1.5 rounded-lg bg-[#0B1C2A] border border-[#F6EFE2]/15 transition-colors cursor-pointer"
           >
-            ← Exit
+            ← Back to Stream
           </button>
 
           <div className="flex items-center gap-2">
@@ -166,14 +166,14 @@ export const FlagStudyRecap: React.FC<FlagStudyRecapProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="font-[family-name:var(--font-fraunces)] text-sm sm:text-base font-black text-[#F6EFE2] tracking-tight">
-                  Flag Study Recap
+                  Flag Study Reference
                 </h1>
                 <span className="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#E9C46A]/20 text-[#E9C46A] border border-[#E9C46A]/40">
                   {continentFilter === 'All' ? 'World' : continentFilter} · {displayedCountries.length} Flags
                 </span>
               </div>
               <p className="text-[11px] text-[#9FB3C4] hidden sm:block">
-                Study these flags first — click any flag when names are hidden to self-test before rolling through the quiz.
+                Compare regional flags at your own pace — toggle Self-Test to hide names and tap any flag to peek.
               </p>
             </div>
           </div>
@@ -326,7 +326,7 @@ export const FlagStudyRecap: React.FC<FlagStudyRecapProps> = ({
                       {isSessionTarget && (
                         <span
                           className="w-2 h-2 rounded-full bg-[#E9C46A]"
-                          title="Scheduled in upcoming 15-card session"
+                          title="Queued in upcoming training stream"
                         />
                       )}
                       <span className={`px-1.5 py-0.5 rounded-md border font-bold text-[9px] ${badge.cls}`}>
@@ -517,24 +517,22 @@ export const FlagStudyRecap: React.FC<FlagStudyRecapProps> = ({
         <div className="flex items-center gap-2 text-xs text-[#D6CBB9]">
           <Sparkles className="w-4 h-4 text-[#E9C46A] shrink-0" />
           <span>
-            Ready to test your memory? Roll through all <strong>{displayedCountries.length} flags</strong> you just studied, or run the <strong>{sessionQueueLength}-card</strong> mixed batch.
+            Resume your continuous stream anytime, or inject all <strong>{displayedCountries.length} studied flags</strong> at the front of your stream.
           </span>
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto justify-end">
-          {!isOnlyFlagAttribute && (
-            <button
-              type="button"
-              onClick={() => {
-                soundFx.playClick();
-                onStartStandardQueue();
-              }}
-              className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-[#143146] hover:bg-[#1C435F] border border-[#F6EFE2]/20 text-[#F6EFE2] font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer"
-            >
-              <Zap className="w-4 h-4 text-[#E9C46A]" />
-              <span>Start Mixed Session ({sessionQueueLength} Cards)</span>
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => {
+              soundFx.playClick();
+              onStartStandardQueue();
+            }}
+            className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-[#143146] hover:bg-[#1C435F] border border-[#F6EFE2]/20 text-[#F6EFE2] font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer"
+          >
+            <Zap className="w-4 h-4 text-[#E9C46A]" />
+            <span>Resume Continuous Stream</span>
+          </button>
 
           <button
             type="button"
@@ -545,21 +543,8 @@ export const FlagStudyRecap: React.FC<FlagStudyRecapProps> = ({
             className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#E05A3D] via-[#D94E34] to-[#BB3D24] hover:brightness-110 text-[#FFF8E7] font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 cursor-pointer"
           >
             <Play className="w-4 h-4 fill-current" />
-            <span>Roll Through All {displayedCountries.length} Flags</span>
+            <span>Drill All {displayedCountries.length} Flags in Stream</span>
           </button>
-
-          {isOnlyFlagAttribute && sessionQueueLength < displayedCountries.length && (
-            <button
-              type="button"
-              onClick={() => {
-                soundFx.playClick();
-                onStartStandardQueue();
-              }}
-              className="px-3.5 py-2.5 rounded-xl bg-[#143146] hover:bg-[#1C435F] border border-[#F6EFE2]/20 text-[#D6CBB9] hover:text-white font-bold text-xs transition-all cursor-pointer"
-            >
-              Quick {sessionQueueLength}-Flag Batch
-            </button>
-          )}
         </div>
       </div>
     </div>

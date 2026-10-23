@@ -1069,6 +1069,229 @@ export function interleaveSessionQueue(
 }
 
 /**
+ * Inserts a question into a continuous stream queue at or after `desiredOffset` cards ahead
+ * of `currentIndex`, respecting the `minGap` anti-priming spacing between same-country cards.
+ */
+function insertQuestionWithAntiPriming(
+  queue: TrainingQuestion[],
+  currentIndex: number,
+  questionToInsert: TrainingQuestion,
+  desiredOffset: number,
+  minGap: number = 4
+): TrainingQuestion[] {
+  const nextQueue = [...queue];
+  const startIdx = Math.min(nextQueue.length, Math.max(currentIndex + 1, currentIndex + 1 + desiredOffset));
+
+  let chosenIdx = startIdx;
+  for (let pos = startIdx; pos <= nextQueue.length; pos++) {
+    const winStart = Math.max(currentIndex + 1, pos - minGap);
+    const winEnd = Math.min(nextQueue.length, pos + minGap);
+    let hasCollision = false;
+    for (let i = winStart; i < winEnd; i++) {
+      if (nextQueue[i].country.id === questionToInsert.country.id) {
+        hasCollision = true;
+        break;
+      }
+    }
+    if (!hasCollision) {
+      chosenIdx = pos;
+      break;
+    }
+  }
+
+  nextQueue.splice(chosenIdx, 0, questionToInsert);
+  return nextQueue;
+}
+
+/**
+ * Continuous Stream Expanding Retrieval & Multi-Step Progression Injector:
+ * - When a card is missed (`!isCorrect`), schedules:
+ *     1. Immediate scaffolding retry (`+4` cards, `isRetry: true`) to reinforce the memory trace without mutating SRS.
+ *     2. Spaced verification (`+11` cards, `isRetry: false`) so the learner can recover stability in the same sitting.
+ * - When a card is answered correctly (`isCorrect && !wasRetry`) and is not yet Mastered (`stage < 2`):
+ *     - L0 -> L1 graduation: schedules active recall verification at `+8` cards (`isRetry: false`).
+ *     - L1 -> L1 consolidating (`S < 6.0d`): schedules mastery verification at `+15` cards (`isRetry: false`).
+ */
+export function scheduleInStreamFollowUp(
+  queue: TrainingQuestion[],
+  currentIndex: number,
+  answeredQuestion: TrainingQuestion,
+  updatedItem: SRSItem,
+  isCorrect: boolean,
+  wasRetry: boolean = false
+): TrainingQuestion[] {
+  const waterCountries = WATER_BODIES.map(waterBodyToCountry);
+  const allContextCountries = answeredQuestion.country.id.startsWith('WATER_')
+    ? [...COUNTRIES, ...waterCountries]
+    : COUNTRIES;
+
+  // Remove any stale future occurrences of this exact srsItemId after currentIndex
+  // so we can place a freshly calibrated question with up-to-date stage & input mode
+  const prefix = queue.slice(0, currentIndex + 1);
+  const cleanTail = queue
+    .slice(currentIndex + 1)
+    .filter((q) => q.srsItemId !== answeredQuestion.srsItemId);
+  let nextQueue = [...prefix, ...cleanTail];
+
+  if (!isCorrect) {
+    const retryQuestion: TrainingQuestion = {
+      ...buildQuestion(updatedItem, answeredQuestion.country, allContextCountries),
+      isRetry: true
+    };
+    const verificationQuestion: TrainingQuestion = {
+      ...buildQuestion(updatedItem, answeredQuestion.country, allContextCountries),
+      isRetry: false
+    };
+
+    nextQueue = insertQuestionWithAntiPriming(nextQueue, currentIndex, retryQuestion, 4, 3);
+    nextQueue = insertQuestionWithAntiPriming(nextQueue, currentIndex, verificationQuestion, 11, 4);
+    return nextQueue;
+  }
+
+  // Answered a scaffolding retry correctly: keep or schedule one real verification ahead if still unmastered
+  if (wasRetry) {
+    if (updatedItem.stage < 2 && inferStability(updatedItem) < MASTERY_STABILITY_DAYS) {
+      const verificationQuestion: TrainingQuestion = {
+        ...buildQuestion(updatedItem, answeredQuestion.country, allContextCountries),
+        isRetry: false
+      };
+      nextQueue = insertQuestionWithAntiPriming(nextQueue, currentIndex, verificationQuestion, 8, 4);
+    }
+    return nextQueue;
+  }
+
+  // Answered a scheduled card correctly: if not yet Mastered (Stage 2), re-queue at an expanding gap
+  if (updatedItem.stage < 2 && inferStability(updatedItem) < MASTERY_STABILITY_DAYS) {
+    const followUpQuestion: TrainingQuestion = {
+      ...buildQuestion(updatedItem, answeredQuestion.country, allContextCountries),
+      isRetry: false
+    };
+    const bucket = classifyCardHorizon(updatedItem);
+    const expandingGap = answeredQuestion.stage === 0 ? 8 : bucket === 'learning' ? 10 : 15;
+    nextQueue = insertQuestionWithAntiPriming(nextQueue, currentIndex, followUpQuestion, expandingGap, 4);
+  }
+
+  return nextQueue;
+}
+
+/**
+ * Rolling Horizon Stream Replenisher:
+ * Continuously stocks the upcoming training stream when the lookahead buffer runs low.
+ * - Deduplicates against cards already waiting in `currentQueue.slice(currentIndex + 1)`.
+ * - Applies a Cognitive Load Governor (max 10 in-flight L0/learning cards in the lookahead window)
+ *   so an infinite stream consolidates active cards before flooding the learner with new unseen cards.
+ * - Seamlessly falls back to lowest-retrievability retention / practice stream if all due & unseen
+ *   cards in the filtered region have been cleared, so the stream never hits a dead end.
+ */
+export function replenishStreamQueue(
+  currentQueue: TrainingQuestion[],
+  currentIndex: number,
+  existingItemsMap: Map<string, SRSItem>,
+  continentFilter: 'All' | Continent | 'Oceans',
+  attributeFilter: string[],
+  chunkSize: number = 18,
+  practiceMode: boolean = false
+): { queue: TrainingQuestion[]; enteredRetentionStream: boolean } {
+  const upcoming = currentQueue.slice(Math.max(0, currentIndex + 1));
+  const upcomingIds = new Set<string>(upcoming.map((q) => q.srsItemId));
+
+  // Count in-flight acquisition cards currently waiting in the upcoming buffer
+  let inFlightLearningCount = 0;
+  for (const q of upcoming) {
+    const item = existingItemsMap.get(q.srsItemId);
+    if (!item || item.stage === 0 || classifyCardHorizon(item) === 'learning') {
+      inFlightLearningCount++;
+    }
+  }
+
+  // Create a filtered view of itemsMap that temporarily marks already-queued items as far-future mastered
+  // so prepareSessionQueue naturally skips them and selects fresh complementary cards
+  const maskedMap = new Map<string, SRSItem>(existingItemsMap);
+  const farFuture = new Date(Date.now() + 180 * 86400000).toISOString();
+
+  for (const queuedId of upcomingIds) {
+    const orig = existingItemsMap.get(queuedId) || createInitialSRSItem(queuedId.split(':')[0], queuedId.split(':')[1] || 'capital');
+    maskedMap.set(queuedId, {
+      ...orig,
+      stage: 2,
+      stability: 90,
+      intervalDays: 90,
+      nextDueAt: farFuture,
+      lastReviewedAt: new Date().toISOString()
+    });
+  }
+
+  // Cognitive Load Governor: if >= 10 learning/L0 cards are already in-flight in the lookahead buffer,
+  // temporarily mask unseen cards where possible so the replenisher prioritizes due Recall & retention cards
+  const MAX_IN_FLIGHT_LEARNING = 10;
+  let freshBatch: TrainingQuestion[] = [];
+  let enteredRetentionStream = false;
+
+  if (!practiceMode) {
+    freshBatch = prepareSessionQueue(maskedMap, continentFilter, attributeFilter, chunkSize * 2, false).filter(
+      (q) => !upcomingIds.has(q.srsItemId)
+    );
+
+    if (inFlightLearningCount >= MAX_IN_FLIGHT_LEARNING && freshBatch.length > 0) {
+      const consolidatingFirst = freshBatch.filter((q) => {
+        const item = existingItemsMap.get(q.srsItemId);
+        return Boolean(item && item.stage >= 1);
+      });
+      if (consolidatingFirst.length >= Math.min(6, chunkSize)) {
+        freshBatch = consolidatingFirst;
+      }
+    }
+  }
+
+  // If all scheduled/unseen cards in this filter are either mastered or already in the lookahead buffer,
+  // seamlessly continue in Retention / Practice stream so the infinite session never hits a wall
+  if (freshBatch.length === 0) {
+    if (!practiceMode) {
+      enteredRetentionStream = true;
+    }
+    const fallbackPool = prepareSessionQueue(
+      existingItemsMap,
+      continentFilter,
+      attributeFilter,
+      chunkSize * 3,
+      true
+    );
+    const nonDuplicate = fallbackPool.filter((q) => !upcomingIds.has(q.srsItemId));
+    freshBatch = nonDuplicate.length > 0 ? nonDuplicate : fallbackPool;
+  }
+
+  const selectedChunk = freshBatch.slice(0, chunkSize);
+  if (selectedChunk.length === 0) {
+    return { queue: currentQueue, enteredRetentionStream };
+  }
+
+  // Interleave the boundary between existing queue tail and the newly appended chunk
+  const tailWindow = currentQueue.slice(Math.max(0, currentQueue.length - 4));
+  const combinedForInterleave = [...tailWindow, ...selectedChunk];
+  const interleaved = interleaveSessionQueue(combinedForInterleave, 4);
+
+  // Extract only the newly added items in their anti-primed order
+  const tailCounts = new Map<string, number>();
+  for (const t of tailWindow) {
+    tailCounts.set(t.srsItemId, (tailCounts.get(t.srsItemId) || 0) + 1);
+  }
+  const appended: TrainingQuestion[] = [];
+  for (const q of interleaved) {
+    const rem = tailCounts.get(q.srsItemId) || 0;
+    if (rem > 0) {
+      tailCounts.set(q.srsItemId, rem - 1);
+    } else {
+      appended.push(q);
+    }
+  }
+
+  return {
+    queue: [...currentQueue, ...appended],
+    enteredRetentionStream
+  };
+}
+
+/**
  * Calculates global and continental mastery statistics.
  */
 export function computeMasteryStats(itemsMap: Map<string, SRSItem>) {
