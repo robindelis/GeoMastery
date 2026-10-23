@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:45:10.060Z",
+  "exportedAt": "2026-10-23T11:45:16.039Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -23238,11 +23238,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "MEX:country",
+      {
+        "id": "MEX:country",
+        "countryId": "MEX",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-23T11:45:12.712Z",
+        "nextDueAt": "2026-10-23T12:00:12.712Z",
+        "history": [
+          {
+            "timestamp": "2026-10-23T11:45:12.712Z",
+            "inputMode": "typing",
+            "userAnswer": "Mexico",
+            "isCorrect": true,
+            "timeSpentMs": 3210,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1645,
-    "totalCorrect": 1175,
+    "totalReviews": 1646,
+    "totalCorrect": 1176,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -23280,7 +23310,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:45:06.930Z"
+    "updatedAt": "2026-10-23T11:45:12.715Z"
   },
   "settings": {
     "audioEnabled": true,
