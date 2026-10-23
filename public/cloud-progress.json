@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:56:10.742Z",
+  "exportedAt": "2026-10-23T11:56:21.440Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -12122,13 +12122,13 @@
         "countryId": "WATER_STRAIT_DARDANELLES",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.4499999999999993,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.43,
+        "intervalDays": 23,
+        "reps": 4,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:15:36.529Z",
-        "nextDueAt": "2026-10-15T20:15:36.529Z",
+        "lastReviewedAt": "2026-10-23T11:56:17.485Z",
+        "nextDueAt": "2026-11-15T11:56:17.485Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:18:08.923Z",
@@ -12157,11 +12157,21 @@
             "userAnswer": "Dardanelles Strait",
             "isCorrect": true,
             "timeSpentMs": 5805
+          },
+          {
+            "timestamp": "2026-10-23T11:56:17.485Z",
+            "inputMode": "map_click",
+            "userAnswer": "Dardanelles Strait",
+            "isCorrect": true,
+            "timeSpentMs": 8179,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 5.38
+        "stability": 23.2,
+        "difficulty": 5.72,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
       }
     ],
     [
@@ -23841,8 +23851,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1685,
-    "totalCorrect": 1203,
+    "totalReviews": 1686,
+    "totalCorrect": 1204,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -23880,7 +23890,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:56:07.402Z"
+    "updatedAt": "2026-10-23T11:56:17.489Z"
   },
   "settings": {
     "audioEnabled": true,
