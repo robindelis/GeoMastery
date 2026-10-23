@@ -30,7 +30,8 @@ import {
   Search,
   X,
   Maximize2,
-  Layers
+  Layers,
+  TrendingUp
 } from 'lucide-react';
 import worldData110m from '../../assets/geo/countries-110m.json';
 import { COUNTRIES, COUNTRIES_BY_NUMERIC } from '../../assets/data/countries';
@@ -665,6 +666,12 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const [albumPage, setAlbumPage] = useState(1);
   const albumScrollRef = useRef<HTMLDivElement | null>(null);
 
+  // 4-Stage Remembrance Progression Timeline state
+  const [timelineAttrFilter, setTimelineAttrFilter] = useState<'all' | 'capital' | 'location' | 'country' | 'flag'>('all');
+  const [timelineRange, setTimelineRange] = useState<'7d' | '14d' | '30d' | 'all'>('14d');
+  const [timelineScaleMode, setTimelineScaleMode] = useState<'full' | 'active'>('full');
+  const [hoveredTimelineIdx, setHoveredTimelineIdx] = useState<number | null>(null);
+
   /**
    * Card-deck peek: how much room each category drawer has to work with.
    * The five showcased cards share that height, so their tops stay readable.
@@ -1021,11 +1028,168 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     };
   }, [cardTelemetry]);
 
+  /**
+   * Reconstructs the longitudinal 4-stage remembrance progression (Mastered, Recall, Learning, Unseen)
+   * across the selected time window and attribute filter directly from persisted SRS history & timestamps.
+   */
+  const remembranceTimeline = useMemo(() => {
+    const targetAttrs: Array<'capital' | 'location' | 'country' | 'flag'> =
+      timelineAttrFilter === 'all'
+        ? ['capital', 'location', 'country', 'flag']
+        : [timelineAttrFilter];
+
+    const cardIds: string[] = [];
+    for (const c of COUNTRIES) {
+      for (const attr of targetAttrs) {
+        cardIds.push(`${c.id}:${attr}`);
+      }
+    }
+    if (targetAttrs.includes('location')) {
+      for (const wb of WATER_BODIES) {
+        cardIds.push(`${wb.id}:location`);
+      }
+    }
+
+    const totalCards = cardIds.length;
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayStartMs = todayStart.getTime();
+
+    let numDays = timelineRange === '7d' ? 7 : timelineRange === '14d' ? 14 : timelineRange === '30d' ? 30 : 14;
+    if (timelineRange === 'all') {
+      let earliestMs = todayStartMs;
+      for (const id of cardIds) {
+        const item = srsItemsMap.get(id);
+        if (!item) continue;
+        if (item.history && item.history.length > 0) {
+          const t0 = Date.parse(item.history[0].timestamp);
+          if (!Number.isNaN(t0) && t0 < earliestMs) earliestMs = t0;
+        } else if (item.lastReviewedAt) {
+          const tl = Date.parse(item.lastReviewedAt);
+          if (!Number.isNaN(tl)) {
+            const est = tl - Math.max(1, (item.reps || 1) - 1) * 86400000;
+            if (est < earliestMs) earliestMs = est;
+          }
+        }
+      }
+      const spanDays = Math.ceil((todayStartMs - earliestMs) / 86400000) + 2;
+      numDays = Math.max(10, Math.min(45, spanDays));
+    }
+
+    const points = Array.from({ length: numDays }, (_, idx) => {
+      const dayStartMs = todayStartMs - (numDays - 1 - idx) * 86400000;
+      const dayEndMs = dayStartMs + 86400000 - 1;
+      const d = new Date(dayStartMs);
+      const isToday = idx === numDays - 1;
+      return {
+        idx,
+        dayStartMs,
+        dayEndMs,
+        dateLabel: isToday
+          ? 'Today'
+          : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        shortLabel: isToday ? 'Now' : `${d.getMonth() + 1}/${d.getDate()}`,
+        mastered: 0,
+        recall: 0,
+        learning: 0,
+        unseen: 0,
+        reviews: 0
+      };
+    });
+
+    for (const id of cardIds) {
+      const item = srsItemsMap.get(id);
+      if (!item) {
+        for (let i = 0; i < numDays; i++) {
+          points[i].unseen += 1;
+        }
+        continue;
+      }
+
+      const finalBucket = classifyCardHorizon(item);
+      const histTimes = (item.history || [])
+        .map((h) => Date.parse(h.timestamp))
+        .filter((t) => !Number.isNaN(t))
+        .sort((a, b) => a - b);
+      const lastRevMs = item.lastReviewedAt ? Date.parse(item.lastReviewedAt) : NaN;
+
+      // Count daily reviews in window
+      if (histTimes.length > 0) {
+        for (const t of histTimes) {
+          const dayOffset = Math.floor((t - points[0].dayStartMs) / 86400000);
+          if (dayOffset >= 0 && dayOffset < numDays) {
+            points[dayOffset].reviews += 1;
+          }
+        }
+      } else if (!Number.isNaN(lastRevMs)) {
+        const dayOffset = Math.floor((lastRevMs - points[0].dayStartMs) / 86400000);
+        if (dayOffset >= 0 && dayOffset < numDays) {
+          points[dayOffset].reviews += 1;
+        }
+      }
+
+      const firstSeenMs =
+        histTimes.length > 0
+          ? histTimes[0]
+          : !Number.isNaN(lastRevMs)
+          ? lastRevMs - Math.max(1, (item.reps || 1) - 1) * 86400000 * 1.25
+          : todayStartMs;
+
+      const masteredMs =
+        !Number.isNaN(lastRevMs)
+          ? lastRevMs
+          : histTimes.length > 0
+          ? histTimes[histTimes.length - 1]
+          : todayStartMs;
+
+      const recallMs =
+        histTimes.length >= 2
+          ? histTimes[1]
+          : firstSeenMs + Math.max(0, (masteredMs - firstSeenMs) * 0.45);
+
+      for (let i = 0; i < numDays; i++) {
+        if (i === numDays - 1) {
+          points[i][finalBucket] += 1;
+        } else {
+          const t = points[i].dayEndMs;
+          if (t < firstSeenMs) {
+            points[i].unseen += 1;
+          } else if (finalBucket === 'mastered' && t >= masteredMs) {
+            points[i].mastered += 1;
+          } else if ((finalBucket === 'mastered' || finalBucket === 'recall') && t >= recallMs) {
+            points[i].recall += 1;
+          } else {
+            points[i].learning += 1;
+          }
+        }
+      }
+    }
+
+    const firstPt = points[0];
+    const lastPt = points[points.length - 1];
+    const masteredDelta = lastPt.mastered - firstPt.mastered;
+    const recallDelta = lastPt.recall - firstPt.recall;
+    const activeTotal = lastPt.mastered + lastPt.recall + lastPt.learning;
+    const maxActiveInWindow = Math.max(
+      ...points.map((p) => p.mastered + p.recall + p.learning),
+      Math.ceil(totalCards * 0.15)
+    );
+
+    return {
+      points,
+      totalCards,
+      masteredDelta,
+      recallDelta,
+      activeTotal,
+      maxActiveInWindow
+    };
+  }, [srsItemsMap, timelineAttrFilter, timelineRange]);
+
   const focusOptions = [
     {
       attr: 'capital' as const,
       label: 'Capitals',
-      subtitle: 'Type capital city',
+      subtitle: 'Country ↔ Capital city',
       detail: `${due.capital} due`,
       glyph: '🏛️',
       ...attributeTelemetry.capital
@@ -1780,10 +1944,10 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             </div>
           </div>
 
-          {/* ══ CENTER COLUMN (4 Cols): 3D POLITICAL GLOBE + DARK DOSSIER ══════ */}
-          <div className="col-span-12 lg:col-span-4 flex flex-col justify-between gap-2.5 min-h-0 overflow-hidden">
+          {/* ══ CENTER COLUMN (3 Cols): 3D POLITICAL GLOBE + DARK DOSSIER ══════ */}
+          <div className="col-span-12 lg:col-span-3 flex flex-col justify-between gap-2.5 min-h-0 overflow-hidden">
             {/* Interactive 3D Political Globe Dome */}
-            <div className="relative flex-1 min-h-0 flex flex-col items-center justify-between overflow-hidden rounded-[1.4rem] border-2 border-[#E9C46A]/35 bg-gradient-to-b from-[#173A52] via-[#112C3F] to-[#0C202E] p-3.5 shadow-2xl">
+            <div className="relative flex-1 min-h-0 flex flex-col items-center justify-between overflow-hidden rounded-[1.4rem] border-2 border-[#E9C46A]/35 bg-gradient-to-b from-[#173A52] via-[#112C3F] to-[#0C202E] p-3 shadow-2xl">
               <InteractiveAtelierGlobe
                 targetCoords={activeRegionLock ? activeRegionLock.coords : null}
                 targetLabel={activeRegionLock ? activeRegionLock.label : data.spotlight.name}
@@ -1793,20 +1957,20 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               />
 
               {/* Quick Globe Sector Pills */}
-              <div className="mt-2 shrink-0 flex flex-wrap items-center justify-center gap-1">
+              <div className="mt-1.5 shrink-0 flex flex-wrap items-center justify-center gap-1">
                 <button
                   onClick={() => {
                     soundFx.playClick();
                     setActiveRegionLock(null);
                   }}
-                  className={`flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-bold transition-all ${
+                  className={`flex items-center gap-1 rounded-full border px-2 py-0.5 text-[9.5px] font-bold transition-all ${
                     activeRegionLock === null
                       ? 'border-[#E9C46A] bg-[#E9C46A] text-[#142534]'
                       : 'border-[#F6EFE2]/20 bg-[#0E2231] text-[#D6CBB9] hover:text-white'
                   }`}
                 >
                   <Crosshair className="h-2.5 w-2.5" />
-                  <span>{data.spotlight.name}</span>
+                  <span className="truncate max-w-[90px]">{data.spotlight.name}</span>
                 </button>
 
                 {data.regions.map((reg) => {
@@ -1827,7 +1991,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                               }
                         );
                       }}
-                      className={`rounded-full border px-2 py-0.5 text-[10px] font-bold transition-all ${
+                      className={`rounded-full border px-2 py-0.5 text-[9.5px] font-bold transition-all ${
                         isLocked
                           ? 'border-[#F6EFE2] bg-[#F6EFE2] text-[#142534]'
                           : 'border-[#F6EFE2]/15 bg-[#0E2231] text-[#D6CBB9] hover:text-white'
@@ -1841,46 +2005,46 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             </div>
 
             {/* Country in Focus Dossier (Shrink-0, Dark Naval Theme) */}
-            <div className="shrink-0 rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-3.5 text-[#F6EFE2] shadow-xl">
+            <div className="shrink-0 rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-3 text-[#F6EFE2] shadow-xl">
               {/* Header */}
-              <div className="flex items-center justify-between border-b border-[#F6EFE2]/10 pb-2">
-                <span className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#E9C46A]">
-                  <span className="h-2 w-2 rounded-full bg-[#D94E34] animate-pulse" />
-                  Country in Focus · #{data.spotlight.numericId}
+              <div className="flex items-center justify-between gap-1 border-b border-[#F6EFE2]/10 pb-1.5">
+                <span className="flex items-center gap-1.5 text-[9.5px] font-extrabold uppercase tracking-[0.12em] text-[#E9C46A] truncate">
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#D94E34]" />
+                  <span className="truncate">Focus · #{data.spotlight.numericId}</span>
                 </span>
-                <div className="flex items-center gap-1.5">
-                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${capBadge.cls}`}>
+                <div className="flex items-center gap-1 shrink-0">
+                  <span className={`text-[8.5px] font-bold px-1.5 py-0.5 rounded-full border ${capBadge.cls}`}>
                     Cap: {capBadge.label}
                   </span>
-                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${locBadge.cls}`}>
+                  <span className={`text-[8.5px] font-bold px-1.5 py-0.5 rounded-full border ${locBadge.cls}`}>
                     Loc: {locBadge.label}
                   </span>
                 </div>
               </div>
 
               {/* Identification & Capital Reveal */}
-              <div className="mt-2.5 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-[#F6EFE2]/15 bg-[#0C1D2B] text-2xl shadow-inner select-none">
+              <div className="mt-2 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#F6EFE2]/15 bg-[#0C1D2B] text-xl shadow-inner select-none">
                     {data.spotlight.flagEmoji}
                   </div>
                   <div className="min-w-0">
-                    <h3 className={`${serifDisplay} truncate text-base font-black leading-tight text-[#F6EFE2]`}>
+                    <h3 className={`${serifDisplay} truncate text-sm font-black leading-tight text-[#F6EFE2]`}>
                       {data.spotlight.name}
                     </h3>
-                    <p className="truncate text-[10px] font-bold uppercase tracking-wider text-[#9FB3C4]">
+                    <p className="truncate text-[9px] font-bold uppercase tracking-wider text-[#9FB3C4]">
                       {data.spotlight.subregion} · {formatCoordinates(data.spotlight.coordinates)}
                     </p>
                   </div>
                 </div>
 
                 {/* Capital Reveal + Audio */}
-                <div className="flex items-center gap-1.5 rounded-xl border border-[#F6EFE2]/15 bg-[#0C1D2B]/90 px-2.5 py-1.5 shrink-0">
-                  <div className="pr-1">
-                    <span className="block text-[8px] font-extrabold uppercase tracking-wider text-[#9FB3C4]">
+                <div className="flex items-center gap-1 rounded-xl border border-[#F6EFE2]/15 bg-[#0C1D2B]/90 px-2 py-1 shrink-0">
+                  <div className="pr-0.5">
+                    <span className="block text-[7.5px] font-extrabold uppercase tracking-wider text-[#9FB3C4]">
                       Capital
                     </span>
-                    <span className={`${serifDisplay} block text-sm font-black text-[#F6EFE2]`}>
+                    <span className={`${serifDisplay} block text-xs font-black text-[#F6EFE2]`}>
                       {revealCapital ? data.spotlight.capital : '• • • • • •'}
                     </span>
                   </div>
@@ -1889,7 +2053,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       setRevealCapital((v) => !v);
                       soundFx.playClick();
                     }}
-                    className="rounded-lg bg-[#143146] px-2 py-1 text-[10px] font-extrabold text-[#F6EFE2] hover:bg-[#1A3E58]"
+                    className="rounded-lg bg-[#143146] p-1 text-[10px] font-extrabold text-[#F6EFE2] hover:bg-[#1A3E58]"
                     title={revealCapital ? 'Hide Capital' : 'Reveal Capital'}
                   >
                     {revealCapital ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
@@ -1906,15 +2070,15 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
               {/* 2x2 Field Notes */}
               {data.spotlight.facts && (
-                <div className="mt-2.5 grid grid-cols-2 gap-1.5 text-[11px]">
-                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2.5 py-1">
+                <div className="mt-2 grid grid-cols-2 gap-1.5 text-[10px]">
+                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2 py-1">
                     <Scale className="h-3 w-3 shrink-0 text-[#E07A5F]" />
                     <span className="truncate font-bold text-[#F6EFE2]">
                       {data.spotlight.facts.politicalRegime || 'Republic'}
                     </span>
                   </div>
                   <div
-                    className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2.5 py-1"
+                    className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2 py-1"
                     title={
                       data.spotlight.facts.headOfGovernment && data.spotlight.facts.headOfGovernment !== (data.spotlight.facts.headOfState || data.spotlight.facts.leader)
                         ? `Head of State: ${data.spotlight.facts.headOfState || data.spotlight.facts.leader} | Head of Govt: ${data.spotlight.facts.headOfGovernment}`
@@ -1926,13 +2090,13 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       {data.spotlight.facts.headOfState || data.spotlight.facts.leader || 'Head of State'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2.5 py-1">
+                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2 py-1">
                     <Utensils className="h-3 w-3 shrink-0 text-[#E9C46A]" />
                     <span className="truncate font-bold text-[#F6EFE2]">
                       {data.spotlight.facts.cuisine || 'Cuisine'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2.5 py-1">
+                  <div className="flex items-center gap-1.5 truncate rounded-lg bg-[#0C1D2B]/80 border border-[#F6EFE2]/10 px-2 py-1">
                     <Coins className="h-3 w-3 shrink-0 text-[#38BDF8]" />
                     <span className="truncate font-bold text-[#F6EFE2]">
                       {data.spotlight.facts.currency || 'Currency'}
@@ -1942,7 +2106,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               )}
 
               {/* Footer buttons */}
-              <div className="mt-2.5 flex items-center justify-between pt-1 border-t border-[#F6EFE2]/10">
+              <div className="mt-2 flex items-center justify-between pt-1 border-t border-[#F6EFE2]/10">
                 <button
                   onClick={() => {
                     soundFx.playClick();
@@ -1952,7 +2116,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       coords: data.spotlight.coordinates
                     });
                   }}
-                  className="flex items-center gap-1 text-[11px] font-extrabold text-[#D6CBB9] hover:text-[#E9C46A] transition-colors"
+                  className="flex items-center gap-1 text-[10px] font-extrabold text-[#D6CBB9] hover:text-[#E9C46A] transition-colors"
                 >
                   <Crosshair className="h-3 w-3" />
                   <span>Center on Globe</span>
@@ -1966,7 +2130,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       data.isCaughtUp(data.spotlight.continent)
                     )
                   }
-                  className="flex items-center gap-1 rounded-lg bg-[#D94E34] px-3 py-1 text-[11px] font-extrabold text-white hover:bg-[#C54128] transition-colors shadow-sm"
+                  className="flex items-center gap-1 rounded-lg bg-[#D94E34] px-2.5 py-1 text-[10px] font-extrabold text-white hover:bg-[#C54128] transition-colors shadow-sm"
                 >
                   <span>Drill {data.spotlight.continent}</span>
                   <ChevronRight className="h-3 w-3" />
@@ -1975,114 +2139,496 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             </div>
           </div>
 
-          {/* ══ RIGHT COLUMN (3 Cols): 6 REGIONAL FOLIOS WITH RICH 3-ROW CARDS ══ */}
-          <div className="col-span-12 lg:col-span-3 flex flex-col justify-between gap-2 min-h-0 overflow-hidden">
-            <div className="shrink-0 flex items-center justify-between px-1">
-              <span className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#E9C46A]">
-                Regional Folios ({data.regions.length})
-              </span>
-              <span className="text-[10px] font-semibold text-[#8FA6B8]">Hover to turn globe</span>
-            </div>
+          {/* ══ RIGHT COLUMN (4 Cols): COMPACT 2×3 REGIONAL MATRIX + 4-STAGE REMEMBRANCE TIMELINE ══ */}
+          <div className="col-span-12 lg:col-span-4 flex flex-col justify-between gap-2.5 min-h-0 overflow-hidden">
+            {/* Top Section: Compact 2×3 Regional Folios Matrix (Zero Dead Space) */}
+            <div className="shrink-0 flex flex-col gap-1.5">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-[10.5px] font-extrabold uppercase tracking-[0.16em] text-[#E9C46A]">
+                  Regional Folios ({data.regions.length})
+                </span>
+                <span className="text-[9.5px] font-semibold text-[#8FA6B8]">Hover to turn globe · Click to drill</span>
+              </div>
 
-            <div className="flex-1 min-h-0 grid grid-rows-6 gap-2">
-              {data.regions.map((region) => {
-                const meta = REGION_META[region.id] || REGION_META.Europe;
-                const isHovered = activeRegionLock?.id === region.id;
+              <div className="grid grid-cols-2 grid-rows-3 gap-2">
+                {data.regions.map((region) => {
+                  const meta = REGION_META[region.id] || REGION_META.Europe;
+                  const isHovered = activeRegionLock?.id === region.id;
 
-                return (
-                  <button
-                    key={region.id}
-                    onMouseEnter={() =>
-                      setActiveRegionLock({
-                        id: region.id,
-                        label: region.name,
-                        coords: meta.coords
-                      })
-                    }
-                    onMouseLeave={() => setActiveRegionLock(null)}
-                    onClick={() => {
-                      soundFx.playClick();
-                      onStartSession(
-                        region.id as TrainingCategory,
-                        region.isWater ? ['location'] : selectedAttributes,
-                        region.caughtUp
-                      );
-                    }}
-                    className={`group relative min-h-0 flex flex-col justify-between overflow-hidden rounded-2xl border px-3.5 py-2 text-left transition-all ${
-                      isHovered
-                        ? 'border-[#E9C46A] bg-[#1A3E58] shadow-lg'
-                        : 'border-[#F6EFE2]/15 bg-[#143146] hover:border-[#E9C46A]/65 hover:bg-[#193B54]'
-                    }`}
-                  >
-                    {/* Left Pigment Spine */}
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-y-0 left-0 w-1.5"
-                      style={{ background: meta.accent }}
-                    />
+                  return (
+                    <button
+                      key={region.id}
+                      onMouseEnter={() =>
+                        setActiveRegionLock({
+                          id: region.id,
+                          label: region.name,
+                          coords: meta.coords
+                        })
+                      }
+                      onMouseLeave={() => setActiveRegionLock(null)}
+                      onClick={() => {
+                        soundFx.playClick();
+                        onStartSession(
+                          region.id as TrainingCategory,
+                          region.isWater ? ['location'] : selectedAttributes,
+                          region.caughtUp
+                        );
+                      }}
+                      className={`group relative flex flex-col justify-between gap-1.5 overflow-hidden rounded-2xl border px-3 py-2 text-left transition-all cursor-pointer ${
+                        isHovered
+                          ? 'border-[#E9C46A] bg-[#1A3E58] shadow-lg'
+                          : 'border-[#F6EFE2]/15 bg-[#143146] hover:border-[#E9C46A]/65 hover:bg-[#193B54]'
+                      }`}
+                    >
+                      {/* Top-Right Subtle Accent Indicator */}
+                      <div className="flex items-center justify-between gap-1.5">
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          <span className="grid h-6 w-6 shrink-0 place-items-center rounded-lg border border-[#F6EFE2]/15 bg-[#0C1D2B] text-xs">
+                            {region.emblem}
+                          </span>
+                          <span className={`${serifDisplay} truncate text-xs font-black leading-none text-[#F6EFE2]`}>
+                            {region.shortName}
+                          </span>
+                        </div>
 
-                    {/* Row 1: Header */}
-                    <div className="flex items-center justify-between gap-2 pl-1">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-[#F6EFE2]/15 bg-[#0C1D2B] text-sm">
-                          {region.emblem}
-                        </span>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-1.5">
-                            <span className={`${serifDisplay} truncate text-sm font-black leading-none text-[#F6EFE2]`}>
-                              {region.shortName}
-                            </span>
-                            <span className="font-mono text-[9px] font-bold text-[#8FA6B8]">
-                              {meta.coordLabel}
-                            </span>
-                          </div>
+                        <div className="flex items-center gap-1 shrink-0">
+                          <span
+                            className={`${serifDisplay} font-mono text-xs font-black leading-none tabular-nums`}
+                            style={{ color: meta.accent }}
+                          >
+                            {region.masteredPct}%
+                          </span>
+                          <span className="flex items-center gap-0.5 rounded-md bg-[#0C1D2B] px-1.5 py-0.5 font-mono text-[8.5px] font-extrabold text-[#F6EFE2] transition-colors group-hover:bg-[#F6EFE2] group-hover:text-[#142534] tabular-nums">
+                            <Play className="h-2 w-2 fill-current" />
+                            {region.caughtUp ? 'Drill' : `${region.dueCount}`}
+                          </span>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-1.5 shrink-0">
+                      {/* Compact Stage Breakdown Row */}
+                      <div className="flex items-center justify-between gap-1 font-mono text-[8.5px] font-bold tabular-nums">
+                        <span className="text-[#10B981]" title="Mastered cards">
+                          {region.mastered}M
+                        </span>
+                        <span className="text-[#8FA6B8]/50">·</span>
+                        <span className="text-[#E9C46A]" title="Recall & Learning cards">
+                          {region.recall0Cards + region.recall1Cards}R
+                        </span>
+                        <span className="text-[#8FA6B8]/50">·</span>
+                        <span className="text-[#38BDF8]" title="Unseen & L0 cards">
+                          {region.unseenCards + region.stage0Cards}U
+                        </span>
+                        <span className="ml-auto text-[8px] font-normal text-[#8FA6B8]">
+                          {meta.coordLabel.split(' · ')[0]}
+                        </span>
+                      </div>
+
+                      {/* Segmented Progress Bar */}
+                      <div className="flex h-1.5 overflow-hidden rounded-full bg-[#0C1D2B]">
                         <span
-                          className={`${serifDisplay} text-base font-black leading-none`}
-                          style={{ color: meta.accent }}
+                          className="h-full rounded-l-full transition-all duration-500"
+                          style={{ width: `${region.masteredPct}%`, background: meta.accent }}
+                        />
+                        <span
+                          className="h-full bg-[#E9C46A]/80 transition-all duration-500"
+                          style={{ width: `${region.recallPct}%` }}
+                        />
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Bottom Section (Flex-1): Interactive 4-Stage Remembrance Progression Timeline */}
+            <div className="relative flex-1 min-h-0 flex flex-col justify-between gap-2 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-3.5 text-[#F6EFE2] shadow-xl">
+              {/* Row 1: Header + Timeframe Controls */}
+              <div className="shrink-0 flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <TrendingUp className="h-3.5 w-3.5 shrink-0 text-[#10B981]" />
+                    <span className="text-xs font-black uppercase tracking-wider text-[#F6EFE2] truncate">
+                      Remembrance Timeline
+                    </span>
+                    {remembranceTimeline.masteredDelta > 0 && (
+                      <span className="shrink-0 font-mono text-[9px] font-extrabold text-[#10B981] tabular-nums">
+                        +{remembranceTimeline.masteredDelta} Mastered
+                      </span>
+                    )}
+                  </div>
+                  <p className="truncate text-[10px] font-medium text-[#9FB3C4]">
+                    4-stage cumulative memory horizon progression across attributes
+                  </p>
+                </div>
+
+                {/* Timeframe & Scale Switchers */}
+                <div className="flex items-center gap-1 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      soundFx.playClick();
+                      setTimelineScaleMode((m) => (m === 'full' ? 'active' : 'full'));
+                    }}
+                    title={
+                      timelineScaleMode === 'full'
+                        ? 'Showing 100% total card horizon (click to zoom into active cards)'
+                        : 'Zoomed to active learning/mastered cards (click for 100% full horizon)'
+                    }
+                    className={`rounded-lg border px-1.5 py-0.5 text-[9px] font-extrabold transition-colors cursor-pointer whitespace-nowrap ${
+                      timelineScaleMode === 'active'
+                        ? 'border-[#10B981]/60 bg-[#10B981]/20 text-[#10B981]'
+                        : 'border-[#F6EFE2]/15 bg-[#0C1D2B] text-[#9FB3C4] hover:text-white'
+                    }`}
+                  >
+                    {timelineScaleMode === 'active' ? 'Zoom: Active' : '100% Scale'}
+                  </button>
+
+                  <div className="flex items-center rounded-lg border border-[#F6EFE2]/15 bg-[#0C1D2B] p-0.5">
+                    {(['7d', '14d', '30d', 'all'] as const).map((rng) => (
+                      <button
+                        key={rng}
+                        type="button"
+                        onClick={() => {
+                          soundFx.playClick();
+                          setTimelineRange(rng);
+                          setHoveredTimelineIdx(null);
+                        }}
+                        className={`rounded-md px-1.5 py-0.5 font-mono text-[9px] font-extrabold uppercase transition-colors cursor-pointer ${
+                          timelineRange === rng
+                            ? 'bg-[#E9C46A] text-[#142534]'
+                            : 'text-[#9FB3C4] hover:text-white'
+                        }`}
+                      >
+                        {rng}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 2: Interactive Attribute Filter Tabs */}
+              <div className="shrink-0 grid grid-cols-5 gap-1 rounded-xl border border-[#F6EFE2]/10 bg-[#0C1D2B]/90 p-1">
+                {(
+                  [
+                    { id: 'all', label: 'All', glyph: '🌍', pct: horizonMasteryPct },
+                    { id: 'capital', label: 'Capitals', glyph: '🏛️', pct: attributeTelemetry.capital.pct },
+                    { id: 'location', label: 'Locations', glyph: '🧭', pct: attributeTelemetry.location.pct },
+                    { id: 'country', label: 'Map→Name', glyph: '🗺️', pct: attributeTelemetry.country.pct },
+                    { id: 'flag', label: 'Flags', glyph: '🏳️', pct: attributeTelemetry.flag.pct }
+                  ] as const
+                ).map((tab) => {
+                  const active = timelineAttrFilter === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => {
+                        soundFx.playClick();
+                        setTimelineAttrFilter(tab.id);
+                      }}
+                      className={`flex flex-col items-center justify-center rounded-lg px-1.5 py-1 transition-all cursor-pointer ${
+                        active
+                          ? 'bg-[#173A52] text-[#F6EFE2] ring-1 ring-[#E9C46A]/60 shadow-sm'
+                          : 'text-[#9FB3C4] hover:bg-[#132E42]/60 hover:text-[#F6EFE2]'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1 max-w-full">
+                        <span className="text-[10px] leading-none">{tab.glyph}</span>
+                        <span className="truncate text-[9.5px] font-extrabold leading-none">{tab.label}</span>
+                      </div>
+                      <span
+                        className={`mt-0.5 font-mono text-[8.5px] font-bold leading-none tabular-nums ${
+                          active ? 'text-[#E9C46A]' : 'text-[#8FA6B8]'
+                        }`}
+                      >
+                        {tab.pct}%
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Row 3: Interactive 4-Stage SVG Stacked Area Chart + Scrubber */}
+              {(() => {
+                const pts = remembranceTimeline.points;
+                const total = Math.max(1, remembranceTimeline.totalCards);
+                const activeIdx =
+                  hoveredTimelineIdx !== null && hoveredTimelineIdx < pts.length
+                    ? hoveredTimelineIdx
+                    : pts.length - 1;
+                const activePt = pts[activeIdx] || pts[pts.length - 1];
+
+                const yMax =
+                  timelineScaleMode === 'active'
+                    ? Math.max(10, Math.min(total, Math.ceil(remembranceTimeline.maxActiveInWindow * 1.15)))
+                    : total;
+
+                const W = 460;
+                const H = 112;
+                const padL = 6;
+                const padR = 6;
+                const padT = 8;
+                const padB = 18;
+                const plotW = W - padL - padR;
+                const plotH = H - padT - padB;
+                const baseLineY = padT + plotH;
+
+                const xFor = (i: number) =>
+                  pts.length <= 1 ? padL + plotW / 2 : padL + (i / (pts.length - 1)) * plotW;
+                const yFor = (val: number) =>
+                  baseLineY - Math.min(1, Math.max(0, val / yMax)) * plotH;
+
+                const buildAreaPath = (topVals: number[], botVals: number[]) => {
+                  if (pts.length === 0) return '';
+                  const topCoords = pts.map((_, i) => `${xFor(i).toFixed(1)},${yFor(topVals[i]).toFixed(1)}`);
+                  const botCoords = [...pts]
+                    .map((_, i) => `${xFor(i).toFixed(1)},${yFor(botVals[i]).toFixed(1)}`)
+                    .reverse();
+                  return `M ${topCoords.join(' L ')} L ${botCoords.join(' L ')} Z`;
+                };
+
+                const buildLinePath = (vals: number[]) => {
+                  if (pts.length === 0) return '';
+                  return `M ${pts.map((_, i) => `${xFor(i).toFixed(1)},${yFor(vals[i]).toFixed(1)}`).join(' L ')}`;
+                };
+
+                const zeros = pts.map(() => 0);
+                const sMastered = pts.map((p) => p.mastered);
+                const sRecall = pts.map((p) => p.mastered + p.recall);
+                const sLearning = pts.map((p) => p.mastered + p.recall + p.learning);
+                const sTotal = pts.map(() => yMax);
+
+                const masteredArea = buildAreaPath(sMastered, zeros);
+                const recallArea = buildAreaPath(sRecall, sMastered);
+                const learningArea = buildAreaPath(sLearning, sRecall);
+                const unseenArea = buildAreaPath(sTotal, sLearning);
+
+                const masteredLine = buildLinePath(sMastered);
+                const recallLine = buildLinePath(sRecall);
+                const learningLine = buildLinePath(sLearning);
+
+                const hoverX = xFor(activeIdx);
+
+                return (
+                  <div className="flex-1 min-h-0 flex flex-col justify-between gap-1.5">
+                    {/* Live / Hovered Date Stage Readout Bar */}
+                    <div className="shrink-0 flex items-center justify-between gap-1.5 rounded-xl border border-[#F6EFE2]/10 bg-[#091622]/90 px-2.5 py-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-mono text-[10px] font-extrabold text-[#E9C46A] tabular-nums">
+                          {activePt.dateLabel}
+                        </span>
+                        {activePt.reviews > 0 && (
+                          <span className="font-mono text-[9px] font-semibold text-[#8FA6B8] tabular-nums">
+                            · {activePt.reviews} rev
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-2 font-mono text-[9.5px] font-extrabold tabular-nums">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setHorizonAttrFilter(timelineAttrFilter);
+                            openTrophyAlbum('mastered');
+                          }}
+                          title="Click to inspect Mastered cards in Trophy Album"
+                          className="flex items-center gap-1 text-[#10B981] hover:underline cursor-pointer"
                         >
-                          {region.masteredPct}%
-                        </span>
-                        <span className="flex items-center gap-1 rounded-md bg-[#0C1D2B] px-2 py-0.5 text-[9px] font-extrabold text-[#F6EFE2] transition-colors group-hover:bg-[#F6EFE2] group-hover:text-[#142534]">
-                          <Play className="h-2 w-2 fill-current" />
-                          {region.caughtUp ? 'Practice' : `${region.dueCount} due`}
-                        </span>
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]" />
+                          <span>{activePt.mastered}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setHorizonAttrFilter(timelineAttrFilter);
+                            openTrophyAlbum('recall');
+                          }}
+                          title="Click to inspect Recall cards in Trophy Album"
+                          className="flex items-center gap-1 text-[#E9C46A] hover:underline cursor-pointer"
+                        >
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#E9C46A]" />
+                          <span>{activePt.recall}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setHorizonAttrFilter(timelineAttrFilter);
+                            openTrophyAlbum('learning');
+                          }}
+                          title="Click to inspect Learning cards in Trophy Album"
+                          className="flex items-center gap-1 text-[#F4A261] hover:underline cursor-pointer"
+                        >
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#F4A261]" />
+                          <span>{activePt.learning}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setHorizonAttrFilter(timelineAttrFilter);
+                            openTrophyAlbum('unseen');
+                          }}
+                          title="Click to inspect Unseen cards in Trophy Album"
+                          className="flex items-center gap-1 text-[#38BDF8] hover:underline cursor-pointer"
+                        >
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#38BDF8]" />
+                          <span>{activePt.unseen}</span>
+                        </button>
                       </div>
                     </div>
 
-                    {/* Row 2: Stage Breakdown Pills (Fills Middle) */}
-                    <div className="my-1 flex items-center gap-1.5 pl-1 text-[9px]">
-                      <span className="flex items-center gap-1 rounded-md bg-[#10B981]/15 border border-[#10B981]/30 px-1.5 py-0.5 font-bold text-[#10B981]">
-                        <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]" />
-                        {region.mastered} Mastered
-                      </span>
-                      <span className="flex items-center gap-1 rounded-md bg-[#E9C46A]/15 border border-[#E9C46A]/30 px-1.5 py-0.5 font-bold text-[#E9C46A]">
-                        <span className="h-1.5 w-1.5 rounded-full bg-[#E9C46A]" />
-                        {region.recall0Cards + region.recall1Cards} Recall
-                      </span>
-                      <span className="flex items-center gap-1 rounded-md bg-[#38BDF8]/15 border border-[#38BDF8]/30 px-1.5 py-0.5 font-bold text-[#38BDF8]">
-                        <span className="h-1.5 w-1.5 rounded-full bg-[#38BDF8]" />
-                        {region.unseenCards + region.stage0Cards} Unseen
-                      </span>
+                    {/* Interactive Stacked Area SVG Canvas */}
+                    <div className="relative flex-1 min-h-0 w-full overflow-hidden rounded-xl border border-[#F6EFE2]/10 bg-[#081520] px-1 pt-1">
+                      <svg
+                        viewBox={`0 0 ${W} ${H}`}
+                        preserveAspectRatio="none"
+                        className="h-full w-full select-none overflow-visible cursor-crosshair"
+                        onMouseLeave={() => setHoveredTimelineIdx(null)}
+                        onMouseMove={(e) => {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          const relX = Math.max(0, Math.min(1, (e.clientX - rect.left) / Math.max(1, rect.width)));
+                          const idx = Math.round(relX * (pts.length - 1));
+                          if (idx !== hoveredTimelineIdx) {
+                            setHoveredTimelineIdx(idx);
+                          }
+                        }}
+                      >
+                        <defs>
+                          <linearGradient id="tlMasteredGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#10B981" stopOpacity="0.62" />
+                            <stop offset="100%" stopColor="#10B981" stopOpacity="0.18" />
+                          </linearGradient>
+                          <linearGradient id="tlRecallGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#E9C46A" stopOpacity="0.55" />
+                            <stop offset="100%" stopColor="#E9C46A" stopOpacity="0.18" />
+                          </linearGradient>
+                          <linearGradient id="tlLearningGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#F4A261" stopOpacity="0.50" />
+                            <stop offset="100%" stopColor="#F4A261" stopOpacity="0.15" />
+                          </linearGradient>
+                          <linearGradient id="tlUnseenGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.16" />
+                            <stop offset="100%" stopColor="#38BDF8" stopOpacity="0.04" />
+                          </linearGradient>
+                        </defs>
+
+                        {/* Horizontal Reference Grid Lines */}
+                        {[0.25, 0.5, 0.75].map((ratio) => {
+                          const gy = padT + plotH * (1 - ratio);
+                          return (
+                            <line
+                              key={ratio}
+                              x1={padL}
+                              y1={gy}
+                              x2={W - padR}
+                              y2={gy}
+                              stroke="rgba(246, 239, 226, 0.07)"
+                              strokeDasharray="3 4"
+                              strokeWidth="1"
+                            />
+                          );
+                        })}
+
+                        {/* 4 Stacked Stage Areas */}
+                        <path d={unseenArea} fill="url(#tlUnseenGrad)" />
+                        <path d={learningArea} fill="url(#tlLearningGrad)" />
+                        <path d={recallArea} fill="url(#tlRecallGrad)" />
+                        <path d={masteredArea} fill="url(#tlMasteredGrad)" />
+
+                        {/* Stage Horizon Contour Lines */}
+                        <path d={learningLine} fill="none" stroke="#F4A261" strokeWidth="1.4" strokeOpacity="0.85" />
+                        <path d={recallLine} fill="none" stroke="#E9C46A" strokeWidth="1.6" strokeOpacity="0.9" />
+                        <path d={masteredLine} fill="none" stroke="#10B981" strokeWidth="2.1" />
+
+                        {/* Scrubber Vertical Guide & Stage Nodes */}
+                        <line
+                          x1={hoverX}
+                          y1={padT}
+                          x2={hoverX}
+                          y2={baseLineY}
+                          stroke="rgba(246, 239, 226, 0.55)"
+                          strokeWidth="1.2"
+                          strokeDasharray="2 2"
+                        />
+                        <circle
+                          cx={hoverX}
+                          cy={yFor(sMastered[activeIdx])}
+                          r="3.2"
+                          fill="#10B981"
+                          stroke="#081520"
+                          strokeWidth="1.2"
+                        />
+                        <circle
+                          cx={hoverX}
+                          cy={yFor(sRecall[activeIdx])}
+                          r="2.8"
+                          fill="#E9C46A"
+                          stroke="#081520"
+                          strokeWidth="1.2"
+                        />
+                        <circle
+                          cx={hoverX}
+                          cy={yFor(sLearning[activeIdx])}
+                          r="2.6"
+                          fill="#F4A261"
+                          stroke="#081520"
+                          strokeWidth="1.2"
+                        />
+
+                        {/* X-Axis Date Labels */}
+                        {pts.map((pt, i) => {
+                          const showTick =
+                            i === 0 ||
+                            i === pts.length - 1 ||
+                            i === Math.floor((pts.length - 1) / 2) ||
+                            (pts.length >= 12 &&
+                              (i === Math.floor((pts.length - 1) * 0.25) ||
+                                i === Math.floor((pts.length - 1) * 0.75)));
+                          if (!showTick) return null;
+                          const tx = xFor(i);
+                          const anchor = i === 0 ? 'start' : i === pts.length - 1 ? 'end' : 'middle';
+                          return (
+                            <text
+                              key={pt.idx}
+                              x={tx}
+                              y={H - 4}
+                              textAnchor={anchor}
+                              className="fill-[#8FA6B8] font-mono text-[8.5px] font-bold"
+                            >
+                              {pt.shortLabel}
+                            </text>
+                          );
+                        })}
+                      </svg>
                     </div>
 
-                    {/* Row 3: Segmented Progress Bar */}
-                    <div className="ml-1 flex h-1.5 overflow-hidden rounded-full bg-[#0C1D2B]">
-                      <span
-                        className="h-full rounded-l-full transition-all duration-500"
-                        style={{ width: `${region.masteredPct}%`, background: meta.accent }}
-                      />
-                      <span
-                        className="h-full bg-[#E9C46A]/80 transition-all duration-500"
-                        style={{ width: `${region.recallPct}%` }}
-                      />
+                    {/* Legend & Attribute Summary Footer */}
+                    <div className="shrink-0 flex items-center justify-between gap-2 px-0.5 text-[9px] text-[#9FB3C4]">
+                      <div className="flex items-center gap-2.5">
+                        <span className="flex items-center gap-1 font-bold text-[#10B981]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]" />
+                          Mastered
+                        </span>
+                        <span className="flex items-center gap-1 font-bold text-[#E9C46A]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#E9C46A]" />
+                          Recall
+                        </span>
+                        <span className="flex items-center gap-1 font-bold text-[#F4A261]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#F4A261]" />
+                          Learning
+                        </span>
+                        <span className="flex items-center gap-1 font-bold text-[#38BDF8]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#38BDF8]" />
+                          Unseen
+                        </span>
+                      </div>
+
+                      <span className="font-mono font-bold text-[#D6CBB9] tabular-nums">
+                        {remembranceTimeline.activeTotal}/{remembranceTimeline.totalCards} active
+                      </span>
                     </div>
-                  </button>
+                  </div>
                 );
-              })}
+              })()}
             </div>
           </div>
         </div>

@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Country } from '../../core/types';
-import { Send, HelpCircle, ArrowRight, Volume2, Compass, Flag } from 'lucide-react';
+import { CapitalQuestionDirection } from '../../core/srsEngine';
+import { Send, HelpCircle, ArrowRight, Volume2, Compass, Flag, Building2 } from 'lucide-react';
 import { speechEngine } from '../../core/speechEngine';
 
 interface TypingRecallPromptProps {
   country: Country;
   attributeId?: string;
+  questionDirection?: CapitalQuestionDirection;
   promptText: string;
   correctAnswer: string;
   isSubmitted: boolean;
@@ -20,6 +22,7 @@ interface TypingRecallPromptProps {
 export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
   country,
   attributeId = 'capital',
+  questionDirection,
   promptText,
   correctAnswer,
   isSubmitted,
@@ -37,7 +40,8 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
 
   const isMapCountryIdentify = attributeId === 'country';
   const isFlagIdentify = attributeId === 'flag';
-  const isCountryNameTarget = isMapCountryIdentify || isFlagIdentify;
+  const isCapitalToCountry = questionDirection === 'capital_to_country';
+  const isCountryNameTarget = isMapCountryIdentify || isFlagIdentify || isCapitalToCountry;
   const flagImgUrl =
     country.iso2 && country.iso2 !== 'WB'
       ? `https://flagcdn.com/w320/${country.iso2.toLowerCase()}.png`
@@ -101,12 +105,26 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
             <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-sky-500/20 border border-sky-400/50 flex items-center justify-center text-sky-400">
               <Flag className="w-4 h-4 sm:w-5 sm:h-5" />
             </span>
+          ) : isCapitalToCountry && !isSubmitted ? (
+            <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
+              <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
+            </span>
           ) : (
             <span className="text-2xl sm:text-3xl">{country.flagEmoji}</span>
           )}
           <span className="text-[11px] sm:text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 font-semibold border border-cyan-800/60">
             {country.continent} • {country.subregion}
           </span>
+          {isCapitalToCountry && country.capital && (
+            <button
+              type="button"
+              onClick={() => speechEngine.speak(country.capital)}
+              title={`Pronounce ${country.capital}`}
+              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-300 transition-colors"
+            >
+              <Volume2 className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
 
         {/* Prominent Flag Plate for Flag-to-Country questions */}
@@ -150,6 +168,8 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
                 ? 'Highlighted in gold on the map • Type the country name'
                 : isFlagIdentify
                 ? 'National Flag Recall • Type the country name'
+                : isCapitalToCountry
+                ? 'Capital → Country Recall • Type the sovereign nation'
                 : 'Active Recall (Direct Memory Retrieval)'}
             </span>
           </div>

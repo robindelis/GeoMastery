@@ -1,6 +1,6 @@
 {
-  "summary":  "Implementation plan for transitioning GeoMastery from fixed 15-card sessions to an infinite, continuous learning stream with in-stream expanding retrieval spacing, rolling horizon replenishment, live top-bar telemetry, an on-demand Flag Study reference drawer, and an optional run recap on exit.",
-  "updatedAt":  "2026-10-23T09:45:15.090010818Z",
+  "summary":  "Implementation plan for optimizing the main dashboard layout to add a 4-stage cumulative remembrance progression timeline with attribute filtering, and adding bidirectional Capital-to-Country questioning within the Capitals training flow.",
+  "updatedAt":  "2026-10-23T12:05:36.089258424Z",
   "requestFeedback":  true,
   "userFacing":  true
 }

@@ -12,6 +12,8 @@ import { COUNTRIES, COUNTRIES_BY_ID } from '../assets/data/countries';
 import { WATER_BODIES, getWaterBodyById, WaterBody } from '../assets/data/waterBodies';
 import { ATTRIBUTE_REGISTRY } from './attributes';
 
+export type CapitalQuestionDirection = 'country_to_capital' | 'capital_to_country';
+
 export interface TrainingQuestion {
   srsItemId: string;
   country: Country;
@@ -23,6 +25,7 @@ export interface TrainingQuestion {
   options?: string[]; // Populated when expectedInputMode === 'multiple_choice'
   waterBody?: WaterBody;
   isRetry?: boolean;
+  questionDirection?: CapitalQuestionDirection;
 }
 
 /* ────────────────────────────────────────────────────────────────────────────
@@ -492,7 +495,8 @@ export function waterBodyToCountry(wb: WaterBody): Country {
 export function buildQuestion(
   srsItem: SRSItem,
   country: Country,
-  allCountries: Country[]
+  allCountries: Country[],
+  explicitDirection?: CapitalQuestionDirection
 ): TrainingQuestion {
   // If it's a water body item (Oceans, Seas, Straits, Gulfs)
   if (srsItem.countryId.startsWith('WATER_') || country.id.startsWith('WATER_')) {
@@ -534,6 +538,66 @@ export function buildQuestion(
       correctAnswer,
       options,
       waterBody: wb
+    };
+  }
+
+  // Bidirectional Capital Questioning: Country -> Capital OR Capital -> Country
+  const questionDirection: CapitalQuestionDirection | undefined =
+    srsItem.attributeId === 'capital'
+      ? explicitDirection ?? 'country_to_capital'
+      : undefined;
+
+  if (srsItem.attributeId === 'capital' && questionDirection === 'capital_to_country') {
+    const prompt = `Which country has ${country.capital} as its capital?`;
+    const correctAnswer = country.name;
+    let expectedInputMode: InputMode = 'typing';
+    let options: string[] | undefined = undefined;
+
+    if (srsItem.stage === 0) {
+      expectedInputMode = 'multiple_choice';
+      const uniqueOpts = new Set<string>([correctAnswer]);
+
+      // LECTOR Interference Resolution: inject previously confused nations first
+      if (srsItem.confusedWith && srsItem.confusedWith.length > 0) {
+        for (const confId of srsItem.confusedWith) {
+          const confCountry = COUNTRIES_BY_ID.get(confId);
+          if (confCountry && confCountry.name && !uniqueOpts.has(confCountry.name)) {
+            uniqueOpts.add(confCountry.name);
+            if (uniqueOpts.size >= 4) break;
+          }
+        }
+      }
+
+      const countryDef = ATTRIBUTE_REGISTRY.get('country');
+      const distractors = countryDef
+        ? countryDef.generateDistractors(country, allCountries, 5)
+        : allCountries
+            .filter((c) => c.id !== country.id && c.continent === country.continent)
+            .slice(0, 5)
+            .map((c) => c.name);
+
+      for (const dist of distractors) {
+        if (dist && !uniqueOpts.has(dist)) {
+          uniqueOpts.add(dist);
+          if (uniqueOpts.size >= 4) break;
+        }
+      }
+      options = shuffleArray(Array.from(uniqueOpts));
+    } else {
+      expectedInputMode = 'typing';
+      options = undefined;
+    }
+
+    return {
+      srsItemId: srsItem.id,
+      country,
+      attributeId: srsItem.attributeId,
+      stage: srsItem.stage,
+      expectedInputMode,
+      prompt,
+      correctAnswer,
+      options,
+      questionDirection: 'capital_to_country'
     };
   }
 
@@ -604,7 +668,8 @@ export function buildQuestion(
     expectedInputMode,
     prompt,
     correctAnswer,
-    options
+    options,
+    questionDirection
   };
 }
 
@@ -769,9 +834,16 @@ export function prepareSessionQueue(
       combined = [...combined, ...extraMastered];
     }
 
+    let capCount = 0;
     const practiceQuestions = shuffleArray(combined).map((cand) => {
       const itemToUse = cand.existing || createInitialSRSItem(cand.country.id, cand.attributeId);
-      return buildQuestion(itemToUse, cand.country, allContextCountries);
+      const direction: CapitalQuestionDirection | undefined =
+        cand.attributeId === 'capital'
+          ? (capCount++ + (itemToUse.reps || 0)) % 2 === 1
+            ? 'capital_to_country'
+            : 'country_to_capital'
+          : undefined;
+      return buildQuestion(itemToUse, cand.country, allContextCountries, direction);
     });
     return interleaveSessionQueue(practiceQuestions, 4);
   }
@@ -1034,9 +1106,16 @@ export function prepareSessionQueue(
   }
 
   const allSelected = [...selectedMastered, ...selectedLearning];
+  let capCount = 0;
   const sessionQueue: TrainingQuestion[] = allSelected.map((cand) => {
     const itemToUse = cand.existing || createInitialSRSItem(cand.country.id, cand.attributeId);
-    return buildQuestion(itemToUse, cand.country, allContextCountries);
+    const direction: CapitalQuestionDirection | undefined =
+      cand.attributeId === 'capital'
+        ? (capCount++ + (itemToUse.reps || 0)) % 2 === 1
+          ? 'capital_to_country'
+          : 'country_to_capital'
+        : undefined;
+    return buildQuestion(itemToUse, cand.country, allContextCountries, direction);
   });
 
   return interleaveSessionQueue(shuffleArray(sessionQueue), 4);
@@ -1394,7 +1473,12 @@ export function scheduleInStreamFollowUp(
   // If missed on a normal question (not already a retry), insert a single non-mutating scaffolding retry (+6 cards)
   if (!isCorrect && !wasRetry) {
     const retryQuestion: TrainingQuestion = {
-      ...buildQuestion(updatedItem, answeredQuestion.country, allContextCountries),
+      ...buildQuestion(
+        updatedItem,
+        answeredQuestion.country,
+        allContextCountries,
+        answeredQuestion.questionDirection
+      ),
       isRetry: true
     };
     nextQueue = insertQuestionWithAntiPriming(nextQueue, currentIndex, retryQuestion, 6, 4);

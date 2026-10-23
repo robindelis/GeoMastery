@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Country } from '../../core/types';
-import { ArrowRight, Volume2 } from 'lucide-react';
+import { CapitalQuestionDirection } from '../../core/srsEngine';
+import { ArrowRight, Volume2, Building2 } from 'lucide-react';
 import { speechEngine } from '../../core/speechEngine';
 
 interface MultipleChoicePromptProps {
@@ -10,6 +11,7 @@ interface MultipleChoicePromptProps {
   selectedOption: string | null;
   correctAnswer: string;
   isSubmitted: boolean;
+  questionDirection?: CapitalQuestionDirection;
   onSelectOption: (option: string) => void;
   onGiveUp?: () => void;
   onNextQuestion?: () => void;
@@ -22,11 +24,13 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
   selectedOption,
   correctAnswer,
   isSubmitted,
+  questionDirection,
   onSelectOption,
   onGiveUp,
   onNextQuestion
 }) => {
   const isWater = country.id.startsWith('WATER_');
+  const isCapitalToCountry = questionDirection === 'capital_to_country';
   const hasSelectedRef = useRef(false);
 
   // Reset selection state when question changes
@@ -72,16 +76,35 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
       {/* Question Header Card */}
       <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-3.5 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col items-center text-center gap-1.5 sm:gap-2">
         <div className="flex items-center gap-2">
-          <span className="text-2xl sm:text-3xl">{country.flagEmoji}</span>
+          {isCapitalToCountry && !isSubmitted ? (
+            <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
+              <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
+            </span>
+          ) : (
+            <span className="text-2xl sm:text-3xl">{country.flagEmoji}</span>
+          )}
           <span className="text-[11px] sm:text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700">
             {isWater ? `🌊 Oceans & Straits • ${country.subregion}` : `${country.continent} • ${country.subregion}`}
           </span>
+          {isCapitalToCountry && country.capital && (
+            <button
+              type="button"
+              onClick={() => speechEngine.speak(country.capital)}
+              title={`Pronounce ${country.capital}`}
+              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-300 transition-colors"
+            >
+              <Volume2 className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
         <h2 className="text-lg sm:text-2xl font-bold text-white tracking-tight mt-0.5 sm:mt-1">
           {promptText}
         </h2>
         <div className="text-[11px] sm:text-xs text-emerald-400/90 font-medium">
-          Stage 0: Recognition Phase <span className="hidden sm:inline">(Keyboard: 1-4)</span>
+          {isCapitalToCountry
+            ? 'Stage 0: Capital → Country Recognition '
+            : 'Stage 0: Recognition Phase '}
+          <span className="hidden sm:inline">(Keyboard: 1-4)</span>
         </div>
       </div>
 

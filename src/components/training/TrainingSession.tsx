@@ -16,7 +16,7 @@ import {
   buildFlagCohortQuestions
 } from '../../core/srsEngine';
 import { getWaterBodyById } from '../../assets/data/waterBodies';
-import { ATTRIBUTE_REGISTRY } from '../../core/attributes';
+import { ATTRIBUTE_REGISTRY, validateCountryNameAnswer } from '../../core/attributes';
 import { StorageService } from '../../core/storage';
 import { soundFx } from '../../core/soundFx';
 import { speechEngine } from '../../core/speechEngine';
@@ -316,8 +316,17 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       correct = answer.trim().toLowerCase() === question.correctAnswer.trim().toLowerCase();
     } else {
       // Typing active recall
-      if (attrDef) {
-        const settings = StorageService.loadSettings();
+      const settings = StorageService.loadSettings();
+      if (question.questionDirection === 'capital_to_country') {
+        const valRes = validateCountryNameAnswer(
+          answer,
+          question.correctAnswer,
+          question.country,
+          settings.typingFuzzyTolerance
+        );
+        correct = valRes.isCorrect;
+        feedback = valRes.feedback || (correct ? 'Correct!' : `Answer: ${question.correctAnswer}`);
+      } else if (attrDef) {
         const valRes = attrDef.validateAnswer(answer, question.correctAnswer, question.country, settings.typingFuzzyTolerance);
         correct = valRes.isCorrect;
         feedback = valRes.feedback || (correct ? 'Correct!' : `Answer: ${question.correctAnswer}`);
@@ -694,7 +703,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     missedQuestions.forEach((q) => {
       if (!uniqueMap.has(q.srsItemId)) {
         const srsItem = items.get(q.srsItemId) || createInitialSRSItem(q.country.id, q.attributeId);
-        const freshQ = buildQuestion(srsItem, q.country, COUNTRIES);
+        const freshQ = buildQuestion(srsItem, q.country, COUNTRIES, q.questionDirection);
         freshQ.isRetry = false;
         uniqueMap.set(q.srsItemId, freshQ);
       }
@@ -1087,6 +1096,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
                 selectedOption={userAnswer}
                 correctAnswer={currentQuestion.correctAnswer}
                 isSubmitted={isSubmitted}
+                questionDirection={currentQuestion.questionDirection}
                 onSelectOption={(opt) => {
                   handleAnswer(opt);
                 }}
@@ -1098,6 +1108,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
                 key={`${currentQuestion.srsItemId}-${currentIndex}`}
                 country={currentQuestion.country}
                 attributeId={currentQuestion.attributeId}
+                questionDirection={currentQuestion.questionDirection}
                 promptText={currentQuestion.prompt}
                 correctAnswer={currentQuestion.correctAnswer}
                 isSubmitted={isSubmitted}
