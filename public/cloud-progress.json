@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:51:52.455Z",
+  "exportedAt": "2026-10-23T11:52:11.703Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8491,13 +8491,13 @@
         "countryId": "KHM",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.2,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:04:14.574Z",
-        "nextDueAt": "2026-10-09T20:04:14.574Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-23T11:52:08.678Z",
+        "nextDueAt": "2026-10-23T12:02:08.678Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:26:00.751Z",
@@ -8519,11 +8519,21 @@
             "userAnswer": "Phnom Penh",
             "isCorrect": true,
             "timeSpentMs": 4800
+          },
+          {
+            "timestamp": "2026-10-23T11:52:08.678Z",
+            "inputMode": "typing",
+            "userAnswer": "h",
+            "isCorrect": false,
+            "timeSpentMs": 12056,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 6.2
+        "stability": 0.95,
+        "difficulty": 6.92,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -23658,7 +23668,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1672,
+    "totalReviews": 1673,
     "totalCorrect": 1195,
     "currentStreak": 3,
     "longestStreak": 4,
@@ -23697,7 +23707,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:51:52.368Z"
+    "updatedAt": "2026-10-23T11:52:08.681Z"
   },
   "settings": {
     "audioEnabled": true,
