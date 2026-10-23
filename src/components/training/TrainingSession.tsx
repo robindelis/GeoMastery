@@ -48,7 +48,8 @@ function createInitialStreamQueue(
   continentFilter: TrainingCategory,
   attributeFilter: string[],
   isPracticeMode: boolean,
-  targetCountryId?: string | null
+  targetCountryId?: string | null,
+  allowedFlagCountryIds?: Set<string>
 ): { queue: TrainingQuestion[]; enteredRetentionStream: boolean } {
   if (targetCountryId) {
     const wb = getWaterBodyById(targetCountryId);
@@ -69,7 +70,8 @@ function createInitialStreamQueue(
           continentFilter,
           attributeFilter,
           STREAM_INITIAL_CHUNK,
-          isPracticeMode
+          isPracticeMode,
+          allowedFlagCountryIds
         );
         return replenished;
       }
@@ -82,7 +84,8 @@ function createInitialStreamQueue(
     continentFilter,
     attributeFilter,
     STREAM_INITIAL_CHUNK,
-    isPracticeMode
+    isPracticeMode,
+    allowedFlagCountryIds
   );
 }
 
@@ -98,9 +101,26 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
   // Persistent SRS map loaded synchronously
   const [srsItemsMap, setSrsItemsMap] = useState<Map<string, SRSItem>>(() => StorageService.loadSRSItems());
 
-  // Build initial continuous stream synchronously
+  const canStudyFlags = attributeFilter.includes('flag') && continentFilter !== 'Oceans';
+
+  // Generate the 50-flag cohort FIRST so the continuous stream exclusively asks flags from this 50-flag cohort
+  const initialFlagCohortRef = useRef<Country[]>(
+    canStudyFlags ? buildFlagStudyCohort(srsItemsMap, continentFilter, [], 50, targetCountryId) : []
+  );
+  const flagStudyCohortIdsRef = useRef<Set<string>>(
+    new Set(initialFlagCohortRef.current.map((c) => c.id))
+  );
+
+  // Build initial continuous stream synchronously using the session's 50-flag cohort
   const initialStreamState = useRef(
-    createInitialStreamQueue(srsItemsMap, continentFilter, attributeFilter, initialPracticeMode, targetCountryId)
+    createInitialStreamQueue(
+      srsItemsMap,
+      continentFilter,
+      attributeFilter,
+      initialPracticeMode,
+      targetCountryId,
+      flagStudyCohortIdsRef.current
+    )
   );
 
   const [isPracticeMode, setIsPracticeMode] = useState<boolean>(
@@ -115,12 +135,9 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
   const [queue, setQueue] = useState<TrainingQuestion[]>(() => initialStreamState.current.queue);
 
-  const canStudyFlags = attributeFilter.includes('flag') && continentFilter !== 'Oceans';
   // On-demand Flag Study Reference: starts closed so continuous stream begins immediately
   const [isStudyingFlags, setIsStudyingFlags] = useState<boolean>(false);
-  const [flagStudyCohort, setFlagStudyCohort] = useState<Country[]>(() =>
-    canStudyFlags ? buildFlagStudyCohort(srsItemsMap, continentFilter, initialStreamState.current.queue, 50) : []
-  );
+  const [flagStudyCohort, setFlagStudyCohort] = useState<Country[]>(() => initialFlagCohortRef.current);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentIndexRef = useRef(0);
@@ -183,12 +200,21 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
     const items = StorageService.loadSRSItems();
     setSrsItemsMap(items);
+    const nextCohort =
+      attributeFilter.includes('flag') && continentFilter !== 'Oceans'
+        ? buildFlagStudyCohort(items, continentFilter, [], 50, targetCountryId)
+        : [];
+    const nextCohortIds = new Set(nextCohort.map((c) => c.id));
+    flagStudyCohortIdsRef.current = nextCohortIds;
+    setFlagStudyCohort(nextCohort);
+
     const nextStream = createInitialStreamQueue(
       items,
       continentFilter,
       attributeFilter,
       initialPracticeMode,
-      targetCountryId
+      targetCountryId,
+      nextCohortIds
     );
     const nextPractice = initialPracticeMode || nextStream.enteredRetentionStream;
     setIsPracticeMode(nextPractice);
@@ -197,11 +223,6 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
     setQueue(nextStream.queue);
     setIsStudyingFlags(false);
-    setFlagStudyCohort(
-      attributeFilter.includes('flag') && continentFilter !== 'Oceans'
-        ? buildFlagStudyCohort(items, continentFilter, nextStream.queue, 50)
-        : []
-    );
     setCurrentIndex(0);
     currentIndexRef.current = 0;
     setIsCompleted(false);
@@ -227,18 +248,23 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     return StorageService.subscribe(() => {
       const items = StorageService.loadSRSItems();
       setSrsItemsMap(items);
+      let cohortIds = flagStudyCohortIdsRef.current;
+      if (attributeFilter.includes('flag') && continentFilter !== 'Oceans' && cohortIds.size === 0) {
+        const nextCohort = buildFlagStudyCohort(items, continentFilter, [], 50, targetCountryId);
+        cohortIds = new Set(nextCohort.map((c) => c.id));
+        flagStudyCohortIdsRef.current = cohortIds;
+        setFlagStudyCohort(nextCohort);
+      }
       const refreshed = createInitialStreamQueue(
         items,
         continentFilter,
         attributeFilter,
         isPracticeModeRef.current,
-        targetCountryId
+        targetCountryId,
+        cohortIds
       );
       if (refreshed.queue.length > 0) {
         setQueue(refreshed.queue);
-        if (attributeFilter.includes('flag') && continentFilter !== 'Oceans') {
-          setFlagStudyCohort(buildFlagStudyCohort(items, continentFilter, refreshed.queue, 50));
-        }
         setCurrentIndex(0);
         currentIndexRef.current = 0;
         setQuestionStartTime(Date.now());
@@ -312,9 +338,15 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       srsItemsMapRef.current.get(question.srsItemId) ||
       createInitialSRSItem(question.country.id, question.attributeId);
 
+    // If a card was queued as a fallback retry earlier, check if its real wall-clock nextDueAt timer has now matured
+    const existingForCheck = srsItemsMapRef.current.get(question.srsItemId);
+    const isNowGenuinelyDue =
+      !existingForCheck || existingForCheck.nextDueAt <= new Date().toISOString();
+    const isEffectiveRetry = Boolean(question.isRetry) && !isNowGenuinelyDue;
+
     // Update SRS Record (Only in standard spaced repetition mode, NOT in free practice mode or in-session retries!)
-    if (!isPracticeModeRef.current && !question.isRetry) {
-      let existingItem = srsItemsMapRef.current.get(question.srsItemId);
+    if (!isPracticeModeRef.current && !isEffectiveRetry) {
+      let existingItem = existingForCheck;
       if (!existingItem) {
         existingItem = {
           id: question.srsItemId,
@@ -382,7 +414,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     }
 
     // Only record review count and streak for real scheduled reviews (not practice or in-session retries)
-    if (!isPracticeModeRef.current && !question.isRetry) {
+    if (!isPracticeModeRef.current && !isEffectiveRetry) {
       StorageService.recordReviewEvent(correct);
     }
 
@@ -430,7 +462,8 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
           continentFilter,
           attributeFilter,
           STREAM_REPLENISH_CHUNK,
-          isPracticeModeRef.current
+          isPracticeModeRef.current,
+          flagStudyCohortIdsRef.current
         );
         nextQueue = replenished.queue;
         if (replenished.enteredRetentionStream && !isPracticeModeRef.current) {
@@ -484,7 +517,8 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
           continentFilter,
           attributeFilter,
           STREAM_REPLENISH_CHUNK,
-          isPracticeModeRef.current
+          isPracticeModeRef.current,
+          flagStudyCohortIdsRef.current
         );
         if (replenished.enteredRetentionStream && !isPracticeModeRef.current) {
           setEnteredRetentionNotice(true);
@@ -534,18 +568,59 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     soundFx.playClick();
   }, []);
 
-  // Open on-demand Flag Study Reference
+  // Open on-demand Flag Study Reference (preserves the current continuous session's 50-flag cohort)
   const handleOpenFlagStudy = useCallback(() => {
     if (speechTimerRef.current) {
       clearTimeout(speechTimerRef.current);
       speechTimerRef.current = null;
     }
     speechEngine.cancel();
-    const upcomingSlice = queue.slice(currentIndex, currentIndex + 30);
-    setFlagStudyCohort(buildFlagStudyCohort(srsItemsMapRef.current, continentFilter, upcomingSlice, 50));
+    if (flagStudyCohort.length === 0 && attributeFilter.includes('flag') && continentFilter !== 'Oceans') {
+      const nextCohort = buildFlagStudyCohort(
+        srsItemsMapRef.current,
+        continentFilter,
+        [],
+        50,
+        targetCountryId
+      );
+      flagStudyCohortIdsRef.current = new Set(nextCohort.map((c) => c.id));
+      setFlagStudyCohort(nextCohort);
+    }
     setIsStudyingFlags(true);
     soundFx.playClick();
-  }, [queue, currentIndex, continentFilter]);
+  }, [flagStudyCohort.length, attributeFilter, continentFilter, targetCountryId]);
+
+  // Explicitly resample a brand-new 50-flag cohort and refresh upcoming flag questions in the stream
+  const handleResampleFlagCohort = useCallback(() => {
+    const items = StorageService.loadSRSItems();
+    setSrsItemsMap(items);
+    srsItemsMapRef.current = items;
+
+    const freshCohort = buildFlagStudyCohort(items, continentFilter, [], 50, targetCountryId);
+    const freshCohortIds = new Set(freshCohort.map((c) => c.id));
+    flagStudyCohortIdsRef.current = freshCohortIds;
+    setFlagStudyCohort(freshCohort);
+
+    setQueue((prevQueue) => {
+      const idx = currentIndexRef.current;
+      const prefix = prevQueue.slice(0, idx);
+      // Keep non-flag questions in upcoming tail or rebuild from currentIndex using the new 50-flag cohort
+      const nonFlagTail = prevQueue
+        .slice(idx)
+        .filter((q) => q.attributeId !== 'flag' || freshCohortIds.has(q.country.id));
+      const replenished = replenishStreamQueue(
+        [...prefix, ...nonFlagTail],
+        idx - 1,
+        items,
+        continentFilter,
+        attributeFilter,
+        STREAM_INITIAL_CHUNK,
+        isPracticeModeRef.current,
+        freshCohortIds
+      );
+      return replenished.queue;
+    });
+  }, [continentFilter, attributeFilter, targetCountryId]);
 
   // Map Click Handler during training
   const handleMapCountrySelect = useCallback((country: Country) => {
@@ -555,7 +630,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     }
   }, [handleAnswer]);
 
-  // Handler to restart stream with a fresh queue and reset sitting stats
+  // Handler to restart stream with a fresh 50-flag cohort, fresh queue, and reset sitting stats
   const handleRestart = useCallback(() => {
     if (speechTimerRef.current) {
       clearTimeout(speechTimerRef.current);
@@ -566,6 +641,15 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     const items = StorageService.loadSRSItems();
     setSrsItemsMap(items);
     srsItemsMapRef.current = items;
+
+    const nextCohort =
+      attributeFilter.includes('flag') && continentFilter !== 'Oceans'
+        ? buildFlagStudyCohort(items, continentFilter, [], 50, targetCountryId)
+        : [];
+    const nextCohortIds = new Set(nextCohort.map((c) => c.id));
+    flagStudyCohortIdsRef.current = nextCohortIds;
+    setFlagStudyCohort(nextCohort);
+
     const freshStream = replenishStreamQueue(
       [],
       -1,
@@ -573,7 +657,8 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       continentFilter,
       attributeFilter,
       STREAM_INITIAL_CHUNK,
-      isPracticeMode
+      isPracticeMode,
+      nextCohortIds
     );
     setQueue(freshStream.queue);
     setIsStudyingFlags(false);
@@ -591,7 +676,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     setQuestionStartTime(Date.now());
     questionStartTimeRef.current = Date.now();
     soundFx.playClick();
-  }, [continentFilter, attributeFilter, isPracticeMode]);
+  }, [continentFilter, attributeFilter, isPracticeMode, targetCountryId]);
 
   // Handler to focus-drill missed questions and then seamlessly continue the infinite stream
   const handleRetryMissed = useCallback((missedQuestions: TrainingQuestion[]) => {
@@ -622,7 +707,8 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       continentFilter,
       attributeFilter,
       STREAM_REPLENISH_CHUNK,
-      isPracticeModeRef.current
+      isPracticeModeRef.current,
+      flagStudyCohortIdsRef.current
     );
 
     setQueue(replenished.queue);
@@ -657,7 +743,8 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       continentFilter,
       attributeFilter,
       STREAM_INITIAL_CHUNK,
-      true
+      true,
+      flagStudyCohortIdsRef.current
     );
     setQueue(practiceStream.queue);
     setIsStudyingFlags(false);
@@ -738,6 +825,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
         srsItemsMap={srsItemsMap}
         sessionQueueLength={flagStudyCohort.length}
         isOnlyFlagAttribute={isOnlyFlagAttribute}
+        onResampleCohort={handleResampleFlagCohort}
         onStartRollThroughAll={(selectedCountries) => {
           const items = StorageService.loadSRSItems();
           const rollQuestions = buildFlagCohortQuestions(items, selectedCountries);
@@ -901,26 +989,37 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
               type="button"
               onClick={handleOpenFlagStudy}
               className="flex items-center gap-1.5 text-xs font-bold text-amber-300 hover:text-slate-950 bg-amber-500/15 hover:bg-amber-400 border border-amber-400/40 px-2.5 py-1 rounded-full transition-all cursor-pointer"
-              title="Open Flag Study Reference Sheet"
+              title="Open this session's 50-Flag Study Cohort"
             >
               <Flag className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Study Flags</span>
+              {flagStudyCohort.length > 0 && (
+                <span className="font-mono text-[10px] px-1.5 py-0.2 rounded-full bg-amber-400/20 text-amber-200">
+                  {flagStudyCohort.length}
+                </span>
+              )}
             </button>
           )}
 
-          {isPracticeMode || currentQuestion.isRetry ? (
-            <span
-              className="text-[10px] font-bold tracking-wider px-2 sm:px-3 py-1 rounded-full border bg-violet-950/60 border-violet-700/60 text-violet-300 flex items-center gap-1 shadow-sm"
-              title="Reinforcement or practice card — does not alter your spaced repetition intervals"
-            >
-              <Zap className="w-3 h-3 fill-violet-400 text-violet-400" />
-              <span className="hidden xs:inline">
-                {currentQuestion.isRetry && !isPracticeMode ? 'REINFORCEMENT' : 'PRACTICE'}
-              </span>
-              <span className="text-[9px] text-violet-300/80 font-normal hidden sm:inline">(SRS Paused)</span>
-            </span>
-          ) : (() => {
+          {(() => {
             const item = srsItemsMap.get(currentQuestion.srsItemId);
+            const isStillOnCooldown =
+              Boolean(currentQuestion.isRetry) &&
+              Boolean(item && item.nextDueAt > new Date().toISOString());
+            if (isPracticeMode || isStillOnCooldown) {
+              return (
+                <span
+                  className="text-[10px] font-bold tracking-wider px-2 sm:px-3 py-1 rounded-full border bg-violet-950/60 border-violet-700/60 text-violet-300 flex items-center gap-1 shadow-sm"
+                  title="Reinforcement or practice card — does not alter your spaced repetition intervals"
+                >
+                  <Zap className="w-3 h-3 fill-violet-400 text-violet-400" />
+                  <span className="hidden xs:inline">
+                    {isStillOnCooldown && !isPracticeMode ? 'REINFORCEMENT' : 'PRACTICE'}
+                  </span>
+                  <span className="text-[9px] text-violet-300/80 font-normal hidden sm:inline">(SRS Paused)</span>
+                </span>
+              );
+            }
             const liveStage = item ? item.stage : currentQuestion.stage;
             if (liveStage === 0) {
               return (

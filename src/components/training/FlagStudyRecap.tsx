@@ -12,7 +12,8 @@ import {
   ChevronRight,
   Volume2,
   Sparkles,
-  Compass
+  Compass,
+  RefreshCw
 } from 'lucide-react';
 import { Country, SRSItem, TrainingCategory } from '../../core/types';
 import { classifyCardHorizon, shuffleArray } from '../../core/srsEngine';
@@ -28,6 +29,7 @@ interface FlagStudyRecapProps {
   isOnlyFlagAttribute: boolean;
   onStartRollThroughAll: (selectedCountries: Country[]) => void;
   onStartStandardQueue: () => void;
+  onResampleCohort?: () => void;
   onExit: () => void;
 }
 
@@ -36,14 +38,10 @@ export const FlagStudyRecap: React.FC<FlagStudyRecapProps> = ({
   cohortCountries,
   sessionFlagCountryIds,
   srsItemsMap,
-  sessionQueueLength,
-  isOnlyFlagAttribute,
   onStartRollThroughAll,
   onStartStandardQueue,
-  onExit
+  onResampleCohort
 }) => {
-  const maxAvailable = cohortCountries.length;
-  const [targetCount, setTargetCount] = useState<number>(() => Math.min(50, maxAvailable));
   const [viewMode, setViewMode] = useState<'grid' | 'flashcard'>('grid');
   const [orderMode, setOrderMode] = useState<'subregion' | 'shuffled'>('subregion');
   const [shuffleSeed, setShuffleSeed] = useState<number>(0);
@@ -52,31 +50,48 @@ export const FlagStudyRecap: React.FC<FlagStudyRecapProps> = ({
   const [failedImgIds, setFailedImgIds] = useState<Set<string>>(() => new Set());
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
-  // Sync targetCount if cohortCountries changes
+  // Reset active flashcard index and revealed states if the session cohort changes
   useEffect(() => {
-    setTargetCount(Math.min(50, cohortCountries.length));
     setActiveIndex(0);
     setRevealedIds(new Set());
   }, [cohortCountries]);
 
-  // Slice to chosen targetCount (session flag countries are already at the front of cohortCountries)
-  const slicedCohort = useMemo(() => {
-    return cohortCountries.slice(0, Math.min(targetCount, cohortCountries.length));
-  }, [cohortCountries, targetCount]);
+  // Cohort breakdown stats (Unmastered push vs Mastered memory maintenance)
+  const cohortBreakdown = useMemo(() => {
+    let mastered = 0;
+    let recall = 0;
+    let learning = 0;
+    let unseen = 0;
+    for (const c of cohortCountries) {
+      const item = srsItemsMap.get(`${c.id}:flag`);
+      const bucket = classifyCardHorizon(item);
+      if (bucket === 'mastered') mastered++;
+      else if (bucket === 'recall') recall++;
+      else if (bucket === 'learning') learning++;
+      else unseen++;
+    }
+    return {
+      mastered,
+      unmastered: recall + learning + unseen,
+      recall,
+      learning,
+      unseen
+    };
+  }, [cohortCountries, srsItemsMap]);
 
   // Sort by subregion (for visual comparison of regional flag families) or shuffle (for self-testing)
   const displayedCountries = useMemo(() => {
     if (orderMode === 'shuffled') {
-      return shuffleArray(slicedCohort);
+      return shuffleArray(cohortCountries);
     }
-    return [...slicedCohort].sort((a, b) => {
+    return [...cohortCountries].sort((a, b) => {
       const contCmp = a.continent.localeCompare(b.continent);
       if (contCmp !== 0) return contCmp;
       const subCmp = (a.subregion || '').localeCompare(b.subregion || '');
       if (subCmp !== 0) return subCmp;
       return a.name.localeCompare(b.name);
     });
-  }, [slicedCohort, orderMode, shuffleSeed]);
+  }, [cohortCountries, orderMode, shuffleSeed]);
 
   const toggleRevealCard = (id: string) => {
     soundFx.playClick();
@@ -164,49 +179,41 @@ export const FlagStudyRecap: React.FC<FlagStudyRecapProps> = ({
               <Flag className="w-4 h-4" />
             </span>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <h1 className="font-[family-name:var(--font-fraunces)] text-sm sm:text-base font-black text-[#F6EFE2] tracking-tight">
-                  Flag Study Reference
+                  Session Flag Cohort
                 </h1>
                 <span className="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#E9C46A]/20 text-[#E9C46A] border border-[#E9C46A]/40">
                   {continentFilter === 'All' ? 'World' : continentFilter} · {displayedCountries.length} Flags
                 </span>
+                <span className="hidden md:inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#0B1C2A] border border-[#F6EFE2]/15 text-[#D6CBB9]">
+                  <span className="text-amber-300">{cohortBreakdown.unmastered} to Master</span>
+                  <span className="text-[#8FA6B8]">·</span>
+                  <span className="text-emerald-300">{cohortBreakdown.mastered} Mastered Review</span>
+                </span>
               </div>
               <p className="text-[11px] text-[#9FB3C4] hidden sm:block">
-                Compare regional flags at your own pace — toggle Self-Test to hide names and tap any flag to peek.
+                Exclusively sampled for this continuous session — every flag question in your stream comes from this {displayedCountries.length}-flag set.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Right Controls: Count, View Mode, Ordering, Self-Test Toggle */}
+        {/* Right Controls: Resample Cohort, View Mode, Ordering, Self-Test Toggle */}
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-          {/* Cohort Count Selector (15 / 30 / 50) */}
-          {maxAvailable > 15 && (
-            <div className="flex items-center rounded-xl bg-[#0B1C2A] border border-[#F6EFE2]/15 p-0.5 text-[11px] font-bold">
-              {[15, 30, 50]
-                .filter((n, idx, arr) => n <= maxAvailable || idx === 0 || (idx === arr.length - 1 && maxAvailable > 15))
-                .map((n) => {
-                  const val = Math.min(n, maxAvailable);
-                  const active = targetCount === val;
-                  return (
-                    <button
-                      key={n}
-                      type="button"
-                      onClick={() => {
-                        soundFx.playClick();
-                        setTargetCount(val);
-                        setActiveIndex(0);
-                      }}
-                      className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
-                        active ? 'bg-[#E9C46A] text-[#142534] font-extrabold' : 'text-[#9FB3C4] hover:text-white'
-                      }`}
-                    >
-                      {val} Flags
-                    </button>
-                  );
-                })}
-            </div>
+          {onResampleCohort && (
+            <button
+              type="button"
+              onClick={() => {
+                soundFx.playClick();
+                onResampleCohort();
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#F6EFE2]/15 bg-[#0B1C2A] text-[#D6CBB9] hover:text-white hover:border-[#E9C46A]/50 text-xs font-bold transition-all cursor-pointer"
+              title="Generate a fresh smart-sampled set of 50 flags for this session"
+            >
+              <RefreshCw className="w-3.5 h-3.5 text-[#E9C46A]" />
+              <span>New {displayedCountries.length}-Flag Set</span>
+            </button>
           )}
 
           {/* Grid vs Flashcard Roll-Through Switcher */}

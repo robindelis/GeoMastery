@@ -389,7 +389,7 @@ export function processAnswer(
     step = 0;
     easeFactor = Number(Math.max(1.3, easeFactor - 0.2).toFixed(2));
     // Schedule real SRS re-test after LAPSE_RECOVERY_STEP_MINUTES (10 minutes)
-    intervalDays = Number((LAPSE_RECOVERY_STEP_MINUTES / 1440).toFixed(4));
+    intervalDays = 0;
     nextDueDate = new Date(nowMs + LAPSE_RECOVERY_STEP_MINUTES * 60 * 1000);
 
     // FSRS post-lapse stability S'_f (bounded < RECALL_STABILITY_DAYS so it re-enters acquisition learning)
@@ -677,7 +677,8 @@ export function prepareSessionQueue(
   continentFilter: 'All' | Continent | 'Oceans',
   attributeFilter: string[],
   batchSize: number = 15,
-  practiceMode: boolean = false
+  practiceMode: boolean = false,
+  allowedFlagCountryIds?: Set<string>
 ): TrainingQuestion[] {
   const now = new Date().toISOString();
   const activeAttrIds = attributeFilter.length > 0 ? attributeFilter : ['capital', 'location'];
@@ -706,6 +707,15 @@ export function prepareSessionQueue(
 
     for (const country of eligibleCountries) {
       for (const attrId of activeAttrIds) {
+        // Strictly restrict 'flag' questions to the current continuous session's 50-flag cohort when provided
+        if (
+          attrId === 'flag' &&
+          allowedFlagCountryIds &&
+          allowedFlagCountryIds.size > 0 &&
+          !allowedFlagCountryIds.has(country.id)
+        ) {
+          continue;
+        }
         const id = `${country.id}:${attrId}`;
         eligibleCandidates.push({
           country,
@@ -727,13 +737,43 @@ export function prepareSessionQueue(
     }
   }
 
-  // If in Free Practice Drill Mode:
+  // If in Free Practice Drill Mode (or fallback reinforcement):
+  // Prioritize unmastered cards (~85%) while keeping a small subset (~15%) of mastered cards
   if (practiceMode) {
-    const practiceQuestions = eligibleCandidates.map((cand) => {
+    const unmasteredPool: QueueCandidate[] = [];
+    const masteredPool: QueueCandidate[] = [];
+    for (const cand of eligibleCandidates) {
+      if (cand.existing && classifyCardHorizon(cand.existing) === 'mastered') {
+        masteredPool.push(cand);
+      } else {
+        unmasteredPool.push(cand);
+      }
+    }
+
+    const targetMastered =
+      unmasteredPool.length === 0
+        ? Math.min(batchSize, masteredPool.length)
+        : masteredPool.length > 0
+        ? Math.min(masteredPool.length, Math.max(1, Math.round(batchSize * 0.15)))
+        : 0;
+    const pickedMastered = shuffleArray(masteredPool).slice(0, targetMastered);
+    const neededUnmastered = Math.max(0, batchSize - pickedMastered.length);
+    const pickedUnmastered = shuffleArray(unmasteredPool).slice(0, neededUnmastered);
+
+    let combined = [...pickedUnmastered, ...pickedMastered];
+    if (combined.length < batchSize && masteredPool.length > pickedMastered.length) {
+      const pickedIds = new Set(combined.map((c) => `${c.country.id}:${c.attributeId}`));
+      const extraMastered = shuffleArray(
+        masteredPool.filter((c) => !pickedIds.has(`${c.country.id}:${c.attributeId}`))
+      ).slice(0, batchSize - combined.length);
+      combined = [...combined, ...extraMastered];
+    }
+
+    const practiceQuestions = shuffleArray(combined).map((cand) => {
       const itemToUse = cand.existing || createInitialSRSItem(cand.country.id, cand.attributeId);
       return buildQuestion(itemToUse, cand.country, allContextCountries);
     });
-    return shuffleArray(practiceQuestions).slice(0, batchSize);
+    return interleaveSessionQueue(practiceQuestions, 4);
   }
 
   // Standard Spaced Repetition Review Mode:
@@ -779,21 +819,21 @@ export function prepareSessionQueue(
     if (!item) {
       unseenPool.push(cand);
     } else if (item.stage === 0) {
-      if (item.nextDueAt <= now || item.intervalDays === 0) {
+      if (item.nextDueAt <= now) {
         dueStage0Pool.push(cand);
       }
     } else if (classifyCardHorizon(item) === 'mastered') {
       if (item.nextDueAt <= now || item.intervalDays === 0) {
         dueMasteredPool.push(cand);
       } else {
-        // Only include Mastered cards in retention spot-checks if they haven't been reviewed in the last 18 hours
+        // Include Mastered cards in retention spot-checks if they haven't already been reviewed in the current sitting (last 2 hours)
         const lastRevMs = item.lastReviewedAt ? new Date(item.lastReviewedAt).getTime() : 0;
-        if (!lastRevMs || nowMs - lastRevMs >= 18 * 3600000) {
+        if (!lastRevMs || nowMs - lastRevMs >= 2 * 3600000) {
           retentionMasteredPool.push(cand);
         }
       }
     } else {
-      if (item.nextDueAt <= now || item.intervalDays === 0) {
+      if (item.nextDueAt <= now) {
         if (classifyCardHorizon(item) === 'learning') {
           dueRecallZeroPool.push(cand);
         } else {
@@ -828,7 +868,7 @@ export function prepareSessionQueue(
     return [];
   }
 
-  // Step A — Mastered Retention Slots (1-2 cards)
+  // Step A — Mastered Retention Slots (1-2 cards per batch, ~13-15%)
   const selectedMastered: QueueCandidate[] = [];
   const nonMasteredActiveCount =
     dueStage0Pool.length +
@@ -842,8 +882,8 @@ export function prepareSessionQueue(
     const totalMasteredCount = dueMasteredPool.length + retentionMasteredPool.length;
     if (totalMasteredCount > 0) {
       const targetMasteredCount =
-        totalMasteredCount >= 8
-          ? Math.max(1, Math.min(2, Math.round(batchSize * 0.13)))
+        totalMasteredCount >= 4
+          ? Math.max(1, Math.min(3, Math.round(batchSize * 0.14)))
           : 1;
 
       // Pick from dueMasteredPool first
@@ -852,7 +892,7 @@ export function prepareSessionQueue(
 
       const neededRetention = targetMasteredCount - selectedMastered.length;
       if (neededRetention > 0 && retentionMasteredPool.length > 0) {
-        const halfSliceCount = Math.max(neededRetention, Math.ceil(retentionMasteredPool.length * 0.5));
+        const halfSliceCount = Math.max(neededRetention, Math.ceil(retentionMasteredPool.length * 0.6));
         const poolSlice = retentionMasteredPool.slice(0, halfSliceCount);
         const pickedRetention = shuffleArray(poolSlice).slice(0, neededRetention);
         selectedMastered.push(...pickedRetention);
@@ -990,6 +1030,7 @@ export function prepareSessionQueue(
     fillFrom(dueRecallZeroPool);
     fillFrom(dueRecallOnePool);
     fillFrom(dueMasteredPool);
+    fillFrom(retentionMasteredPool);
   }
 
   const allSelected = [...selectedMastered, ...selectedLearning];
@@ -1002,15 +1043,21 @@ export function prepareSessionQueue(
 }
 
 /**
- * Builds a pre-session Flag Study Cohort of up to `limit` (default 50) countries.
- * Guarantees that every country with a `'flag'` question in `sessionQueue` is included first,
- * then fills remaining slots up to `limit` with due/unseen `'flag'` cards from `continentFilter`.
+ * Builds a smartly-sampled 50-Flag Study Cohort for a continuous session:
+ * - Exclusively defines the 50 flags that can be asked during the continuous session.
+ * - Includes a small maintenance subset of Mastered flags (~14%, e.g. 7 out of 50) weighted by
+ *   lowest FSRS retrievability R(t, S) and time since last review so mastered flags stay in memory.
+ * - Fills the remaining ~86% (e.g. 43 out of 50) by pushing unmastered flags:
+ *   1. Due in-progress flags (Active Recall 1/2 & Learning 0/2 & Lapsed Stage 0)
+ *   2. Consolidating in-progress flags (so active learning cards stay in the session cohort)
+ *   3. Unseen flags sampled with regional balance and dual-coding synergy
  */
 export function buildFlagStudyCohort(
   existingItemsMap: Map<string, SRSItem>,
   continentFilter: TrainingCategory,
-  sessionQueue: TrainingQuestion[],
-  limit: number = 50
+  sessionQueue: TrainingQuestion[] = [],
+  limit: number = 50,
+  targetCountryId?: string | null
 ): Country[] {
   if (continentFilter === 'Oceans') return [];
 
@@ -1020,57 +1067,216 @@ export function buildFlagStudyCohort(
       : COUNTRIES.filter((c) => c.continent === continentFilter);
 
   const targetCount = Math.min(limit, eligibleCountries.length);
-  const selectedMap = new Map<string, Country>();
+  if (eligibleCountries.length <= targetCount) {
+    return shuffleArray(eligibleCountries);
+  }
 
-  // 1. Always include all countries that appear as flag questions in the upcoming session queue
-  for (const q of sessionQueue) {
-    if (q.attributeId === 'flag' && !q.country.id.startsWith('WATER_')) {
-      selectedMap.set(q.country.id, q.country);
-      if (selectedMap.size >= targetCount) break;
+  const selectedMap = new Map<string, Country>();
+  const now = new Date().toISOString();
+  const nowMs = Date.now();
+
+  // 1. If a specific target country was requested, include it first
+  if (targetCountryId && !targetCountryId.startsWith('WATER_')) {
+    const targetCountry = eligibleCountries.find((c) => c.id === targetCountryId);
+    if (targetCountry) {
+      selectedMap.set(targetCountry.id, targetCountry);
     }
   }
 
-  // 2. Also include other countries in the session queue if space remains
-  if (selectedMap.size < targetCount) {
-    for (const q of sessionQueue) {
-      if (!q.country.id.startsWith('WATER_') && !selectedMap.has(q.country.id)) {
+  // 2. If a pre-built sessionQueue was passed, include any explicit flag questions in it
+  for (const q of sessionQueue) {
+    if (q.attributeId === 'flag' && !q.country.id.startsWith('WATER_')) {
+      if (eligibleCountries.some((c) => c.id === q.country.id)) {
         selectedMap.set(q.country.id, q.country);
-        if (selectedMap.size >= targetCount) break;
+        if (selectedMap.size >= targetCount) {
+          return Array.from(selectedMap.values());
+        }
       }
     }
   }
 
-  if (selectedMap.size >= targetCount) {
-    return Array.from(selectedMap.values());
+  // Compute regional balance weights for flag mastery across continents
+  const regionTotals = new Map<string, number>();
+  const regionUnmastered = new Map<string, number>();
+  for (const c of eligibleCountries) {
+    const reg = c.continent;
+    regionTotals.set(reg, (regionTotals.get(reg) || 0) + 1);
+    const item = existingItemsMap.get(`${c.id}:flag`);
+    if (!item || classifyCardHorizon(item) !== 'mastered') {
+      regionUnmastered.set(reg, (regionUnmastered.get(reg) || 0) + 1);
+    }
   }
 
-  // 3. Fill remaining slots up to `targetCount` prioritizing learning/unseen/due flag cards
-  const now = new Date().toISOString();
-  const learningPool: Country[] = [];
-  const unseenPool: Country[] = [];
-  const recallDuePool: Country[] = [];
-  const otherPool: Country[] = [];
+  const regionWeights = new Map<string, number>();
+  for (const [reg, total] of regionTotals.entries()) {
+    const unmasteredRatio = (regionUnmastered.get(reg) || 0) / Math.max(1, total);
+    regionWeights.set(reg, 1 + unmasteredRatio * 2.5);
+  }
 
-  for (const c of shuffleArray(eligibleCountries)) {
+  // Partition remaining eligible countries by Flag SRS Horizon
+  const dueInProgressPool: Country[] = [];
+  const consolidatingInProgressPool: Country[] = [];
+  const unseenPool: Country[] = [];
+  const masteredPool: Country[] = [];
+
+  for (const c of eligibleCountries) {
     if (selectedMap.has(c.id)) continue;
     const item = existingItemsMap.get(`${c.id}:flag`);
     if (!item) {
       unseenPool.push(c);
-    } else if (item.stage === 0 || classifyCardHorizon(item) === 'learning') {
-      learningPool.push(c);
+    } else if (classifyCardHorizon(item) === 'mastered') {
+      masteredPool.push(c);
     } else if (item.nextDueAt <= now || item.intervalDays === 0) {
-      recallDuePool.push(c);
+      dueInProgressPool.push(c);
     } else {
-      otherPool.push(c);
+      consolidatingInProgressPool.push(c);
     }
   }
 
-  for (const pool of [learningPool, unseenPool, recallDuePool, otherPool]) {
-    for (const c of pool) {
+  const getRegion = (c: Country) => c.continent;
+
+  // 3. Sample a small subset of Mastered flags (~14%, e.g. 7 out of 50) for long-term memory maintenance
+  const totalUnmasteredAvailable =
+    dueInProgressPool.length + consolidatingInProgressPool.length + unseenPool.length;
+  const remainingSlotsAfterMandatory = Math.max(0, targetCount - selectedMap.size);
+
+  const baseMasteredTarget =
+    masteredPool.length > 0
+      ? Math.min(masteredPool.length, Math.max(3, Math.round(targetCount * 0.14)))
+      : 0;
+  const targetMasteredCount = Math.min(
+    masteredPool.length,
+    Math.max(baseMasteredTarget, remainingSlotsAfterMandatory - totalUnmasteredAvailable)
+  );
+
+  if (targetMasteredCount > 0) {
+    const pickedMastered = selectWeightedByRegion(
+      masteredPool,
+      targetMasteredCount,
+      getRegion,
+      regionWeights,
+      (c) => {
+        const item = existingItemsMap.get(`${c.id}:flag`);
+        if (!item) return 1;
+        const R = computeRetrievability(item, nowMs);
+        const lastRevMs = item.lastReviewedAt ? new Date(item.lastReviewedAt).getTime() : 0;
+        const elapsedHours = lastRevMs ? Math.max(0, (nowMs - lastRevMs) / 3600000) : 72;
+        // Deprioritize mastered flags reviewed within the last 2 hours so new sessions rotate fresh mastered flags
+        if (elapsedHours < 2) return 0.12;
+        const isDueNow = item.nextDueAt <= now;
+        const dueBoost = isDueNow ? 4.0 : 1.0;
+        const forgettingBoost = 1 + Math.max(0, 1 - R) * 3.0;
+        const ageBoost = Math.min(2.0, elapsedHours / 48);
+        return dueBoost * forgettingBoost + ageBoost;
+      }
+    );
+    for (const c of pickedMastered) {
       selectedMap.set(c.id, c);
-      if (selectedMap.size >= targetCount) break;
     }
-    if (selectedMap.size >= targetCount) break;
+  }
+
+  // 4. Fill the unmastered budget by pushing in-progress flags first, then introducing unseen flags
+  const unmasteredBudget = Math.max(0, targetCount - selectedMap.size);
+
+  // 4a. Due In-Progress Flags (Recall 1/2, Learning 0/2, Lapsed Stage 0) — up to 55% of unmasteredBudget
+  const targetDueInProgress = Math.min(
+    dueInProgressPool.length,
+    Math.ceil(unmasteredBudget * 0.55)
+  );
+  if (targetDueInProgress > 0) {
+    const pickedDueInProgress = selectWeightedByRegion(
+      dueInProgressPool,
+      targetDueInProgress,
+      getRegion,
+      regionWeights,
+      (c) => {
+        const base = regionWeights.get(c.continent) ?? 1;
+        const item = existingItemsMap.get(`${c.id}:flag`);
+        if (!item) return base;
+        const horizon = classifyCardHorizon(item);
+        // Strong push for 'recall' cards (1 step away from Mastery) and lapsed cards
+        const horizonBoost = horizon === 'recall' ? 1.65 : 1.25;
+        const lapseBoost = item.lapses > 0 ? 1 + Math.min(item.lapses, 3) * 0.45 : 1.0;
+        const interferenceBoost = item.confusedWith && item.confusedWith.length > 0 ? 1.35 : 1.0;
+        const R = computeRetrievability(item, nowMs);
+        const urgencyBoost = 1 + Math.max(0, 1 - R) * 1.5;
+        return base * horizonBoost * lapseBoost * interferenceBoost * urgencyBoost;
+      }
+    );
+    for (const c of pickedDueInProgress) {
+      selectedMap.set(c.id, c);
+    }
+  }
+
+  // 4b. Consolidating In-Progress Flags — up to 20% of unmasteredBudget so active learning cards stay in cohort
+  const remainingForConsolidating = Math.max(0, targetCount - selectedMap.size);
+  const targetConsolidating = Math.min(
+    consolidatingInProgressPool.length,
+    Math.min(remainingForConsolidating, Math.ceil(unmasteredBudget * 0.2))
+  );
+  if (targetConsolidating > 0) {
+    const pickedConsolidating = selectWeightedByRegion(
+      consolidatingInProgressPool,
+      targetConsolidating,
+      getRegion,
+      regionWeights,
+      (c) => {
+        const base = regionWeights.get(c.continent) ?? 1;
+        const item = existingItemsMap.get(`${c.id}:flag`);
+        if (!item) return base;
+        const horizon = classifyCardHorizon(item);
+        const horizonBoost = horizon === 'recall' ? 1.5 : 1.2;
+        const dueMs = item.nextDueAt ? new Date(item.nextDueAt).getTime() : nowMs;
+        const hoursUntilDue = Math.max(0.1, (dueMs - nowMs) / 3600000);
+        // Prefer cards whose consolidation timer will unlock soonest
+        const proximityBoost = 1 + 1 / (1 + hoursUntilDue);
+        return base * horizonBoost * proximityBoost;
+      }
+    );
+    for (const c of pickedConsolidating) {
+      selectedMap.set(c.id, c);
+    }
+  }
+
+  // 4c. Unseen Flags — fill remaining slots with regional balance & Dual-Coding synergy
+  const remainingForUnseen = Math.max(0, targetCount - selectedMap.size);
+  if (remainingForUnseen > 0 && unseenPool.length > 0) {
+    const pickedUnseen = selectWeightedByRegion(
+      unseenPool,
+      remainingForUnseen,
+      getRegion,
+      regionWeights,
+      (c) => {
+        const base = regionWeights.get(c.continent) ?? 1;
+        // Boost unseen flags for countries the learner has already encountered in Capital/Location/Map
+        const hasKnownSibling = ['capital', 'location', 'country'].some((attr) =>
+          existingItemsMap.has(`${c.id}:${attr}`)
+        );
+        return base * (hasKnownSibling ? 1.45 : 1.0);
+      }
+    );
+    for (const c of pickedUnseen) {
+      selectedMap.set(c.id, c);
+    }
+  }
+
+  // 5. Rollover if any pool had fewer items than its quota so we always reach targetCount (50)
+  if (selectedMap.size < targetCount) {
+    for (const pool of [
+      dueInProgressPool,
+      consolidatingInProgressPool,
+      unseenPool,
+      masteredPool
+    ]) {
+      const remaining = pool.filter((c) => !selectedMap.has(c.id));
+      const needed = targetCount - selectedMap.size;
+      if (needed <= 0) break;
+      if (remaining.length === 0) continue;
+      const picked = selectWeightedByRegion(remaining, needed, getRegion, regionWeights);
+      for (const c of picked) {
+        selectedMap.set(c.id, c);
+      }
+    }
   }
 
   return Array.from(selectedMap.values());
@@ -1202,10 +1408,11 @@ export function scheduleInStreamFollowUp(
  * Continuously stocks the upcoming training stream when the lookahead buffer runs low.
  * - Strictly respects `nextDueAt` wall-clock timestamps: never pulls cards scheduled in the future
  *   as SRS-mutating cards.
+ * - Strictly restricts `'flag'` questions to `allowedFlagCountryIds` (the session's 50-flag cohort).
  * - Deduplicates against cards already waiting in `currentQueue.slice(currentIndex + 1)`.
- * - If all due & unseen cards in the filtered region are currently waiting for future `nextDueAt`
- *   timers, seamlessly serves non-mutating retention/practice cards (`isRetry: true`) until
- *   real-time due timestamps arrive.
+ * - If all due & unseen cards in the filtered region/cohort are currently waiting for future `nextDueAt`
+ *   timers, seamlessly serves non-mutating retention/practice cards (`isRetry: true`) from the same
+ *   cohort until real-time due timestamps arrive.
  */
 export function replenishStreamQueue(
   currentQueue: TrainingQuestion[],
@@ -1214,7 +1421,8 @@ export function replenishStreamQueue(
   continentFilter: 'All' | Continent | 'Oceans',
   attributeFilter: string[],
   chunkSize: number = 18,
-  practiceMode: boolean = false
+  practiceMode: boolean = false,
+  allowedFlagCountryIds?: Set<string>
 ): { queue: TrainingQuestion[]; enteredRetentionStream: boolean } {
   const upcoming = currentQueue.slice(Math.max(0, currentIndex + 1));
   const upcomingIds = new Set<string>(upcoming.map((q) => q.srsItemId));
@@ -1242,15 +1450,20 @@ export function replenishStreamQueue(
   let enteredRetentionStream = false;
 
   if (!practiceMode) {
-    // Only pull cards that are genuinely due right now (`nextDueAt <= now`) or unseen
-    freshBatch = prepareSessionQueue(maskedMap, continentFilter, attributeFilter, chunkSize * 2, false).filter(
-      (q) => !upcomingIds.has(q.srsItemId)
-    );
+    // Only pull cards that are genuinely due right now (`nextDueAt <= now`) or unseen within the cohort
+    freshBatch = prepareSessionQueue(
+      maskedMap,
+      continentFilter,
+      attributeFilter,
+      chunkSize * 2,
+      false,
+      allowedFlagCountryIds
+    ).filter((q) => !upcomingIds.has(q.srsItemId));
   }
 
-  // If all due & unseen cards in this filter are currently scheduled in the future (`nextDueAt > now`),
-  // serve non-mutating practice/retention cards (`isRetry: true`) so the stream continues smoothly
-  // without artificially advancing SRS stages before real time has elapsed!
+  // If all due & unseen cards in this filter/cohort are currently scheduled in the future (`nextDueAt > now`),
+  // serve non-mutating practice/retention cards (`isRetry: true`) exclusively from the same cohort
+  // so the stream continues smoothly without artificially advancing SRS stages before real time has elapsed!
   if (freshBatch.length === 0) {
     if (!practiceMode) {
       enteredRetentionStream = true;
@@ -1261,7 +1474,8 @@ export function replenishStreamQueue(
       continentFilter,
       attributeFilter,
       chunkSize * 3,
-      true
+      true,
+      allowedFlagCountryIds
     ).map((q) => ({
       ...q,
       isRetry: !practiceMode ? true : q.isRetry

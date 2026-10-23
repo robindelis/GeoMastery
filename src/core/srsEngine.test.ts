@@ -464,18 +464,69 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     expect(countryItem.stage).toBe(2);
   });
 
-  it('builds a 50-flag study cohort that includes all upcoming session flag questions and generates roll-through questions', () => {
-    const itemsMap = new Map();
-    const sessionQueue = prepareSessionQueue(itemsMap, 'All', ['capital', 'flag'], 15, false);
-    const cohort = buildFlagStudyCohort(itemsMap, 'All', sessionQueue, 50);
+  it('builds a smart 50-flag study cohort (pushing unmastered flags with a small subset of mastered flags) and exclusively restricts continuous stream flag questions to that 50-flag cohort', () => {
+    const itemsMap = new Map<string, SRSItem>();
+    const threeDaysAgo = new Date(Date.now() - 3 * 86400000).toISOString();
+    const tenDaysFuture = new Date(Date.now() + 10 * 86400000).toISOString();
 
+    // Seed 25 Mastered flags and 20 in-progress unmastered flags across the world
+    COUNTRIES.slice(0, 25).forEach((c) => {
+      const m = createInitialSRSItem(c.id, 'flag');
+      m.stage = 2;
+      m.stability = 14;
+      m.intervalDays = 14;
+      m.lastReviewedAt = threeDaysAgo;
+      m.nextDueAt = tenDaysFuture;
+      itemsMap.set(m.id, m);
+    });
+
+    COUNTRIES.slice(25, 45).forEach((c, idx) => {
+      const l = createInitialSRSItem(c.id, 'flag');
+      l.stage = 1;
+      l.stability = idx % 2 === 0 ? 1.4 : 2.8;
+      l.intervalDays = 1;
+      l.lastReviewedAt = threeDaysAgo;
+      l.nextDueAt = new Date(Date.now() - 3600000).toISOString(); // Due now
+      itemsMap.set(l.id, l);
+    });
+
+    // 1. Build the 50-flag cohort for a new continuous session
+    const cohort = buildFlagStudyCohort(itemsMap, 'All', [], 50);
     expect(cohort.length).toBe(50);
 
     const cohortIds = new Set(cohort.map((c) => c.id));
-    for (const q of sessionQueue) {
-      if (q.attributeId === 'flag') {
-        expect(cohortIds.has(q.country.id)).toBe(true);
-      }
+    expect(cohortIds.size).toBe(50);
+
+    // Verify smart composition: pushes unmastered flags (~86%) with a small subset of mastered flags (~14%, ~7 flags)
+    const masteredInCohort = cohort.filter(
+      (c) => classifyCardHorizon(itemsMap.get(`${c.id}:flag`)) === 'mastered'
+    );
+    const unmasteredInCohort = cohort.filter(
+      (c) => classifyCardHorizon(itemsMap.get(`${c.id}:flag`)) !== 'mastered'
+    );
+    expect(masteredInCohort.length).toBeGreaterThanOrEqual(3);
+    expect(masteredInCohort.length).toBeLessThanOrEqual(10);
+    expect(unmasteredInCohort.length).toBeGreaterThanOrEqual(40);
+
+    // 2. Verify that initial stream and multiple replenishments ONLY suggest flag questions from cohortIds
+    let stream = replenishStreamQueue([], -1, itemsMap, 'All', ['flag'], 24, false, cohortIds);
+    expect(stream.queue.length).toBe(24);
+    for (const q of stream.queue) {
+      expect(q.attributeId).toBe('flag');
+      expect(cohortIds.has(q.country.id)).toBe(true);
+    }
+
+    // Replenish again mid-stream
+    stream = replenishStreamQueue(stream.queue, 15, itemsMap, 'All', ['flag'], 18, false, cohortIds);
+    for (const q of stream.queue) {
+      expect(cohortIds.has(q.country.id)).toBe(true);
+    }
+
+    // Even in practice/fallback mode, 100% of flag questions must come from cohortIds
+    const practiceStream = replenishStreamQueue([], -1, itemsMap, 'All', ['flag'], 30, true, cohortIds);
+    expect(practiceStream.queue.length).toBe(30);
+    for (const q of practiceStream.queue) {
+      expect(cohortIds.has(q.country.id)).toBe(true);
     }
 
     const rollQueue = buildFlagCohortQuestions(itemsMap, cohort);
@@ -483,6 +534,7 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     for (const q of rollQueue) {
       expect(q.attributeId).toBe('flag');
       expect(q.expectedInputMode).toBe('typing');
+      expect(cohortIds.has(q.country.id)).toBe(true);
     }
   });
 
