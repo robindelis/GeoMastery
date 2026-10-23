@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:50:12.963Z",
+  "exportedAt": "2026-10-23T11:50:17.511Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -18211,13 +18211,13 @@
         "countryId": "COL",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.25,
-        "intervalDays": 0,
-        "reps": 3,
+        "step": 1,
+        "easeFactor": 2.3,
+        "intervalDays": 5,
+        "reps": 4,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-21T11:33:22.155Z",
-        "nextDueAt": "2026-10-21T11:33:22.155Z",
+        "lastReviewedAt": "2026-10-23T11:50:14.058Z",
+        "nextDueAt": "2026-10-28T11:50:14.058Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:46:39.916Z",
@@ -18254,12 +18254,20 @@
             "isCorrect": false,
             "timeSpentMs": 6688,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-23T11:50:14.058Z",
+            "inputMode": "map_click",
+            "userAnswer": "Colombia",
+            "isCorrect": true,
+            "timeSpentMs": 3299,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.88,
-        "difficulty": 6.78,
-        "lastLatencyGrade": 1,
+        "stability": 5.43,
+        "difficulty": 6.32,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "VEN"
         ]
@@ -23500,8 +23508,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1664,
-    "totalCorrect": 1188,
+    "totalReviews": 1665,
+    "totalCorrect": 1189,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -23539,7 +23547,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:50:09.801Z"
+    "updatedAt": "2026-10-23T11:50:14.062Z"
   },
   "settings": {
     "audioEnabled": true,
