@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:40:49.046Z",
+  "exportedAt": "2026-10-23T11:41:05.283Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19299,14 +19299,14 @@
         "id": "VEN:location",
         "countryId": "VEN",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.43,
+        "intervalDays": 24,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-14T21:15:44.419Z",
-        "nextDueAt": "2026-10-15T21:15:44.419Z",
+        "lastReviewedAt": "2026-10-23T11:41:01.799Z",
+        "nextDueAt": "2026-11-16T11:41:01.799Z",
         "history": [
           {
             "timestamp": "2026-10-14T19:37:17.977Z",
@@ -19321,11 +19321,21 @@
             "userAnswer": "Venezuela",
             "isCorrect": true,
             "timeSpentMs": 2585
+          },
+          {
+            "timestamp": "2026-10-23T11:41:01.799Z",
+            "inputMode": "map_click",
+            "userAnswer": "Venezuela",
+            "isCorrect": true,
+            "timeSpentMs": 2150,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 5.82
+        "stability": 24.18,
+        "difficulty": 4.81,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -22868,11 +22878,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "CAN:country",
+      {
+        "id": "CAN:country",
+        "countryId": "CAN",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-23T11:40:59.420Z",
+        "nextDueAt": "2026-10-23T11:55:59.420Z",
+        "history": [
+          {
+            "timestamp": "2026-10-23T11:40:59.420Z",
+            "inputMode": "typing",
+            "userAnswer": "Canada",
+            "isCorrect": true,
+            "timeSpentMs": 2509,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1625,
-    "totalCorrect": 1161,
+    "totalReviews": 1627,
+    "totalCorrect": 1163,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -22884,8 +22924,8 @@
       },
       "Americas": {
         "total": 70,
-        "mastered": 34,
-        "learning": 36
+        "mastered": 35,
+        "learning": 35
       },
       "Asia": {
         "total": 96,
@@ -22910,7 +22950,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:40:45.036Z"
+    "updatedAt": "2026-10-23T11:41:01.802Z"
   },
   "settings": {
     "audioEnabled": true,
