@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:38:28.014Z",
+  "exportedAt": "2026-10-23T11:38:31.591Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -10952,13 +10952,13 @@
         "countryId": "WATER_SEA_JAPAN",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 41,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:04:43.954Z",
-        "nextDueAt": "2026-10-15T20:04:43.954Z",
+        "lastReviewedAt": "2026-10-23T11:38:28.308Z",
+        "nextDueAt": "2026-12-03T11:38:28.308Z",
         "history": [
           {
             "timestamp": "2026-10-05T09:46:11.679Z",
@@ -10980,11 +10980,21 @@
             "userAnswer": "Sea of Japan",
             "isCorrect": true,
             "timeSpentMs": 3519
+          },
+          {
+            "timestamp": "2026-10-23T11:38:28.308Z",
+            "inputMode": "map_click",
+            "userAnswer": "Sea of Japan",
+            "isCorrect": true,
+            "timeSpentMs": 2774,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.64
+        "stability": 41,
+        "difficulty": 4.35,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -22689,8 +22699,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1613,
-    "totalCorrect": 1154,
+    "totalReviews": 1614,
+    "totalCorrect": 1155,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -22728,7 +22738,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:38:24.951Z"
+    "updatedAt": "2026-10-23T11:38:28.311Z"
   },
   "settings": {
     "audioEnabled": true,
