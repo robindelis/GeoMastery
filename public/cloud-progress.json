@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:42:10.062Z",
+  "exportedAt": "2026-10-23T11:42:15.330Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -1433,13 +1433,13 @@
         "countryId": "AND",
         "attributeId": "capital",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.2,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 2.25,
+        "intervalDays": 6,
+        "reps": 3,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-21T11:46:00.558Z",
-        "nextDueAt": "2026-10-21T11:46:00.558Z",
+        "lastReviewedAt": "2026-10-23T11:42:12.189Z",
+        "nextDueAt": "2026-10-29T11:42:12.189Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:07:07.613Z",
@@ -1469,12 +1469,20 @@
             "isCorrect": false,
             "timeSpentMs": 2762,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-23T11:42:12.189Z",
+            "inputMode": "typing",
+            "userAnswer": "Andorra la vella",
+            "isCorrect": true,
+            "timeSpentMs": 4900,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.97,
-        "difficulty": 6.55,
-        "lastLatencyGrade": 1,
+        "stability": 5.71,
+        "difficulty": 6.11,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -22995,8 +23003,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1632,
-    "totalCorrect": 1167,
+    "totalReviews": 1633,
+    "totalCorrect": 1168,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -23034,7 +23042,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:42:07.072Z"
+    "updatedAt": "2026-10-23T11:42:12.192Z"
   },
   "settings": {
     "audioEnabled": true,
