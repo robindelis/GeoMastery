@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T11:47:35.240Z",
+  "exportedAt": "2026-10-23T11:47:50.065Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7672,12 +7672,12 @@
         "attributeId": "location",
         "stage": 1,
         "step": 0,
-        "easeFactor": 2.4,
+        "easeFactor": 2.2,
         "intervalDays": 0,
         "reps": 2,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-21T11:54:24.006Z",
-        "nextDueAt": "2026-10-21T11:54:24.006Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-23T11:47:46.624Z",
+        "nextDueAt": "2026-10-23T11:57:46.624Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:55:52.962Z",
@@ -7700,13 +7700,22 @@
             "isCorrect": false,
             "timeSpentMs": 10976,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-23T11:47:46.624Z",
+            "inputMode": "map_click",
+            "userAnswer": "Palau",
+            "isCorrect": false,
+            "timeSpentMs": 9861,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.93,
-        "difficulty": 5.71,
+        "stability": 0.6,
+        "difficulty": 6.61,
         "lastLatencyGrade": 1,
         "confusedWith": [
+          "PLW",
           "FJI"
         ]
       }
@@ -23337,7 +23346,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1653,
+    "totalReviews": 1654,
     "totalCorrect": 1179,
     "currentStreak": 3,
     "longestStreak": 4,
@@ -23376,7 +23385,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T11:47:31.935Z"
+    "updatedAt": "2026-10-23T11:47:46.628Z"
   },
   "settings": {
     "audioEnabled": true,
