@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-23T10:56:53.051Z",
+  "exportedAt": "2026-10-23T10:57:02.849Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -21728,13 +21728,13 @@
         "countryId": "TJK",
         "attributeId": "country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.35,
-        "intervalDays": 1,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.4,
+        "intervalDays": 3,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-23T10:55:34.000Z",
-        "nextDueAt": "2026-10-24T10:55:34.000Z",
+        "lastReviewedAt": "2026-10-23T10:56:58.807Z",
+        "nextDueAt": "2026-10-26T10:56:58.807Z",
         "history": [
           {
             "timestamp": "2026-10-22T10:03:33.828Z",
@@ -21751,10 +21751,18 @@
             "isCorrect": true,
             "timeSpentMs": 3992,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-23T10:56:58.807Z",
+            "inputMode": "typing",
+            "userAnswer": "Tajikistan",
+            "isCorrect": true,
+            "timeSpentMs": 4263,
+            "grade": 3
           }
         ],
-        "difficulty": 5.59,
-        "stability": 1.4,
+        "difficulty": 5.22,
+        "stability": 3.01,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -21855,14 +21863,14 @@
         "id": "ETH:flag",
         "countryId": "ETH",
         "attributeId": "flag",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.38,
+        "intervalDays": 1,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-23T10:54:33.112Z",
-        "nextDueAt": "2026-10-23T10:54:33.112Z",
+        "lastReviewedAt": "2026-10-23T10:57:01.483Z",
+        "nextDueAt": "2026-10-24T10:57:01.483Z",
         "history": [
           {
             "timestamp": "2026-10-23T10:54:33.112Z",
@@ -21871,11 +21879,19 @@
             "isCorrect": false,
             "timeSpentMs": 6712,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-23T10:57:01.483Z",
+            "inputMode": "typing",
+            "userAnswer": "Ethiopia",
+            "isCorrect": true,
+            "timeSpentMs": 2352,
+            "grade": 4
           }
         ],
-        "difficulty": 5.99,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 4.99,
+        "stability": 1.9,
+        "lastLatencyGrade": 4,
         "confusedWith": []
       }
     ],
@@ -21911,8 +21927,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1561,
-    "totalCorrect": 1115,
+    "totalReviews": 1563,
+    "totalCorrect": 1117,
     "currentStreak": 3,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-23",
@@ -21950,7 +21966,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-23T10:56:49.900Z"
+    "updatedAt": "2026-10-23T10:57:01.486Z"
   },
   "settings": {
     "audioEnabled": true,
