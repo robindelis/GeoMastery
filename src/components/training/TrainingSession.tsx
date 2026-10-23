@@ -908,10 +908,15 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
             </button>
           )}
 
-          {isPracticeMode ? (
-            <span className="text-[10px] font-bold tracking-wider px-2 sm:px-3 py-1 rounded-full border bg-violet-950/60 border-violet-700/60 text-violet-300 flex items-center gap-1 shadow-sm">
+          {isPracticeMode || currentQuestion.isRetry ? (
+            <span
+              className="text-[10px] font-bold tracking-wider px-2 sm:px-3 py-1 rounded-full border bg-violet-950/60 border-violet-700/60 text-violet-300 flex items-center gap-1 shadow-sm"
+              title="Reinforcement or practice card — does not alter your spaced repetition intervals"
+            >
               <Zap className="w-3 h-3 fill-violet-400 text-violet-400" />
-              <span className="hidden xs:inline">PRACTICE</span>
+              <span className="hidden xs:inline">
+                {currentQuestion.isRetry && !isPracticeMode ? 'REINFORCEMENT' : 'PRACTICE'}
+              </span>
               <span className="text-[9px] text-violet-300/80 font-normal hidden sm:inline">(SRS Paused)</span>
             </span>
           ) : (() => {

@@ -19,6 +19,7 @@ import {
 } from './srsEngine';
 import { COUNTRIES, COUNTRIES_BY_ID } from '../assets/data/countries';
 import { WATER_BODIES } from '../assets/data/waterBodies';
+import { SRSItem } from './types';
 
 describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => {
   it('initializes items in Stage 0 (Multiple Choice Scaffolding) with FSRS parameters', () => {
@@ -60,21 +61,27 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     expect(classifyCardHorizon(updatedItem)).toBe('learning');
   });
 
-  it('progresses Stability S through consolidating recall into Mastered (Stage 2) via FSRS-6 DSR', () => {
+  it('progresses Stability S through consolidating recall into Mastered (Stage 2) via time-gated FSRS-6 DSR', () => {
     let item = createInitialSRSItem('ITA', 'capital');
-    // 1. Initial MCQ -> Graduates to Stage 1 (Acquisition Learning)
+    // 1. Initial MCQ -> Graduates to Stage 1 (Acquisition Learning, due in 15m)
     item = processAnswer(item, true, 'multiple_choice', 'Rome', 1500).updatedItem;
     expect(item.stage).toBe(1);
     expect(classifyCardHorizon(item)).toBe('learning');
 
-    // 2. Active recall 1st success -> Enters Consolidating Recall (S >= 2.2d)
+    // Simulate 15 minutes of elapsed intraday time before active recall verification
+    item.lastReviewedAt = new Date(Date.now() - 15 * 60 * 1000).toISOString();
+
+    // 2. Active recall 1st success (after 15m) -> Enters Consolidating Recall (S >= 2.2d, due tomorrow)
     const res1 = processAnswer(item, true, 'typing', 'Rome', 4200);
     item = res1.updatedItem;
     expect(item.stage).toBe(1);
     expect(classifyCardHorizon(item)).toBe('recall');
     expect(res1.promotedToMastered).toBe(false);
 
-    // 3. Next active recall success -> Crosses MASTERY_STABILITY_DAYS (S >= 6.0d), promoted to Stage 2!
+    // Simulate 1 day (24h) of overnight consolidation before next review
+    item.lastReviewedAt = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+
+    // 3. Next active recall success on subsequent day -> Crosses MASTERY_STABILITY_DAYS (S >= 6.0d), promoted to Stage 2!
     const res2 = processAnswer(item, true, 'typing', 'Rome', 2500);
     item = res2.updatedItem;
     expect(item.stage).toBe(2);
@@ -84,21 +91,25 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     expect(item.intervalDays).toBeGreaterThanOrEqual(7);
   });
 
-  it('reduces stability to post-lapse S_f upon failure in Stage 1 and requires re-stabilization', () => {
+  it('reduces stability to post-lapse S_f upon failure in Stage 1 and requires time-spaced re-stabilization', () => {
     let item = createInitialSRSItem('ESP', 'capital');
     item = processAnswer(item, true, 'multiple_choice', 'Madrid', 1200).updatedItem;
+    item.lastReviewedAt = new Date(Date.now() - 15 * 60 * 1000).toISOString();
     item = processAnswer(item, true, 'typing', 'Madrid', 3500).updatedItem;
     expect(classifyCardHorizon(item)).toBe('recall');
 
-    // Fail active recall -> post-lapse stability drops back into learning (< 2.2d)
+    // Fail active recall -> post-lapse stability drops back into learning (< 2.2d), scheduled in 10 minutes
     item = processAnswer(item, false, 'typing', 'Barcelona', 2000).updatedItem;
     expect(item.stage).toBe(1);
     expect(classifyCardHorizon(item)).toBe('learning');
-    expect(item.intervalDays).toBe(0);
+    expect(item.intervalDays).toBeLessThan(1);
 
-    // Recover through active recall back to Mastered
+    // Recover through time-spaced active recall (after 15 minutes, then next day) back to Mastered
+    item.lastReviewedAt = new Date(Date.now() - 15 * 60 * 1000).toISOString();
     item = processAnswer(item, true, 'typing', 'Madrid', 3500).updatedItem;
     expect(classifyCardHorizon(item)).toBe('recall');
+
+    item.lastReviewedAt = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
     item = processAnswer(item, true, 'typing', 'Madrid', 2000).updatedItem;
     expect(item.stage).toBe(2);
     expect(classifyCardHorizon(item)).toBe('mastered');
@@ -107,7 +118,9 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
   it('demotes Mastered (Stage 2) card back to Stage 1 with post-lapse stability if missed later', () => {
     let item = createInitialSRSItem('JPN', 'location');
     item = processAnswer(item, true, 'multiple_choice', 'Japan', 1000).updatedItem;
+    item.lastReviewedAt = new Date(Date.now() - 15 * 60 * 1000).toISOString();
     item = processAnswer(item, true, 'map_click', 'Japan', 1800).updatedItem;
+    item.lastReviewedAt = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
     item = processAnswer(item, true, 'map_click', 'Japan', 1800).updatedItem;
     expect(item.stage).toBe(2);
 
@@ -115,7 +128,7 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     item = processAnswer(item, false, 'map_click', 'Korea', 1500).updatedItem;
     expect(item.stage).toBe(1);
     expect(item.stability).toBeLessThan(MASTERY_STABILITY_DAYS);
-    expect(item.intervalDays).toBe(0);
+    expect(item.intervalDays).toBeLessThan(1);
   });
 
   it('calibrates FSRS stability and difficulty automatically for legacy cards based on their state', () => {
@@ -352,7 +365,7 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     const { updatedItem } = processAnswer(masteredCard, false, 'typing', 'WrongAnswer', 2000);
     expect(updatedItem.stage).toBe(1);
     expect(updatedItem.stability).toBeLessThan(MASTERY_STABILITY_DAYS);
-    expect(updatedItem.intervalDays).toBe(0);
+    expect(updatedItem.intervalDays).toBeLessThan(1);
   });
 
   it('computes FSRS-6 power-law retrievability R(t, S) = 90% when elapsed time equals stability S', () => {
@@ -371,15 +384,19 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     expect(deriveActRGrade(true, 'typing', 11000)).toBe(2); // Hard
     expect(deriveActRGrade(false, 'typing', 1500)).toBe(1); // Again
 
-    // Fast fluent learner vs slow hesitant learner on the exact same card
+    // Fast fluent learner vs slow hesitant learner on the exact same card across spaced reviews
     let fastItem = createInitialSRSItem('DEU', 'capital');
     fastItem = processAnswer(fastItem, true, 'multiple_choice', 'Berlin', 1100).updatedItem;
+    fastItem.lastReviewedAt = new Date(Date.now() - 15 * 60 * 1000).toISOString();
     fastItem = processAnswer(fastItem, true, 'typing', 'Berlin', 1600).updatedItem;
+    fastItem.lastReviewedAt = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
     fastItem = processAnswer(fastItem, true, 'typing', 'Berlin', 1500).updatedItem;
 
     let slowItem = createInitialSRSItem('DEU', 'capital');
     slowItem = processAnswer(slowItem, true, 'multiple_choice', 'Berlin', 7000).updatedItem;
+    slowItem.lastReviewedAt = new Date(Date.now() - 15 * 60 * 1000).toISOString();
     slowItem = processAnswer(slowItem, true, 'typing', 'Berlin', 11000).updatedItem;
+    slowItem.lastReviewedAt = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
     slowItem = processAnswer(slowItem, true, 'typing', 'Berlin', 12000).updatedItem;
 
     expect(fastItem.stage).toBe(2);
@@ -437,10 +454,12 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     expect(qFlag0.correctAnswer).toBe('France');
     expect(qFlag0.prompt).toContain('flag');
 
-    // Progress through Stage 0 -> Stage 1 -> Stage 2 via typing answers
+    // Progress through Stage 0 -> Stage 1 -> Stage 2 via time-spaced typing answers
     countryItem = processAnswer(countryItem, true, 'typing', 'France', 1800).updatedItem;
     expect(countryItem.stage).toBe(1);
+    countryItem.lastReviewedAt = new Date(Date.now() - 15 * 60 * 1000).toISOString();
     countryItem = processAnswer(countryItem, true, 'typing', 'France', 2000).updatedItem;
+    countryItem.lastReviewedAt = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
     countryItem = processAnswer(countryItem, true, 'typing', 'France', 1800).updatedItem;
     expect(countryItem.stage).toBe(2);
   });
@@ -467,54 +486,65 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     }
   });
 
-  it('re-queues newly graduated L0 -> L1 and consolidating L1 cards at expanding gaps in-stream so they can reach Mastered in one sitting', () => {
+  it('enforces real wall-clock time spacing: never re-queues correct cards immediately and blocks rapid 5-minute promotions to Recall or Mastered', () => {
     const itemsMap = new Map();
     const initialStream = replenishStreamQueue([], -1, itemsMap, 'Europe', ['capital'], 24, false);
     let queue = initialStream.queue;
     expect(queue.length).toBe(24);
 
-    // Pick the first card at index 0 (Stage 0 MCQ)
     const firstQ = queue[0];
     expect(firstQ.stage).toBe(0);
 
-    // 1. Answer Stage 0 correctly -> Graduates to Stage 1
+    // 1. Answer Stage 0 correctly -> Graduates to Stage 1 Learning, scheduled 15 minutes in the future
     const item0 = createInitialSRSItem(firstQ.country.id, firstQ.attributeId);
     const res1 = processAnswer(item0, true, firstQ.expectedInputMode, firstQ.correctAnswer, 1400);
     itemsMap.set(res1.updatedItem.id, res1.updatedItem);
+    expect(classifyCardHorizon(res1.updatedItem)).toBe('learning');
+    expect(new Date(res1.updatedItem.nextDueAt).getTime()).toBeGreaterThan(Date.now() + 10 * 60 * 1000);
 
+    // Verify scheduleInStreamFollowUp does NOT re-insert a correctly answered card into the upcoming queue
     queue = scheduleInStreamFollowUp(queue, 0, firstQ, res1.updatedItem, true, false);
-    const firstFollowUpIdx = queue.findIndex((q, idx) => idx > 0 && q.srsItemId === firstQ.srsItemId);
-    expect(firstFollowUpIdx).toBeGreaterThanOrEqual(8);
-    expect(queue[firstFollowUpIdx].stage).toBe(1);
-    expect(queue[firstFollowUpIdx].expectedInputMode).toBe('typing');
-    expect(queue[firstFollowUpIdx].isRetry).toBe(false);
+    const duplicateIdx = queue.findIndex((q, idx) => idx > 0 && q.srsItemId === firstQ.srsItemId);
+    expect(duplicateIdx).toBe(-1);
 
-    // 2. Answer Stage 1 active recall at firstFollowUpIdx -> Enters Recall (S >= 2.2d)
-    const followUpQ1 = queue[firstFollowUpIdx];
-    const res2 = processAnswer(res1.updatedItem, true, 'typing', followUpQ1.correctAnswer, 2000);
-    itemsMap.set(res2.updatedItem.id, res2.updatedItem);
-    expect(res2.updatedItem.stage).toBe(1);
+    // 2. Even if the user somehow answers the card again 2 minutes later and 4 minutes later,
+    // it MUST stay in 'learning' and CANNOT jump to 'recall' or 'mastered' without real elapsed time!
+    let rapidItem: SRSItem = {
+      ...res1.updatedItem,
+      lastReviewedAt: new Date(Date.now() - 2 * 60 * 1000).toISOString()
+    };
+    rapidItem = processAnswer(rapidItem, true, 'typing', firstQ.correctAnswer, 1400).updatedItem;
+    expect(classifyCardHorizon(rapidItem)).toBe('learning');
+    expect(rapidItem.stage).toBe(1);
 
-    queue = scheduleInStreamFollowUp(queue, firstFollowUpIdx, followUpQ1, res2.updatedItem, true, false);
-    const secondFollowUpIdx = queue.findIndex(
-      (q, idx) => idx > firstFollowUpIdx && q.srsItemId === firstQ.srsItemId
-    );
-    expect(secondFollowUpIdx).toBeGreaterThan(firstFollowUpIdx);
+    rapidItem = {
+      ...rapidItem,
+      lastReviewedAt: new Date(Date.now() - 3 * 60 * 1000).toISOString()
+    };
+    rapidItem = processAnswer(rapidItem, true, 'typing', firstQ.correctAnswer, 1200).updatedItem;
+    expect(classifyCardHorizon(rapidItem)).toBe('learning');
+    expect(rapidItem.stage).toBe(1);
 
-    // 3. Answer second active recall -> Graduates to Stage 2 Mastered (S >= 6.0d), no further follow-up queued
-    const followUpQ2 = queue[secondFollowUpIdx];
-    const res3 = processAnswer(res2.updatedItem, true, 'typing', followUpQ2.correctAnswer, 1800);
-    expect(res3.updatedItem.stage).toBe(2);
-    expect(res3.promotedToMastered).toBe(true);
+    // 3. Even after 20 minutes (which allows advancing from Learning -> Recall),
+    // answering again 30 minutes later on the same day CANNOT jump to Mastered without >=8h overnight consolidation!
+    let intradayItem: SRSItem = {
+      ...res1.updatedItem,
+      lastReviewedAt: new Date(Date.now() - 20 * 60 * 1000).toISOString()
+    };
+    intradayItem = processAnswer(intradayItem, true, 'typing', firstQ.correctAnswer, 1400).updatedItem;
+    expect(classifyCardHorizon(intradayItem)).toBe('recall');
+    expect(intradayItem.stage).toBe(1);
 
-    queue = scheduleInStreamFollowUp(queue, secondFollowUpIdx, followUpQ2, res3.updatedItem, true, false);
-    const thirdFollowUpIdx = queue.findIndex(
-      (q, idx) => idx > secondFollowUpIdx && q.srsItemId === firstQ.srsItemId
-    );
-    expect(thirdFollowUpIdx).toBe(-1);
+    intradayItem = {
+      ...intradayItem,
+      lastReviewedAt: new Date(Date.now() - 45 * 60 * 1000).toISOString()
+    };
+    intradayItem = processAnswer(intradayItem, true, 'typing', firstQ.correctAnswer, 1400).updatedItem;
+    expect(classifyCardHorizon(intradayItem)).toBe('recall');
+    expect(intradayItem.stage).toBe(1);
   });
 
-  it('replenishes the continuous stream without duplicating upcoming cards and seamlessly transitions to retention when caught up', () => {
+  it('replenishes the continuous stream without duplicating upcoming cards and marks non-due fallback cards as non-mutating retries', () => {
     const itemsMap = new Map();
     const initial = replenishStreamQueue([], -1, itemsMap, 'Oceania', ['capital'], 10, false);
     expect(initial.queue.length).toBe(10);

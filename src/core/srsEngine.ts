@@ -72,6 +72,10 @@ const FSRS_W = {
 
 export const MASTERY_STABILITY_DAYS = 6.0;
 export const RECALL_STABILITY_DAYS = 2.2;
+export const INTRADAY_LEARNING_STEP_MINUTES = 15;
+export const LAPSE_RECOVERY_STEP_MINUTES = 10;
+export const MIN_intraday_TO_RECALL_MINUTES = 10;
+export const MIN_CONSOLIDATION_HOURS_FOR_MASTERY = 8;
 
 export type HorizonBucket = 'mastered' | 'recall' | 'learning' | 'unseen';
 
@@ -265,14 +269,18 @@ export function processAnswer(
   // 1. Derive ACT-R latency grade (1=Again, 2=Hard, 3=Good, 4=Easy)
   const grade = deriveActRGrade(isCorrect, inputMode, timeSpentMs);
 
-  // 2. Compute prior FSRS Difficulty (D), Stability (S), and Retrievability (R)
+  // 2. Compute prior FSRS Difficulty (D), Stability (S), and real elapsed time
   const prevD = inferDifficulty(item);
   const prevS = Math.max(0.25, inferStability(item));
   const lastMs = item.lastReviewedAt ? new Date(item.lastReviewedAt).getTime() : NaN;
-  const elapsedDays = !Number.isNaN(lastMs) ? Math.max(0, (nowMs - lastMs) / 86400000) : 0;
-  // Use effective retrievability (bounded <= 0.92 on scheduled reviews so desirable-difficulty gain applies)
-  const rawR = item.lastReviewedAt ? computeRetrievability(item, nowMs) : 0.85;
-  const R = Math.min(0.92, rawR);
+  const hasPriorReview = !Number.isNaN(lastMs);
+  const elapsedMs = hasPriorReview ? Math.max(0, nowMs - lastMs) : Infinity;
+  const elapsedMinutes = hasPriorReview ? elapsedMs / 60000 : Infinity;
+  const elapsedHours = hasPriorReview ? elapsedMs / 3600000 : Infinity;
+
+  // True FSRS-6 power-law retrievability R(t, S) based on actual wall-clock elapsed time
+  const rawR = hasPriorReview ? computeRetrievability(item, nowMs) : 0.85;
+  const R = elapsedHours >= MIN_CONSOLIDATION_HOURS_FOR_MASTERY ? Math.min(0.92, rawR) : rawR;
 
   // 3. Update FSRS Difficulty D in [1, 10] with linear damping & mean reversion
   const d0Easy = Math.min(10, Math.max(1, FSRS_W.d0Base - Math.exp(FSRS_W.d0Exp * (4 - 1)) + 1));
@@ -283,39 +291,78 @@ export function processAnswer(
   );
 
   let nextStability = prevS;
+  let nextDueDate = new Date(nowMs);
   let confusedWith = [...(item.confusedWith || [])];
 
   if (isCorrect) {
     reps += 1;
 
     if (stage === 0) {
-      // First exposure answered correctly -> Graduate to Stage 1 (Active Recall)
+      // First exposure answered correctly -> Graduate to Stage 1 (Intraday Learning Step)
+      // Scheduled for a 15-minute intraday spacing interval before active-recall verification
       stage = 1;
       step = 1;
-      nextStability = grade === 4 ? 1.9 : grade === 3 ? 1.4 : 1.0;
-      intervalDays = 1;
+      nextStability = grade === 4 ? 1.4 : grade === 3 ? 1.1 : 0.85;
+      intervalDays = Number((INTRADAY_LEARNING_STEP_MINUTES / 1440).toFixed(4));
+      nextDueDate = new Date(nowMs + INTRADAY_LEARNING_STEP_MINUTES * 60 * 1000);
       promotedToLearning = true;
+    } else if (elapsedMinutes < MIN_intraday_TO_RECALL_MINUTES) {
+      // Massed / too-early repeat (< 10 minutes since last review):
+      // Real spaced repetition requires time between exposures. Do NOT jump horizon buckets!
+      if (prevS < RECALL_STABILITY_DAYS) {
+        nextStability = Math.min(RECALL_STABILITY_DAYS - 0.15, prevS + 0.1);
+        intervalDays = Number((INTRADAY_LEARNING_STEP_MINUTES / 1440).toFixed(4));
+        const existingDueMs = item.nextDueAt ? new Date(item.nextDueAt).getTime() : 0;
+        nextDueDate = new Date(
+          Math.max(existingDueMs, nowMs + INTRADAY_LEARNING_STEP_MINUTES * 60 * 1000)
+        );
+      } else {
+        // Already in Recall or Mastered: preserve stability and future due date
+        nextStability = prevS;
+        intervalDays = Math.max(1, item.intervalDays || Math.round(prevS));
+        const existingDueMs = item.nextDueAt ? new Date(item.nextDueAt).getTime() : 0;
+        nextDueDate = new Date(Math.max(existingDueMs, nowMs + intervalDays * 86400000));
+      }
+    } else if (elapsedHours < MIN_CONSOLIDATION_HOURS_FOR_MASTERY) {
+      // Intraday Spaced Review (10 minutes <= elapsed < 8 hours):
+      // Can graduate a Learning card (S < 2.2d) into Recall (S in [2.2d, 2.9d], due tomorrow),
+      // but CANNOT promote to Mastered (S >= 6.0d) without overnight / >=8h consolidation!
+      step += 1;
+      if (prevS < RECALL_STABILITY_DAYS) {
+        nextStability = grade === 4 ? 2.8 : grade === 3 ? 2.45 : 2.2;
+      } else {
+        // Already in Recall on the same day: modest intraday reinforcement, strictly capped below Mastered
+        const intradayFraction = Math.min(1, elapsedHours / MIN_CONSOLIDATION_HOURS_FOR_MASTERY);
+        const maxIntradayGain = grade === 4 ? 0.75 : grade === 3 ? 0.5 : 0.25;
+        nextStability = Math.min(
+          MASTERY_STABILITY_DAYS - 0.3,
+          prevS + maxIntradayGain * intradayFraction
+        );
+      }
+      if (stage === 2) {
+        nextStability = Math.max(MASTERY_STABILITY_DAYS, prevS);
+        intervalDays = Math.max(7, Math.round(nextStability));
+      } else {
+        stage = 1;
+        intervalDays = Math.max(1, Math.round(nextStability));
+      }
+      nextDueDate = new Date(nowMs + intervalDays * 86400000);
     } else {
-      // Active Recall (Stage 1 or Stage 2): pure FSRS-6 DSR stability growth
+      // Multi-Hour / Multi-Day Spaced Review (elapsed >= 8 hours):
+      // True FSRS-6 DSR stability growth with desirable-difficulty gain
       step += 1;
       const hardMod = grade === 2 ? FSRS_W.hardPenalty : 1.0;
       const easyMod = grade === 4 ? FSRS_W.easyBonus : 1.0;
 
-      if (elapsedDays < 0.25 && item.lastReviewedAt) {
-        // Same-session / same-day review: controlled stability boost scaled by ACT-R latency grade
-        const sameDayMult = grade === 4 ? 2.55 : grade === 3 ? 2.15 : 1.5;
-        nextStability = Math.min(365, Math.max(RECALL_STABILITY_DAYS + 0.3, prevS * sameDayMult));
-      } else {
-        const inc =
-          Math.exp(FSRS_W.sRecallExp) *
-          (11 - nextDifficulty) *
-          Math.pow(prevS, -FSRS_W.sDecayPower) *
-          (Math.exp(FSRS_W.sRetrievabilityGain * (1 - R)) - 1) *
-          hardMod *
-          easyMod;
-        const minGrowth = grade === 4 ? 2.55 : grade === 3 ? 2.15 : 1.5;
-        nextStability = Math.min(365, Math.max(prevS * minGrowth, prevS * (1 + inc)));
-      }
+      const inc =
+        Math.exp(FSRS_W.sRecallExp) *
+        (11 - nextDifficulty) *
+        Math.pow(prevS, -FSRS_W.sDecayPower) *
+        (Math.exp(FSRS_W.sRetrievabilityGain * (1 - R)) - 1) *
+        hardMod *
+        easyMod;
+      const minGrowth = grade === 4 ? 2.55 : grade === 3 ? 2.15 : 1.5;
+      nextStability = Math.min(365, Math.max(prevS * minGrowth, prevS * (1 + inc)));
 
       if (stage === 1 && nextStability >= MASTERY_STABILITY_DAYS) {
         stage = 2;
@@ -330,6 +377,7 @@ export function processAnswer(
         nextStability = Math.max(RECALL_STABILITY_DAYS, nextStability);
         intervalDays = Math.max(1, Math.round(nextStability));
       }
+      nextDueDate = new Date(nowMs + intervalDays * 86400000);
     }
 
     // Latency-sensitive ease factor adjustment
@@ -340,7 +388,9 @@ export function processAnswer(
     lapses += 1;
     step = 0;
     easeFactor = Number(Math.max(1.3, easeFactor - 0.2).toFixed(2));
-    intervalDays = 0; // Due immediately for reinforcement
+    // Schedule real SRS re-test after LAPSE_RECOVERY_STEP_MINUTES (10 minutes)
+    intervalDays = Number((LAPSE_RECOVERY_STEP_MINUTES / 1440).toFixed(4));
+    nextDueDate = new Date(nowMs + LAPSE_RECOVERY_STEP_MINUTES * 60 * 1000);
 
     // FSRS post-lapse stability S'_f (bounded < RECALL_STABILITY_DAYS so it re-enters acquisition learning)
     const rawPostLapse =
@@ -361,9 +411,6 @@ export function processAnswer(
       stage = 1;
     }
   }
-
-  // Calculate next due date
-  const nextDueDate = new Date(nowMs + intervalDays * 24 * 60 * 60 * 1000);
 
   const newHistoryEntry: SRSHistoryEntry = {
     timestamp: now.toISOString(),
@@ -725,6 +772,8 @@ export function prepareSessionQueue(
   const dueMasteredPool: QueueCandidate[] = [];
   const retentionMasteredPool: QueueCandidate[] = [];
 
+  const nowMs = Date.now();
+
   for (const cand of eligibleCandidates) {
     const item = cand.existing;
     if (!item) {
@@ -737,7 +786,11 @@ export function prepareSessionQueue(
       if (item.nextDueAt <= now || item.intervalDays === 0) {
         dueMasteredPool.push(cand);
       } else {
-        retentionMasteredPool.push(cand);
+        // Only include Mastered cards in retention spot-checks if they haven't been reviewed in the last 18 hours
+        const lastRevMs = item.lastReviewedAt ? new Date(item.lastReviewedAt).getTime() : 0;
+        if (!lastRevMs || nowMs - lastRevMs >= 18 * 3600000) {
+          retentionMasteredPool.push(cand);
+        }
       }
     } else {
       if (item.nextDueAt <= now || item.intervalDays === 0) {
@@ -749,8 +802,6 @@ export function prepareSessionQueue(
       }
     }
   }
-
-  const nowMs = Date.now();
 
   // Sort Mastered retention candidates by lowest FSRS Retrievability R(t, S) first
   retentionMasteredPool.sort((a, b) => {
@@ -1104,13 +1155,14 @@ function insertQuestionWithAntiPriming(
 }
 
 /**
- * Continuous Stream Expanding Retrieval & Multi-Step Progression Injector:
- * - When a card is missed (`!isCorrect`), schedules:
- *     1. Immediate scaffolding retry (`+4` cards, `isRetry: true`) to reinforce the memory trace without mutating SRS.
- *     2. Spaced verification (`+11` cards, `isRetry: false`) so the learner can recover stability in the same sitting.
- * - When a card is answered correctly (`isCorrect && !wasRetry`) and is not yet Mastered (`stage < 2`):
- *     - L0 -> L1 graduation: schedules active recall verification at `+8` cards (`isRetry: false`).
- *     - L1 -> L1 consolidating (`S < 6.0d`): schedules mastery verification at `+15` cards (`isRetry: false`).
+ * Continuous Stream Error-Scaffolding & Time-Respecting Queue Manager:
+ * - Real Spaced Repetition is governed by wall-clock time (`nextDueAt`), NOT card count!
+ * - When a card is answered correctly (`isCorrect === true`), it is NEVER artificially re-inserted
+ *   into the stream a few cards later. Instead, its real `nextDueAt` (15 minutes for L0->L1 intraday
+ *   learning, 24 hours for Recall, 7+ days for Mastered) determines when it can next appear.
+ * - When a card is missed (`!isCorrect`), we insert at most ONE short-term scaffolding retry
+ *   (`+6` cards ahead, `isRetry: true`) that does NOT mutate SRS progress, while its real SRS re-test
+ *   waits for the 10-minute `nextDueAt` timer.
  */
 export function scheduleInStreamFollowUp(
   queue: TrainingQuestion[],
@@ -1125,50 +1177,21 @@ export function scheduleInStreamFollowUp(
     ? [...COUNTRIES, ...waterCountries]
     : COUNTRIES;
 
-  // Remove any stale future occurrences of this exact srsItemId after currentIndex
-  // so we can place a freshly calibrated question with up-to-date stage & input mode
+  // Always strip any duplicate occurrences of this srsItemId from the upcoming lookahead buffer
+  // so the user never gets the same card twice in a short window
   const prefix = queue.slice(0, currentIndex + 1);
   const cleanTail = queue
     .slice(currentIndex + 1)
     .filter((q) => q.srsItemId !== answeredQuestion.srsItemId);
   let nextQueue = [...prefix, ...cleanTail];
 
-  if (!isCorrect) {
+  // If missed on a normal question (not already a retry), insert a single non-mutating scaffolding retry (+6 cards)
+  if (!isCorrect && !wasRetry) {
     const retryQuestion: TrainingQuestion = {
       ...buildQuestion(updatedItem, answeredQuestion.country, allContextCountries),
       isRetry: true
     };
-    const verificationQuestion: TrainingQuestion = {
-      ...buildQuestion(updatedItem, answeredQuestion.country, allContextCountries),
-      isRetry: false
-    };
-
-    nextQueue = insertQuestionWithAntiPriming(nextQueue, currentIndex, retryQuestion, 4, 3);
-    nextQueue = insertQuestionWithAntiPriming(nextQueue, currentIndex, verificationQuestion, 11, 4);
-    return nextQueue;
-  }
-
-  // Answered a scaffolding retry correctly: keep or schedule one real verification ahead if still unmastered
-  if (wasRetry) {
-    if (updatedItem.stage < 2 && inferStability(updatedItem) < MASTERY_STABILITY_DAYS) {
-      const verificationQuestion: TrainingQuestion = {
-        ...buildQuestion(updatedItem, answeredQuestion.country, allContextCountries),
-        isRetry: false
-      };
-      nextQueue = insertQuestionWithAntiPriming(nextQueue, currentIndex, verificationQuestion, 8, 4);
-    }
-    return nextQueue;
-  }
-
-  // Answered a scheduled card correctly: if not yet Mastered (Stage 2), re-queue at an expanding gap
-  if (updatedItem.stage < 2 && inferStability(updatedItem) < MASTERY_STABILITY_DAYS) {
-    const followUpQuestion: TrainingQuestion = {
-      ...buildQuestion(updatedItem, answeredQuestion.country, allContextCountries),
-      isRetry: false
-    };
-    const bucket = classifyCardHorizon(updatedItem);
-    const expandingGap = answeredQuestion.stage === 0 ? 8 : bucket === 'learning' ? 10 : 15;
-    nextQueue = insertQuestionWithAntiPriming(nextQueue, currentIndex, followUpQuestion, expandingGap, 4);
+    nextQueue = insertQuestionWithAntiPriming(nextQueue, currentIndex, retryQuestion, 6, 4);
   }
 
   return nextQueue;
@@ -1177,11 +1200,12 @@ export function scheduleInStreamFollowUp(
 /**
  * Rolling Horizon Stream Replenisher:
  * Continuously stocks the upcoming training stream when the lookahead buffer runs low.
+ * - Strictly respects `nextDueAt` wall-clock timestamps: never pulls cards scheduled in the future
+ *   as SRS-mutating cards.
  * - Deduplicates against cards already waiting in `currentQueue.slice(currentIndex + 1)`.
- * - Applies a Cognitive Load Governor (max 10 in-flight L0/learning cards in the lookahead window)
- *   so an infinite stream consolidates active cards before flooding the learner with new unseen cards.
- * - Seamlessly falls back to lowest-retrievability retention / practice stream if all due & unseen
- *   cards in the filtered region have been cleared, so the stream never hits a dead end.
+ * - If all due & unseen cards in the filtered region are currently waiting for future `nextDueAt`
+ *   timers, seamlessly serves non-mutating retention/practice cards (`isRetry: true`) until
+ *   real-time due timestamps arrive.
  */
 export function replenishStreamQueue(
   currentQueue: TrainingQuestion[],
@@ -1195,22 +1219,15 @@ export function replenishStreamQueue(
   const upcoming = currentQueue.slice(Math.max(0, currentIndex + 1));
   const upcomingIds = new Set<string>(upcoming.map((q) => q.srsItemId));
 
-  // Count in-flight acquisition cards currently waiting in the upcoming buffer
-  let inFlightLearningCount = 0;
-  for (const q of upcoming) {
-    const item = existingItemsMap.get(q.srsItemId);
-    if (!item || item.stage === 0 || classifyCardHorizon(item) === 'learning') {
-      inFlightLearningCount++;
-    }
-  }
-
   // Create a filtered view of itemsMap that temporarily marks already-queued items as far-future mastered
   // so prepareSessionQueue naturally skips them and selects fresh complementary cards
   const maskedMap = new Map<string, SRSItem>(existingItemsMap);
   const farFuture = new Date(Date.now() + 180 * 86400000).toISOString();
 
   for (const queuedId of upcomingIds) {
-    const orig = existingItemsMap.get(queuedId) || createInitialSRSItem(queuedId.split(':')[0], queuedId.split(':')[1] || 'capital');
+    const orig =
+      existingItemsMap.get(queuedId) ||
+      createInitialSRSItem(queuedId.split(':')[0], queuedId.split(':')[1] || 'capital');
     maskedMap.set(queuedId, {
       ...orig,
       stage: 2,
@@ -1221,43 +1238,51 @@ export function replenishStreamQueue(
     });
   }
 
-  // Cognitive Load Governor: if >= 10 learning/L0 cards are already in-flight in the lookahead buffer,
-  // temporarily mask unseen cards where possible so the replenisher prioritizes due Recall & retention cards
-  const MAX_IN_FLIGHT_LEARNING = 10;
   let freshBatch: TrainingQuestion[] = [];
   let enteredRetentionStream = false;
 
   if (!practiceMode) {
+    // Only pull cards that are genuinely due right now (`nextDueAt <= now`) or unseen
     freshBatch = prepareSessionQueue(maskedMap, continentFilter, attributeFilter, chunkSize * 2, false).filter(
       (q) => !upcomingIds.has(q.srsItemId)
     );
-
-    if (inFlightLearningCount >= MAX_IN_FLIGHT_LEARNING && freshBatch.length > 0) {
-      const consolidatingFirst = freshBatch.filter((q) => {
-        const item = existingItemsMap.get(q.srsItemId);
-        return Boolean(item && item.stage >= 1);
-      });
-      if (consolidatingFirst.length >= Math.min(6, chunkSize)) {
-        freshBatch = consolidatingFirst;
-      }
-    }
   }
 
-  // If all scheduled/unseen cards in this filter are either mastered or already in the lookahead buffer,
-  // seamlessly continue in Retention / Practice stream so the infinite session never hits a wall
+  // If all due & unseen cards in this filter are currently scheduled in the future (`nextDueAt > now`),
+  // serve non-mutating practice/retention cards (`isRetry: true`) so the stream continues smoothly
+  // without artificially advancing SRS stages before real time has elapsed!
   if (freshBatch.length === 0) {
     if (!practiceMode) {
       enteredRetentionStream = true;
     }
+    const nowMs = Date.now();
     const fallbackPool = prepareSessionQueue(
       existingItemsMap,
       continentFilter,
       attributeFilter,
       chunkSize * 3,
       true
-    );
+    ).map((q) => ({
+      ...q,
+      isRetry: !practiceMode ? true : q.isRetry
+    }));
+
+    // Prioritize cards that were NOT reviewed in the last 5 minutes so we don't repeat just-seen cards
+    const notJustReviewed = fallbackPool.filter((q) => {
+      if (upcomingIds.has(q.srsItemId)) return false;
+      const item = existingItemsMap.get(q.srsItemId);
+      if (!item || !item.lastReviewedAt) return true;
+      const elapsedMin = (nowMs - new Date(item.lastReviewedAt).getTime()) / 60000;
+      return elapsedMin >= 5;
+    });
+
     const nonDuplicate = fallbackPool.filter((q) => !upcomingIds.has(q.srsItemId));
-    freshBatch = nonDuplicate.length > 0 ? nonDuplicate : fallbackPool;
+    freshBatch =
+      notJustReviewed.length > 0
+        ? notJustReviewed
+        : nonDuplicate.length > 0
+        ? nonDuplicate
+        : fallbackPool;
   }
 
   const selectedChunk = freshBatch.slice(0, chunkSize);
