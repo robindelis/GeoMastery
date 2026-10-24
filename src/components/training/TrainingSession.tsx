@@ -529,11 +529,10 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     if (shouldSpeakCapital && capitalToSpeak && question.country) {
       if (speechTimerRef.current) {
         clearTimeout(speechTimerRef.current);
-      }
-      speechTimerRef.current = setTimeout(() => {
-        speechEngine.speakCountryAndCapital(question.country.name, capitalToSpeak);
         speechTimerRef.current = null;
-      }, 200);
+      }
+      // Speak immediately upon answer submission (trimmed wav starts speaking instantly)
+      speechEngine.speakCountryAndCapital(question.country.name, capitalToSpeak);
     }
   }, [streak, continentFilter, attributeFilter]);
 

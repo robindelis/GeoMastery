@@ -358,8 +358,8 @@ export class SpeechEngine {
         scheduled = true;
 
         const effectiveMs = (durSec / this.rate) * 1000;
-        // Default overlap: ~380ms blends country trailing silence into capital leading silence
-        const overlapMs = options?.overlapMs ?? 380;
+        // Default overlap: ~80ms accounts for country trailing silence into capital speech start
+        const overlapMs = options?.overlapMs ?? 80;
         const delay = Math.max(20, effectiveMs - overlapMs);
 
         this.sequenceTimer = setTimeout(() => {
