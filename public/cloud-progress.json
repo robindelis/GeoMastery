@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:38:12.847Z",
+  "exportedAt": "2026-10-24T14:38:33.769Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -18658,13 +18658,13 @@
         "countryId": "DMA",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 1.75,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 1.73,
+        "intervalDays": 2,
+        "reps": 2,
         "lapses": 4,
-        "lastReviewedAt": "2026-10-23T11:41:26.075Z",
-        "nextDueAt": "2026-10-23T11:51:26.075Z",
+        "lastReviewedAt": "2026-10-24T14:38:30.449Z",
+        "nextDueAt": "2026-10-26T14:38:30.449Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:47:52.663Z",
@@ -18702,12 +18702,20 @@
             "isCorrect": false,
             "timeSpentMs": 5141,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-24T14:38:30.449Z",
+            "inputMode": "map_click",
+            "userAnswer": "Dominica",
+            "isCorrect": true,
+            "timeSpentMs": 16382,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 0.6,
-        "difficulty": 7.73,
-        "lastLatencyGrade": 1,
+        "stability": 2.2,
+        "difficulty": 7.53,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "ATG"
         ]
@@ -24925,8 +24933,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1754,
-    "totalCorrect": 1257,
+    "totalReviews": 1755,
+    "totalCorrect": 1258,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -24964,7 +24972,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:38:09.549Z"
+    "updatedAt": "2026-10-24T14:38:30.452Z"
   },
   "settings": {
     "audioEnabled": true,
