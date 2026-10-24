@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:21:30.962Z",
+  "exportedAt": "2026-10-24T14:21:37.213Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -23914,10 +23914,40 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "AND:flag",
+      {
+        "id": "AND:flag",
+        "countryId": "AND",
+        "attributeId": "flag",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-24T14:21:33.415Z",
+        "nextDueAt": "2026-10-24T14:31:33.415Z",
+        "history": [
+          {
+            "timestamp": "2026-10-24T14:21:33.415Z",
+            "inputMode": "typing",
+            "userAnswer": "Moldavia",
+            "isCorrect": false,
+            "timeSpentMs": 5124,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1691,
+    "totalReviews": 1692,
     "totalCorrect": 1209,
     "currentStreak": 4,
     "longestStreak": 4,
@@ -23956,7 +23986,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:21:26.974Z"
+    "updatedAt": "2026-10-24T14:21:33.417Z"
   },
   "settings": {
     "audioEnabled": true,
