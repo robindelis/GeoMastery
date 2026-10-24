@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:46:31.344Z",
+  "exportedAt": "2026-10-24T14:46:44.910Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25498,11 +25498,41 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "SLV:flag",
+      {
+        "id": "SLV:flag",
+        "countryId": "SLV",
+        "attributeId": "flag",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-24T14:46:41.685Z",
+        "nextDueAt": "2026-10-24T15:01:41.685Z",
+        "history": [
+          {
+            "timestamp": "2026-10-24T14:46:41.685Z",
+            "inputMode": "typing",
+            "userAnswer": "El Salvador",
+            "isCorrect": true,
+            "timeSpentMs": 9982,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1792,
-    "totalCorrect": 1287,
+    "totalReviews": 1793,
+    "totalCorrect": 1288,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -25540,7 +25570,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:46:30.872Z"
+    "updatedAt": "2026-10-24T14:46:41.688Z"
   },
   "settings": {
     "audioEnabled": true,
