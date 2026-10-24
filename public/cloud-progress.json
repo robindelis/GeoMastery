@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T16:02:32.044Z",
+  "exportedAt": "2026-10-24T16:02:37.411Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -22446,13 +22446,13 @@
         "countryId": "ATG",
         "attributeId": "flag",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 1.95,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2,
+        "intervalDays": 2,
+        "reps": 2,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-24T14:46:52.986Z",
-        "nextDueAt": "2026-10-24T15:01:52.986Z",
+        "lastReviewedAt": "2026-10-24T16:02:33.514Z",
+        "nextDueAt": "2026-10-26T16:02:33.514Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:21:22.198Z",
@@ -22485,10 +22485,18 @@
             "isCorrect": true,
             "timeSpentMs": 6851,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-24T16:02:33.514Z",
+            "inputMode": "typing",
+            "userAnswer": "Antigua and barbuda",
+            "isCorrect": true,
+            "timeSpentMs": 3909,
+            "grade": 3
           }
         ],
-        "difficulty": 6.79,
-        "stability": 1.1,
+        "difficulty": 6.33,
+        "stability": 2.45,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "BHS"
@@ -26022,11 +26030,43 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "BGR:capital_to_country",
+      {
+        "id": "BGR:capital_to_country",
+        "countryId": "BGR",
+        "attributeId": "capital_to_country",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-24T16:02:36.782Z",
+        "nextDueAt": "2026-10-24T16:12:36.782Z",
+        "history": [
+          {
+            "timestamp": "2026-10-24T16:02:36.782Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Belarus",
+            "isCorrect": false,
+            "timeSpentMs": 2498,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "BLR"
+        ]
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1827,
-    "totalCorrect": 1314,
+    "totalReviews": 1829,
+    "totalCorrect": 1315,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -26064,7 +26104,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T16:02:27.992Z"
+    "updatedAt": "2026-10-24T16:02:36.787Z"
   },
   "settings": {
     "audioEnabled": true,
