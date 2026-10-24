@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:29:36.804Z",
+  "exportedAt": "2026-10-24T14:30:00.707Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -23028,13 +23028,13 @@
         "countryId": "ECU",
         "attributeId": "country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.28,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.26,
+        "intervalDays": 3,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-23T11:48:30.430Z",
-        "nextDueAt": "2026-10-23T12:03:30.430Z",
+        "lastReviewedAt": "2026-10-24T14:29:57.549Z",
+        "nextDueAt": "2026-10-27T14:29:57.549Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:31:48.485Z",
@@ -23051,10 +23051,18 @@
             "isCorrect": true,
             "timeSpentMs": 37551,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-24T14:29:57.549Z",
+            "inputMode": "typing",
+            "userAnswer": "Ecuador",
+            "isCorrect": true,
+            "timeSpentMs": 22776,
+            "grade": 2
           }
         ],
-        "difficulty": 6.19,
-        "stability": 0.85,
+        "difficulty": 6.34,
+        "stability": 2.52,
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
@@ -24447,8 +24455,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1727,
-    "totalCorrect": 1236,
+    "totalReviews": 1728,
+    "totalCorrect": 1237,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -24486,7 +24494,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:29:33.555Z"
+    "updatedAt": "2026-10-24T14:29:57.551Z"
   },
   "settings": {
     "audioEnabled": true,
