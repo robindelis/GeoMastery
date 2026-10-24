@@ -40,7 +40,7 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
 
   const isMapCountryIdentify = attributeId === 'country';
   const isFlagIdentify = attributeId === 'flag';
-  const isCapitalToCountry = questionDirection === 'capital_to_country';
+  const isCapitalToCountry = attributeId === 'capital_to_country' || questionDirection === 'capital_to_country';
   const isCountryNameTarget = isMapCountryIdentify || isFlagIdentify || isCapitalToCountry;
   const flagImgUrl =
     country.iso2 && country.iso2 !== 'WB'

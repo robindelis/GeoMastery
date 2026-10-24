@@ -610,13 +610,15 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     expect(uniqueUpcoming.size).toBe(upcomingSlice.length);
   });
 
-  it('generates bidirectional Capital -> Country questions with Stage 0 4-country recognition, LECTOR distractors, and Stage 1+ country typing recall', () => {
+  it('generates dedicated Capital -> Country questions via capital_to_country attribute with Stage 0 4-country recognition, LECTOR distractors, and Stage 1+ country typing recall', () => {
     const slovakia = COUNTRIES_BY_ID.get('SVK')!;
-    let item = createInitialSRSItem('SVK', 'capital');
+    let item = createInitialSRSItem('SVK', 'capital_to_country');
+    expect(item.id).toBe('SVK:capital_to_country');
     item.confusedWith = ['SVN'];
 
     // Stage 0: 4-choice country recognition with LECTOR distractor (Slovenia)
-    const q0 = buildQuestion(item, slovakia, COUNTRIES, 'capital_to_country');
+    const q0 = buildQuestion(item, slovakia, COUNTRIES);
+    expect(q0.attributeId).toBe('capital_to_country');
     expect(q0.questionDirection).toBe('capital_to_country');
     expect(q0.expectedInputMode).toBe('multiple_choice');
     expect(q0.correctAnswer).toBe('Slovakia');
@@ -629,22 +631,26 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     item = processAnswer(item, true, 'multiple_choice', 'Slovakia', 1400).updatedItem;
     expect(item.stage).toBe(1);
 
-    const q1 = buildQuestion(item, slovakia, COUNTRIES, 'capital_to_country');
+    const q1 = buildQuestion(item, slovakia, COUNTRIES);
+    expect(q1.attributeId).toBe('capital_to_country');
     expect(q1.questionDirection).toBe('capital_to_country');
     expect(q1.expectedInputMode).toBe('typing');
     expect(q1.options).toBeUndefined();
     expect(q1.correctAnswer).toBe('Slovakia');
     expect(q1.prompt).toContain('Bratislava');
 
-    // Verify prepareSessionQueue alternates both directions for capital questions
-    const queue = prepareSessionQueue(new Map(), 'Europe', ['capital'], 10, true);
-    const countryToCap = queue.filter((q) => q.questionDirection === 'country_to_capital');
-    const capToCountry = queue.filter((q) => q.questionDirection === 'capital_to_country');
+    // Verify prepareSessionQueue treats capital and capital_to_country as separate attributes
+    const capOnlyQueue = prepareSessionQueue(new Map(), 'Europe', ['capital'], 6, true);
+    expect(capOnlyQueue.every((q) => q.attributeId === 'capital' && q.questionDirection === 'country_to_capital')).toBe(true);
+
+    const capToCountryOnlyQueue = prepareSessionQueue(new Map(), 'Europe', ['capital_to_country'], 6, true);
+    expect(capToCountryOnlyQueue.every((q) => q.attributeId === 'capital_to_country' && q.questionDirection === 'capital_to_country')).toBe(true);
+
+    const combinedQueue = prepareSessionQueue(new Map(), 'Europe', ['capital', 'capital_to_country'], 10, true);
+    const countryToCap = combinedQueue.filter((q) => q.attributeId === 'capital');
+    const capToCountry = combinedQueue.filter((q) => q.attributeId === 'capital_to_country');
     expect(countryToCap.length).toBeGreaterThan(0);
     expect(capToCountry.length).toBeGreaterThan(0);
   });
 });
-
-
-
 

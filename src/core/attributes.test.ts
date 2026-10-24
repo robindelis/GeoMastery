@@ -5,7 +5,9 @@ import {
   PoliticalRegimeAttribute,
   CuisineAttribute,
   CountryAttribute,
-  FlagAttribute
+  FlagAttribute,
+  CapitalAttribute,
+  CapitalToCountryAttribute
 } from './attributes';
 
 describe('Country Facts & Attribute Definitions', () => {
@@ -109,6 +111,11 @@ describe('Country Facts & Attribute Definitions', () => {
 
     expect(CountryAttribute.getValue(gbr)).toBe('United Kingdom');
     expect(FlagAttribute.getValue(gbr)).toBe('United Kingdom');
+    expect(CapitalAttribute.getValue(gbr)).toBe('London');
+    expect(CapitalToCountryAttribute.getValue(gbr)).toBe('United Kingdom');
+    expect(CapitalAttribute.label).toBe('Country → Capital');
+    expect(CapitalToCountryAttribute.label).toBe('Capital → Country');
+    expect(CapitalToCountryAttribute.validateAnswer('UK', 'United Kingdom', gbr).isCorrect).toBe(true);
 
     // Exact match
     expect(CountryAttribute.validateAnswer('United Kingdom', 'United Kingdom', gbr).isCorrect).toBe(true);

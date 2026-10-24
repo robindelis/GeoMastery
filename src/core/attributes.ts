@@ -138,11 +138,11 @@ function getRegionalDistractors<T>(
 }
 
 /**
- * Capital City Attribute
+ * Country to Capital Attribute (Country -> Capital City)
  */
 export const CapitalAttribute: AttributeDefinition<string> = {
   id: 'capital',
-  label: 'Capital City',
+  label: 'Country → Capital',
   category: 'geography',
   icon: 'Building2',
   description: 'Master the official capital cities of each sovereign nation.',
@@ -166,6 +166,35 @@ export const CapitalAttribute: AttributeDefinition<string> = {
         ? (res.distance > 0 ? `Accepted (close spelling: ${correctValue})` : 'Exact match!')
         : `The capital is ${correctValue}`
     };
+  }
+};
+
+/**
+ * Capital to Country Attribute (Capital City -> Country Name)
+ */
+export const CapitalToCountryAttribute: AttributeDefinition<string> = {
+  id: 'capital_to_country',
+  label: 'Capital → Country',
+  category: 'geography',
+  icon: 'Building2',
+  description: 'Identify the sovereign nation from its official capital city.',
+  activeByDefault: true,
+  supportsMultipleChoice: true,
+  supportsTypingRecall: true,
+  supportsMapClick: false,
+  promptTemplate: (country: Country) => `Which country has ${country.capital} as its capital?`,
+  getValue: (c: Country) => c.name,
+  renderValue: (val: string) => val,
+  generateDistractors: (target: Country, all: Country[], count: number = 3) => {
+    return getRegionalDistractors(target, all, (c) => c.name, count);
+  },
+  validateAnswer: (
+    userAnswer: string,
+    correctValue: string,
+    targetCountry?: Country,
+    tolerance: number = 1
+  ): AttributeValidationResult => {
+    return validateCountryNameAnswer(userAnswer, correctValue, targetCountry, tolerance);
   }
 };
 
@@ -389,6 +418,7 @@ export const CuisineAttribute: AttributeDefinition<string> = {
 
 export const ALL_ATTRIBUTES: AttributeDefinition[] = [
   CapitalAttribute,
+  CapitalToCountryAttribute,
   LocationAttribute,
   CountryAttribute,
   FlagAttribute,

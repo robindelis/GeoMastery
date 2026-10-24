@@ -197,16 +197,31 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
 
               {/* Facts Grid */}
               <div className="flex flex-col gap-2">
-                {/* Capital City */}
-                <div className="bg-[#ECE2CE] border border-[#D8CBB5] p-3 rounded-2xl flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <Building2 className="w-4 h-4 text-[#D94E34]" />
-                    <div>
-                      <div className="text-[10px] uppercase tracking-wider text-[#5B7083] font-extrabold">Capital City</div>
-                      <div className="font-[family-name:var(--font-fraunces)] text-base font-black text-[#142534]">{selectedCountry.capital}</div>
+                {/* Capital City (Country -> Capital & Capital -> Country) */}
+                <div className="bg-[#ECE2CE] border border-[#D8CBB5] p-3 rounded-2xl flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <Building2 className="w-4 h-4 text-[#D94E34]" />
+                      <div>
+                        <div className="text-[10px] uppercase tracking-wider text-[#5B7083] font-extrabold">Capital City</div>
+                        <div className="font-[family-name:var(--font-fraunces)] text-base font-black text-[#142534]">{selectedCountry.capital}</div>
+                      </div>
                     </div>
                   </div>
-                  {getMasteryBadge('capital')}
+                  <div className="grid grid-cols-2 gap-1.5 pt-1 border-t border-[#D8CBB5]/70">
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="text-[9px] uppercase tracking-wider text-[#5B7083] font-extrabold truncate">
+                        Country → Cap
+                      </span>
+                      {getMasteryBadge('capital')}
+                    </div>
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="text-[9px] uppercase tracking-wider text-[#5B7083] font-extrabold truncate">
+                        Cap → Country
+                      </span>
+                      {getMasteryBadge('capital_to_country')}
+                    </div>
+                  </div>
                 </div>
 
                 {/* Map Location */}

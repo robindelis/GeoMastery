@@ -416,7 +416,7 @@ export const SessionCompletedView: React.FC<SessionCompletedViewProps> = ({
                               <Flag className="w-3 h-3 text-purple-400" />
                               <span>National Flag</span>
                             </>
-                          ) : question.questionDirection === 'capital_to_country' ? (
+                          ) : question.attributeId === 'capital_to_country' || question.questionDirection === 'capital_to_country' ? (
                             <>
                               <Building2 className="w-3 h-3 text-amber-400" />
                               <span>Capital → Country ({country.capital})</span>
@@ -424,7 +424,7 @@ export const SessionCompletedView: React.FC<SessionCompletedViewProps> = ({
                           ) : (
                             <>
                               <Building2 className="w-3 h-3 text-amber-400" />
-                              <span>Capital: {country.capital}</span>
+                              <span>Country → Capital: {country.capital}</span>
                             </>
                           )}
                         </span>

@@ -102,10 +102,18 @@ export function calculateCartographerRank(xp: number): {
 export const useDueBreakdown = (
   srsItemsMap: Map<string, SRSItem>,
   selectedAttributes: string[]
-): { capital: number; location: number; country: number; flag: number; total: number } => {
+): {
+  capital: number;
+  capital_to_country: number;
+  location: number;
+  country: number;
+  flag: number;
+  total: number;
+} => {
   return useMemo(() => {
     const now = new Date().toISOString();
     let capital = 0;
+    let capital_to_country = 0;
     let location = 0;
     let country = 0;
     let flag = 0;
@@ -116,6 +124,12 @@ export const useDueBreakdown = (
         isDue(srsItemsMap.get(`${c.id}:capital`), now)
       ) {
         capital++;
+      }
+      if (
+        selectedAttributes.includes('capital_to_country') &&
+        isDue(srsItemsMap.get(`${c.id}:capital_to_country`), now)
+      ) {
+        capital_to_country++;
       }
       if (
         selectedAttributes.includes('location') &&
@@ -145,7 +159,14 @@ export const useDueBreakdown = (
       }
     }
 
-    return { capital, location, country, flag, total: capital + location + country + flag };
+    return {
+      capital,
+      capital_to_country,
+      location,
+      country,
+      flag,
+      total: capital + capital_to_country + location + country + flag
+    };
   }, [srsItemsMap, selectedAttributes]);
 };
 

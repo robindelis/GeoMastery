@@ -17,6 +17,7 @@ export const App: React.FC = () => {
   const [selectedContinent, setSelectedContinent] = useState<TrainingCategory>('All');
   const [selectedAttributes, setSelectedAttributes] = useState<string[]>([
     'capital',
+    'capital_to_country',
     'location',
     'country',
     'flag'

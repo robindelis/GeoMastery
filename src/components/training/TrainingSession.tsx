@@ -317,7 +317,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     } else {
       // Typing active recall
       const settings = StorageService.loadSettings();
-      if (question.questionDirection === 'capital_to_country') {
+      if (question.attributeId === 'capital_to_country' || question.questionDirection === 'capital_to_country') {
         const valRes = validateCountryNameAnswer(
           answer,
           question.correctAnswer,
@@ -482,9 +482,10 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       return nextQueue;
     });
 
-    // Vocal reading of the capital city when asking for capital, location, country, or flag
+    // Vocal reading of the capital city when asking for capital, capital_to_country, location, country, or flag
     const shouldSpeakCapital =
       question.attributeId === 'capital' ||
+      question.attributeId === 'capital_to_country' ||
       question.attributeId === 'location' ||
       question.attributeId === 'country' ||
       question.attributeId === 'flag';

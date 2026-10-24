@@ -35,6 +35,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const [settings, setSettings] = useState<AppSettings>(() => StorageService.loadSettings());
   const [selectedAttributeFilter, setSelectedAttributeFilter] = useState<string[]>([
     'capital',
+    'capital_to_country',
     'location',
     'country',
     'flag'

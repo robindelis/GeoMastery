@@ -541,13 +541,18 @@ export function buildQuestion(
     };
   }
 
-  // Bidirectional Capital Questioning: Country -> Capital OR Capital -> Country
-  const questionDirection: CapitalQuestionDirection | undefined =
-    srsItem.attributeId === 'capital'
-      ? explicitDirection ?? 'country_to_capital'
-      : undefined;
+  // Separate Country -> Capital ('capital') and Capital -> Country ('capital_to_country') attributes
+  const isCapitalToCountryAttr =
+    srsItem.attributeId === 'capital_to_country' ||
+    (srsItem.attributeId === 'capital' && explicitDirection === 'capital_to_country');
 
-  if (srsItem.attributeId === 'capital' && questionDirection === 'capital_to_country') {
+  const questionDirection: CapitalQuestionDirection | undefined = isCapitalToCountryAttr
+    ? 'capital_to_country'
+    : srsItem.attributeId === 'capital'
+    ? 'country_to_capital'
+    : undefined;
+
+  if (isCapitalToCountryAttr) {
     const prompt = `Which country has ${country.capital} as its capital?`;
     const correctAnswer = country.name;
     let expectedInputMode: InputMode = 'typing';
@@ -568,7 +573,7 @@ export function buildQuestion(
         }
       }
 
-      const countryDef = ATTRIBUTE_REGISTRY.get('country');
+      const countryDef = ATTRIBUTE_REGISTRY.get('capital_to_country') || ATTRIBUTE_REGISTRY.get('country');
       const distractors = countryDef
         ? countryDef.generateDistractors(country, allCountries, 5)
         : allCountries
@@ -834,16 +839,9 @@ export function prepareSessionQueue(
       combined = [...combined, ...extraMastered];
     }
 
-    let capCount = 0;
     const practiceQuestions = shuffleArray(combined).map((cand) => {
       const itemToUse = cand.existing || createInitialSRSItem(cand.country.id, cand.attributeId);
-      const direction: CapitalQuestionDirection | undefined =
-        cand.attributeId === 'capital'
-          ? (capCount++ + (itemToUse.reps || 0)) % 2 === 1
-            ? 'capital_to_country'
-            : 'country_to_capital'
-          : undefined;
-      return buildQuestion(itemToUse, cand.country, allContextCountries, direction);
+      return buildQuestion(itemToUse, cand.country, allContextCountries);
     });
     return interleaveSessionQueue(practiceQuestions, 4);
   }
@@ -986,7 +984,9 @@ export function prepareSessionQueue(
   const computeCandidateWeight = (cand: QueueCandidate): number => {
     const base = Math.max(0.15, regionWeights.get(getRegion(cand)) ?? 1);
     const item = cand.existing;
-    const siblingAttrs = ['capital', 'location', 'country', 'flag'].filter((a) => a !== cand.attributeId);
+    const siblingAttrs = ['capital', 'capital_to_country', 'location', 'country', 'flag'].filter(
+      (a) => a !== cand.attributeId
+    );
     const hasSiblingInLearning = siblingAttrs.some(
       (attr) => existingItemsMap.get(`${cand.country.id}:${attr}`)?.stage === 1
     );
@@ -1106,16 +1106,9 @@ export function prepareSessionQueue(
   }
 
   const allSelected = [...selectedMastered, ...selectedLearning];
-  let capCount = 0;
   const sessionQueue: TrainingQuestion[] = allSelected.map((cand) => {
     const itemToUse = cand.existing || createInitialSRSItem(cand.country.id, cand.attributeId);
-    const direction: CapitalQuestionDirection | undefined =
-      cand.attributeId === 'capital'
-        ? (capCount++ + (itemToUse.reps || 0)) % 2 === 1
-          ? 'capital_to_country'
-          : 'country_to_capital'
-        : undefined;
-    return buildQuestion(itemToUse, cand.country, allContextCountries, direction);
+    return buildQuestion(itemToUse, cand.country, allContextCountries);
   });
 
   return interleaveSessionQueue(shuffleArray(sessionQueue), 4);
@@ -1328,7 +1321,7 @@ export function buildFlagStudyCohort(
       (c) => {
         const base = regionWeights.get(c.continent) ?? 1;
         // Boost unseen flags for countries the learner has already encountered in Capital/Location/Map
-        const hasKnownSibling = ['capital', 'location', 'country'].some((attr) =>
+        const hasKnownSibling = ['capital', 'capital_to_country', 'location', 'country'].some((attr) =>
           existingItemsMap.has(`${c.id}:${attr}`)
         );
         return base * (hasKnownSibling ? 1.45 : 1.0);

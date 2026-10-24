@@ -123,10 +123,11 @@ interface HorizonCardEntry {
   continent: TrainingCategory;
   subregion: string;
   coordText: string;
-  attribute: 'capital' | 'location' | 'country' | 'flag';
+  attribute: 'capital' | 'capital_to_country' | 'location' | 'country' | 'flag';
   attributeGlyph: string;
   attributeLabel: string;
   answerText: string;
+  capitalText?: string;
   coordinates: [number, number];
   category: HorizonCategory;
   statusBadge: string;
@@ -643,7 +644,13 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   } = props;
 
   const data = useHomeData(srsItemsMap, stats, selectedAttributes);
-  const due = useDueBreakdown(srsItemsMap, ['capital', 'location', 'country', 'flag']);
+  const due = useDueBreakdown(srsItemsMap, [
+    'capital',
+    'capital_to_country',
+    'location',
+    'country',
+    'flag'
+  ]);
 
   const [revealCapital, setRevealCapital] = useState(false);
   const [showToken, setShowToken] = useState(false);
@@ -658,7 +665,9 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const dueValue = useCountUp(data.totalDueCount, 650);
 
   const [selectedHorizonCategory, setSelectedHorizonCategory] = useState<HorizonCategory | null>(null);
-  const [horizonAttrFilter, setHorizonAttrFilter] = useState<'all' | 'capital' | 'location' | 'country' | 'flag'>('all');
+  const [horizonAttrFilter, setHorizonAttrFilter] = useState<
+    'all' | 'capital' | 'capital_to_country' | 'location' | 'country' | 'flag'
+  >('all');
   const [horizonSearch, setHorizonSearch] = useState('');
   const [revealHorizonCapitals, setRevealHorizonCapitals] = useState(false);
   const [isHorizonModalOpen, setIsHorizonModalOpen] = useState(false);
@@ -667,7 +676,9 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const albumScrollRef = useRef<HTMLDivElement | null>(null);
 
   // 4-Stage Remembrance Progression Timeline state
-  const [timelineAttrFilter, setTimelineAttrFilter] = useState<'all' | 'capital' | 'location' | 'country' | 'flag'>('all');
+  const [timelineAttrFilter, setTimelineAttrFilter] = useState<
+    'all' | 'capital' | 'capital_to_country' | 'location' | 'country' | 'flag'
+  >('all');
   const [timelineRange, setTimelineRange] = useState<'7d' | '14d' | '30d' | 'all'>('14d');
   const [timelineScaleMode, setTimelineScaleMode] = useState<'full' | 'active'>('full');
   const [hoveredTimelineIdx, setHoveredTimelineIdx] = useState<number | null>(null);
@@ -787,17 +798,27 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     };
 
     for (const country of COUNTRIES) {
-      for (const attr of ['capital', 'location', 'country', 'flag'] as const) {
+      for (const attr of ['capital', 'capital_to_country', 'location', 'country', 'flag'] as const) {
         const cardId = `${country.id}:${attr}`;
         const item = srsItemsMap.get(cardId);
         const { category, statusBadge, shortBadge, trophyGlyph, isDue } = categorizeItem(item);
         const attributeGlyph =
-          attr === 'capital' ? '🏛️' : attr === 'location' ? '🧭' : attr === 'country' ? '🗺️' : '🏳️';
+          attr === 'capital'
+            ? '🏛️'
+            : attr === 'capital_to_country'
+            ? '🏙️'
+            : attr === 'location'
+            ? '🧭'
+            : attr === 'country'
+            ? '🗺️'
+            : '🏳️';
         const attributeLabel =
           attr === 'capital'
-            ? 'Capital'
+            ? 'Country → Capital'
+            : attr === 'capital_to_country'
+            ? 'Capital → Country'
             : attr === 'location'
-            ? 'Location'
+            ? 'Name → Map'
             : attr === 'country'
             ? 'Map → Name'
             : 'Flag';
@@ -816,9 +837,12 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
           answerText:
             attr === 'capital'
               ? country.capital
+              : attr === 'capital_to_country'
+              ? `${country.capital} → ${country.name}`
               : attr === 'location'
               ? country.subregion || country.continent
               : country.name,
+          capitalText: country.capital,
           coordinates: country.coordinates,
           category,
           statusBadge,
@@ -896,12 +920,19 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const cardTelemetry = useMemo(() => {
     const byCategory: Record<
       HorizonCategory,
-      { capital: number; location: number; country: number; flag: number; total: number }
+      {
+        capital: number;
+        capital_to_country: number;
+        location: number;
+        country: number;
+        flag: number;
+        total: number;
+      }
     > = {
-      mastered: { capital: 0, location: 0, country: 0, flag: 0, total: 0 },
-      recall: { capital: 0, location: 0, country: 0, flag: 0, total: 0 },
-      learning: { capital: 0, location: 0, country: 0, flag: 0, total: 0 },
-      unseen: { capital: 0, location: 0, country: 0, flag: 0, total: 0 }
+      mastered: { capital: 0, capital_to_country: 0, location: 0, country: 0, flag: 0, total: 0 },
+      recall: { capital: 0, capital_to_country: 0, location: 0, country: 0, flag: 0, total: 0 },
+      learning: { capital: 0, capital_to_country: 0, location: 0, country: 0, flag: 0, total: 0 },
+      unseen: { capital: 0, capital_to_country: 0, location: 0, country: 0, flag: 0, total: 0 }
     };
 
     for (const cat of HORIZON_CATEGORY_ORDER) {
@@ -1023,7 +1054,10 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const locBadge = getSpotlightCardBadge(spotlightLocItem);
 
   const attributeTelemetry = useMemo(() => {
-    const buildAttrStats = (attr: 'capital' | 'location' | 'country' | 'flag', total: number) => {
+    const buildAttrStats = (
+      attr: 'capital' | 'capital_to_country' | 'location' | 'country' | 'flag',
+      total: number
+    ) => {
       const mastered = cardTelemetry.byCategory.mastered[attr];
       const recall = cardTelemetry.byCategory.recall[attr];
       const learning = cardTelemetry.byCategory.learning[attr];
@@ -1042,6 +1076,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
     const locTotal = COUNTRIES.length + WATER_BODIES.length;
     return {
       capital: buildAttrStats('capital', capTotal),
+      capital_to_country: buildAttrStats('capital_to_country', capTotal),
       location: buildAttrStats('location', locTotal),
       country: buildAttrStats('country', capTotal),
       flag: buildAttrStats('flag', capTotal)
@@ -1053,9 +1088,9 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
    * across the selected time window and attribute filter directly from persisted SRS history & timestamps.
    */
   const remembranceTimeline = useMemo(() => {
-    const targetAttrs: Array<'capital' | 'location' | 'country' | 'flag'> =
+    const targetAttrs: Array<'capital' | 'capital_to_country' | 'location' | 'country' | 'flag'> =
       timelineAttrFilter === 'all'
-        ? ['capital', 'location', 'country', 'flag']
+        ? ['capital', 'capital_to_country', 'location', 'country', 'flag']
         : [timelineAttrFilter];
 
     const cardIds: string[] = [];
@@ -1215,18 +1250,29 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   const focusOptions = [
     {
       attr: 'capital' as const,
-      label: 'Capitals',
-      subtitle: 'Country ↔ Capital city',
+      label: 'Country → Capital',
+      subtitle: 'Name the capital city',
       detail: `${due.capital} due`,
       glyph: '🏛️',
+      spanCls: 'col-span-3',
       ...attributeTelemetry.capital
     },
     {
+      attr: 'capital_to_country' as const,
+      label: 'Capital → Country',
+      subtitle: 'Name nation from capital',
+      detail: `${due.capital_to_country} due`,
+      glyph: '🏙️',
+      spanCls: 'col-span-3',
+      ...attributeTelemetry.capital_to_country
+    },
+    {
       attr: 'location' as const,
-      label: 'Locations',
+      label: 'Name → Map',
       subtitle: 'Pinpoint on map',
       detail: `${due.location} due`,
       glyph: '🧭',
+      spanCls: 'col-span-2',
       ...attributeTelemetry.location
     },
     {
@@ -1235,6 +1281,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       subtitle: 'Name highlighted nation',
       detail: `${due.country} due`,
       glyph: '🗺️',
+      spanCls: 'col-span-2',
       ...attributeTelemetry.country
     },
     {
@@ -1243,6 +1290,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       subtitle: 'Name nation from flag',
       detail: `${due.flag} due`,
       glyph: '🏳️',
+      spanCls: 'col-span-2',
       ...attributeTelemetry.flag
     }
   ];
@@ -1449,8 +1497,8 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 </p>
               </div>
 
-              {/* 2x2 Interactive Study Focus Deck */}
-              <div className="grid shrink-0 grid-cols-2 gap-2">
+              {/* 5-Mode Interactive Study Focus Deck (2-Row Paired Grid) */}
+              <div className="grid shrink-0 grid-cols-6 gap-1.5">
                 {focusOptions.map((opt) => {
                   const active = selectedAttributes.includes(opt.attr);
                   return (
@@ -1462,7 +1510,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         onToggleAttribute(opt.attr);
                       }}
                       aria-pressed={active}
-                      className={`group relative flex flex-col justify-between gap-1.5 overflow-hidden rounded-xl border px-3 py-1.5 text-left transition-all cursor-pointer active:scale-[0.98] ${
+                      className={`${opt.spanCls} group relative flex flex-col justify-between gap-1.5 overflow-hidden rounded-xl border px-2.5 py-1.5 text-left transition-all cursor-pointer active:scale-[0.98] ${
                         active
                           ? 'border-[#E9C46A]/65 bg-gradient-to-b from-[#E9C46A]/18 to-[#0C1D2B]/90 text-[#F6EFE2] shadow-sm'
                           : 'border-[#F6EFE2]/15 bg-[#0C1D2B]/70 text-[#9FB3C4] opacity-75 hover:border-[#F6EFE2]/35 hover:opacity-100'
@@ -1674,7 +1722,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         key={cat}
                         type="button"
                         onClick={() => openTrophyAlbum(cat)}
-                        title={`Click to open ${meta.label} Trophy Album (${catCounts.capital} Capitals, ${catCounts.location} Locations, ${catCounts.country} Map → Name, ${catCounts.flag} Flags)`}
+                        title={`Click to open ${meta.label} Trophy Album (${catCounts.capital} Country → Capital, ${catCounts.capital_to_country} Capital → Country, ${catCounts.location} Name → Map, ${catCounts.country} Map → Name, ${catCounts.flag} Flags)`}
                         className={`group rounded-xl border px-2 py-1.5 text-left flex flex-col justify-between gap-1.5 transition-all cursor-pointer active:scale-[0.97] ${meta.tileIdleCls}`}
                       >
                         <div className="flex items-center justify-between gap-1 w-full">
@@ -1687,52 +1735,55 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                             <Maximize2 className="h-2 w-2" />
                           </span>
                         </div>
-                        <div className="grid grid-cols-2 gap-1 w-full">
+                        <div className="grid grid-cols-6 gap-1 w-full">
                           <div
-                            title="Capitals"
-                            className="flex items-center justify-between gap-1 rounded-md border border-[#F6EFE2]/10 bg-[#07131D]/80 px-1.5 py-0.5"
+                            title="Country → Capital"
+                            className="col-span-3 flex items-center justify-between gap-1 rounded-md border border-[#F6EFE2]/10 bg-[#07131D]/80 px-1.5 py-0.5"
                           >
                             <span className="flex items-center gap-1 text-[8px] font-bold text-[#9FB3C4] truncate">
                               <span>🏛️</span>
-                              <span className="truncate">Cap</span>
+                              <span className="truncate">C→Cap</span>
                             </span>
                             <span className="font-mono text-[10px] font-black leading-none text-[#F6EFE2]">
                               {catCounts.capital}
                             </span>
                           </div>
                           <div
-                            title="Locations"
-                            className="flex items-center justify-between gap-1 rounded-md border border-[#F6EFE2]/10 bg-[#07131D]/80 px-1.5 py-0.5"
+                            title="Capital → Country"
+                            className="col-span-3 flex items-center justify-between gap-1 rounded-md border border-[#F6EFE2]/10 bg-[#07131D]/80 px-1.5 py-0.5"
                           >
                             <span className="flex items-center gap-1 text-[8px] font-bold text-[#9FB3C4] truncate">
-                              <span>🧭</span>
-                              <span className="truncate">Loc</span>
+                              <span>🏙️</span>
+                              <span className="truncate">Cap→C</span>
                             </span>
                             <span className="font-mono text-[10px] font-black leading-none text-[#F6EFE2]">
+                              {catCounts.capital_to_country}
+                            </span>
+                          </div>
+                          <div
+                            title="Name → Map"
+                            className="col-span-2 flex items-center justify-between gap-0.5 rounded-md border border-[#F6EFE2]/10 bg-[#07131D]/80 px-1 py-0.5"
+                          >
+                            <span className="text-[8px] font-bold text-[#9FB3C4]">🧭</span>
+                            <span className="font-mono text-[9.5px] font-black leading-none text-[#F6EFE2]">
                               {catCounts.location}
                             </span>
                           </div>
                           <div
                             title="Map → Name"
-                            className="flex items-center justify-between gap-1 rounded-md border border-[#F6EFE2]/10 bg-[#07131D]/80 px-1.5 py-0.5"
+                            className="col-span-2 flex items-center justify-between gap-0.5 rounded-md border border-[#F6EFE2]/10 bg-[#07131D]/80 px-1 py-0.5"
                           >
-                            <span className="flex items-center gap-1 text-[8px] font-bold text-[#9FB3C4] truncate">
-                              <span>🗺️</span>
-                              <span className="truncate">Map</span>
-                            </span>
-                            <span className="font-mono text-[10px] font-black leading-none text-[#F6EFE2]">
+                            <span className="text-[8px] font-bold text-[#9FB3C4]">🗺️</span>
+                            <span className="font-mono text-[9.5px] font-black leading-none text-[#F6EFE2]">
                               {catCounts.country}
                             </span>
                           </div>
                           <div
                             title="Flags"
-                            className="flex items-center justify-between gap-1 rounded-md border border-[#F6EFE2]/10 bg-[#07131D]/80 px-1.5 py-0.5"
+                            className="col-span-2 flex items-center justify-between gap-0.5 rounded-md border border-[#F6EFE2]/10 bg-[#07131D]/80 px-1 py-0.5"
                           >
-                            <span className="flex items-center gap-1 text-[8px] font-bold text-[#9FB3C4] truncate">
-                              <span>🏳️</span>
-                              <span className="truncate">Flag</span>
-                            </span>
-                            <span className="font-mono text-[10px] font-black leading-none text-[#F6EFE2]">
+                            <span className="text-[8px] font-bold text-[#9FB3C4]">🏳️</span>
+                            <span className="font-mono text-[9.5px] font-black leading-none text-[#F6EFE2]">
                               {catCounts.flag}
                             </span>
                           </div>
@@ -2332,7 +2383,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               </div>
 
               {/* Row 2: Interactive Attribute Filter Tabs with Mini 4-Stage Progress Bar */}
-              <div className="shrink-0 grid grid-cols-5 gap-1 rounded-xl border border-[#F6EFE2]/10 bg-[#0A1824] p-1">
+              <div className="shrink-0 grid grid-cols-6 gap-1 rounded-xl border border-[#F6EFE2]/10 bg-[#0A1824] p-1">
                 {(
                   [
                     {
@@ -2347,7 +2398,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                     },
                     {
                       id: 'capital',
-                      label: 'Capitals',
+                      label: 'C→Cap',
                       glyph: '🏛️',
                       pct: attributeTelemetry.capital.pct,
                       m: attributeTelemetry.capital.mastered,
@@ -2356,8 +2407,18 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                       t: Math.max(1, attributeTelemetry.capital.total)
                     },
                     {
+                      id: 'capital_to_country',
+                      label: 'Cap→C',
+                      glyph: '🏙️',
+                      pct: attributeTelemetry.capital_to_country.pct,
+                      m: attributeTelemetry.capital_to_country.mastered,
+                      r: attributeTelemetry.capital_to_country.recall,
+                      l: attributeTelemetry.capital_to_country.learning,
+                      t: Math.max(1, attributeTelemetry.capital_to_country.total)
+                    },
+                    {
                       id: 'location',
-                      label: 'Locations',
+                      label: 'Name→Map',
                       glyph: '🧭',
                       pct: attributeTelemetry.location.pct,
                       m: attributeTelemetry.location.mastered,
@@ -2396,19 +2457,19 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         soundFx.playClick();
                         setTimelineAttrFilter(tab.id);
                       }}
-                      className={`flex flex-col justify-between gap-1 rounded-lg px-2 py-1.5 transition-all cursor-pointer ${
+                      className={`flex flex-col justify-between gap-1 rounded-lg px-1.5 py-1.5 transition-all cursor-pointer ${
                         active
                           ? 'bg-[#173A52] text-[#F6EFE2] ring-1 ring-[#E9C46A]/65 shadow-sm'
                           : 'text-[#9FB3C4] hover:bg-[#132E42]/60 hover:text-[#F6EFE2]'
                       }`}
                     >
-                      <div className="flex items-center justify-between gap-1 w-full">
-                        <span className="flex items-center gap-1 min-w-0">
-                          <span className="text-[10px] leading-none">{tab.glyph}</span>
-                          <span className="truncate text-[9.5px] font-extrabold leading-none">{tab.label}</span>
+                      <div className="flex items-center justify-between gap-0.5 w-full">
+                        <span className="flex items-center gap-0.5 min-w-0">
+                          <span className="text-[9.5px] leading-none">{tab.glyph}</span>
+                          <span className="truncate text-[9px] font-extrabold leading-none">{tab.label}</span>
                         </span>
                         <span
-                          className={`font-mono text-[9px] font-extrabold leading-none tabular-nums ${
+                          className={`font-mono text-[8.5px] font-extrabold leading-none tabular-nums ${
                             active ? 'text-[#E9C46A]' : 'text-[#8FA6B8]'
                           }`}
                         >
@@ -2980,9 +3041,10 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         </span>
                         <span className="text-[9px] font-semibold text-[#9FB3C4]">{meta.subtitle}</span>
                       </div>
-                      <div className="mt-1 grid grid-cols-4 gap-1 font-mono text-[10px] font-extrabold text-[#F6EFE2]">
-                        <span title="Capitals">🏛️{catCounts.capital}</span>
-                        <span title="Locations">🧭{catCounts.location}</span>
+                      <div className="mt-1 grid grid-cols-5 gap-1 font-mono text-[9.5px] font-extrabold text-[#F6EFE2]">
+                        <span title="Country → Capital">🏛️{catCounts.capital}</span>
+                        <span title="Capital → Country">🏙️{catCounts.capital_to_country}</span>
+                        <span title="Name → Map">🧭{catCounts.location}</span>
                         <span title="Map → Name">🗺️{catCounts.country}</span>
                         <span title="Flags">🏳️{catCounts.flag}</span>
                       </div>
@@ -3022,7 +3084,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
                 <div className="flex items-center gap-2">
                   <div className="flex items-center rounded-full border border-[#F6EFE2]/15 bg-[#0C1D2B] p-0.5 text-[10px] font-bold">
-                    {(['all', 'capital', 'location', 'country', 'flag'] as const).map((attr) => (
+                    {(['all', 'capital', 'capital_to_country', 'location', 'country', 'flag'] as const).map((attr) => (
                       <button
                         key={attr}
                         type="button"
@@ -3041,9 +3103,11 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         {attr === 'all'
                           ? 'All Plates'
                           : attr === 'capital'
-                          ? '🏛️ Capitals'
+                          ? '🏛️ Country → Cap'
+                          : attr === 'capital_to_country'
+                          ? '🏙️ Cap → Country'
                           : attr === 'location'
-                          ? '🧭 Locations'
+                          ? '🧭 Name → Map'
                           : attr === 'country'
                           ? '🗺️ Map → Name'
                           : '🏳️ Flags'}
@@ -3196,15 +3260,15 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         </div>
 
                         <div className="flex items-center gap-1 shrink-0">
-                          {card.attribute === 'capital' && showAnswer && (
+                          {(card.attribute === 'capital' || card.attribute === 'capital_to_country') && showAnswer && (
                             <button
                               type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 soundFx.playClick();
-                                speechEngine.speak(card.answerText);
+                                speechEngine.speak(card.capitalText || card.answerText);
                               }}
-                              title={`Pronounce ${card.answerText}`}
+                              title={`Pronounce ${card.capitalText || card.answerText}`}
                               className="flex h-6 w-6 items-center justify-center rounded-lg border border-[#F6EFE2]/15 bg-[#122B3E] text-[#D6CBB9] hover:bg-[#D94E34] hover:text-white transition-colors"
                             >
                               <Volume2 className="h-3 w-3" />
