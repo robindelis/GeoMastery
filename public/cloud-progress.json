@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T16:00:51.394Z",
+  "exportedAt": "2026-10-24T16:01:01.074Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16542,13 +16542,13 @@
         "countryId": "TZA",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 43,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T08:58:05.680Z",
-        "nextDueAt": "2026-10-17T08:58:05.680Z",
+        "lastReviewedAt": "2026-10-24T16:00:57.562Z",
+        "nextDueAt": "2026-12-06T16:00:57.562Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:32:11.402Z",
@@ -16570,11 +16570,21 @@
             "userAnswer": "Tanzania",
             "isCorrect": true,
             "timeSpentMs": 10720
+          },
+          {
+            "timestamp": "2026-10-24T16:00:57.562Z",
+            "inputMode": "map_click",
+            "userAnswer": "Tanzania",
+            "isCorrect": true,
+            "timeSpentMs": 5186,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 43.01,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -25827,8 +25837,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1814,
-    "totalCorrect": 1302,
+    "totalReviews": 1815,
+    "totalCorrect": 1303,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -25866,7 +25876,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T16:00:48.425Z"
+    "updatedAt": "2026-10-24T16:00:57.564Z"
   },
   "settings": {
     "audioEnabled": true,
