@@ -492,12 +492,12 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     const isCountry = Boolean(question.country && !question.country.id?.startsWith('WATER_'));
     const capitalToSpeak = isCountry ? question.country.capital : null;
 
-    if (shouldSpeakCapital && capitalToSpeak) {
+    if (shouldSpeakCapital && capitalToSpeak && question.country) {
       if (speechTimerRef.current) {
         clearTimeout(speechTimerRef.current);
       }
       speechTimerRef.current = setTimeout(() => {
-        speechEngine.speak(capitalToSpeak);
+        speechEngine.speakCountryAndCapital(question.country.name, capitalToSpeak);
         speechTimerRef.current = null;
       }, 200);
     }

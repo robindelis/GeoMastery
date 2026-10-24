@@ -98,6 +98,28 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
     expect(mockFetch).not.toHaveBeenCalled();
   });
 
+  it('prefers local pre-recorded Fenrir files for all countries with zero API calls', () => {
+    const mockFetch = vi.fn();
+    globalThis.fetch = mockFetch;
+
+    expect(engine.hasLocalCountryRecording('France')).toBe(true);
+    expect(engine.hasLocalCountryRecording('United States')).toBe(true);
+    expect(engine.hasLocalCountryRecording('Japan')).toBe(true);
+    expect(engine.hasLocalRecording('Germany')).toBe(true);
+
+    engine.speakCountry('France');
+
+    expect(createdAudios.length).toBe(1);
+    expect(createdAudios[0].src).toContain('france_fenrir');
+    expect(mockFetch).not.toHaveBeenCalled();
+    expect(mockAudioPlay).toHaveBeenCalledTimes(1);
+
+    engine.speakCountry('United States');
+    expect(createdAudios.length).toBe(2);
+    expect(createdAudios[1].src).toContain('united_states_fenrir');
+    expect(mockFetch).not.toHaveBeenCalled();
+  });
+
   it('caches audio URLs to prevent redundant network string building in stream utility', () => {
     engine.speakViaGoogleStream('Custom Place');
     expect(createdAudios.length).toBe(1);
@@ -155,5 +177,60 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
     engine.speak('Paris');
     engine.cancel();
     expect(mockAudioPause).toHaveBeenCalled();
+  });
+
+  it('plays country first then capital in sequence with speakCountryAndCapital', async () => {
+    vi.useFakeTimers();
+
+    engine.speakCountryAndCapital('France', 'Paris', { gapMs: 200 });
+
+    // 1st audio element created for France
+    expect(createdAudios.length).toBe(1);
+    expect(createdAudios[0].src).toContain('france_fenrir');
+    expect(mockAudioPlay).toHaveBeenCalledTimes(1);
+
+    // Simulate country audio ending
+    createdAudios[0].onended();
+
+    // Before gap finishes, capital audio should not have started yet
+    expect(createdAudios.length).toBe(1);
+
+    // Fast-forward through the 200ms gap
+    vi.advanceTimersByTime(200);
+
+    // 2nd audio element created for Paris
+    expect(createdAudios.length).toBe(2);
+    expect(createdAudios[1].src).toContain('paris_fenrir');
+    expect(mockAudioPlay).toHaveBeenCalledTimes(2);
+
+    vi.useRealTimers();
+  });
+
+  it('cancels pending sequence timer when cancel() is called', () => {
+    vi.useFakeTimers();
+
+    engine.speakCountryAndCapital('France', 'Paris', { gapMs: 300 });
+    expect(createdAudios.length).toBe(1);
+
+    // Simulate country audio ending, queueing the gap timer
+    createdAudios[0].onended();
+
+    // Cancel while waiting during the gap
+    engine.cancel();
+
+    // Advance time past the gap
+    vi.advanceTimersByTime(500);
+
+    // Paris should NEVER have been played
+    expect(createdAudios.length).toBe(1);
+
+    vi.useRealTimers();
+  });
+
+  it('speaks country directly via speakCountry', () => {
+    engine.speakCountry('France');
+    expect(createdAudios.length).toBe(1);
+    expect(createdAudios[0].src).toContain('france_fenrir');
+    expect(mockAudioPlay).toHaveBeenCalledTimes(1);
   });
 });

@@ -1297,7 +1297,11 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
   const handlePronounceSpotlightCapital = () => {
     soundFx.playClick();
-    speechEngine.speak(data.spotlight.capital);
+    if (data.spotlight.name && data.spotlight.capital) {
+      speechEngine.speakCountryAndCapital(data.spotlight.name, data.spotlight.capital);
+    } else {
+      speechEngine.speak(data.spotlight.capital);
+    }
   };
 
   return (
@@ -3266,9 +3270,16 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 soundFx.playClick();
-                                speechEngine.speak(card.capitalText || card.answerText);
+                                if (card.entityName && (card.capitalText || card.answerText)) {
+                                  speechEngine.speakCountryAndCapital(
+                                    card.entityName,
+                                    card.capitalText || card.answerText
+                                  );
+                                } else {
+                                  speechEngine.speak(card.capitalText || card.answerText);
+                                }
                               }}
-                              title={`Pronounce ${card.capitalText || card.answerText}`}
+                              title={`Pronounce ${card.entityName} and ${card.capitalText || card.answerText}`}
                               className="flex h-6 w-6 items-center justify-center rounded-lg border border-[#F6EFE2]/15 bg-[#122B3E] text-[#D6CBB9] hover:bg-[#D94E34] hover:text-white transition-colors"
                             >
                               <Volume2 className="h-3 w-3" />

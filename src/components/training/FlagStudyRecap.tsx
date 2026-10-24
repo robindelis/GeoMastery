@@ -454,10 +454,13 @@ export const FlagStudyRecap: React.FC<FlagStudyRecapProps> = ({
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
-                          speechEngine.speak(activeFlashcardCountry.capital);
+                          speechEngine.speakCountryAndCapital(
+                            activeFlashcardCountry.name,
+                            activeFlashcardCountry.capital
+                          );
                         }}
                         className="p-1 rounded-lg bg-[#0B1C2A] text-[#38BDF8] hover:text-white border border-[#F6EFE2]/15"
-                        title="Pronounce capital"
+                        title="Pronounce country and capital"
                       >
                         <Volume2 className="w-3.5 h-3.5" />
                       </button>

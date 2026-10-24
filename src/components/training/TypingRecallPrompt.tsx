@@ -263,10 +263,10 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      speechEngine.speak(country.capital);
+                      speechEngine.speakCountryAndCapital(country.name, country.capital);
                     }}
                     className="p-1 rounded hover:bg-slate-800 text-sky-400 hover:text-sky-300 transition-colors inline-flex items-center active:scale-95"
-                    title="Hear capital pronunciation"
+                    title="Hear country and capital pronunciation"
                   >
                     <Volume2 className="w-3.5 h-3.5" />
                   </button>

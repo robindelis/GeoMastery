@@ -1,5 +1,6 @@
 import { getLocalCapitalAudioUrl, hasLocalCapitalAudio, normalizeCapitalKey } from '../assets/audio/capitalRecordings';
-export { normalizeCapitalKey };
+import { getLocalCountryAudioUrl, hasLocalCountryAudio, normalizeCountryKey } from '../assets/audio/countryRecordings';
+export { normalizeCapitalKey, normalizeCountryKey };
 
 // Robust multi-provider Speech Synthesis Engine:
 // 1. Local Pre-recorded Files: Instant, 0 API calls, high fidelity
@@ -90,6 +91,7 @@ export class SpeechEngine {
   private audioCache = new Map<string, string>(); // key -> playable URL
 
   private apiKeyExplicitlySet: boolean = false;
+  private sequenceTimer: any = null;
 
   constructor() {
     this.initKey();
@@ -178,6 +180,12 @@ export class SpeechEngine {
   }
 
   public cancel(): void {
+    // 0. Clear any active sequence chain
+    if (this.sequenceTimer) {
+      clearTimeout(this.sequenceTimer);
+      this.sequenceTimer = null;
+    }
+
     // 1. Abort any ongoing network request
     if (this.abortController) {
       try {
@@ -206,10 +214,8 @@ export class SpeechEngine {
   }
 
   /**
-   * Pronounces text using the active or requested provider, with automatic failover.
-   */
-  /**
    * Pronounces text using the pre-recorded local studio audio (Fenrir).
+   * Checks pre-recorded capital audio first, then pre-recorded country audio.
    * Operates completely offline with zero API calls or network requests during app usage.
    */
   public speak(text: string, options?: SpeechOptions): void {
@@ -222,10 +228,17 @@ export class SpeechEngine {
     // Disarm previous speech immediately
     this.cancel();
 
-    // 1. Play local pre-recorded audio file directly (zero API calls during app runtime)
-    const localAudioUrl = getLocalCapitalAudioUrl(trimmed);
-    if (localAudioUrl) {
-      this.playAudioUrl(localAudioUrl, options);
+    // 1. Check local pre-recorded capital audio file
+    const localCapitalUrl = getLocalCapitalAudioUrl(trimmed);
+    if (localCapitalUrl) {
+      this.playAudioUrl(localCapitalUrl, options);
+      return;
+    }
+
+    // 2. Check local pre-recorded country audio file
+    const localCountryUrl = getLocalCountryAudioUrl(trimmed);
+    if (localCountryUrl) {
+      this.playAudioUrl(localCountryUrl, options);
       return;
     }
 
@@ -235,10 +248,112 @@ export class SpeechEngine {
   }
 
   /**
+   * Pronounces a sovereign country name using the pre-recorded local studio audio (Fenrir).
+   */
+  public speakCountry(country: string, options?: SpeechOptions): void {
+    if (!this.enabled) return;
+    if (!country || typeof country !== 'string') return;
+
+    const trimmed = country.trim();
+    if (trimmed.length === 0) return;
+
+    this.cancel();
+
+    const localCountryUrl = getLocalCountryAudioUrl(trimmed);
+    if (localCountryUrl) {
+      this.playAudioUrl(localCountryUrl, options);
+      return;
+    }
+
+    if (options?.onError) {
+      options.onError(new Error(`No local country audio file found for "${trimmed}"`));
+    }
+  }
+
+  /**
+   * Pronounces country name first, followed by its capital city name with a smooth pause.
+   * Gives full geographic context: e.g. "France... Paris".
+   */
+  public speakCountryAndCapital(
+    country: string,
+    capital: string,
+    options?: SpeechOptions & { gapMs?: number }
+  ): void {
+    if (!this.enabled) return;
+
+    const trimmedCountry = country && typeof country === 'string' ? country.trim() : '';
+    const trimmedCapital = capital && typeof capital === 'string' ? capital.trim() : '';
+
+    if (!trimmedCountry && !trimmedCapital) return;
+
+    if (!trimmedCountry) {
+      this.speak(trimmedCapital, options);
+      return;
+    }
+
+    if (!trimmedCapital) {
+      this.speakCountry(trimmedCountry, options);
+      return;
+    }
+
+    this.cancel();
+
+    const countryUrl = getLocalCountryAudioUrl(trimmedCountry);
+    const capitalUrl = getLocalCapitalAudioUrl(trimmedCapital);
+
+    // Both audio files are available: play country -> gap -> capital
+    if (countryUrl && capitalUrl) {
+      const gap = options?.gapMs ?? 250;
+      this.playAudioUrl(countryUrl, {
+        ...options,
+        onEnd: () => {
+          this.sequenceTimer = setTimeout(() => {
+            this.sequenceTimer = null;
+            this.playAudioUrl(capitalUrl, options);
+          }, gap);
+        }
+      });
+      return;
+    }
+
+    // Fallback: if only capital audio exists
+    if (capitalUrl) {
+      this.playAudioUrl(capitalUrl, options);
+      return;
+    }
+
+    // Fallback: if only country audio exists
+    if (countryUrl) {
+      this.playAudioUrl(countryUrl, options);
+      return;
+    }
+
+    if (options?.onError) {
+      options.onError(
+        new Error(`No local audio file found for country "${trimmedCountry}" or capital "${trimmedCapital}"`)
+      );
+    }
+  }
+
+  /**
+   * Returns true if a local studio recording is available for the given capital or country name.
+   */
+  public hasLocalRecording(name: string): boolean {
+    return hasLocalCapitalAudio(name) || hasLocalCountryAudio(name);
+  }
+
+  /**
    * Returns true if a local studio recording is available for the given capital.
    */
-  public hasLocalRecording(capital: string): boolean {
+  public hasLocalCapitalRecording(capital: string): boolean {
     return hasLocalCapitalAudio(capital);
+  }
+
+  /**
+   * Returns true if a local studio recording is available for the given country.
+   */
+  public hasLocalCountryRecording(country: string): boolean {
+    return hasLocalCountryAudio(country);
   }
 
   /**
