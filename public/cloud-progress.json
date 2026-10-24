@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:23:24.378Z",
+  "exportedAt": "2026-10-24T14:23:35.034Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -24038,11 +24038,41 @@
         "lastLatencyGrade": 1,
         "confusedWith": []
       }
+    ],
+    [
+      "MLT:flag",
+      {
+        "id": "MLT:flag",
+        "countryId": "MLT",
+        "attributeId": "flag",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-24T14:23:30.968Z",
+        "nextDueAt": "2026-10-24T14:38:30.968Z",
+        "history": [
+          {
+            "timestamp": "2026-10-24T14:23:30.968Z",
+            "inputMode": "typing",
+            "userAnswer": "Malta",
+            "isCorrect": true,
+            "timeSpentMs": 8287,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1700,
-    "totalCorrect": 1215,
+    "totalReviews": 1701,
+    "totalCorrect": 1216,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -24080,7 +24110,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:23:21.340Z"
+    "updatedAt": "2026-10-24T14:23:30.973Z"
   },
   "settings": {
     "audioEnabled": true,
