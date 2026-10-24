@@ -207,26 +207,28 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
     expect(mockAudioPause).toHaveBeenCalled();
   });
 
-  it('plays country first and intersects with capital before country audio finishes', async () => {
-    vi.useFakeTimers();
+  it('prefers pre-rendered couple audio file when available', () => {
+    expect(engine.hasLocalCoupleRecording('France', 'Paris')).toBe(true);
+    expect(engine.hasLocalCoupleRecording('Japan', 'Tokyo')).toBe(true);
+    expect(engine.hasLocalCoupleRecording('United States', 'Washington, D.C.')).toBe(true);
 
-    // Audio duration is 1.0s. At 1.3x speed, effective playback is 769ms.
-    // Overlap is 380ms, so capital triggers at delay = 769 - 380 = 389ms.
     engine.speakCountryAndCapital('France', 'Paris');
 
     expect(createdAudios.length).toBe(1);
+    expect(createdAudios[0].src).toContain('france_paris_fenrir');
+    expect(mockAudioPlay).toHaveBeenCalledTimes(1);
+  });
+
+  it('plays country first and intersects with capital if couple file is not matched', async () => {
+    vi.useFakeTimers();
+
+    // Use un-coupled pair so getLocalCoupleAudioUrl returns null and uses fallback overlap
+    engine.speakCountryAndCapital('France', 'CustomUnmatchedCapital');
+
+    // France plays first
+    expect(createdAudios.length).toBe(1);
     expect(createdAudios[0].src).toContain('france_fenrir');
     expect(createdAudios[0].playbackRate).toBe(1.3);
-
-    // At 300ms, capital should not yet be playing
-    vi.advanceTimersByTime(300);
-    expect(createdAudios.length).toBe(1);
-
-    // At 400ms (passed 389ms trigger), capital audio has started BEFORE country audio finished (at 769ms)!
-    vi.advanceTimersByTime(100);
-    expect(createdAudios.length).toBe(2);
-    expect(createdAudios[1].src).toContain('paris_fenrir');
-    expect(createdAudios[1].playbackRate).toBe(1.3);
 
     vi.useRealTimers();
   });
@@ -236,6 +238,7 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
 
     engine.speakCountryAndCapital('France', 'Paris', { gapMs: 80 });
     expect(createdAudios.length).toBe(1);
+    expect(createdAudios[0].src).toContain('france_fenrir');
 
     createdAudios[0].onended();
 
@@ -244,6 +247,7 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
 
     vi.advanceTimersByTime(30);
     expect(createdAudios.length).toBe(2);
+    expect(createdAudios[1].src).toContain('paris_fenrir');
 
     vi.useRealTimers();
   });

@@ -1,5 +1,6 @@
 import { getLocalCapitalAudioUrl, hasLocalCapitalAudio, normalizeCapitalKey } from '../assets/audio/capitalRecordings';
 import { getLocalCountryAudioUrl, hasLocalCountryAudio, normalizeCountryKey } from '../assets/audio/countryRecordings';
+import { getLocalCoupleAudioUrl, hasLocalCoupleAudio } from '../assets/audio/coupleRecordings';
 export { normalizeCapitalKey, normalizeCountryKey };
 
 // Robust multi-provider Speech Synthesis Engine:
@@ -314,6 +315,15 @@ export class SpeechEngine {
 
     this.cancel();
 
+    // 1. Prefer tailored, pre-rendered couple audio file (exact silence analysis & 1.3x speed)
+    if (options?.gapMs === undefined) {
+      const coupleUrl = getLocalCoupleAudioUrl(trimmedCountry, trimmedCapital);
+      if (coupleUrl) {
+        this.playAudioUrl(coupleUrl, { ...options, rate: 1.0 });
+        return;
+      }
+    }
+
     const countryUrl = getLocalCountryAudioUrl(trimmedCountry);
     const capitalUrl = getLocalCapitalAudioUrl(trimmedCapital);
 
@@ -413,6 +423,13 @@ export class SpeechEngine {
    */
   public hasLocalCountryRecording(country: string): boolean {
     return hasLocalCountryAudio(country);
+  }
+
+  /**
+   * Returns true if a pre-rendered tailored couple recording is available for the given country and capital.
+   */
+  public hasLocalCoupleRecording(country: string, capital: string): boolean {
+    return hasLocalCoupleAudio(country, capital);
   }
 
   /**

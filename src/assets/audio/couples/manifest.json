@@ -1,0 +1,1962 @@
+[
+  {
+    "country": "Albania",
+    "capital": "Tirana",
+    "countryKey": "albania",
+    "capitalKey": "tirana",
+    "file": "albania_tirana_fenrir.wav",
+    "size": 66464,
+    "overlapSeconds": 0.351,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Andorra",
+    "capital": "Andorra la Vella",
+    "countryKey": "andorra",
+    "capitalKey": "andorra_la_vella",
+    "file": "andorra_andorra_la_vella_fenrir.wav",
+    "size": 89198,
+    "overlapSeconds": 0.357,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Austria",
+    "capital": "Vienna",
+    "countryKey": "austria",
+    "capitalKey": "vienna",
+    "file": "austria_vienna_fenrir.wav",
+    "size": 69162,
+    "overlapSeconds": 0.363,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Belarus",
+    "capital": "Minsk",
+    "countryKey": "belarus",
+    "capitalKey": "minsk",
+    "file": "belarus_minsk_fenrir.wav",
+    "size": 78950,
+    "overlapSeconds": 0.341,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Belgium",
+    "capital": "Brussels",
+    "countryKey": "belgium",
+    "capitalKey": "brussels",
+    "file": "belgium_brussels_fenrir.wav",
+    "size": 69154,
+    "overlapSeconds": 0.476,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Bosnia and Herzegovina",
+    "capital": "Sarajevo",
+    "countryKey": "bosnia_and_herzegovina",
+    "capitalKey": "sarajevo",
+    "file": "bosnia_and_herzegovina_sarajevo_fenrir.wav",
+    "size": 125512,
+    "overlapSeconds": 0.264,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Bulgaria",
+    "capital": "Sofia",
+    "countryKey": "bulgaria",
+    "capitalKey": "sofia",
+    "file": "bulgaria_sofia_fenrir.wav",
+    "size": 69664,
+    "overlapSeconds": 0.427,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Croatia",
+    "capital": "Zagreb",
+    "countryKey": "croatia",
+    "capitalKey": "zagreb",
+    "file": "croatia_zagreb_fenrir.wav",
+    "size": 69320,
+    "overlapSeconds": 0.433,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Cyprus",
+    "capital": "Nicosia",
+    "countryKey": "cyprus",
+    "capitalKey": "nicosia",
+    "file": "cyprus_nicosia_fenrir.wav",
+    "size": 73786,
+    "overlapSeconds": 0.36,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Czechia",
+    "capital": "Prague",
+    "countryKey": "czechia",
+    "capitalKey": "prague",
+    "file": "czechia_prague_fenrir.wav",
+    "size": 59876,
+    "overlapSeconds": 0.364,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Denmark",
+    "capital": "Copenhagen",
+    "countryKey": "denmark",
+    "capitalKey": "copenhagen",
+    "file": "denmark_copenhagen_fenrir.wav",
+    "size": 64988,
+    "overlapSeconds": 0.354,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Estonia",
+    "capital": "Tallinn",
+    "countryKey": "estonia",
+    "capitalKey": "tallinn",
+    "file": "estonia_tallinn_fenrir.wav",
+    "size": 68270,
+    "overlapSeconds": 0.391,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Finland",
+    "capital": "Helsinki",
+    "countryKey": "finland",
+    "capitalKey": "helsinki",
+    "file": "finland_helsinki_fenrir.wav",
+    "size": 72978,
+    "overlapSeconds": 0.379,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "France",
+    "capital": "Paris",
+    "countryKey": "france",
+    "capitalKey": "paris",
+    "file": "france_paris_fenrir.wav",
+    "size": 67100,
+    "overlapSeconds": 0.444,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Germany",
+    "capital": "Berlin",
+    "countryKey": "germany",
+    "capitalKey": "berlin",
+    "file": "germany_berlin_fenrir.wav",
+    "size": 66476,
+    "overlapSeconds": 0.442,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Greece",
+    "capital": "Athens",
+    "countryKey": "greece",
+    "capitalKey": "athens",
+    "file": "greece_athens_fenrir.wav",
+    "size": 65258,
+    "overlapSeconds": 0.538,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Hungary",
+    "capital": "Budapest",
+    "countryKey": "hungary",
+    "capitalKey": "budapest",
+    "file": "hungary_budapest_fenrir.wav",
+    "size": 65528,
+    "overlapSeconds": 0.415,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Iceland",
+    "capital": "Reykjavik",
+    "countryKey": "iceland",
+    "capitalKey": "reykjavik",
+    "file": "iceland_reykjavik_fenrir.wav",
+    "size": 65192,
+    "overlapSeconds": 0.323,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Ireland",
+    "capital": "Dublin",
+    "countryKey": "ireland",
+    "capitalKey": "dublin",
+    "file": "ireland_dublin_fenrir.wav",
+    "size": 62010,
+    "overlapSeconds": 0.39,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Italy",
+    "capital": "Rome",
+    "countryKey": "italy",
+    "capitalKey": "rome",
+    "file": "italy_rome_fenrir.wav",
+    "size": 63582,
+    "overlapSeconds": 0.387,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Latvia",
+    "capital": "Riga",
+    "countryKey": "latvia",
+    "capitalKey": "riga",
+    "file": "latvia_riga_fenrir.wav",
+    "size": 64146,
+    "overlapSeconds": 0.371,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Liechtenstein",
+    "capital": "Vaduz",
+    "countryKey": "liechtenstein",
+    "capitalKey": "vaduz",
+    "file": "liechtenstein_vaduz_fenrir.wav",
+    "size": 80344,
+    "overlapSeconds": 0.392,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Lithuania",
+    "capital": "Vilnius",
+    "countryKey": "lithuania",
+    "capitalKey": "vilnius",
+    "file": "lithuania_vilnius_fenrir.wav",
+    "size": 84208,
+    "overlapSeconds": 0.422,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Luxembourg",
+    "capital": "Luxembourg City",
+    "countryKey": "luxembourg",
+    "capitalKey": "luxembourg_city",
+    "file": "luxembourg_luxembourg_city_fenrir.wav",
+    "size": 95706,
+    "overlapSeconds": 0.4,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Malta",
+    "capital": "Valletta",
+    "countryKey": "malta",
+    "capitalKey": "valletta",
+    "file": "malta_valletta_fenrir.wav",
+    "size": 70520,
+    "overlapSeconds": 0.434,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Moldova",
+    "capital": "Chisinau",
+    "countryKey": "moldova",
+    "capitalKey": "chisinau",
+    "file": "moldova_chisinau_fenrir.wav",
+    "size": 73140,
+    "overlapSeconds": 0.432,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Monaco",
+    "capital": "Monaco",
+    "countryKey": "monaco",
+    "capitalKey": "monaco",
+    "file": "monaco_monaco_fenrir.wav",
+    "size": 65288,
+    "overlapSeconds": 0.477,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Montenegro",
+    "capital": "Podgorica",
+    "countryKey": "montenegro",
+    "capitalKey": "podgorica",
+    "file": "montenegro_podgorica_fenrir.wav",
+    "size": 84712,
+    "overlapSeconds": 0.433,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Netherlands",
+    "capital": "Amsterdam",
+    "countryKey": "netherlands",
+    "capitalKey": "amsterdam",
+    "file": "netherlands_amsterdam_fenrir.wav",
+    "size": 80460,
+    "overlapSeconds": 0.495,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "North Macedonia",
+    "capital": "Skopje",
+    "countryKey": "north_macedonia",
+    "capitalKey": "skopje",
+    "file": "north_macedonia_skopje_fenrir.wav",
+    "size": 87494,
+    "overlapSeconds": 0.355,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Norway",
+    "capital": "Oslo",
+    "countryKey": "norway",
+    "capitalKey": "oslo",
+    "file": "norway_oslo_fenrir.wav",
+    "size": 65994,
+    "overlapSeconds": 0.363,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Poland",
+    "capital": "Warsaw",
+    "countryKey": "poland",
+    "capitalKey": "warsaw",
+    "file": "poland_warsaw_fenrir.wav",
+    "size": 66992,
+    "overlapSeconds": 0.361,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Portugal",
+    "capital": "Lisbon",
+    "countryKey": "portugal",
+    "capitalKey": "lisbon",
+    "file": "portugal_lisbon_fenrir.wav",
+    "size": 64572,
+    "overlapSeconds": 0.394,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Romania",
+    "capital": "Bucharest",
+    "countryKey": "romania",
+    "capitalKey": "bucharest",
+    "file": "romania_bucharest_fenrir.wav",
+    "size": 72624,
+    "overlapSeconds": 0.44,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Russia",
+    "capital": "Moscow",
+    "countryKey": "russia",
+    "capitalKey": "moscow",
+    "file": "russia_moscow_fenrir.wav",
+    "size": 60994,
+    "overlapSeconds": 0.403,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "San Marino",
+    "capital": "San Marino",
+    "countryKey": "san_marino",
+    "capitalKey": "san_marino",
+    "file": "san_marino_san_marino_fenrir.wav",
+    "size": 95618,
+    "overlapSeconds": 0.338,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Serbia",
+    "capital": "Belgrade",
+    "countryKey": "serbia",
+    "capitalKey": "belgrade",
+    "file": "serbia_belgrade_fenrir.wav",
+    "size": 68718,
+    "overlapSeconds": 0.419,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Slovakia",
+    "capital": "Bratislava",
+    "countryKey": "slovakia",
+    "capitalKey": "bratislava",
+    "file": "slovakia_bratislava_fenrir.wav",
+    "size": 85476,
+    "overlapSeconds": 0.358,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Slovenia",
+    "capital": "Ljubljana",
+    "countryKey": "slovenia",
+    "capitalKey": "ljubljana",
+    "file": "slovenia_ljubljana_fenrir.wav",
+    "size": 84374,
+    "overlapSeconds": 0.419,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Spain",
+    "capital": "Madrid",
+    "countryKey": "spain",
+    "capitalKey": "madrid",
+    "file": "spain_madrid_fenrir.wav",
+    "size": 62856,
+    "overlapSeconds": 0.379,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Sweden",
+    "capital": "Stockholm",
+    "countryKey": "sweden",
+    "capitalKey": "stockholm",
+    "file": "sweden_stockholm_fenrir.wav",
+    "size": 71142,
+    "overlapSeconds": 0.411,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Switzerland",
+    "capital": "Bern",
+    "countryKey": "switzerland",
+    "capitalKey": "bern",
+    "file": "switzerland_bern_fenrir.wav",
+    "size": 67028,
+    "overlapSeconds": 0.416,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Ukraine",
+    "capital": "Kyiv",
+    "countryKey": "ukraine",
+    "capitalKey": "kyiv",
+    "file": "ukraine_kyiv_fenrir.wav",
+    "size": 65200,
+    "overlapSeconds": 0.393,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "United Kingdom",
+    "capital": "London",
+    "countryKey": "united_kingdom",
+    "capitalKey": "london",
+    "file": "united_kingdom_london_fenrir.wav",
+    "size": 85448,
+    "overlapSeconds": 0.433,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Vatican City",
+    "capital": "Vatican City",
+    "countryKey": "vatican_city",
+    "capitalKey": "vatican_city",
+    "file": "vatican_city_vatican_city_fenrir.wav",
+    "size": 86518,
+    "overlapSeconds": 0.352,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Afghanistan",
+    "capital": "Kabul",
+    "countryKey": "afghanistan",
+    "capitalKey": "kabul",
+    "file": "afghanistan_kabul_fenrir.wav",
+    "size": 70214,
+    "overlapSeconds": 0.471,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Armenia",
+    "capital": "Yerevan",
+    "countryKey": "armenia",
+    "capitalKey": "yerevan",
+    "file": "armenia_yerevan_fenrir.wav",
+    "size": 75986,
+    "overlapSeconds": 0.355,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Azerbaijan",
+    "capital": "Baku",
+    "countryKey": "azerbaijan",
+    "capitalKey": "baku",
+    "file": "azerbaijan_baku_fenrir.wav",
+    "size": 75152,
+    "overlapSeconds": 0.462,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Bahrain",
+    "capital": "Manama",
+    "countryKey": "bahrain",
+    "capitalKey": "manama",
+    "file": "bahrain_manama_fenrir.wav",
+    "size": 72048,
+    "overlapSeconds": 0.327,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Bangladesh",
+    "capital": "Dhaka",
+    "countryKey": "bangladesh",
+    "capitalKey": "dhaka",
+    "file": "bangladesh_dhaka_fenrir.wav",
+    "size": 73170,
+    "overlapSeconds": 0.388,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Bhutan",
+    "capital": "Thimphu",
+    "countryKey": "bhutan",
+    "capitalKey": "thimphu",
+    "file": "bhutan_thimphu_fenrir.wav",
+    "size": 65310,
+    "overlapSeconds": 0.39,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Brunei",
+    "capital": "Bandar Seri Begawan",
+    "countryKey": "brunei",
+    "capitalKey": "bandar_seri_begawan",
+    "file": "brunei_bandar_seri_begawan_fenrir.wav",
+    "size": 100738,
+    "overlapSeconds": 0.403,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Cambodia",
+    "capital": "Phnom Penh",
+    "countryKey": "cambodia",
+    "capitalKey": "phnom_penh",
+    "file": "cambodia_phnom_penh_fenrir.wav",
+    "size": 82828,
+    "overlapSeconds": 0.544,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "China",
+    "capital": "Beijing",
+    "countryKey": "china",
+    "capitalKey": "beijing",
+    "file": "china_beijing_fenrir.wav",
+    "size": 61166,
+    "overlapSeconds": 0.424,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Georgia",
+    "capital": "Tbilisi",
+    "countryKey": "georgia",
+    "capitalKey": "tbilisi",
+    "file": "georgia_tbilisi_fenrir.wav",
+    "size": 67296,
+    "overlapSeconds": 0.455,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "India",
+    "capital": "New Delhi",
+    "countryKey": "india",
+    "capitalKey": "new_delhi",
+    "file": "india_new_delhi_fenrir.wav",
+    "size": 72210,
+    "overlapSeconds": 0.378,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Indonesia",
+    "capital": "Jakarta",
+    "countryKey": "indonesia",
+    "capitalKey": "jakarta",
+    "file": "indonesia_jakarta_fenrir.wav",
+    "size": 75276,
+    "overlapSeconds": 0.388,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Iran",
+    "capital": "Tehran",
+    "countryKey": "iran",
+    "capitalKey": "tehran",
+    "file": "iran_tehran_fenrir.wav",
+    "size": 66364,
+    "overlapSeconds": 0.399,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Iraq",
+    "capital": "Baghdad",
+    "countryKey": "iraq",
+    "capitalKey": "baghdad",
+    "file": "iraq_baghdad_fenrir.wav",
+    "size": 59522,
+    "overlapSeconds": 0.355,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Israel",
+    "capital": "Jerusalem",
+    "countryKey": "israel",
+    "capitalKey": "jerusalem",
+    "file": "israel_jerusalem_fenrir.wav",
+    "size": 75176,
+    "overlapSeconds": 0.396,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Japan",
+    "capital": "Tokyo",
+    "countryKey": "japan",
+    "capitalKey": "tokyo",
+    "file": "japan_tokyo_fenrir.wav",
+    "size": 62792,
+    "overlapSeconds": 0.483,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Jordan",
+    "capital": "Amman",
+    "countryKey": "jordan",
+    "capitalKey": "amman",
+    "file": "jordan_amman_fenrir.wav",
+    "size": 61274,
+    "overlapSeconds": 0.465,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Kazakhstan",
+    "capital": "Astana",
+    "countryKey": "kazakhstan",
+    "capitalKey": "astana",
+    "file": "kazakhstan_astana_fenrir.wav",
+    "size": 71106,
+    "overlapSeconds": 0.351,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Kuwait",
+    "capital": "Kuwait City",
+    "countryKey": "kuwait",
+    "capitalKey": "kuwait_city",
+    "file": "kuwait_kuwait_city_fenrir.wav",
+    "size": 74348,
+    "overlapSeconds": 0.389,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Kyrgyzstan",
+    "capital": "Bishkek",
+    "countryKey": "kyrgyzstan",
+    "capitalKey": "bishkek",
+    "file": "kyrgyzstan_bishkek_fenrir.wav",
+    "size": 73776,
+    "overlapSeconds": 0.393,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Laos",
+    "capital": "Vientiane",
+    "countryKey": "laos",
+    "capitalKey": "vientiane",
+    "file": "laos_vientiane_fenrir.wav",
+    "size": 78848,
+    "overlapSeconds": 0.194,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Lebanon",
+    "capital": "Beirut",
+    "countryKey": "lebanon",
+    "capitalKey": "beirut",
+    "file": "lebanon_beirut_fenrir.wav",
+    "size": 68084,
+    "overlapSeconds": 0.412,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Malaysia",
+    "capital": "Kuala Lumpur",
+    "countryKey": "malaysia",
+    "capitalKey": "kuala_lumpur",
+    "file": "malaysia_kuala_lumpur_fenrir.wav",
+    "size": 84194,
+    "overlapSeconds": 0.449,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Maldives",
+    "capital": "Male",
+    "countryKey": "maldives",
+    "capitalKey": "male",
+    "file": "maldives_male_fenrir.wav",
+    "size": 70888,
+    "overlapSeconds": 0.354,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Mongolia",
+    "capital": "Ulaanbaatar",
+    "countryKey": "mongolia",
+    "capitalKey": "ulaanbaatar",
+    "file": "mongolia_ulaanbaatar_fenrir.wav",
+    "size": 87060,
+    "overlapSeconds": 0.356,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Myanmar",
+    "capital": "Naypyidaw",
+    "countryKey": "myanmar",
+    "capitalKey": "naypyidaw",
+    "file": "myanmar_naypyidaw_fenrir.wav",
+    "size": 77426,
+    "overlapSeconds": 0.402,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Nepal",
+    "capital": "Kathmandu",
+    "countryKey": "nepal",
+    "capitalKey": "kathmandu",
+    "file": "nepal_kathmandu_fenrir.wav",
+    "size": 80466,
+    "overlapSeconds": 0.408,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "North Korea",
+    "capital": "Pyongyang",
+    "countryKey": "north_korea",
+    "capitalKey": "pyongyang",
+    "file": "north_korea_pyongyang_fenrir.wav",
+    "size": 92176,
+    "overlapSeconds": 0.351,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Oman",
+    "capital": "Muscat",
+    "countryKey": "oman",
+    "capitalKey": "muscat",
+    "file": "oman_muscat_fenrir.wav",
+    "size": 69442,
+    "overlapSeconds": 0.321,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Pakistan",
+    "capital": "Islamabad",
+    "countryKey": "pakistan",
+    "capitalKey": "islamabad",
+    "file": "pakistan_islamabad_fenrir.wav",
+    "size": 88524,
+    "overlapSeconds": 0.339,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Palestine",
+    "capital": "Ramallah",
+    "countryKey": "palestine",
+    "capitalKey": "ramallah",
+    "file": "palestine_ramallah_fenrir.wav",
+    "size": 66854,
+    "overlapSeconds": 0.414,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Philippines",
+    "capital": "Manila",
+    "countryKey": "philippines",
+    "capitalKey": "manila",
+    "file": "philippines_manila_fenrir.wav",
+    "size": 76878,
+    "overlapSeconds": 0.428,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Qatar",
+    "capital": "Doha",
+    "countryKey": "qatar",
+    "capitalKey": "doha",
+    "file": "qatar_doha_fenrir.wav",
+    "size": 62394,
+    "overlapSeconds": 0.305,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Saudi Arabia",
+    "capital": "Riyadh",
+    "countryKey": "saudi_arabia",
+    "capitalKey": "riyadh",
+    "file": "saudi_arabia_riyadh_fenrir.wav",
+    "size": 88508,
+    "overlapSeconds": 0.393,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Singapore",
+    "capital": "Singapore",
+    "countryKey": "singapore",
+    "capitalKey": "singapore",
+    "file": "singapore_singapore_fenrir.wav",
+    "size": 70338,
+    "overlapSeconds": 0.372,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "South Korea",
+    "capital": "Seoul",
+    "countryKey": "south_korea",
+    "capitalKey": "seoul",
+    "file": "south_korea_seoul_fenrir.wav",
+    "size": 73986,
+    "overlapSeconds": 0.36,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Sri Lanka",
+    "capital": "Sri Jayawardenepura Kotte",
+    "countryKey": "sri_lanka",
+    "capitalKey": "sri_jayawardenepura_kotte",
+    "file": "sri_lanka_sri_jayawardenepura_kotte_fenrir.wav",
+    "size": 131580,
+    "overlapSeconds": 0.355,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Syria",
+    "capital": "Damascus",
+    "countryKey": "syria",
+    "capitalKey": "damascus",
+    "file": "syria_damascus_fenrir.wav",
+    "size": 77988,
+    "overlapSeconds": 0.245,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Taiwan",
+    "capital": "Taipei",
+    "countryKey": "taiwan",
+    "capitalKey": "taipei",
+    "file": "taiwan_taipei_fenrir.wav",
+    "size": 64314,
+    "overlapSeconds": 0.463,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Tajikistan",
+    "capital": "Dushanbe",
+    "countryKey": "tajikistan",
+    "capitalKey": "dushanbe",
+    "file": "tajikistan_dushanbe_fenrir.wav",
+    "size": 77900,
+    "overlapSeconds": 0.431,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Thailand",
+    "capital": "Bangkok",
+    "countryKey": "thailand",
+    "capitalKey": "bangkok",
+    "file": "thailand_bangkok_fenrir.wav",
+    "size": 70106,
+    "overlapSeconds": 0.435,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Timor-Leste",
+    "capital": "Dili",
+    "countryKey": "timor_leste",
+    "capitalKey": "dili",
+    "file": "timor_leste_dili_fenrir.wav",
+    "size": 74248,
+    "overlapSeconds": 0.393,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Turkey",
+    "capital": "Ankara",
+    "countryKey": "turkey",
+    "capitalKey": "ankara",
+    "file": "turkey_ankara_fenrir.wav",
+    "size": 58680,
+    "overlapSeconds": 0.525,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Turkmenistan",
+    "capital": "Ashgabat",
+    "countryKey": "turkmenistan",
+    "capitalKey": "ashgabat",
+    "file": "turkmenistan_ashgabat_fenrir.wav",
+    "size": 82958,
+    "overlapSeconds": 0.321,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "United Arab Emirates",
+    "capital": "Abu Dhabi",
+    "countryKey": "united_arab_emirates",
+    "capitalKey": "abu_dhabi",
+    "file": "united_arab_emirates_abu_dhabi_fenrir.wav",
+    "size": 126756,
+    "overlapSeconds": 0.288,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Uzbekistan",
+    "capital": "Tashkent",
+    "countryKey": "uzbekistan",
+    "capitalKey": "tashkent",
+    "file": "uzbekistan_tashkent_fenrir.wav",
+    "size": 86284,
+    "overlapSeconds": 0.481,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Vietnam",
+    "capital": "Hanoi",
+    "countryKey": "vietnam",
+    "capitalKey": "hanoi",
+    "file": "vietnam_hanoi_fenrir.wav",
+    "size": 75852,
+    "overlapSeconds": 0.402,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Yemen",
+    "capital": "Sana'a",
+    "countryKey": "yemen",
+    "capitalKey": "sanaa",
+    "file": "yemen_sanaa_fenrir.wav",
+    "size": 63540,
+    "overlapSeconds": 0.381,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Algeria",
+    "capital": "Algiers",
+    "countryKey": "algeria",
+    "capitalKey": "algiers",
+    "file": "algeria_algiers_fenrir.wav",
+    "size": 71994,
+    "overlapSeconds": 0.428,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Angola",
+    "capital": "Luanda",
+    "countryKey": "angola",
+    "capitalKey": "luanda",
+    "file": "angola_luanda_fenrir.wav",
+    "size": 76030,
+    "overlapSeconds": 0.351,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Benin",
+    "capital": "Porto-Novo",
+    "countryKey": "benin",
+    "capitalKey": "porto_novo",
+    "file": "benin_porto_novo_fenrir.wav",
+    "size": 68024,
+    "overlapSeconds": 0.363,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Botswana",
+    "capital": "Gaborone",
+    "countryKey": "botswana",
+    "capitalKey": "gaborone",
+    "file": "botswana_gaborone_fenrir.wav",
+    "size": 74486,
+    "overlapSeconds": 0.445,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Burkina Faso",
+    "capital": "Ouagadougou",
+    "countryKey": "burkina_faso",
+    "capitalKey": "ouagadougou",
+    "file": "burkina_faso_ouagadougou_fenrir.wav",
+    "size": 94974,
+    "overlapSeconds": 0.382,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Burundi",
+    "capital": "Gitega",
+    "countryKey": "burundi",
+    "capitalKey": "gitega",
+    "file": "burundi_gitega_fenrir.wav",
+    "size": 65908,
+    "overlapSeconds": 0.34,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Cabo Verde",
+    "capital": "Praia",
+    "countryKey": "cabo_verde",
+    "capitalKey": "praia",
+    "file": "cabo_verde_praia_fenrir.wav",
+    "size": 74626,
+    "overlapSeconds": 0.337,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Cameroon",
+    "capital": "Yaounde",
+    "countryKey": "cameroon",
+    "capitalKey": "yaounde",
+    "file": "cameroon_yaounde_fenrir.wav",
+    "size": 68998,
+    "overlapSeconds": 0.395,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Central African Republic",
+    "capital": "Bangui",
+    "countryKey": "central_african_republic",
+    "capitalKey": "bangui",
+    "file": "central_african_republic_bangui_fenrir.wav",
+    "size": 94850,
+    "overlapSeconds": 0.321,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Chad",
+    "capital": "N'Djamena",
+    "countryKey": "chad",
+    "capitalKey": "ndjamena",
+    "file": "chad_ndjamena_fenrir.wav",
+    "size": 65440,
+    "overlapSeconds": 0.273,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Comoros",
+    "capital": "Moroni",
+    "countryKey": "comoros",
+    "capitalKey": "moroni",
+    "file": "comoros_moroni_fenrir.wav",
+    "size": 79182,
+    "overlapSeconds": 0.301,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Republic of the Congo",
+    "capital": "Brazzaville",
+    "countryKey": "republic_of_the_congo",
+    "capitalKey": "brazzaville",
+    "file": "republic_of_the_congo_brazzaville_fenrir.wav",
+    "size": 92506,
+    "overlapSeconds": 0.421,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "DR Congo",
+    "capital": "Kinshasa",
+    "countryKey": "dr_congo",
+    "capitalKey": "kinshasa",
+    "file": "dr_congo_kinshasa_fenrir.wav",
+    "size": 80740,
+    "overlapSeconds": 0.422,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Ivory Coast",
+    "capital": "Yamoussoukro",
+    "countryKey": "ivory_coast",
+    "capitalKey": "yamoussoukro",
+    "file": "ivory_coast_yamoussoukro_fenrir.wav",
+    "size": 76598,
+    "overlapSeconds": 0.334,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Djibouti",
+    "capital": "Djibouti",
+    "countryKey": "djibouti",
+    "capitalKey": "djibouti",
+    "file": "djibouti_djibouti_fenrir.wav",
+    "size": 71734,
+    "overlapSeconds": 0.495,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Egypt",
+    "capital": "Cairo",
+    "countryKey": "egypt",
+    "capitalKey": "cairo",
+    "file": "egypt_cairo_fenrir.wav",
+    "size": 61800,
+    "overlapSeconds": 0.491,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Equatorial Guinea",
+    "capital": "Malabo",
+    "countryKey": "equatorial_guinea",
+    "capitalKey": "malabo",
+    "file": "equatorial_guinea_malabo_fenrir.wav",
+    "size": 92092,
+    "overlapSeconds": 0.537,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Eritrea",
+    "capital": "Asmara",
+    "countryKey": "eritrea",
+    "capitalKey": "asmara",
+    "file": "eritrea_asmara_fenrir.wav",
+    "size": 71222,
+    "overlapSeconds": 0.313,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Eswatini",
+    "capital": "Mbabane",
+    "countryKey": "eswatini",
+    "capitalKey": "mbabane",
+    "file": "eswatini_mbabane_fenrir.wav",
+    "size": 88216,
+    "overlapSeconds": 0.399,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Ethiopia",
+    "capital": "Addis Ababa",
+    "countryKey": "ethiopia",
+    "capitalKey": "addis_ababa",
+    "file": "ethiopia_addis_ababa_fenrir.wav",
+    "size": 79884,
+    "overlapSeconds": 0.356,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Gabon",
+    "capital": "Libreville",
+    "countryKey": "gabon",
+    "capitalKey": "libreville",
+    "file": "gabon_libreville_fenrir.wav",
+    "size": 68968,
+    "overlapSeconds": 0.464,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Gambia",
+    "capital": "Banjul",
+    "countryKey": "gambia",
+    "capitalKey": "banjul",
+    "file": "gambia_banjul_fenrir.wav",
+    "size": 64718,
+    "overlapSeconds": 0.302,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Ghana",
+    "capital": "Accra",
+    "countryKey": "ghana",
+    "capitalKey": "accra",
+    "file": "ghana_accra_fenrir.wav",
+    "size": 57362,
+    "overlapSeconds": 0.389,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Guinea",
+    "capital": "Conakry",
+    "countryKey": "guinea",
+    "capitalKey": "conakry",
+    "file": "guinea_conakry_fenrir.wav",
+    "size": 59958,
+    "overlapSeconds": 0.3,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Guinea-Bissau",
+    "capital": "Bissau",
+    "countryKey": "guinea_bissau",
+    "capitalKey": "bissau",
+    "file": "guinea_bissau_bissau_fenrir.wav",
+    "size": 74780,
+    "overlapSeconds": 0.321,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Kenya",
+    "capital": "Nairobi",
+    "countryKey": "kenya",
+    "capitalKey": "nairobi",
+    "file": "kenya_nairobi_fenrir.wav",
+    "size": 61832,
+    "overlapSeconds": 0.353,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Lesotho",
+    "capital": "Maseru",
+    "countryKey": "lesotho",
+    "capitalKey": "maseru",
+    "file": "lesotho_maseru_fenrir.wav",
+    "size": 72408,
+    "overlapSeconds": 0.263,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Liberia",
+    "capital": "Monrovia",
+    "countryKey": "liberia",
+    "capitalKey": "monrovia",
+    "file": "liberia_monrovia_fenrir.wav",
+    "size": 71802,
+    "overlapSeconds": 0.363,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Libya",
+    "capital": "Tripoli",
+    "countryKey": "libya",
+    "capitalKey": "tripoli",
+    "file": "libya_tripoli_fenrir.wav",
+    "size": 61618,
+    "overlapSeconds": 0.356,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Madagascar",
+    "capital": "Antananarivo",
+    "countryKey": "madagascar",
+    "capitalKey": "antananarivo",
+    "file": "madagascar_antananarivo_fenrir.wav",
+    "size": 91716,
+    "overlapSeconds": 0.413,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Malawi",
+    "capital": "Lilongwe",
+    "countryKey": "malawi",
+    "capitalKey": "lilongwe",
+    "file": "malawi_lilongwe_fenrir.wav",
+    "size": 76434,
+    "overlapSeconds": 0.596,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Mali",
+    "capital": "Bamako",
+    "countryKey": "mali",
+    "capitalKey": "bamako",
+    "file": "mali_bamako_fenrir.wav",
+    "size": 62708,
+    "overlapSeconds": 0.41,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Mauritania",
+    "capital": "Nouakchott",
+    "countryKey": "mauritania",
+    "capitalKey": "nouakchott",
+    "file": "mauritania_nouakchott_fenrir.wav",
+    "size": 77506,
+    "overlapSeconds": 0.393,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Mauritius",
+    "capital": "Port Louis",
+    "countryKey": "mauritius",
+    "capitalKey": "port_louis",
+    "file": "mauritius_port_louis_fenrir.wav",
+    "size": 79492,
+    "overlapSeconds": 0.341,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Morocco",
+    "capital": "Rabat",
+    "countryKey": "morocco",
+    "capitalKey": "rabat",
+    "file": "morocco_rabat_fenrir.wav",
+    "size": 71050,
+    "overlapSeconds": 0.48,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Mozambique",
+    "capital": "Maputo",
+    "countryKey": "mozambique",
+    "capitalKey": "maputo",
+    "file": "mozambique_maputo_fenrir.wav",
+    "size": 80288,
+    "overlapSeconds": 0.407,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Namibia",
+    "capital": "Windhoek",
+    "countryKey": "namibia",
+    "capitalKey": "windhoek",
+    "file": "namibia_windhoek_fenrir.wav",
+    "size": 71588,
+    "overlapSeconds": 0.405,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Niger",
+    "capital": "Niamey",
+    "countryKey": "niger",
+    "capitalKey": "niamey",
+    "file": "niger_niamey_fenrir.wav",
+    "size": 67122,
+    "overlapSeconds": 0.342,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Nigeria",
+    "capital": "Abuja",
+    "countryKey": "nigeria",
+    "capitalKey": "abuja",
+    "file": "nigeria_abuja_fenrir.wav",
+    "size": 66904,
+    "overlapSeconds": 0.281,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Rwanda",
+    "capital": "Kigali",
+    "countryKey": "rwanda",
+    "capitalKey": "kigali",
+    "file": "rwanda_kigali_fenrir.wav",
+    "size": 74680,
+    "overlapSeconds": 0.342,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Sao Tome and Principe",
+    "capital": "Sao Tome",
+    "countryKey": "sao_tome_and_principe",
+    "capitalKey": "sao_tome",
+    "file": "sao_tome_and_principe_sao_tome_fenrir.wav",
+    "size": 117980,
+    "overlapSeconds": 0.307,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Senegal",
+    "capital": "Dakar",
+    "countryKey": "senegal",
+    "capitalKey": "dakar",
+    "file": "senegal_dakar_fenrir.wav",
+    "size": 57644,
+    "overlapSeconds": 0.335,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Seychelles",
+    "capital": "Victoria",
+    "countryKey": "seychelles",
+    "capitalKey": "victoria",
+    "file": "seychelles_victoria_fenrir.wav",
+    "size": 83426,
+    "overlapSeconds": 0.44,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Sierra Leone",
+    "capital": "Freetown",
+    "countryKey": "sierra_leone",
+    "capitalKey": "freetown",
+    "file": "sierra_leone_freetown_fenrir.wav",
+    "size": 82968,
+    "overlapSeconds": 0.382,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Somalia",
+    "capital": "Mogadishu",
+    "countryKey": "somalia",
+    "capitalKey": "mogadishu",
+    "file": "somalia_mogadishu_fenrir.wav",
+    "size": 72088,
+    "overlapSeconds": 0.331,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "South Africa",
+    "capital": "Pretoria",
+    "countryKey": "south_africa",
+    "capitalKey": "pretoria",
+    "file": "south_africa_pretoria_fenrir.wav",
+    "size": 79654,
+    "overlapSeconds": 0.366,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "South Sudan",
+    "capital": "Juba",
+    "countryKey": "south_sudan",
+    "capitalKey": "juba",
+    "file": "south_sudan_juba_fenrir.wav",
+    "size": 80226,
+    "overlapSeconds": 0.302,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Sudan",
+    "capital": "Khartoum",
+    "countryKey": "sudan",
+    "capitalKey": "khartoum",
+    "file": "sudan_khartoum_fenrir.wav",
+    "size": 65124,
+    "overlapSeconds": 0.386,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Tanzania",
+    "capital": "Dodoma",
+    "countryKey": "tanzania",
+    "capitalKey": "dodoma",
+    "file": "tanzania_dodoma_fenrir.wav",
+    "size": 75648,
+    "overlapSeconds": 0.26,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Togo",
+    "capital": "Lome",
+    "countryKey": "togo",
+    "capitalKey": "lome",
+    "file": "togo_lome_fenrir.wav",
+    "size": 58262,
+    "overlapSeconds": 0.456,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Tunisia",
+    "capital": "Tunis",
+    "countryKey": "tunisia",
+    "capitalKey": "tunis",
+    "file": "tunisia_tunis_fenrir.wav",
+    "size": 66616,
+    "overlapSeconds": 0.392,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Uganda",
+    "capital": "Kampala",
+    "countryKey": "uganda",
+    "capitalKey": "kampala",
+    "file": "uganda_kampala_fenrir.wav",
+    "size": 70268,
+    "overlapSeconds": 0.397,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Zambia",
+    "capital": "Lusaka",
+    "countryKey": "zambia",
+    "capitalKey": "lusaka",
+    "file": "zambia_lusaka_fenrir.wav",
+    "size": 69938,
+    "overlapSeconds": 0.403,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Zimbabwe",
+    "capital": "Harare",
+    "countryKey": "zimbabwe",
+    "capitalKey": "harare",
+    "file": "zimbabwe_harare_fenrir.wav",
+    "size": 68052,
+    "overlapSeconds": 0.414,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Antigua and Barbuda",
+    "capital": "St. John's",
+    "countryKey": "antigua_and_barbuda",
+    "capitalKey": "st_johns",
+    "file": "antigua_and_barbuda_st_johns_fenrir.wav",
+    "size": 118202,
+    "overlapSeconds": 0.298,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Argentina",
+    "capital": "Buenos Aires",
+    "countryKey": "argentina",
+    "capitalKey": "buenos_aires",
+    "file": "argentina_buenos_aires_fenrir.wav",
+    "size": 79604,
+    "overlapSeconds": 0.294,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Bahamas",
+    "capital": "Nassau",
+    "countryKey": "bahamas",
+    "capitalKey": "nassau",
+    "file": "bahamas_nassau_fenrir.wav",
+    "size": 68820,
+    "overlapSeconds": 0.31,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Barbados",
+    "capital": "Bridgetown",
+    "countryKey": "barbados",
+    "capitalKey": "bridgetown",
+    "file": "barbados_bridgetown_fenrir.wav",
+    "size": 73252,
+    "overlapSeconds": 0.256,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Belize",
+    "capital": "Belmopan",
+    "countryKey": "belize",
+    "capitalKey": "belmopan",
+    "file": "belize_belmopan_fenrir.wav",
+    "size": 71122,
+    "overlapSeconds": 0.347,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Bolivia",
+    "capital": "Sucre",
+    "countryKey": "bolivia",
+    "capitalKey": "sucre",
+    "file": "bolivia_sucre_fenrir.wav",
+    "size": 71358,
+    "overlapSeconds": 0.437,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Brazil",
+    "capital": "Brasilia",
+    "countryKey": "brazil",
+    "capitalKey": "brasilia",
+    "file": "brazil_brasilia_fenrir.wav",
+    "size": 75860,
+    "overlapSeconds": 0.358,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Canada",
+    "capital": "Ottawa",
+    "countryKey": "canada",
+    "capitalKey": "ottawa",
+    "file": "canada_ottawa_fenrir.wav",
+    "size": 53572,
+    "overlapSeconds": 0.352,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Chile",
+    "capital": "Santiago",
+    "countryKey": "chile",
+    "capitalKey": "santiago",
+    "file": "chile_santiago_fenrir.wav",
+    "size": 68028,
+    "overlapSeconds": 0.292,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Colombia",
+    "capital": "Bogota",
+    "countryKey": "colombia",
+    "capitalKey": "bogota",
+    "file": "colombia_bogota_fenrir.wav",
+    "size": 69830,
+    "overlapSeconds": 0.323,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Costa Rica",
+    "capital": "San Jose",
+    "countryKey": "costa_rica",
+    "capitalKey": "san_jose",
+    "file": "costa_rica_san_jose_fenrir.wav",
+    "size": 63994,
+    "overlapSeconds": 0.438,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Cuba",
+    "capital": "Havana",
+    "countryKey": "cuba",
+    "capitalKey": "havana",
+    "file": "cuba_havana_fenrir.wav",
+    "size": 54704,
+    "overlapSeconds": 0.368,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Dominica",
+    "capital": "Roseau",
+    "countryKey": "dominica",
+    "capitalKey": "roseau",
+    "file": "dominica_roseau_fenrir.wav",
+    "size": 73400,
+    "overlapSeconds": 0.186,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Dominican Republic",
+    "capital": "Santo Domingo",
+    "countryKey": "dominican_republic",
+    "capitalKey": "santo_domingo",
+    "file": "dominican_republic_santo_domingo_fenrir.wav",
+    "size": 100850,
+    "overlapSeconds": 0.349,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Ecuador",
+    "capital": "Quito",
+    "countryKey": "ecuador",
+    "capitalKey": "quito",
+    "file": "ecuador_quito_fenrir.wav",
+    "size": 69916,
+    "overlapSeconds": 0.218,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "El Salvador",
+    "capital": "San Salvador",
+    "countryKey": "el_salvador",
+    "capitalKey": "san_salvador",
+    "file": "el_salvador_san_salvador_fenrir.wav",
+    "size": 90930,
+    "overlapSeconds": 0.338,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Grenada",
+    "capital": "St. George's",
+    "countryKey": "grenada",
+    "capitalKey": "st_georges",
+    "file": "grenada_st_georges_fenrir.wav",
+    "size": 75616,
+    "overlapSeconds": 0.328,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Guatemala",
+    "capital": "Guatemala City",
+    "countryKey": "guatemala",
+    "capitalKey": "guatemala_city",
+    "file": "guatemala_guatemala_city_fenrir.wav",
+    "size": 80832,
+    "overlapSeconds": 0.39,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Guyana",
+    "capital": "Georgetown",
+    "countryKey": "guyana",
+    "capitalKey": "georgetown",
+    "file": "guyana_georgetown_fenrir.wav",
+    "size": 71430,
+    "overlapSeconds": 0.284,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Haiti",
+    "capital": "Port-au-Prince",
+    "countryKey": "haiti",
+    "capitalKey": "port_au_prince",
+    "file": "haiti_port_au_prince_fenrir.wav",
+    "size": 72900,
+    "overlapSeconds": 0.396,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Honduras",
+    "capital": "Tegucigalpa",
+    "countryKey": "honduras",
+    "capitalKey": "tegucigalpa",
+    "file": "honduras_tegucigalpa_fenrir.wav",
+    "size": 85080,
+    "overlapSeconds": 0.397,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Jamaica",
+    "capital": "Kingston",
+    "countryKey": "jamaica",
+    "capitalKey": "kingston",
+    "file": "jamaica_kingston_fenrir.wav",
+    "size": 67982,
+    "overlapSeconds": 0.34,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Mexico",
+    "capital": "Mexico City",
+    "countryKey": "mexico",
+    "capitalKey": "mexico_city",
+    "file": "mexico_mexico_city_fenrir.wav",
+    "size": 72546,
+    "overlapSeconds": 0.415,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Nicaragua",
+    "capital": "Managua",
+    "countryKey": "nicaragua",
+    "capitalKey": "managua",
+    "file": "nicaragua_managua_fenrir.wav",
+    "size": 72164,
+    "overlapSeconds": 0.311,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Panama",
+    "capital": "Panama City",
+    "countryKey": "panama",
+    "capitalKey": "panama_city",
+    "file": "panama_panama_city_fenrir.wav",
+    "size": 72168,
+    "overlapSeconds": 0.368,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Paraguay",
+    "capital": "Asuncion",
+    "countryKey": "paraguay",
+    "capitalKey": "asuncion",
+    "file": "paraguay_asuncion_fenrir.wav",
+    "size": 73586,
+    "overlapSeconds": 0.457,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Peru",
+    "capital": "Lima",
+    "countryKey": "peru",
+    "capitalKey": "lima",
+    "file": "peru_lima_fenrir.wav",
+    "size": 69880,
+    "overlapSeconds": 0.353,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Saint Kitts and Nevis",
+    "capital": "Basseterre",
+    "countryKey": "saint_kitts_and_nevis",
+    "capitalKey": "basseterre",
+    "file": "saint_kitts_and_nevis_basseterre_fenrir.wav",
+    "size": 105596,
+    "overlapSeconds": 0.367,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Saint Lucia",
+    "capital": "Castries",
+    "countryKey": "saint_lucia",
+    "capitalKey": "castries",
+    "file": "saint_lucia_castries_fenrir.wav",
+    "size": 78334,
+    "overlapSeconds": 0.354,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Saint Vincent and the Grenadines",
+    "capital": "Kingstown",
+    "countryKey": "saint_vincent_and_the_grenadines",
+    "capitalKey": "kingstown",
+    "file": "saint_vincent_and_the_grenadines_kingstown_fenrir.wav",
+    "size": 107720,
+    "overlapSeconds": 0.331,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Suriname",
+    "capital": "Paramaribo",
+    "countryKey": "suriname",
+    "capitalKey": "paramaribo",
+    "file": "suriname_paramaribo_fenrir.wav",
+    "size": 75970,
+    "overlapSeconds": 0.4,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Trinidad and Tobago",
+    "capital": "Port of Spain",
+    "countryKey": "trinidad_and_tobago",
+    "capitalKey": "port_of_spain",
+    "file": "trinidad_and_tobago_port_of_spain_fenrir.wav",
+    "size": 100870,
+    "overlapSeconds": 0.294,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "United States",
+    "capital": "Washington, D.C.",
+    "countryKey": "united_states",
+    "capitalKey": "washington_dc",
+    "file": "united_states_washington_dc_fenrir.wav",
+    "size": 104274,
+    "overlapSeconds": 0.237,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Uruguay",
+    "capital": "Montevideo",
+    "countryKey": "uruguay",
+    "capitalKey": "montevideo",
+    "file": "uruguay_montevideo_fenrir.wav",
+    "size": 87682,
+    "overlapSeconds": 0.449,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Venezuela",
+    "capital": "Caracas",
+    "countryKey": "venezuela",
+    "capitalKey": "caracas",
+    "file": "venezuela_caracas_fenrir.wav",
+    "size": 79590,
+    "overlapSeconds": 0.462,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Australia",
+    "capital": "Canberra",
+    "countryKey": "australia",
+    "capitalKey": "canberra",
+    "file": "australia_canberra_fenrir.wav",
+    "size": 70816,
+    "overlapSeconds": 0.351,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Fiji",
+    "capital": "Suva",
+    "countryKey": "fiji",
+    "capitalKey": "suva",
+    "file": "fiji_suva_fenrir.wav",
+    "size": 63434,
+    "overlapSeconds": 0.451,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Kiribati",
+    "capital": "South Tarawa",
+    "countryKey": "kiribati",
+    "capitalKey": "south_tarawa",
+    "file": "kiribati_south_tarawa_fenrir.wav",
+    "size": 79488,
+    "overlapSeconds": 0.423,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Marshall Islands",
+    "capital": "Majuro",
+    "countryKey": "marshall_islands",
+    "capitalKey": "majuro",
+    "file": "marshall_islands_majuro_fenrir.wav",
+    "size": 83382,
+    "overlapSeconds": 0.314,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Micronesia",
+    "capital": "Palikir",
+    "countryKey": "micronesia",
+    "capitalKey": "palikir",
+    "file": "micronesia_palikir_fenrir.wav",
+    "size": 78180,
+    "overlapSeconds": 0.384,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Nauru",
+    "capital": "Yaren",
+    "countryKey": "nauru",
+    "capitalKey": "yaren",
+    "file": "nauru_yaren_fenrir.wav",
+    "size": 64732,
+    "overlapSeconds": 0.391,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "New Zealand",
+    "capital": "Wellington",
+    "countryKey": "new_zealand",
+    "capitalKey": "wellington",
+    "file": "new_zealand_wellington_fenrir.wav",
+    "size": 78758,
+    "overlapSeconds": 0.465,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Palau",
+    "capital": "Ngerulmud",
+    "countryKey": "palau",
+    "capitalKey": "ngerulmud",
+    "file": "palau_ngerulmud_fenrir.wav",
+    "size": 79274,
+    "overlapSeconds": 0.52,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Papua New Guinea",
+    "capital": "Port Moresby",
+    "countryKey": "papua_new_guinea",
+    "capitalKey": "port_moresby",
+    "file": "papua_new_guinea_port_moresby_fenrir.wav",
+    "size": 93266,
+    "overlapSeconds": 0.425,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Samoa",
+    "capital": "Apia",
+    "countryKey": "samoa",
+    "capitalKey": "apia",
+    "file": "samoa_apia_fenrir.wav",
+    "size": 62636,
+    "overlapSeconds": 0.376,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Solomon Islands",
+    "capital": "Honiara",
+    "countryKey": "solomon_islands",
+    "capitalKey": "honiara",
+    "file": "solomon_islands_honiara_fenrir.wav",
+    "size": 95282,
+    "overlapSeconds": 0.33,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Tonga",
+    "capital": "Nuku'alofa",
+    "countryKey": "tonga",
+    "capitalKey": "nukualofa",
+    "file": "tonga_nukualofa_fenrir.wav",
+    "size": 75228,
+    "overlapSeconds": 0.433,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Tuvalu",
+    "capital": "Funafuti",
+    "countryKey": "tuvalu",
+    "capitalKey": "funafuti",
+    "file": "tuvalu_funafuti_fenrir.wav",
+    "size": 72670,
+    "overlapSeconds": 0.283,
+    "expectedGapMs": 85
+  },
+  {
+    "country": "Vanuatu",
+    "capital": "Port Vila",
+    "countryKey": "vanuatu",
+    "capitalKey": "port_vila",
+    "file": "vanuatu_port_vila_fenrir.wav",
+    "size": 74036,
+    "overlapSeconds": 0.439,
+    "expectedGapMs": 85
+  }
+]
