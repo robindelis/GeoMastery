@@ -86,6 +86,7 @@ export class SpeechEngine {
   private geminiVoice: string = 'Fenrir';
 
   private currentAudio: HTMLAudioElement | null = null;
+  private activeAudios = new Set<HTMLAudioElement>();
   private currentUtterance: SpeechSynthesisUtterance | null = null;
   private abortController: AbortController | null = null;
   private audioCache = new Map<string, string>(); // key -> playable URL
@@ -181,8 +182,10 @@ export class SpeechEngine {
   }
 
   public isSpeaking(): boolean {
-    if (this.currentAudio && !this.currentAudio.paused && !this.currentAudio.ended) {
-      return true;
+    if (this.activeAudios.size > 0) {
+      for (const a of this.activeAudios) {
+        if (!a.paused && !a.ended) return true;
+      }
     }
     const synth = this.getSynthesis();
     if (synth && synth.speaking) {
@@ -206,14 +209,15 @@ export class SpeechEngine {
       this.abortController = null;
     }
 
-    // 2. Stop HTML5 audio playback
-    if (this.currentAudio) {
+    // 2. Stop HTML5 audio playback on all active audio elements
+    this.activeAudios.forEach((audio) => {
       try {
-        this.currentAudio.pause();
-        this.currentAudio.currentTime = 0;
+        audio.pause();
+        audio.currentTime = 0;
       } catch {}
-      this.currentAudio = null;
-    }
+    });
+    this.activeAudios.clear();
+    this.currentAudio = null;
 
     // 3. Cancel Web Speech API
     const synth = this.getSynthesis();
@@ -289,7 +293,7 @@ export class SpeechEngine {
   public speakCountryAndCapital(
     country: string,
     capital: string,
-    options?: SpeechOptions & { gapMs?: number }
+    options?: SpeechOptions & { gapMs?: number; overlapMs?: number }
   ): void {
     if (!this.enabled) return;
 
@@ -313,18 +317,61 @@ export class SpeechEngine {
     const countryUrl = getLocalCountryAudioUrl(trimmedCountry);
     const capitalUrl = getLocalCapitalAudioUrl(trimmedCapital);
 
-    // Both audio files are available: play country -> gap -> capital
+    // Both audio files are available: play country with intersection into capital
     if (countryUrl && capitalUrl) {
-      const gap = options?.gapMs ?? 80;
-      this.playAudioUrl(countryUrl, {
-        ...options,
-        onEnd: () => {
-          this.sequenceTimer = setTimeout(() => {
-            this.sequenceTimer = null;
-            this.playAudioUrl(capitalUrl, options);
-          }, gap);
-        }
-      });
+      // If caller explicitly requested a traditional sequential gapMs:
+      if (options?.gapMs !== undefined) {
+        this.playAudioUrl(countryUrl, {
+          ...options,
+          onEnd: () => {
+            this.sequenceTimer = setTimeout(() => {
+              this.sequenceTimer = null;
+              this.playAudioUrl(capitalUrl, options);
+            }, options.gapMs);
+          }
+        });
+        return;
+      }
+
+      // Default: Play with intersection (early trigger before country's trailing silence finishes)
+      const countryAudio = this.playAudioUrl(countryUrl, options);
+      if (!countryAudio) {
+        this.playAudioUrl(capitalUrl, options);
+        return;
+      }
+
+      let scheduled = false;
+      const scheduleOverlap = () => {
+        if (scheduled) return;
+        const durSec = countryAudio.duration;
+        if (!Number.isFinite(durSec) || durSec <= 0) return;
+        scheduled = true;
+
+        const effectiveMs = (durSec / this.rate) * 1000;
+        // Default overlap: ~380ms blends country trailing silence into capital leading silence
+        const overlapMs = options?.overlapMs ?? 380;
+        const delay = Math.max(20, effectiveMs - overlapMs);
+
+        this.sequenceTimer = setTimeout(() => {
+          this.sequenceTimer = null;
+          this.playAudioUrl(capitalUrl, options);
+        }, delay);
+      };
+
+      if (Number.isFinite(countryAudio.duration) && countryAudio.duration > 0) {
+        scheduleOverlap();
+      } else if (countryAudio.addEventListener) {
+        countryAudio.addEventListener('loadedmetadata', scheduleOverlap, { once: true });
+        countryAudio.addEventListener(
+          'ended',
+          () => {
+            if (!scheduled) {
+              this.playAudioUrl(capitalUrl, options);
+            }
+          },
+          { once: true }
+        );
+      }
       return;
     }
 
@@ -385,7 +432,7 @@ export class SpeechEngine {
       this.audioCache.set(cacheKey, streamUrl);
     }
 
-    return this.playAudioUrl(streamUrl, options);
+    return Boolean(this.playAudioUrl(streamUrl, options));
   }
 
   /**
@@ -398,7 +445,7 @@ export class SpeechEngine {
     // 1. Check local pre-recorded audio file first (zero API calls)
     const localAudioUrl = getLocalCapitalAudioUrl(text);
     if (localAudioUrl) {
-      return this.playAudioUrl(localAudioUrl, options);
+      return Boolean(this.playAudioUrl(localAudioUrl, options));
     }
 
     const apiKey = this.getApiKey();
@@ -410,7 +457,7 @@ export class SpeechEngine {
     const cachedDataUrl = this.audioCache.get(cacheKey);
 
     if (cachedDataUrl) {
-      return this.playAudioUrl(cachedDataUrl, options);
+      return Boolean(this.playAudioUrl(cachedDataUrl, options));
     }
 
     this.abortController = new AbortController();
@@ -463,7 +510,7 @@ export class SpeechEngine {
         : `data:${mimeType};base64,${inlineData.data}`;
 
       this.audioCache.set(cacheKey, audioUrl);
-      return this.playAudioUrl(audioUrl, options);
+      return Boolean(this.playAudioUrl(audioUrl, options));
     } catch (err: any) {
       return false;
     } finally {
@@ -533,9 +580,9 @@ export class SpeechEngine {
   /**
    * Plays a playable audio URL (data URI, blob URL, or HTTPS stream) via HTML5 Audio
    */
-  private playAudioUrl(url: string, options?: SpeechOptions): boolean {
+  private playAudioUrl(url: string, options?: SpeechOptions): HTMLAudioElement | null {
     if (typeof Audio === 'undefined') {
-      return false;
+      return null;
     }
 
     try {
@@ -546,8 +593,10 @@ export class SpeechEngine {
         audio.preservesPitch = true;
       }
       this.currentAudio = audio;
+      this.activeAudios.add(audio);
 
       audio.onended = () => {
+        this.activeAudios.delete(audio);
         if (this.currentAudio === audio) {
           this.currentAudio = null;
         }
@@ -555,6 +604,7 @@ export class SpeechEngine {
       };
 
       audio.onerror = (e) => {
+        this.activeAudios.delete(audio);
         if (this.currentAudio === audio) {
           this.currentAudio = null;
         }
@@ -563,16 +613,17 @@ export class SpeechEngine {
 
       audio.play().catch((err) => {
         console.warn('HTML5 Audio playback error:', err);
+        this.activeAudios.delete(audio);
         if (this.currentAudio === audio) {
           this.currentAudio = null;
         }
         if (options?.onError) options.onError(err);
       });
-      return true;
+      return audio;
     } catch (err) {
       console.warn('Failed to initialize Audio element:', err);
       this.currentAudio = null;
-      return false;
+      return null;
     }
   }
 

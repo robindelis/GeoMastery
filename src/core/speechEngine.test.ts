@@ -24,8 +24,10 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
       preservesPitch: boolean = true;
       paused: boolean = true;
       ended: boolean = false;
+      duration: number = 1.0;
       onended: any = null;
       onerror: any = null;
+      listeners: Record<string, any[]> = {};
       play = mockAudioPlay;
       pause = mockAudioPause;
       currentTime: number = 0;
@@ -33,6 +35,16 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
       constructor(src: string) {
         this.src = src;
         createdAudios.push(this);
+      }
+
+      addEventListener(event: string, callback: any) {
+        if (!this.listeners[event]) this.listeners[event] = [];
+        this.listeners[event].push(callback);
+      }
+
+      removeEventListener(event: string, callback: any) {
+        if (!this.listeners[event]) return;
+        this.listeners[event] = this.listeners[event].filter((cb) => cb !== callback);
       }
     };
   });
@@ -195,32 +207,43 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
     expect(mockAudioPause).toHaveBeenCalled();
   });
 
-  it('plays country first then capital in sequence with speakCountryAndCapital using default 80ms gap', async () => {
+  it('plays country first and intersects with capital before country audio finishes', async () => {
     vi.useFakeTimers();
 
+    // Audio duration is 1.0s. At 1.3x speed, effective playback is 769ms.
+    // Overlap is 380ms, so capital triggers at delay = 769 - 380 = 389ms.
     engine.speakCountryAndCapital('France', 'Paris');
 
-    // 1st audio element created for France
     expect(createdAudios.length).toBe(1);
     expect(createdAudios[0].src).toContain('france_fenrir');
     expect(createdAudios[0].playbackRate).toBe(1.3);
-    expect(mockAudioPlay).toHaveBeenCalledTimes(1);
 
-    // Simulate country audio ending
-    createdAudios[0].onended();
-
-    // Before gap finishes, capital audio should not have started yet (e.g. at 50ms)
-    vi.advanceTimersByTime(50);
+    // At 300ms, capital should not yet be playing
+    vi.advanceTimersByTime(300);
     expect(createdAudios.length).toBe(1);
 
-    // Fast-forward through the remaining 30ms to reach default 80ms gap
-    vi.advanceTimersByTime(30);
-
-    // 2nd audio element created for Paris
+    // At 400ms (passed 389ms trigger), capital audio has started BEFORE country audio finished (at 769ms)!
+    vi.advanceTimersByTime(100);
     expect(createdAudios.length).toBe(2);
     expect(createdAudios[1].src).toContain('paris_fenrir');
     expect(createdAudios[1].playbackRate).toBe(1.3);
-    expect(mockAudioPlay).toHaveBeenCalledTimes(2);
+
+    vi.useRealTimers();
+  });
+
+  it('supports explicit gapMs for sequential post-ended gap if requested', async () => {
+    vi.useFakeTimers();
+
+    engine.speakCountryAndCapital('France', 'Paris', { gapMs: 80 });
+    expect(createdAudios.length).toBe(1);
+
+    createdAudios[0].onended();
+
+    vi.advanceTimersByTime(50);
+    expect(createdAudios.length).toBe(1);
+
+    vi.advanceTimersByTime(30);
+    expect(createdAudios.length).toBe(2);
 
     vi.useRealTimers();
   });
