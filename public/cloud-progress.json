@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T15:45:43.525Z",
+  "exportedAt": "2026-10-24T15:45:53.020Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25141,14 +25141,14 @@
         "id": "MOZ:country",
         "countryId": "MOZ",
         "attributeId": "country",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.35,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-24T14:37:26.788Z",
-        "nextDueAt": "2026-10-24T14:47:26.788Z",
+        "lastReviewedAt": "2026-10-24T15:45:49.518Z",
+        "nextDueAt": "2026-10-24T16:00:49.518Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:37:26.788Z",
@@ -25157,11 +25157,19 @@
             "isCorrect": false,
             "timeSpentMs": 35548,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-24T15:45:49.518Z",
+            "inputMode": "typing",
+            "userAnswer": "Mozambique",
+            "isCorrect": true,
+            "timeSpentMs": 8443,
+            "grade": 3
           }
         ],
-        "difficulty": 5.99,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 5.59,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -25767,8 +25775,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1810,
-    "totalCorrect": 1300,
+    "totalReviews": 1811,
+    "totalCorrect": 1301,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -25806,7 +25814,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T15:45:39.327Z"
+    "updatedAt": "2026-10-24T15:45:49.521Z"
   },
   "settings": {
     "audioEnabled": true,
