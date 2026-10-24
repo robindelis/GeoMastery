@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T16:22:52.357Z",
+  "exportedAt": "2026-10-24T16:23:00.857Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -1983,13 +1983,13 @@
         "countryId": "AGO",
         "attributeId": "location",
         "stage": 2,
-        "step": 2,
-        "easeFactor": 2.0499999999999994,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 3,
+        "easeFactor": 2.13,
+        "intervalDays": 35,
+        "reps": 4,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-08T20:02:35.948Z",
-        "nextDueAt": "2026-10-15T20:02:35.948Z",
+        "lastReviewedAt": "2026-10-24T16:23:00.017Z",
+        "nextDueAt": "2026-11-28T16:23:00.017Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:09:16.618Z",
@@ -2032,11 +2032,21 @@
             "userAnswer": "Angola",
             "isCorrect": true,
             "timeSpentMs": 2816
+          },
+          {
+            "timestamp": "2026-10-24T16:23:00.017Z",
+            "inputMode": "map_click",
+            "userAnswer": "Angola",
+            "isCorrect": true,
+            "timeSpentMs": 1799,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 8.04
+        "stability": 35,
+        "difficulty": 7.18,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -11601,14 +11611,14 @@
         "id": "WATER_CANAL_PANAMA:location",
         "countryId": "WATER_CANAL_PANAMA",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.65,
+        "intervalDays": 37,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-06T13:12:22.924Z",
-        "nextDueAt": "2026-10-07T13:12:22.924Z",
+        "lastReviewedAt": "2026-10-24T16:22:57.425Z",
+        "nextDueAt": "2026-11-30T16:22:57.425Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:48:17.350Z",
@@ -11623,11 +11633,21 @@
             "userAnswer": "Panama Canal",
             "isCorrect": true,
             "timeSpentMs": 9970
+          },
+          {
+            "timestamp": "2026-10-24T16:22:57.425Z",
+            "inputMode": "map_click",
+            "userAnswer": "Panama Canal",
+            "isCorrect": true,
+            "timeSpentMs": 4790,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 4.86
+        "stability": 37,
+        "difficulty": 4.55,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -26351,8 +26371,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1844,
-    "totalCorrect": 1328,
+    "totalReviews": 1846,
+    "totalCorrect": 1330,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -26390,7 +26410,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T16:22:51.866Z"
+    "updatedAt": "2026-10-24T16:23:00.021Z"
   },
   "settings": {
     "audioEnabled": true,
