@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:46:27.335Z",
+  "exportedAt": "2026-10-24T14:46:31.344Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -9459,13 +9459,13 @@
         "countryId": "LKA",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 1.95,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2,
+        "intervalDays": 2,
+        "reps": 2,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-24T14:27:33.903Z",
-        "nextDueAt": "2026-10-24T14:37:33.903Z",
+        "lastReviewedAt": "2026-10-24T14:46:30.868Z",
+        "nextDueAt": "2026-10-26T14:46:30.868Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:29:57.267Z",
@@ -9495,12 +9495,20 @@
             "isCorrect": false,
             "timeSpentMs": 19754,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-24T14:46:30.868Z",
+            "inputMode": "map_click",
+            "userAnswer": "Sri Lanka",
+            "isCorrect": true,
+            "timeSpentMs": 3053,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 0.6,
-        "difficulty": 7.51,
-        "lastLatencyGrade": 1,
+        "stability": 2.45,
+        "difficulty": 6.99,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "BTN"
         ]
@@ -23945,14 +23953,14 @@
         "id": "ISL:flag",
         "countryId": "ISL",
         "attributeId": "flag",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.1,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.18,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-24T14:27:13.050Z",
-        "nextDueAt": "2026-10-24T14:37:13.050Z",
+        "lastReviewedAt": "2026-10-24T14:46:27.476Z",
+        "nextDueAt": "2026-10-24T15:01:27.476Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:42:29.868Z",
@@ -23969,11 +23977,19 @@
             "isCorrect": false,
             "timeSpentMs": 3429,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-24T14:46:27.476Z",
+            "inputMode": "typing",
+            "userAnswer": "Iceland",
+            "isCorrect": true,
+            "timeSpentMs": 2313,
+            "grade": 4
           }
         ],
-        "difficulty": 6.79,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 5.85,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
         "confusedWith": [
           "FIN"
         ]
@@ -25485,8 +25501,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1790,
-    "totalCorrect": 1285,
+    "totalReviews": 1792,
+    "totalCorrect": 1287,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -25524,7 +25540,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:46:24.254Z"
+    "updatedAt": "2026-10-24T14:46:30.872Z"
   },
   "settings": {
     "audioEnabled": true,
