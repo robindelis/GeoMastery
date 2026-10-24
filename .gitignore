@@ -57,3 +57,7 @@ android/local.properties
 *.apk
 *.aab
 
+# Local scripts
+syncGit.sh
+
+

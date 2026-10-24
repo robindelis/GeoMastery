@@ -7,16 +7,21 @@ Welcome to the **GeoMastery** codebase. All AI coding assistants working in this
 ## 🚨 MANDATORY WORKFLOW RULES
 
 ### 1. Continuous GitHub Push Rule
+
 **Whenever you make substantial changes, fix bugs, add features, or complete a user request, you MUST commit and push your changes to GitHub:**
+
 ```bash
 git add .
 git commit -m "<concise descriptive commit message>"
 git push origin main
 ```
+
 * Never leave completed tasks unpushed on the local machine.
 * Remote is configured as `origin` pointing to `git@github.com:robindelis/GeoMastery.git`.
+* Whenever starting a conversation, git pull the latest changes from github before starting any modification.
 
 ### 2. Spaced Repetition (SRS) Engine Integrity
+
 * **Cognitive Scaffolding**:
   * Level 0: 4-choice recognition (or unassisted map click). Graduates to Level 1 on first correct answer.
   * Level 1: Typing-first active recall (capitals) or unassisted map click (locations). **Requires 2 consecutive correct answers to master**.
@@ -26,6 +31,7 @@ git push origin main
   * Always check `isPracticeMode` / `isPracticeModeRef` before persisting card schedule updates.
 
 ### 3. Map Performance (Zero-Lag Standard)
+
 * The map is rendered on two stacked `<canvas>` layers in `VectorMap2D.tsx` (static base layer + dynamic overlay for hover, selection, pulses, labels):
   * Geometry is converted to `Path2D` (full + decimated LOD) once per projection via `useMemo`. NEVER rebuild paths or resolve fills/strokes inside the frame loop; styles are precomputed on prop change.
   * Pan/zoom must never trigger React renders. Draws are batched in a single `requestAnimationFrame` frame loop and cull items outside the viewport by bounding box.
@@ -35,7 +41,9 @@ git push origin main
   * Do NOT reintroduce SVG per-country elements or CSS `filter`/`drop-shadow` on the map.
 
 ### 5. Absolute User Progress & Data Preservation Rule
+
 **User learning progress (SRS items, review counts, streaks, continent mastery, settings) is sacred and must NEVER be wiped, reset, or bypassed:**
+
 * **Dual-Layer Persistence**:
   * User data is mirrored to disk at `app.getPath('userData')/geomastery_data.json` via atomic file writes (`load-storage-data` / `save-storage-data`).
   * `localStorage` is used as a fast in-memory mirror and automatically rehydrated from disk on boot.
@@ -54,18 +62,23 @@ git push origin main
 Before finishing any task, run the full verification pipeline:
 
 1. **Unit Tests**:
+
    ```bash
    npm test
    ```
+
    Must pass with 0 failures (`src/core/srsEngine.test.ts`, `src/core/fuzzyMatch.test.ts`).
 
 2. **Web & Electron Compilation**:
+
    ```bash
    npm run build && npm run build:electron
    ```
+
    Ensure zero TypeScript or bundling errors.
 
 3. **Git Commit & Push**:
+
    ```bash
    git add .
    git commit -m "..."
