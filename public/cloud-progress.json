@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:35:21.645Z",
+  "exportedAt": "2026-10-24T14:35:48.371Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -24624,10 +24624,40 @@
           "UGA"
         ]
       }
+    ],
+    [
+      "MOZ:flag",
+      {
+        "id": "MOZ:flag",
+        "countryId": "MOZ",
+        "attributeId": "flag",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-24T14:35:45.372Z",
+        "nextDueAt": "2026-10-24T14:45:45.372Z",
+        "history": [
+          {
+            "timestamp": "2026-10-24T14:35:45.372Z",
+            "inputMode": "typing",
+            "userAnswer": "i",
+            "isCorrect": false,
+            "timeSpentMs": 1171,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1740,
+    "totalReviews": 1741,
     "totalCorrect": 1248,
     "currentStreak": 4,
     "longestStreak": 4,
@@ -24666,7 +24696,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:35:20.958Z"
+    "updatedAt": "2026-10-24T14:35:45.375Z"
   },
   "settings": {
     "audioEnabled": true,
