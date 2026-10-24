@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:39:09.792Z",
+  "exportedAt": "2026-10-24T14:39:16.142Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15943,13 +15943,13 @@
         "countryId": "STP",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.15,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-06T12:33:03.422Z",
-        "nextDueAt": "2026-10-07T12:33:03.422Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-24T14:39:12.993Z",
+        "nextDueAt": "2026-10-24T14:49:12.993Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:30:39.943Z",
@@ -15964,11 +15964,23 @@
             "userAnswer": "Sao Tome and Principe",
             "isCorrect": true,
             "timeSpentMs": 2823
+          },
+          {
+            "timestamp": "2026-10-24T14:39:12.993Z",
+            "inputMode": "map_click",
+            "userAnswer": "Cabo Verde",
+            "isCorrect": false,
+            "timeSpentMs": 4997,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 5.82
+        "stability": 0.6,
+        "difficulty": 6.68,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "CPV"
+        ]
       }
     ],
     [
@@ -24979,7 +24991,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1758,
+    "totalReviews": 1759,
     "totalCorrect": 1261,
     "currentStreak": 4,
     "longestStreak": 4,
@@ -25018,7 +25030,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:39:06.458Z"
+    "updatedAt": "2026-10-24T14:39:12.996Z"
   },
   "settings": {
     "audioEnabled": true,
