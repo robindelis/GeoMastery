@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:35:57.521Z",
+  "exportedAt": "2026-10-24T14:36:01.035Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16873,12 +16873,12 @@
         "attributeId": "capital",
         "stage": 1,
         "step": 0,
-        "easeFactor": 2.15,
+        "easeFactor": 1.95,
         "intervalDays": 0,
         "reps": 1,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-21T11:30:54.535Z",
-        "nextDueAt": "2026-10-21T11:30:54.535Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-24T14:35:57.866Z",
+        "nextDueAt": "2026-10-24T14:45:57.866Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:35:23.363Z",
@@ -16901,13 +16901,23 @@
             "isCorrect": false,
             "timeSpentMs": 37935,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-24T14:35:57.866Z",
+            "inputMode": "typing",
+            "userAnswer": "Egypt",
+            "isCorrect": false,
+            "timeSpentMs": 2914,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
         "stability": 0.6,
-        "difficulty": 7.06,
+        "difficulty": 7.45,
         "lastLatencyGrade": 1,
-        "confusedWith": []
+        "confusedWith": [
+          "EGY"
+        ]
       }
     ],
     [
@@ -24717,7 +24727,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1743,
+    "totalReviews": 1744,
     "totalCorrect": 1250,
     "currentStreak": 4,
     "longestStreak": 4,
@@ -24756,7 +24766,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:35:54.536Z"
+    "updatedAt": "2026-10-24T14:35:57.869Z"
   },
   "settings": {
     "audioEnabled": true,
