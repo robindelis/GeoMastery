@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T15:46:01.032Z",
+  "exportedAt": "2026-10-24T15:46:08.497Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -18692,14 +18692,14 @@
         "id": "BLZ:location",
         "countryId": "BLZ",
         "attributeId": "location",
-        "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
+        "stage": 1,
+        "step": 0,
+        "easeFactor": 2.45,
+        "intervalDays": 0,
         "reps": 3,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-10T13:52:43.366Z",
-        "nextDueAt": "2026-10-17T13:52:43.366Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-24T15:46:04.683Z",
+        "nextDueAt": "2026-10-24T15:56:04.683Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:46:35.640Z",
@@ -18721,11 +18721,23 @@
             "userAnswer": "Belize",
             "isCorrect": true,
             "timeSpentMs": 3931
+          },
+          {
+            "timestamp": "2026-10-24T15:46:04.683Z",
+            "inputMode": "map_click",
+            "userAnswer": "Gulf of Mexico",
+            "isCorrect": false,
+            "timeSpentMs": 4028,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 1.3,
+        "difficulty": 5.58,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "WATER_GULF_MEXICO"
+        ]
       }
     ],
     [
@@ -25785,7 +25797,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1812,
+    "totalReviews": 1813,
     "totalCorrect": 1301,
     "currentStreak": 4,
     "longestStreak": 4,
@@ -25798,8 +25810,8 @@
       },
       "Americas": {
         "total": 70,
-        "mastered": 41,
-        "learning": 29
+        "mastered": 40,
+        "learning": 30
       },
       "Asia": {
         "total": 96,
@@ -25824,7 +25836,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T15:45:57.517Z"
+    "updatedAt": "2026-10-24T15:46:04.686Z"
   },
   "settings": {
     "audioEnabled": true,
