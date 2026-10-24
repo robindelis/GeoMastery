@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T16:23:03.758Z",
+  "exportedAt": "2026-10-24T16:23:07.999Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26368,11 +26368,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "KOR:flag",
+      {
+        "id": "KOR:flag",
+        "countryId": "KOR",
+        "attributeId": "flag",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-24T16:23:04.506Z",
+        "nextDueAt": "2026-10-24T16:38:04.506Z",
+        "history": [
+          {
+            "timestamp": "2026-10-24T16:23:04.506Z",
+            "inputMode": "typing",
+            "userAnswer": "South Korea",
+            "isCorrect": true,
+            "timeSpentMs": 3542,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1846,
-    "totalCorrect": 1330,
+    "totalReviews": 1847,
+    "totalCorrect": 1331,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -26410,7 +26440,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T16:23:00.021Z"
+    "updatedAt": "2026-10-24T16:23:04.510Z"
   },
   "settings": {
     "audioEnabled": true,
