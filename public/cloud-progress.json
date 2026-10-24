@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:30:05.381Z",
+  "exportedAt": "2026-10-24T14:30:13.710Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -23321,14 +23321,14 @@
         "id": "GNQ:flag",
         "countryId": "GNQ",
         "attributeId": "flag",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.1,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.15,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-23T11:55:08.188Z",
-        "nextDueAt": "2026-10-23T12:05:08.188Z",
+        "lastReviewedAt": "2026-10-24T14:30:10.521Z",
+        "nextDueAt": "2026-10-24T14:45:10.521Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:37:00.575Z",
@@ -23345,11 +23345,19 @@
             "isCorrect": false,
             "timeSpentMs": 21997,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-24T14:30:10.521Z",
+            "inputMode": "typing",
+            "userAnswer": "Equitorial guinea",
+            "isCorrect": true,
+            "timeSpentMs": 7736,
+            "grade": 3
           }
         ],
-        "difficulty": 6.79,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 6.33,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "BWA"
         ]
@@ -24485,8 +24493,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1729,
-    "totalCorrect": 1238,
+    "totalReviews": 1730,
+    "totalCorrect": 1239,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -24524,7 +24532,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:30:02.317Z"
+    "updatedAt": "2026-10-24T14:30:10.524Z"
   },
   "settings": {
     "audioEnabled": true,
