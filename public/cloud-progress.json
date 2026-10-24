@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:41:44.913Z",
+  "exportedAt": "2026-10-24T14:42:18.546Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25216,11 +25216,41 @@
           "MNG"
         ]
       }
+    ],
+    [
+      "IRQ:country",
+      {
+        "id": "IRQ:country",
+        "countryId": "IRQ",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-24T14:42:15.282Z",
+        "nextDueAt": "2026-10-24T14:57:15.282Z",
+        "history": [
+          {
+            "timestamp": "2026-10-24T14:42:15.282Z",
+            "inputMode": "typing",
+            "userAnswer": "Irak",
+            "isCorrect": true,
+            "timeSpentMs": 32851,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1775,
-    "totalCorrect": 1275,
+    "totalReviews": 1776,
+    "totalCorrect": 1276,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -25258,7 +25288,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:41:41.821Z"
+    "updatedAt": "2026-10-24T14:42:15.285Z"
   },
   "settings": {
     "audioEnabled": true,
