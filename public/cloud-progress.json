@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:24:10.466Z",
+  "exportedAt": "2026-10-24T14:24:27.944Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -18148,13 +18148,13 @@
         "countryId": "GRD",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 1.35,
-        "intervalDays": 2,
-        "reps": 3,
+        "step": 2,
+        "easeFactor": 1.33,
+        "intervalDays": 4,
+        "reps": 4,
         "lapses": 7,
-        "lastReviewedAt": "2026-10-22T10:00:47.649Z",
-        "nextDueAt": "2026-10-24T10:00:47.649Z",
+        "lastReviewedAt": "2026-10-24T14:24:24.744Z",
+        "nextDueAt": "2026-10-28T14:24:24.744Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:46:07.775Z",
@@ -18228,12 +18228,20 @@
             "isCorrect": true,
             "timeSpentMs": 3639,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-24T14:24:24.744Z",
+            "inputMode": "map_click",
+            "userAnswer": "Grenada",
+            "isCorrect": true,
+            "timeSpentMs": 17418,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 2.2,
-        "difficulty": 8.2,
-        "lastLatencyGrade": 3,
+        "stability": 4.13,
+        "difficulty": 7.89,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "BRB",
           "KNA"
@@ -24187,8 +24195,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1707,
-    "totalCorrect": 1221,
+    "totalReviews": 1708,
+    "totalCorrect": 1222,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -24226,7 +24234,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:24:07.115Z"
+    "updatedAt": "2026-10-24T14:24:24.746Z"
   },
   "settings": {
     "audioEnabled": true,
