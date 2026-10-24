@@ -89,6 +89,17 @@ function createInitialStreamQueue(
   );
 }
 
+interface LastAnswerContext {
+  question: TrainingQuestion;
+  priorItem: SRSItem | null;
+  priorStreak: number;
+  timeSpentMs: number;
+  wasRetry: boolean;
+  isEffectiveRetry: boolean;
+  wasPractice: boolean;
+  initialFeedback: string;
+}
+
 export const TrainingSession: React.FC<TrainingSessionProps> = ({
   continentFilter,
   attributeFilter,
@@ -172,6 +183,8 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
   const questionStartTimeRef = useRef(questionStartTime);
   questionStartTimeRef.current = questionStartTime;
 
+  const lastAnswerContextRef = useRef<LastAnswerContext | null>(null);
+
   const attrKey = attributeFilter.join(',');
   const prevConfigRef = useRef({
     continentFilter,
@@ -223,6 +236,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
     setQueue(nextStream.queue);
     setIsStudyingFlags(false);
+    lastAnswerContextRef.current = null;
     setCurrentIndex(0);
     currentIndexRef.current = 0;
     setIsCompleted(false);
@@ -352,6 +366,26 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     const isNowGenuinelyDue =
       !existingForCheck || existingForCheck.nextDueAt <= new Date().toISOString();
     const isEffectiveRetry = Boolean(question.isRetry) && !isNowGenuinelyDue;
+
+    // Snapshot state before mutation for potential "I was right" override
+    const priorItemSnapshot: SRSItem | null = existingForCheck
+      ? {
+          ...existingForCheck,
+          history: [...(existingForCheck.history || [])],
+          confusedWith: [...(existingForCheck.confusedWith || [])]
+        }
+      : null;
+
+    lastAnswerContextRef.current = {
+      question,
+      priorItem: priorItemSnapshot,
+      priorStreak: streak,
+      timeSpentMs,
+      wasRetry: Boolean(question.isRetry),
+      isEffectiveRetry,
+      wasPractice: isPracticeModeRef.current,
+      initialFeedback: feedback
+    };
 
     // Update SRS Record (Only in standard spaced repetition mode, NOT in free practice mode or in-session retries!)
     if (!isPracticeModeRef.current && !isEffectiveRetry) {
@@ -509,6 +543,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
       return;
     }
 
+    lastAnswerContextRef.current = null;
     isSubmittedRef.current = false;
 
     if (speechTimerRef.current) {
@@ -551,6 +586,114 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     setQuestionStartTime(Date.now());
     questionStartTimeRef.current = Date.now();
   }, [continentFilter, attributeFilter]);
+
+  // Override miss-click / typo to mark answer as correct and update spaced repetition
+  const handleOverrideCorrect = useCallback(() => {
+    if (!isSubmittedRef.current || isCurrentCorrect !== false || !lastAnswerContextRef.current) {
+      return;
+    }
+
+    const ctx = lastAnswerContextRef.current;
+    const question = ctx.question;
+
+    let promotedToLearning = false;
+    let promotedToMastered = false;
+    let effectiveUpdatedItem: SRSItem;
+
+    // 1. Spaced Repetition Engine: Process as CORRECT from prior item state
+    if (!ctx.wasPractice && !ctx.isEffectiveRetry) {
+      const baseItem: SRSItem = ctx.priorItem
+        ? {
+            ...ctx.priorItem,
+            history: [...(ctx.priorItem.history || [])],
+            confusedWith: [...(ctx.priorItem.confusedWith || [])]
+          }
+        : createInitialSRSItem(question.country.id, question.attributeId);
+
+      const res = processAnswer(
+        baseItem,
+        true,
+        question.expectedInputMode,
+        question.correctAnswer,
+        ctx.timeSpentMs,
+        undefined
+      );
+      effectiveUpdatedItem = res.updatedItem;
+      promotedToLearning = res.promotedToLearning;
+      promotedToMastered = res.promotedToMastered;
+
+      // Save corrected item to storage
+      const newMap = new Map(srsItemsMapRef.current);
+      newMap.set(effectiveUpdatedItem.id, effectiveUpdatedItem);
+      srsItemsMapRef.current = newMap;
+      setSrsItemsMap(newMap);
+      StorageService.saveSRSItems(newMap);
+
+      // Reconcile user review stats: increment totalCorrect and update continent mastery
+      StorageService.correctLastReviewEvent();
+    } else {
+      effectiveUpdatedItem = ctx.priorItem
+        ? { ...ctx.priorItem }
+        : createInitialSRSItem(question.country.id, question.attributeId);
+    }
+
+    // 2. Remove any retry card that was scheduled ahead in the queue because of the miss-click
+    setQueue((prevQueue) => {
+      const idx = currentIndexRef.current;
+      const prefix = prevQueue.slice(0, idx + 1);
+      const cleanTail = prevQueue
+        .slice(idx + 1)
+        .filter((q) => !(q.srsItemId === question.srsItemId && q.isRetry));
+      return [...prefix, ...cleanTail];
+    });
+
+    // 3. Update session run telemetry & streak
+    const restoredStreak = ctx.priorStreak + 1;
+    setStreak(restoredStreak);
+    setCorrectCount((c) => c + 1);
+
+    // 4. Update session history entry for recap screen
+    setSessionAnswers((prev) => {
+      if (prev.length === 0) return prev;
+      const updated = [...prev];
+      const lastIdx = updated.length - 1;
+      updated[lastIdx] = {
+        ...updated[lastIdx],
+        isCorrect: true,
+        userAnswer: question.correctAnswer,
+        feedback: 'Marked as correct (I was right)',
+        promotedToLearning,
+        promotedToMastered
+      };
+      return updated;
+    });
+
+    // 5. Update UI feedback state
+    setIsCurrentCorrect(true);
+    setFeedbackState('correct');
+    setUserAnswer(question.correctAnswer);
+    setSelectedMapCountry(question.country);
+
+    // 6. Sound & visual celebrations
+    if (promotedToMastered || promotedToLearning) {
+      setGraduatedCount((g) => g + 1);
+      soundFx.playLevelUp();
+      confetti({
+        particleCount: promotedToMastered ? 80 : 40,
+        spread: promotedToMastered ? 75 : 50,
+        origin: { y: promotedToMastered ? 0.7 : 0.8 }
+      });
+    } else {
+      soundFx.playSuccess();
+      if (ctx.wasPractice && restoredStreak > 0 && restoredStreak % 5 === 0) {
+        confetti({
+          particleCount: 35,
+          spread: 50,
+          origin: { y: 0.8 }
+        });
+      }
+    }
+  }, [isCurrentCorrect]);
 
   // Give up / reveal answer handler
   const handleGiveUp = useCallback(() => {
@@ -672,6 +815,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
     );
     setQueue(freshStream.queue);
     setIsStudyingFlags(false);
+    lastAnswerContextRef.current = null;
     setCurrentIndex(0);
     currentIndexRef.current = 0;
     setIsCompleted(false);
@@ -1097,12 +1241,14 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
                 selectedOption={userAnswer}
                 correctAnswer={currentQuestion.correctAnswer}
                 isSubmitted={isSubmitted}
+                isCorrect={isCurrentCorrect}
                 questionDirection={currentQuestion.questionDirection}
                 onSelectOption={(opt) => {
                   handleAnswer(opt);
                 }}
                 onGiveUp={handleGiveUp}
                 onNextQuestion={handleNext}
+                onOverrideCorrect={handleOverrideCorrect}
               />
             ) : currentQuestion.expectedInputMode === 'typing' ? (
               <TypingRecallPrompt
@@ -1118,6 +1264,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
                 onSubmitAnswer={(val) => handleAnswer(val)}
                 onNextQuestion={handleNext}
                 onGiveUp={handleGiveUp}
+                onOverrideCorrect={handleOverrideCorrect}
               />
             ) : (
               <MapClickPrompt
@@ -1129,6 +1276,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
                 onNextQuestion={handleNext}
                 onSkip={handleGiveUp}
                 onGiveUp={handleGiveUp}
+                onOverrideCorrect={handleOverrideCorrect}
               />
             )}
           </div>

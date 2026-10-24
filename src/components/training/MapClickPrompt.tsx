@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Country } from '../../core/types';
-import { MapPin, ArrowRight, Waves, Volume2 } from 'lucide-react';
+import { MapPin, ArrowRight, Waves, Volume2, CheckCircle2 } from 'lucide-react';
 import { speechEngine } from '../../core/speechEngine';
 
 interface MapClickPromptProps {
@@ -11,6 +11,7 @@ interface MapClickPromptProps {
   onNextQuestion: () => void;
   onSkip?: () => void;
   onGiveUp?: () => void;
+  onOverrideCorrect?: () => void;
 }
 
 export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
@@ -20,22 +21,28 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
   isCorrect,
   onNextQuestion,
   onSkip,
-  onGiveUp
+  onGiveUp,
+  onOverrideCorrect
 }) => {
   const isWater = country.id.startsWith('WATER_');
 
-  // Keyboard Enter or Space listener to advance when submitted
+  // Keyboard Enter or Space listener to advance when submitted, or W to override
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.repeat) return;
-      if (isSubmitted && (e.key === 'Enter' || e.key === ' ')) {
-        e.preventDefault();
-        onNextQuestion();
+      if (isSubmitted) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onNextQuestion();
+        } else if ((e.key === 'w' || e.key === 'W') && !isCorrect && onOverrideCorrect) {
+          e.preventDefault();
+          onOverrideCorrect();
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isSubmitted, onNextQuestion]);
+  }, [isSubmitted, isCorrect, onNextQuestion, onOverrideCorrect]);
 
   const handleConcede = () => {
     if (onGiveUp) onGiveUp();
@@ -98,7 +105,11 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
         <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-900/90 border border-slate-700 shadow-xl">
           <div className="text-sm">
             {isCorrect ? (
-              <span className="text-emerald-400 font-bold">🎯 Spot on! Perfect location!</span>
+              <span className="text-emerald-400 font-bold">
+                {selectedCountryName && selectedCountryName !== country.name
+                  ? '🎯 Marked as correct!'
+                  : '🎯 Spot on! Perfect location!'}
+              </span>
             ) : (
               <span className="text-rose-400 font-bold">
                 {selectedCountryName
@@ -108,10 +119,24 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
             )}
           </div>
           <div className="flex items-center gap-2">
+            {!isCorrect && onOverrideCorrect && (
+              <button
+                type="button"
+                onClick={onOverrideCorrect}
+                className="px-3 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 text-amber-300 hover:text-amber-200 font-bold flex items-center gap-1.5 text-xs transition-all shadow-sm active:scale-95 cursor-pointer"
+                title="Miss-clicked? Count this answer as correct and update spaced repetition (Shortcut: W)"
+              >
+                <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
+                <span>I was right</span>
+                <kbd className="hidden sm:inline font-mono text-[10px] bg-amber-950/70 border border-amber-600/40 px-1 py-0.2 rounded text-amber-300/90">
+                  W
+                </kbd>
+              </button>
+            )}
             <span className="text-xs text-slate-400 hidden sm:inline">Press Enter or Space</span>
             <button
               onClick={onNextQuestion}
-              className="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold flex items-center gap-1 text-sm shadow-md transition-all active:scale-95"
+              className="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold flex items-center gap-1 text-sm shadow-md transition-all active:scale-95 cursor-pointer"
             >
               <span>Next</span>
               <ArrowRight className="w-4 h-4" />

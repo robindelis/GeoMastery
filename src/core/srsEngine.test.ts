@@ -15,7 +15,8 @@ import {
   buildFlagStudyCohort,
   buildFlagCohortQuestions,
   scheduleInStreamFollowUp,
-  replenishStreamQueue
+  replenishStreamQueue,
+  TrainingQuestion
 } from './srsEngine';
 import { COUNTRIES, COUNTRIES_BY_ID } from '../assets/data/countries';
 import { WATER_BODIES } from '../assets/data/waterBodies';
@@ -651,6 +652,63 @@ describe('srsEngine Hybrid Geo-FSRS + ACT-R Latency & State Calibration', () => 
     const capToCountry = combinedQueue.filter((q) => q.attributeId === 'capital_to_country');
     expect(countryToCap.length).toBeGreaterThan(0);
     expect(capToCountry.length).toBeGreaterThan(0);
+  });
+
+  it('accurately reconciles SRS remembrance state when an erroneous miss-click is overridden via I was right', () => {
+    // Card in Stage 1 with 1 previous rep and 0 lapses
+    const initialItem: SRSItem = {
+      id: 'ESP:location',
+      countryId: 'ESP',
+      attributeId: 'location',
+      stage: 1,
+      step: 1,
+      reps: 1,
+      lapses: 0,
+      easeFactor: 2.5,
+      intervalDays: 1,
+      stability: 1.2,
+      difficulty: 5.0,
+      lastReviewedAt: new Date(Date.now() - 24 * 3600000).toISOString(),
+      nextDueAt: new Date(Date.now() - 1000).toISOString(),
+      history: []
+    };
+
+    // User miss-clicks Portugal (PRT) instead of Spain (ESP)
+    const missClickResult = processAnswer(initialItem, false, 'map_click', 'Portugal', 2500, 'PRT');
+    expect(missClickResult.updatedItem.lapses).toBe(1);
+    expect(missClickResult.updatedItem.confusedWith).toContain('PRT');
+    expect(missClickResult.updatedItem.history[0].isCorrect).toBe(false);
+
+    // User clicks "I was right" -> Re-evaluating from initialItem as correct
+    const overrideResult = processAnswer(initialItem, true, 'map_click', 'Spain', 2500, undefined);
+    expect(overrideResult.updatedItem.lapses).toBe(0);
+    expect(overrideResult.updatedItem.reps).toBe(2);
+    expect(overrideResult.updatedItem.confusedWith).toEqual([]);
+    expect(overrideResult.updatedItem.stability).toBeGreaterThan(initialItem.stability!);
+    expect(overrideResult.updatedItem.history[0].isCorrect).toBe(true);
+
+    // In-stream queue retry removal test:
+    const queueBefore: TrainingQuestion[] = [
+      {
+        srsItemId: 'ESP:location',
+        country: { id: 'ESP', name: 'Spain', continent: 'Europe' } as any,
+        attributeId: 'location',
+        prompt: 'Click Spain',
+        correctAnswer: 'Spain',
+        expectedInputMode: 'map_click',
+        stage: 1
+      }
+    ];
+    // Erroneous answer inserted a retry
+    const queueWithRetry = scheduleInStreamFollowUp(queueBefore, 0, queueBefore[0], missClickResult.updatedItem, false, false);
+    expect(queueWithRetry.some((q) => q.srsItemId === 'ESP:location' && q.isRetry)).toBe(true);
+
+    // Overriding strips the inserted retry
+    const cleanedQueue = [
+      queueWithRetry[0],
+      ...queueWithRetry.slice(1).filter((q) => !(q.srsItemId === 'ESP:location' && q.isRetry))
+    ];
+    expect(cleanedQueue.some((q) => q.srsItemId === 'ESP:location' && q.isRetry)).toBe(false);
   });
 });
 

@@ -79,6 +79,18 @@ describe('StorageService Persistence & Schema Integrity', () => {
     expect(loaded.timeAttackRecords).toBeDefined();
   });
 
+  it('correctLastReviewEvent reconciles an incorrect review into a correct one without inflating totalReviews', () => {
+    // Record an initial incorrect review
+    const afterIncorrect = StorageService.recordReviewEvent(false);
+    expect(afterIncorrect.totalReviews).toBe(1);
+    expect(afterIncorrect.totalCorrect).toBe(0);
+
+    // User triggers 'I was right' override
+    const afterOverride = StorageService.correctLastReviewEvent();
+    expect(afterOverride.totalReviews).toBe(1);
+    expect(afterOverride.totalCorrect).toBe(1);
+  });
+
   it('safely validates JSON schema during backup import and rejects corrupted structures', () => {
     // Invalid schema (empty object, null, or wrong fields)
     expect(StorageService.importBackupJSON('invalid-json')).toBe(false);

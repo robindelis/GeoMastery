@@ -827,6 +827,25 @@ export class StorageService {
   }
 
   /**
+   * Reconciles a previously recorded incorrect review into a correct one
+   * (e.g. user miss-clicked and chose 'I was right').
+   * Increments totalCorrect (capped at totalReviews) and recomputes continent mastery.
+   */
+  public static correctLastReviewEvent(): UserStats {
+    const stats = this.loadStats();
+    const now = new Date();
+    if (stats.totalCorrect < stats.totalReviews) {
+      stats.totalCorrect += 1;
+    }
+    stats.updatedAt = now.toISOString();
+    stats.continentMastery = this.buildContinentMasteryFromItems(this.loadSRSItems());
+
+    this.saveStats(stats);
+    this.scheduleCloudSync();
+    return stats;
+  }
+
+  /**
    * Exports full user backup JSON.
    */
   public static exportBackupJSON(): string {

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Country } from '../../core/types';
 import { CapitalQuestionDirection } from '../../core/srsEngine';
-import { ArrowRight, Volume2, Building2 } from 'lucide-react';
+import { ArrowRight, Volume2, Building2, CheckCircle2 } from 'lucide-react';
 import { speechEngine } from '../../core/speechEngine';
 
 interface MultipleChoicePromptProps {
@@ -11,10 +11,12 @@ interface MultipleChoicePromptProps {
   selectedOption: string | null;
   correctAnswer: string;
   isSubmitted: boolean;
+  isCorrect?: boolean;
   questionDirection?: CapitalQuestionDirection;
   onSelectOption: (option: string) => void;
   onGiveUp?: () => void;
   onNextQuestion?: () => void;
+  onOverrideCorrect?: () => void;
 }
 
 export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
@@ -24,14 +26,17 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
   selectedOption,
   correctAnswer,
   isSubmitted,
+  isCorrect: isCorrectProp,
   questionDirection,
   onSelectOption,
   onGiveUp,
-  onNextQuestion
+  onNextQuestion,
+  onOverrideCorrect
 }) => {
   const isWater = country.id.startsWith('WATER_');
   const isCapitalToCountry = questionDirection === 'capital_to_country';
   const hasSelectedRef = useRef(false);
+  const isOverallCorrect = isCorrectProp ?? (selectedOption === correctAnswer);
 
   // Reset selection state when question changes
   useEffect(() => {
@@ -44,7 +49,7 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
     onSelectOption(option);
   };
 
-  // Keyboard listener for 1, 2, 3, 4 when unsubmitted, or Enter/Space when submitted
+  // Keyboard listener for 1, 2, 3, 4 when unsubmitted, or Enter/Space when submitted, or W to override
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.repeat) return;
@@ -53,6 +58,9 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
         if ((e.key === 'Enter' || e.key === ' ') && onNextQuestion) {
           e.preventDefault();
           onNextQuestion();
+        } else if ((e.key === 'w' || e.key === 'W') && !isOverallCorrect && onOverrideCorrect) {
+          e.preventDefault();
+          onOverrideCorrect();
         }
         return;
       }
@@ -69,7 +77,7 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [options, isSubmitted, onNextQuestion]);
+  }, [options, isSubmitted, isOverallCorrect, onNextQuestion, onOverrideCorrect]);
 
   return (
     <div className="flex flex-col gap-2.5 sm:gap-4 w-full max-w-xl mx-auto">
@@ -119,7 +127,7 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
           if (isSubmitted) {
             if (isCorrect) {
               btnStyle = 'bg-emerald-600/90 border-emerald-400 text-white font-bold ring-2 ring-emerald-400/50';
-            } else if (isSelected && !isCorrect) {
+            } else if (isSelected && !isCorrect && !isOverallCorrect) {
               btnStyle = 'bg-rose-600/90 border-rose-400 text-white font-bold ring-2 ring-rose-400/50';
             } else {
               btnStyle = 'bg-slate-900/40 border-slate-800 text-slate-500 opacity-50';
@@ -161,8 +169,12 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
         <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 border border-slate-700 shadow-xl">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-slate-300">
-              {selectedOption === correctAnswer ? (
-                <span className="text-emerald-400 font-bold">🎯 Correct choice!</span>
+              {isOverallCorrect ? (
+                <span className="text-emerald-400 font-bold">
+                  {selectedOption && selectedOption !== correctAnswer
+                    ? '🎯 Marked as correct!'
+                    : '🎯 Correct choice!'}
+                </span>
               ) : (
                 <span className="text-rose-400 font-medium">
                   Answer: <strong className="text-white">{correctAnswer}</strong>
@@ -176,7 +188,7 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
                   e.stopPropagation();
                   speechEngine.speakCountryAndCapital(country.name, country.capital);
                 }}
-                className="p-1 rounded hover:bg-slate-800 text-sky-400 hover:text-sky-300 transition-colors inline-flex items-center active:scale-95"
+                className="p-1 rounded hover:bg-slate-800 text-sky-400 hover:text-sky-300 transition-colors inline-flex items-center active:scale-95 cursor-pointer"
                 title="Hear country and capital pronunciation"
               >
                 <Volume2 className="w-3.5 h-3.5" />
@@ -184,10 +196,24 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
             )}
           </div>
           <div className="flex items-center gap-2">
+            {!isOverallCorrect && onOverrideCorrect && (
+              <button
+                type="button"
+                onClick={onOverrideCorrect}
+                className="px-2.5 py-1 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 text-amber-300 hover:text-amber-200 font-bold flex items-center gap-1.5 text-xs transition-all shadow-sm active:scale-95 cursor-pointer"
+                title="Miss-clicked? Count this answer as correct and update spaced repetition (Shortcut: W)"
+              >
+                <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
+                <span>I was right</span>
+                <kbd className="hidden sm:inline font-mono text-[10px] bg-amber-950/70 border border-amber-600/40 px-1 py-0.2 rounded text-amber-300/90">
+                  W
+                </kbd>
+              </button>
+            )}
             <span className="text-xs text-slate-400 hidden sm:inline">Press Enter or Space</span>
             <button
               onClick={onNextQuestion}
-              className="px-3.5 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold flex items-center gap-1 text-xs shadow-md transition-all active:scale-95"
+              className="px-3.5 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold flex items-center gap-1 text-xs shadow-md transition-all active:scale-95 cursor-pointer"
             >
               <span>Next</span>
               <ArrowRight className="w-3.5 h-3.5" />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Country } from '../../core/types';
 import { CapitalQuestionDirection } from '../../core/srsEngine';
-import { Send, HelpCircle, ArrowRight, Volume2, Compass, Flag, Building2 } from 'lucide-react';
+import { Send, HelpCircle, ArrowRight, Volume2, Compass, Flag, Building2, CheckCircle2 } from 'lucide-react';
 import { speechEngine } from '../../core/speechEngine';
 
 interface TypingRecallPromptProps {
@@ -17,6 +17,7 @@ interface TypingRecallPromptProps {
   onSubmitAnswer: (input: string) => void;
   onNextQuestion: () => void;
   onGiveUp?: () => void;
+  onOverrideCorrect?: () => void;
 }
 
 export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
@@ -31,7 +32,8 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
   matchedFeedback,
   onSubmitAnswer,
   onNextQuestion,
-  onGiveUp
+  onGiveUp,
+  onOverrideCorrect
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [hintCount, setHintCount] = useState(0);
@@ -69,18 +71,23 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
     }
   };
 
-  // Keyboard Enter / Space listener after submission to proceed
+  // Keyboard Enter / Space listener after submission to proceed, or W to override
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.repeat) return;
-      if (isSubmitted && (e.key === 'Enter' || e.key === ' ')) {
-        e.preventDefault();
-        onNextQuestion();
+      if (isSubmitted) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onNextQuestion();
+        } else if ((e.key === 'w' || e.key === 'W') && !isCorrect && onOverrideCorrect) {
+          e.preventDefault();
+          onOverrideCorrect();
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isSubmitted, onNextQuestion]);
+  }, [isSubmitted, isCorrect, onNextQuestion, onOverrideCorrect]);
 
   // Progressive Hint generator
   const getHintText = () => {
@@ -251,12 +258,14 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
               )}
             </>
           ) : (
-            <div className="w-full flex items-center justify-between text-xs">
-              <div className="flex items-center gap-1.5">
+            <div className="w-full flex items-center justify-between gap-2 text-xs">
+              <div className="flex items-center gap-1.5 flex-wrap">
                 <span className={`font-semibold ${isCorrect ? 'text-emerald-400' : 'text-rose-400'}`}>
-                  {userAnswer === '__DONT_KNOW__'
-                    ? `Correct Answer: ${correctAnswer}`
-                    : matchedFeedback || (isCorrect ? 'Correct!' : `Answer: ${correctAnswer}`)}
+                  {isCorrect
+                    ? (matchedFeedback && matchedFeedback.toLowerCase().includes('correct') ? matchedFeedback : '🎯 Marked as correct!')
+                    : (userAnswer === '__DONT_KNOW__'
+                        ? `Correct Answer: ${correctAnswer}`
+                        : matchedFeedback || `Answer: ${correctAnswer}`)}
                 </span>
                 {country.capital && (
                   <button
@@ -265,14 +274,30 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
                       e.stopPropagation();
                       speechEngine.speakCountryAndCapital(country.name, country.capital);
                     }}
-                    className="p-1 rounded hover:bg-slate-800 text-sky-400 hover:text-sky-300 transition-colors inline-flex items-center active:scale-95"
+                    className="p-1 rounded hover:bg-slate-800 text-sky-400 hover:text-sky-300 transition-colors inline-flex items-center active:scale-95 cursor-pointer"
                     title="Hear country and capital pronunciation"
                   >
                     <Volume2 className="w-3.5 h-3.5" />
                   </button>
                 )}
               </div>
-              <span className="text-slate-400 hidden sm:inline">Press Enter or Space for next</span>
+              <div className="flex items-center gap-2 shrink-0">
+                {!isCorrect && onOverrideCorrect && (
+                  <button
+                    type="button"
+                    onClick={onOverrideCorrect}
+                    className="px-2.5 py-1 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 text-amber-300 hover:text-amber-200 font-bold flex items-center gap-1.5 text-xs transition-all shadow-sm active:scale-95 cursor-pointer"
+                    title="Mistyped? Count this answer as correct and update spaced repetition (Shortcut: W)"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
+                    <span>I was right</span>
+                    <kbd className="hidden sm:inline font-mono text-[10px] bg-amber-950/70 border border-amber-600/40 px-1 py-0.2 rounded text-amber-300/90">
+                      W
+                    </kbd>
+                  </button>
+                )}
+                <span className="text-slate-400 hidden sm:inline">Press Enter or Space for next</span>
+              </div>
             </div>
           )}
         </div>
