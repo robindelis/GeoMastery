@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:39:41.820Z",
+  "exportedAt": "2026-10-24T14:39:52.947Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -4017,13 +4017,13 @@
         "countryId": "POL",
         "attributeId": "capital",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.63,
+        "intervalDays": 28,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:29:50.948Z",
-        "nextDueAt": "2026-10-15T20:29:50.948Z",
+        "lastReviewedAt": "2026-10-24T14:39:52.825Z",
+        "nextDueAt": "2026-11-21T14:39:52.825Z",
         "history": [
           {
             "timestamp": "2026-10-04T17:03:02.048Z",
@@ -4045,11 +4045,21 @@
             "userAnswer": "Warsaw",
             "isCorrect": true,
             "timeSpentMs": 5807
+          },
+          {
+            "timestamp": "2026-10-24T14:39:52.825Z",
+            "inputMode": "typing",
+            "userAnswer": "poland",
+            "isCorrect": true,
+            "timeSpentMs": 13223,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 28,
+        "difficulty": 4.69,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
       }
     ],
     [
@@ -25037,8 +25047,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1762,
-    "totalCorrect": 1264,
+    "totalReviews": 1763,
+    "totalCorrect": 1265,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -25076,7 +25086,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:39:38.727Z"
+    "updatedAt": "2026-10-24T14:39:52.829Z"
   },
   "settings": {
     "audioEnabled": true,
