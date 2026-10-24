@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:26:12.388Z",
+  "exportedAt": "2026-10-24T14:26:23.495Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -14422,13 +14422,13 @@
         "countryId": "BWA",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 1.95,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 1.93,
+        "intervalDays": 2,
+        "reps": 2,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-23T11:53:36.482Z",
-        "nextDueAt": "2026-10-23T12:03:36.482Z",
+        "lastReviewedAt": "2026-10-24T14:26:19.178Z",
+        "nextDueAt": "2026-10-26T14:26:19.178Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:20:04.572Z",
@@ -14459,12 +14459,20 @@
             "isCorrect": false,
             "timeSpentMs": 11007,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-24T14:26:19.178Z",
+            "inputMode": "map_click",
+            "userAnswer": "Botswana",
+            "isCorrect": true,
+            "timeSpentMs": 8795,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 0.6,
-        "difficulty": 7.45,
-        "lastLatencyGrade": 1,
+        "stability": 2.2,
+        "difficulty": 7.31,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "ZWE"
         ]
@@ -24363,8 +24371,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1720,
-    "totalCorrect": 1233,
+    "totalReviews": 1721,
+    "totalCorrect": 1234,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -24402,7 +24410,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:26:09.112Z"
+    "updatedAt": "2026-10-24T14:26:19.181Z"
   },
   "settings": {
     "audioEnabled": true,
