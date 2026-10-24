@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:37:38.344Z",
+  "exportedAt": "2026-10-24T14:37:43.623Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -23791,12 +23791,12 @@
         "attributeId": "flag",
         "stage": 0,
         "step": 0,
-        "easeFactor": 2.3,
+        "easeFactor": 2.1,
         "intervalDays": 0,
         "reps": 0,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-23T11:42:45.418Z",
-        "nextDueAt": "2026-10-23T11:52:45.418Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-24T14:37:40.301Z",
+        "nextDueAt": "2026-10-24T14:47:40.301Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:42:45.418Z",
@@ -23805,12 +23805,22 @@
             "isCorrect": false,
             "timeSpentMs": 5190,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-24T14:37:40.301Z",
+            "inputMode": "typing",
+            "userAnswer": "India",
+            "isCorrect": false,
+            "timeSpentMs": 4427,
+            "grade": 1
           }
         ],
-        "difficulty": 5.99,
+        "difficulty": 6.79,
         "stability": 0.6,
         "lastLatencyGrade": 1,
-        "confusedWith": []
+        "confusedWith": [
+          "IND"
+        ]
       }
     ],
     [
@@ -24835,7 +24845,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1749,
+    "totalReviews": 1750,
     "totalCorrect": 1254,
     "currentStreak": 4,
     "longestStreak": 4,
@@ -24874,7 +24884,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:37:34.832Z"
+    "updatedAt": "2026-10-24T14:37:40.303Z"
   },
   "settings": {
     "audioEnabled": true,
