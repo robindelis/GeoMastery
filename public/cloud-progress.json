@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T16:01:41.860Z",
+  "exportedAt": "2026-10-24T16:01:52.167Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25047,14 +25047,14 @@
         "id": "BDI:country",
         "countryId": "BDI",
         "attributeId": "country",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.35,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-24T14:34:43.621Z",
-        "nextDueAt": "2026-10-24T14:44:43.621Z",
+        "lastReviewedAt": "2026-10-24T16:01:48.279Z",
+        "nextDueAt": "2026-10-24T16:16:48.279Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:34:43.621Z",
@@ -25063,11 +25063,19 @@
             "isCorrect": false,
             "timeSpentMs": 162378,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-24T16:01:48.279Z",
+            "inputMode": "typing",
+            "userAnswer": "Burundi",
+            "isCorrect": true,
+            "timeSpentMs": 7256,
+            "grade": 3
           }
         ],
-        "difficulty": 5.99,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 5.59,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "UGA"
         ]
@@ -25901,8 +25909,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1820,
-    "totalCorrect": 1307,
+    "totalReviews": 1821,
+    "totalCorrect": 1308,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -25940,7 +25948,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T16:01:37.755Z"
+    "updatedAt": "2026-10-24T16:01:48.283Z"
   },
   "settings": {
     "audioEnabled": true,
