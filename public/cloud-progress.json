@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T16:02:02.484Z",
+  "exportedAt": "2026-10-24T16:02:06.561Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25966,11 +25966,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "UZB:capital_to_country",
+      {
+        "id": "UZB:capital_to_country",
+        "countryId": "UZB",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-24T16:02:03.194Z",
+        "nextDueAt": "2026-10-24T16:17:03.194Z",
+        "history": [
+          {
+            "timestamp": "2026-10-24T16:02:03.194Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Uzbekistan",
+            "isCorrect": true,
+            "timeSpentMs": 2951,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1823,
-    "totalCorrect": 1310,
+    "totalReviews": 1824,
+    "totalCorrect": 1311,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -26008,7 +26038,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T16:01:58.926Z"
+    "updatedAt": "2026-10-24T16:02:03.198Z"
   },
   "settings": {
     "audioEnabled": true,
