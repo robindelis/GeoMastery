@@ -20,6 +20,8 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
     (globalThis as any).Audio = class {
       src: string;
       volume: number = 1;
+      playbackRate: number = 1;
+      preservesPitch: boolean = true;
       paused: boolean = true;
       ended: boolean = false;
       onended: any = null;
@@ -40,10 +42,22 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
     vi.restoreAllMocks();
   });
 
-  it('initializes with default google-stream provider and volume 1.0', () => {
+  it('initializes with default google-stream provider, volume 1.0, and 1.3x speed', () => {
     expect(engine.isEnabled()).toBe(true);
     expect(engine.getVolume()).toBe(1.0);
+    expect(engine.getRate()).toBe(1.3);
     expect(engine.getProvider()).toBe('google-stream');
+  });
+
+  it('clamps rate between 0.5 and 2.5', () => {
+    engine.setRate(3.0);
+    expect(engine.getRate()).toBe(2.5);
+
+    engine.setRate(0.1);
+    expect(engine.getRate()).toBe(0.5);
+
+    engine.setRate(1.3);
+    expect(engine.getRate()).toBe(1.3);
   });
 
   it('clamps volume between 0 and 1', () => {
@@ -89,6 +103,8 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
 
     expect(createdAudios.length).toBe(1);
     expect(createdAudios[0].src).toContain('paris_fenrir');
+    expect(createdAudios[0].playbackRate).toBe(1.3);
+    expect(createdAudios[0].preservesPitch).toBe(true);
     expect(mockFetch).not.toHaveBeenCalled();
     expect(mockAudioPlay).toHaveBeenCalledTimes(1);
 
@@ -179,28 +195,31 @@ describe('SpeechEngine Multi-Provider Architecture', () => {
     expect(mockAudioPause).toHaveBeenCalled();
   });
 
-  it('plays country first then capital in sequence with speakCountryAndCapital', async () => {
+  it('plays country first then capital in sequence with speakCountryAndCapital using default 80ms gap', async () => {
     vi.useFakeTimers();
 
-    engine.speakCountryAndCapital('France', 'Paris', { gapMs: 200 });
+    engine.speakCountryAndCapital('France', 'Paris');
 
     // 1st audio element created for France
     expect(createdAudios.length).toBe(1);
     expect(createdAudios[0].src).toContain('france_fenrir');
+    expect(createdAudios[0].playbackRate).toBe(1.3);
     expect(mockAudioPlay).toHaveBeenCalledTimes(1);
 
     // Simulate country audio ending
     createdAudios[0].onended();
 
-    // Before gap finishes, capital audio should not have started yet
+    // Before gap finishes, capital audio should not have started yet (e.g. at 50ms)
+    vi.advanceTimersByTime(50);
     expect(createdAudios.length).toBe(1);
 
-    // Fast-forward through the 200ms gap
-    vi.advanceTimersByTime(200);
+    // Fast-forward through the remaining 30ms to reach default 80ms gap
+    vi.advanceTimersByTime(30);
 
     // 2nd audio element created for Paris
     expect(createdAudios.length).toBe(2);
     expect(createdAudios[1].src).toContain('paris_fenrir');
+    expect(createdAudios[1].playbackRate).toBe(1.3);
     expect(mockAudioPlay).toHaveBeenCalledTimes(2);
 
     vi.useRealTimers();

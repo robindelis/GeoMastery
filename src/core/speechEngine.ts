@@ -92,6 +92,7 @@ export class SpeechEngine {
 
   private apiKeyExplicitlySet: boolean = false;
   private sequenceTimer: any = null;
+  private rate: number = 1.3;
 
   constructor() {
     this.initKey();
@@ -150,6 +151,17 @@ export class SpeechEngine {
 
   public getVolume(): number {
     return this.volume;
+  }
+
+  public setRate(rate: number): void {
+    this.rate = Math.max(0.5, Math.min(2.5, rate));
+    if (this.currentAudio) {
+      this.currentAudio.playbackRate = this.rate;
+    }
+  }
+
+  public getRate(): number {
+    return this.rate;
   }
 
   public setProvider(provider: TTSProvider): void {
@@ -303,7 +315,7 @@ export class SpeechEngine {
 
     // Both audio files are available: play country -> gap -> capital
     if (countryUrl && capitalUrl) {
-      const gap = options?.gapMs ?? 250;
+      const gap = options?.gapMs ?? 80;
       this.playAudioUrl(countryUrl, {
         ...options,
         onEnd: () => {
@@ -529,6 +541,10 @@ export class SpeechEngine {
     try {
       const audio = new Audio(url);
       audio.volume = (options?.volume ?? 1.0) * this.volume;
+      audio.playbackRate = options?.rate ?? this.rate;
+      if ('preservesPitch' in audio) {
+        audio.preservesPitch = true;
+      }
       this.currentAudio = audio;
 
       audio.onended = () => {
