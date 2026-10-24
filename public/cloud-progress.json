@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-24T14:38:45.603Z",
+  "exportedAt": "2026-10-24T14:38:58.171Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7433,13 +7433,13 @@
         "countryId": "TUV",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 1.78,
-        "intervalDays": 3,
-        "reps": 3,
+        "step": 2,
+        "easeFactor": 1.76,
+        "intervalDays": 5,
+        "reps": 4,
         "lapses": 4,
-        "lastReviewedAt": "2026-10-21T11:44:37.501Z",
-        "nextDueAt": "2026-10-24T11:44:37.501Z",
+        "lastReviewedAt": "2026-10-24T14:38:54.970Z",
+        "nextDueAt": "2026-10-29T14:38:54.970Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:28:04.840Z",
@@ -7491,11 +7491,19 @@
             "isCorrect": true,
             "timeSpentMs": 14042,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-24T14:38:54.970Z",
+            "inputMode": "map_click",
+            "userAnswer": "Tuvalu",
+            "isCorrect": true,
+            "timeSpentMs": 8232,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 2.5,
-        "difficulty": 8.18,
+        "stability": 5.14,
+        "difficulty": 7.88,
         "lastLatencyGrade": 2,
         "confusedWith": [
           "NRU"
@@ -24963,8 +24971,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1756,
-    "totalCorrect": 1259,
+    "totalReviews": 1757,
+    "totalCorrect": 1260,
     "currentStreak": 4,
     "longestStreak": 4,
     "lastReviewDate": "2026-10-24",
@@ -25002,7 +25010,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-24T14:38:41.587Z"
+    "updatedAt": "2026-10-24T14:38:54.973Z"
   },
   "settings": {
     "audioEnabled": true,
