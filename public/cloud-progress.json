@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:52:16.863Z",
+  "exportedAt": "2026-10-25T13:52:20.407Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -27419,11 +27419,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "POL:country",
+      {
+        "id": "POL:country",
+        "countryId": "POL",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-25T13:52:17.016Z",
+        "nextDueAt": "2026-10-25T14:07:17.016Z",
+        "history": [
+          {
+            "timestamp": "2026-10-25T13:52:17.016Z",
+            "inputMode": "typing",
+            "userAnswer": "Poland",
+            "isCorrect": true,
+            "timeSpentMs": 2611,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1907,
-    "totalCorrect": 1373,
+    "totalReviews": 1908,
+    "totalCorrect": 1374,
     "currentStreak": 5,
     "longestStreak": 5,
     "lastReviewDate": "2026-10-25",
@@ -27461,7 +27491,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:52:13.582Z"
+    "updatedAt": "2026-10-25T13:52:17.019Z"
   },
   "settings": {
     "audioEnabled": true,
