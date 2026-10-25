@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:49:10.979Z",
+  "exportedAt": "2026-10-25T13:49:15.418Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25234,14 +25234,14 @@
         "id": "JPN:country",
         "countryId": "JPN",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.66,
+        "intervalDays": 8,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-24T14:30:02.315Z",
-        "nextDueAt": "2026-10-24T14:45:02.315Z",
+        "lastReviewedAt": "2026-10-25T13:49:11.877Z",
+        "nextDueAt": "2026-11-02T13:49:11.877Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:30:02.315Z",
@@ -25250,10 +25250,18 @@
             "isCorrect": true,
             "timeSpentMs": 2771,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-25T13:49:11.877Z",
+            "inputMode": "typing",
+            "userAnswer": "Japan",
+            "isCorrect": true,
+            "timeSpentMs": 2658,
+            "grade": 4
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
+        "difficulty": 2.46,
+        "stability": 8,
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
@@ -26961,11 +26969,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "SGP:country",
+      {
+        "id": "SGP:country",
+        "countryId": "SGP",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-25T13:49:14.990Z",
+        "nextDueAt": "2026-10-25T14:04:14.990Z",
+        "history": [
+          {
+            "timestamp": "2026-10-25T13:49:14.990Z",
+            "inputMode": "typing",
+            "userAnswer": "Singapore",
+            "isCorrect": true,
+            "timeSpentMs": 2775,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1879,
-    "totalCorrect": 1351,
+    "totalReviews": 1881,
+    "totalCorrect": 1353,
     "currentStreak": 5,
     "longestStreak": 5,
     "lastReviewDate": "2026-10-25",
@@ -27003,7 +27041,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:49:07.729Z"
+    "updatedAt": "2026-10-25T13:49:14.992Z"
   },
   "settings": {
     "audioEnabled": true,
