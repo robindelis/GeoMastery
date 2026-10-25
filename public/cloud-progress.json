@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:45:56.977Z",
+  "exportedAt": "2026-10-25T13:46:10.377Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26518,11 +26518,41 @@
         "lastLatencyGrade": 1,
         "confusedWith": []
       }
+    ],
+    [
+      "ARM:capital_to_country",
+      {
+        "id": "ARM:capital_to_country",
+        "countryId": "ARM",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-25T13:46:06.678Z",
+        "nextDueAt": "2026-10-25T14:01:06.678Z",
+        "history": [
+          {
+            "timestamp": "2026-10-25T13:46:06.678Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Armenia",
+            "isCorrect": true,
+            "timeSpentMs": 3299,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1853,
-    "totalCorrect": 1334,
+    "totalReviews": 1854,
+    "totalCorrect": 1335,
     "currentStreak": 5,
     "longestStreak": 5,
     "lastReviewDate": "2026-10-25",
@@ -26560,7 +26590,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:45:53.699Z"
+    "updatedAt": "2026-10-25T13:46:06.691Z"
   },
   "settings": {
     "audioEnabled": true,
