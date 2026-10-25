@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:48:02.380Z",
+  "exportedAt": "2026-10-25T13:48:05.810Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26705,11 +26705,71 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "KEN:country",
+      {
+        "id": "KEN:country",
+        "countryId": "KEN",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-25T13:48:02.410Z",
+        "nextDueAt": "2026-10-25T14:03:02.410Z",
+        "history": [
+          {
+            "timestamp": "2026-10-25T13:48:02.410Z",
+            "inputMode": "typing",
+            "userAnswer": "Kenia",
+            "isCorrect": true,
+            "timeSpentMs": 2928,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
+    ],
+    [
+      "TJK:capital_to_country",
+      {
+        "id": "TJK:capital_to_country",
+        "countryId": "TJK",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-25T13:48:05.574Z",
+        "nextDueAt": "2026-10-25T14:03:05.574Z",
+        "history": [
+          {
+            "timestamp": "2026-10-25T13:48:05.574Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Tajikistan",
+            "isCorrect": true,
+            "timeSpentMs": 2775,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1867,
-    "totalCorrect": 1341,
+    "totalReviews": 1869,
+    "totalCorrect": 1343,
     "currentStreak": 5,
     "longestStreak": 5,
     "lastReviewDate": "2026-10-25",
@@ -26747,7 +26807,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:47:58.775Z"
+    "updatedAt": "2026-10-25T13:48:05.576Z"
   },
   "settings": {
     "audioEnabled": true,
