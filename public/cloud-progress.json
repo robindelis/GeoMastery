@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:46:28.517Z",
+  "exportedAt": "2026-10-25T13:46:32.358Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -2719,13 +2719,13 @@
         "countryId": "CZE",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 45,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T09:04:36.566Z",
-        "nextDueAt": "2026-10-17T09:04:36.566Z",
+        "lastReviewedAt": "2026-10-25T13:46:28.562Z",
+        "nextDueAt": "2026-12-09T13:46:28.562Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:59:03.609Z",
@@ -2747,11 +2747,21 @@
             "userAnswer": "Czechia",
             "isCorrect": true,
             "timeSpentMs": 4743
+          },
+          {
+            "timestamp": "2026-10-25T13:46:28.562Z",
+            "inputMode": "map_click",
+            "userAnswer": "Czechia",
+            "isCorrect": true,
+            "timeSpentMs": 2830,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 45,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -26569,8 +26579,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1856,
-    "totalCorrect": 1336,
+    "totalReviews": 1857,
+    "totalCorrect": 1337,
     "currentStreak": 5,
     "longestStreak": 5,
     "lastReviewDate": "2026-10-25",
@@ -26608,7 +26618,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:46:24.996Z"
+    "updatedAt": "2026-10-25T13:46:28.565Z"
   },
   "settings": {
     "audioEnabled": true,
