@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:49:51.410Z",
+  "exportedAt": "2026-10-25T13:50:00.683Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8656,12 +8656,12 @@
         "attributeId": "capital",
         "stage": 1,
         "step": 0,
-        "easeFactor": 2.15,
+        "easeFactor": 1.95,
         "intervalDays": 0,
         "reps": 1,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-21T11:56:48.580Z",
-        "nextDueAt": "2026-10-21T11:56:48.580Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-25T13:49:57.055Z",
+        "nextDueAt": "2026-10-25T13:59:57.055Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:25:24.312Z",
@@ -8684,11 +8684,19 @@
             "isCorrect": false,
             "timeSpentMs": 10311,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-25T13:49:57.055Z",
+            "inputMode": "typing",
+            "userAnswer": "Sri Jayawardenapuro kote",
+            "isCorrect": false,
+            "timeSpentMs": 8349,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
         "stability": 0.6,
-        "difficulty": 6.68,
+        "difficulty": 7.22,
         "lastLatencyGrade": 1,
         "confusedWith": []
       }
@@ -27066,7 +27074,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1886,
+    "totalReviews": 1887,
     "totalCorrect": 1357,
     "currentStreak": 5,
     "longestStreak": 5,
@@ -27105,7 +27113,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:49:47.682Z"
+    "updatedAt": "2026-10-25T13:49:57.058Z"
   },
   "settings": {
     "audioEnabled": true,
