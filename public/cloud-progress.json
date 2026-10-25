@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:49:02.124Z",
+  "exportedAt": "2026-10-25T13:49:05.807Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11402,14 +11402,14 @@
         "id": "WATER_STRAIT_ENGLISH_CHANNEL:location",
         "countryId": "WATER_STRAIT_ENGLISH_CHANNEL",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.65,
+        "intervalDays": 41,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-06T13:10:56.666Z",
-        "nextDueAt": "2026-10-07T13:10:56.666Z",
+        "lastReviewedAt": "2026-10-25T13:49:02.226Z",
+        "nextDueAt": "2026-12-05T13:49:02.226Z",
         "history": [
           {
             "timestamp": "2026-10-05T09:45:27.587Z",
@@ -11424,11 +11424,21 @@
             "userAnswer": "English Channel",
             "isCorrect": true,
             "timeSpentMs": 3234
+          },
+          {
+            "timestamp": "2026-10-25T13:49:02.226Z",
+            "inputMode": "map_click",
+            "userAnswer": "English Channel",
+            "isCorrect": true,
+            "timeSpentMs": 2571,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 4.26
+        "stability": 41,
+        "difficulty": 4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -26911,11 +26921,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "COG:capital_to_country",
+      {
+        "id": "COG:capital_to_country",
+        "countryId": "COG",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-25T13:49:04.922Z",
+        "nextDueAt": "2026-10-25T14:04:04.922Z",
+        "history": [
+          {
+            "timestamp": "2026-10-25T13:49:04.922Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Republic of the Congo",
+            "isCorrect": true,
+            "timeSpentMs": 1753,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1876,
-    "totalCorrect": 1348,
+    "totalReviews": 1878,
+    "totalCorrect": 1350,
     "currentStreak": 5,
     "longestStreak": 5,
     "lastReviewDate": "2026-10-25",
@@ -26953,7 +26993,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:48:58.861Z"
+    "updatedAt": "2026-10-25T13:49:04.925Z"
   },
   "settings": {
     "audioEnabled": true,
