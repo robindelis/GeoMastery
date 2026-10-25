@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:49:18.337Z",
+  "exportedAt": "2026-10-25T13:49:25.198Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -67,14 +67,14 @@
         "id": "BGR:location",
         "countryId": "BGR",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 1.98,
-        "intervalDays": 4,
-        "reps": 3,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 1.96,
+        "intervalDays": 8,
+        "reps": 4,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-21T11:34:14.089Z",
-        "nextDueAt": "2026-10-25T11:34:14.089Z",
+        "lastReviewedAt": "2026-10-25T13:49:21.848Z",
+        "nextDueAt": "2026-11-02T13:49:21.848Z",
         "history": [
           {
             "timestamp": "2026-10-04T14:33:27.073Z",
@@ -119,11 +119,19 @@
             "isCorrect": true,
             "timeSpentMs": 13748,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-25T13:49:21.848Z",
+            "inputMode": "map_click",
+            "userAnswer": "Bulgaria",
+            "isCorrect": true,
+            "timeSpentMs": 6272,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 4.15,
-        "difficulty": 7.55,
+        "stability": 8,
+        "difficulty": 7.39,
         "lastLatencyGrade": 2,
         "confusedWith": [
           "HUN"
@@ -27002,8 +27010,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1881,
-    "totalCorrect": 1353,
+    "totalReviews": 1882,
+    "totalCorrect": 1354,
     "currentStreak": 5,
     "longestStreak": 5,
     "lastReviewDate": "2026-10-25",
@@ -27025,8 +27033,8 @@
       },
       "Europe": {
         "total": 90,
-        "mastered": 79,
-        "learning": 11
+        "mastered": 80,
+        "learning": 10
       },
       "Oceania": {
         "total": 28,
@@ -27041,7 +27049,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:49:14.992Z"
+    "updatedAt": "2026-10-25T13:49:21.850Z"
   },
   "settings": {
     "audioEnabled": true,
