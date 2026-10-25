@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:46:38.808Z",
+  "exportedAt": "2026-10-25T13:46:45.404Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19911,13 +19911,13 @@
         "countryId": "LCA",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.2,
-        "intervalDays": 2,
+        "step": 0,
+        "easeFactor": 2,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-21T22:15:33.894Z",
-        "nextDueAt": "2026-10-23T22:15:33.894Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-25T13:46:41.671Z",
+        "nextDueAt": "2026-10-25T13:56:41.671Z",
         "history": [
           {
             "timestamp": "2026-10-14T19:32:53.251Z",
@@ -19948,13 +19948,22 @@
             "isCorrect": true,
             "timeSpentMs": 7613,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-25T13:46:41.671Z",
+            "inputMode": "typing",
+            "userAnswer": "Kingstown",
+            "isCorrect": false,
+            "timeSpentMs": 5080,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 2.2,
-        "difficulty": 6.23,
-        "lastLatencyGrade": 3,
+        "stability": 0.6,
+        "difficulty": 6.94,
+        "lastLatencyGrade": 1,
         "confusedWith": [
+          "VCT",
           "SLE"
         ]
       }
@@ -26611,7 +26620,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1858,
+    "totalReviews": 1859,
     "totalCorrect": 1337,
     "currentStreak": 5,
     "longestStreak": 5,
@@ -26650,7 +26659,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:46:35.380Z"
+    "updatedAt": "2026-10-25T13:46:41.673Z"
   },
   "settings": {
     "audioEnabled": true,
