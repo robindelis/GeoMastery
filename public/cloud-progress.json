@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:48:08.911Z",
+  "exportedAt": "2026-10-25T13:48:19.848Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -10555,13 +10555,13 @@
         "countryId": "SGP",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.4,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 2.38,
+        "intervalDays": 6,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-21T11:39:52.377Z",
-        "nextDueAt": "2026-10-21T11:39:52.377Z",
+        "lastReviewedAt": "2026-10-25T13:48:16.505Z",
+        "nextDueAt": "2026-10-31T13:48:16.505Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:34:20.615Z",
@@ -10584,12 +10584,20 @@
             "isCorrect": false,
             "timeSpentMs": 6407,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-25T13:48:16.505Z",
+            "inputMode": "map_click",
+            "userAnswer": "Singapore",
+            "isCorrect": true,
+            "timeSpentMs": 7494,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.92,
-        "difficulty": 6.09,
-        "lastLatencyGrade": 1,
+        "stability": 5.58,
+        "difficulty": 6.27,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "TLS"
         ]
@@ -26798,8 +26806,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1870,
-    "totalCorrect": 1344,
+    "totalReviews": 1871,
+    "totalCorrect": 1345,
     "currentStreak": 5,
     "longestStreak": 5,
     "lastReviewDate": "2026-10-25",
@@ -26837,7 +26845,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:48:08.347Z"
+    "updatedAt": "2026-10-25T13:48:16.509Z"
   },
   "settings": {
     "audioEnabled": true,
