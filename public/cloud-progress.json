@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:51:42.250Z",
+  "exportedAt": "2026-10-25T13:51:47.202Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7862,13 +7862,13 @@
         "countryId": "PNG",
         "attributeId": "capital",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 1.6,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 1.65,
+        "intervalDays": 3,
+        "reps": 3,
         "lapses": 5,
-        "lastReviewedAt": "2026-10-24T16:21:52.865Z",
-        "nextDueAt": "2026-10-24T16:31:52.865Z",
+        "lastReviewedAt": "2026-10-25T13:51:43.435Z",
+        "nextDueAt": "2026-10-28T13:51:43.435Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:55:49.285Z",
@@ -7921,12 +7921,20 @@
             "isCorrect": false,
             "timeSpentMs": 1110688,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-25T13:51:43.435Z",
+            "inputMode": "typing",
+            "userAnswer": "Port Moresby",
+            "isCorrect": true,
+            "timeSpentMs": 3697,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 0.6,
-        "difficulty": 7.7,
-        "lastLatencyGrade": 1,
+        "stability": 2.51,
+        "difficulty": 7.16,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -27246,8 +27254,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1899,
-    "totalCorrect": 1365,
+    "totalReviews": 1900,
+    "totalCorrect": 1366,
     "currentStreak": 5,
     "longestStreak": 5,
     "lastReviewDate": "2026-10-25",
@@ -27285,7 +27293,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:51:38.724Z"
+    "updatedAt": "2026-10-25T13:51:43.437Z"
   },
   "settings": {
     "audioEnabled": true,
