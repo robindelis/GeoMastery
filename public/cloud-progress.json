@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:47:46.241Z",
+  "exportedAt": "2026-10-25T13:47:58.368Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26209,13 +26209,13 @@
         "countryId": "UZB",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
+        "step": 0,
+        "easeFactor": 2.35,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-24T16:02:03.194Z",
-        "nextDueAt": "2026-10-24T16:17:03.194Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-25T13:47:54.854Z",
+        "nextDueAt": "2026-10-25T13:57:54.854Z",
         "history": [
           {
             "timestamp": "2026-10-24T16:02:03.194Z",
@@ -26224,12 +26224,22 @@
             "isCorrect": true,
             "timeSpentMs": 2951,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-25T13:47:54.854Z",
+            "inputMode": "typing",
+            "userAnswer": "Turkmenistan",
+            "isCorrect": false,
+            "timeSpentMs": 6383,
+            "grade": 1
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
-        "confusedWith": []
+        "difficulty": 5.81,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "TKM"
+        ]
       }
     ],
     [
@@ -26668,7 +26678,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1865,
+    "totalReviews": 1866,
     "totalCorrect": 1340,
     "currentStreak": 5,
     "longestStreak": 5,
@@ -26707,7 +26717,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:47:42.966Z"
+    "updatedAt": "2026-10-25T13:47:54.860Z"
   },
   "settings": {
     "audioEnabled": true,
