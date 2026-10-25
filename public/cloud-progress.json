@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:50:22.627Z",
+  "exportedAt": "2026-10-25T13:50:26.538Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7973,13 +7973,13 @@
         "countryId": "AUS",
         "attributeId": "capital",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.73,
+        "intervalDays": 66,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-09T20:09:34.384Z",
-        "nextDueAt": "2026-10-16T20:09:34.384Z",
+        "lastReviewedAt": "2026-10-25T13:50:23.226Z",
+        "nextDueAt": "2026-12-30T13:50:23.226Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:55:56.115Z",
@@ -8001,11 +8001,21 @@
             "userAnswer": "Camberra",
             "isCorrect": true,
             "timeSpentMs": 3628
+          },
+          {
+            "timestamp": "2026-10-25T13:50:23.226Z",
+            "inputMode": "typing",
+            "userAnswer": "Camberra",
+            "isCorrect": true,
+            "timeSpentMs": 2196,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 66,
+        "difficulty": 2.91,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -27090,8 +27100,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1889,
-    "totalCorrect": 1358,
+    "totalReviews": 1890,
+    "totalCorrect": 1359,
     "currentStreak": 5,
     "longestStreak": 5,
     "lastReviewDate": "2026-10-25",
@@ -27129,7 +27139,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:50:19.314Z"
+    "updatedAt": "2026-10-25T13:50:23.228Z"
   },
   "settings": {
     "audioEnabled": true,
