@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:51:26.242Z",
+  "exportedAt": "2026-10-25T13:51:38.613Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -430,13 +430,13 @@
         "countryId": "AND",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 42,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T08:58:32.180Z",
-        "nextDueAt": "2026-10-17T08:58:32.180Z",
+        "lastReviewedAt": "2026-10-25T13:51:35.138Z",
+        "nextDueAt": "2026-12-06T13:51:35.138Z",
         "history": [
           {
             "timestamp": "2026-10-04T14:35:55.449Z",
@@ -458,11 +458,21 @@
             "userAnswer": "Andorra",
             "isCorrect": true,
             "timeSpentMs": 4177
+          },
+          {
+            "timestamp": "2026-10-25T13:51:35.138Z",
+            "inputMode": "map_click",
+            "userAnswer": "Andorra",
+            "isCorrect": true,
+            "timeSpentMs": 4349,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.64
+        "stability": 42,
+        "difficulty": 4.35,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -27226,8 +27236,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1897,
-    "totalCorrect": 1363,
+    "totalReviews": 1898,
+    "totalCorrect": 1364,
     "currentStreak": 5,
     "longestStreak": 5,
     "lastReviewDate": "2026-10-25",
@@ -27265,7 +27275,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:51:22.418Z"
+    "updatedAt": "2026-10-25T13:51:35.141Z"
   },
   "settings": {
     "audioEnabled": true,
