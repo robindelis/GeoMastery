@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:48:05.810Z",
+  "exportedAt": "2026-10-25T13:48:08.911Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26765,11 +26765,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "LAO:capital_to_country",
+      {
+        "id": "LAO:capital_to_country",
+        "countryId": "LAO",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-25T13:48:08.344Z",
+        "nextDueAt": "2026-10-25T14:03:08.344Z",
+        "history": [
+          {
+            "timestamp": "2026-10-25T13:48:08.344Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Laos",
+            "isCorrect": true,
+            "timeSpentMs": 1650,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1869,
-    "totalCorrect": 1343,
+    "totalReviews": 1870,
+    "totalCorrect": 1344,
     "currentStreak": 5,
     "longestStreak": 5,
     "lastReviewDate": "2026-10-25",
@@ -26807,7 +26837,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:48:05.576Z"
+    "updatedAt": "2026-10-25T13:48:08.347Z"
   },
   "settings": {
     "audioEnabled": true,
