@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:52:05.433Z",
+  "exportedAt": "2026-10-26T19:52:11.238Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -28000,11 +28000,41 @@
           "SOM"
         ]
       }
+    ],
+    [
+      "BEL:capital_to_country",
+      {
+        "id": "BEL:capital_to_country",
+        "countryId": "BEL",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-26T19:52:05.978Z",
+        "nextDueAt": "2026-10-26T20:07:05.978Z",
+        "history": [
+          {
+            "timestamp": "2026-10-26T19:52:05.978Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Belgium",
+            "isCorrect": true,
+            "timeSpentMs": 2532,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1946,
-    "totalCorrect": 1395,
+    "totalReviews": 1947,
+    "totalCorrect": 1396,
     "currentStreak": 6,
     "longestStreak": 6,
     "lastReviewDate": "2026-10-26",
@@ -28042,7 +28072,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:52:00.492Z"
+    "updatedAt": "2026-10-26T19:52:05.981Z"
   },
   "settings": {
     "audioEnabled": true,
