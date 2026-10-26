@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:49:33.900Z",
+  "exportedAt": "2026-10-26T19:49:39.486Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7777,12 +7777,12 @@
         "attributeId": "location",
         "stage": 1,
         "step": 0,
-        "easeFactor": 2.2,
+        "easeFactor": 2,
         "intervalDays": 0,
         "reps": 2,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-21T11:32:54.544Z",
-        "nextDueAt": "2026-10-21T11:32:54.544Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-26T19:49:34.675Z",
+        "nextDueAt": "2026-10-26T19:59:34.675Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:55:38.545Z",
@@ -7812,13 +7812,22 @@
             "isCorrect": false,
             "timeSpentMs": 4014,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-26T19:49:34.675Z",
+            "inputMode": "map_click",
+            "userAnswer": "Samoa",
+            "isCorrect": false,
+            "timeSpentMs": 4427,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.92,
-        "difficulty": 6.55,
+        "stability": 0.6,
+        "difficulty": 7.14,
         "lastLatencyGrade": 1,
         "confusedWith": [
+          "WSM",
           "FJI"
         ]
       }
@@ -27866,7 +27875,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1938,
+    "totalReviews": 1939,
     "totalCorrect": 1392,
     "currentStreak": 6,
     "longestStreak": 6,
@@ -27905,7 +27914,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:49:28.980Z"
+    "updatedAt": "2026-10-26T19:49:34.678Z"
   },
   "settings": {
     "audioEnabled": true,
