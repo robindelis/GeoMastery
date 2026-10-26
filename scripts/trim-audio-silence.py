@@ -4,7 +4,6 @@ Trims initial dead silence from all pre-recorded .wav speech audio files in GeoM
 - src/assets/audio/couples/*.wav
 - src/assets/audio/countries/*.wav
 - src/assets/audio/capitals/*.wav
-- src/assets/audio/test/*.wav
 
 Retains a clean 10ms pre-attack cushion and applies a 3ms cosine fade-in
 to ensure zero clicks, pops, or consonant clipping while starting speech
@@ -127,7 +126,7 @@ def process_folder(folder_name):
             print(f"  Warning: failed to update {manifest_path}: {e}")
 
 def main():
-    folders = ['couples', 'countries', 'capitals', 'test']
+    folders = ['couples', 'countries', 'capitals']
     for f in folders:
         process_folder(f)
     print("\nAll audio silence trimming completed successfully! 🚀")

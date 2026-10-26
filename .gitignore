@@ -47,6 +47,9 @@ release/
 # Testing & Coverage
 coverage/
 .nyc_output/
+playwright-report/
+test-results/
+.vitest/
 
 # Android / Capacitor build outputs
 android/.gradle/
@@ -56,6 +59,33 @@ android/capacitor-cordova-android-plugins/build/
 android/local.properties
 *.apk
 *.aab
+
+# Signing keys & Keystores
+*.keystore
+*.jks
+*.p12
+*.key
+*.pem
+
+# Python bytecode & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.pytest_cache/
+
+# Audio test & scratch recordings
+src/assets/audio/test/
+
+# AI Agent & Assistant workspaces / artifacts
+.aistudio/
+.gemini/
+.claude/
+.cursor/
+.windsurf/
+**/.tempmediaStorage/
+brain/
 
 # Local scripts
 syncGit.sh
