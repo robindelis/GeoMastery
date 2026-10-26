@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:59:20.692Z",
+  "exportedAt": "2026-10-26T19:59:53.535Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -3511,14 +3511,14 @@
         "id": "PRT:location",
         "countryId": "PRT",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.65,
+        "intervalDays": 42,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-06T10:28:33.374Z",
-        "nextDueAt": "2026-10-07T10:28:33.374Z",
+        "lastReviewedAt": "2026-10-26T19:59:52.559Z",
+        "nextDueAt": "2026-12-07T19:59:52.559Z",
         "history": [
           {
             "timestamp": "2026-10-04T17:00:56.749Z",
@@ -3533,11 +3533,21 @@
             "userAnswer": "Portugal",
             "isCorrect": true,
             "timeSpentMs": 2780
+          },
+          {
+            "timestamp": "2026-10-26T19:59:52.559Z",
+            "inputMode": "map_click",
+            "userAnswer": "Portugal",
+            "isCorrect": true,
+            "timeSpentMs": 3525,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 4.26
+        "stability": 42.16,
+        "difficulty": 4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -28647,11 +28657,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "MKD:country",
+      {
+        "id": "MKD:country",
+        "countryId": "MKD",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-26T19:59:48.465Z",
+        "nextDueAt": "2026-10-26T20:14:48.465Z",
+        "history": [
+          {
+            "timestamp": "2026-10-26T19:59:48.465Z",
+            "inputMode": "typing",
+            "userAnswer": "North Macedonia",
+            "isCorrect": true,
+            "timeSpentMs": 31569,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1982,
-    "totalCorrect": 1417,
+    "totalReviews": 1984,
+    "totalCorrect": 1419,
     "currentStreak": 6,
     "longestStreak": 6,
     "lastReviewDate": "2026-10-26",
@@ -28673,8 +28713,8 @@
       },
       "Europe": {
         "total": 90,
-        "mastered": 81,
-        "learning": 9
+        "mastered": 82,
+        "learning": 8
       },
       "Oceania": {
         "total": 28,
@@ -28689,7 +28729,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:59:15.885Z"
+    "updatedAt": "2026-10-26T19:59:52.563Z"
   },
   "settings": {
     "audioEnabled": true,
