@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:59:56.972Z",
+  "exportedAt": "2026-10-26T20:00:02.322Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11707,13 +11707,13 @@
         "countryId": "WATER_GULF_MEXICO",
         "attributeId": "location",
         "stage": 2,
-        "step": 2,
-        "easeFactor": 2.4499999999999993,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 3,
+        "easeFactor": 2.5,
+        "intervalDays": 39,
+        "reps": 4,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:18:12.886Z",
-        "nextDueAt": "2026-10-15T20:18:12.886Z",
+        "lastReviewedAt": "2026-10-26T19:59:57.449Z",
+        "nextDueAt": "2026-12-04T19:59:57.449Z",
         "history": [
           {
             "timestamp": "2026-10-05T09:45:56.877Z",
@@ -11742,11 +11742,21 @@
             "userAnswer": "Gulf of Mexico",
             "isCorrect": true,
             "timeSpentMs": 2987
+          },
+          {
+            "timestamp": "2026-10-26T19:59:57.449Z",
+            "inputMode": "map_click",
+            "userAnswer": "Gulf of Mexico",
+            "isCorrect": true,
+            "timeSpentMs": 3720,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 5.98
+        "stability": 39.48,
+        "difficulty": 5.58,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -28690,8 +28700,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1984,
-    "totalCorrect": 1419,
+    "totalReviews": 1985,
+    "totalCorrect": 1420,
     "currentStreak": 6,
     "longestStreak": 6,
     "lastReviewDate": "2026-10-26",
@@ -28729,7 +28739,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:59:52.563Z"
+    "updatedAt": "2026-10-26T19:59:57.453Z"
   },
   "settings": {
     "audioEnabled": true,
