@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:46:52.483Z",
+  "exportedAt": "2026-10-26T19:47:02.830Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -27609,10 +27609,42 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "GUY:capital_to_country",
+      {
+        "id": "GUY:capital_to_country",
+        "countryId": "GUY",
+        "attributeId": "capital_to_country",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-26T19:46:59.075Z",
+        "nextDueAt": "2026-10-26T19:56:59.075Z",
+        "history": [
+          {
+            "timestamp": "2026-10-26T19:46:59.075Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Saint Kitts and Nevis",
+            "isCorrect": false,
+            "timeSpentMs": 6295,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "KNA"
+        ]
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1919,
+    "totalReviews": 1920,
     "totalCorrect": 1383,
     "currentStreak": 6,
     "longestStreak": 6,
@@ -27651,7 +27683,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:46:51.911Z"
+    "updatedAt": "2026-10-26T19:46:59.077Z"
   },
   "settings": {
     "audioEnabled": true,
