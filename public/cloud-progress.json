@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:47:21.242Z",
+  "exportedAt": "2026-10-26T19:47:30.198Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -27677,11 +27677,41 @@
           "KNA"
         ]
       }
+    ],
+    [
+      "MNE:capital_to_country",
+      {
+        "id": "MNE:capital_to_country",
+        "countryId": "MNE",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-26T19:47:24.555Z",
+        "nextDueAt": "2026-10-26T20:02:24.555Z",
+        "history": [
+          {
+            "timestamp": "2026-10-26T19:47:24.555Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Montenegro",
+            "isCorrect": true,
+            "timeSpentMs": 2503,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1924,
-    "totalCorrect": 1385,
+    "totalReviews": 1925,
+    "totalCorrect": 1386,
     "currentStreak": 6,
     "longestStreak": 6,
     "lastReviewDate": "2026-10-26",
@@ -27719,7 +27749,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:47:15.608Z"
+    "updatedAt": "2026-10-26T19:47:24.558Z"
   },
   "settings": {
     "audioEnabled": true,
