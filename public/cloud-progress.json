@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T20:00:02.322Z",
+  "exportedAt": "2026-10-26T20:00:12.249Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -28697,11 +28697,41 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "LSO:capital_to_country",
+      {
+        "id": "LSO:capital_to_country",
+        "countryId": "LSO",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-26T20:00:07.965Z",
+        "nextDueAt": "2026-10-26T20:15:07.965Z",
+        "history": [
+          {
+            "timestamp": "2026-10-26T20:00:07.965Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Lesotho",
+            "isCorrect": true,
+            "timeSpentMs": 9300,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1985,
-    "totalCorrect": 1420,
+    "totalReviews": 1986,
+    "totalCorrect": 1421,
     "currentStreak": 6,
     "longestStreak": 6,
     "lastReviewDate": "2026-10-26",
@@ -28739,7 +28769,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:59:57.453Z"
+    "updatedAt": "2026-10-26T20:00:07.969Z"
   },
   "settings": {
     "audioEnabled": true,
