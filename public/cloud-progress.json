@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:55:11.819Z",
+  "exportedAt": "2026-10-26T19:55:28.031Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -17460,13 +17460,13 @@
         "countryId": "GNQ",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 39,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-14T10:18:02.175Z",
-        "nextDueAt": "2026-10-21T10:18:02.175Z",
+        "lastReviewedAt": "2026-10-26T19:55:23.643Z",
+        "nextDueAt": "2026-12-04T19:55:23.643Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:35:12.776Z",
@@ -17488,11 +17488,21 @@
             "userAnswer": "Equatorial Guinea",
             "isCorrect": true,
             "timeSpentMs": 4309
+          },
+          {
+            "timestamp": "2026-10-26T19:55:23.643Z",
+            "inputMode": "map_click",
+            "userAnswer": "Equatorial Guinea",
+            "isCorrect": true,
+            "timeSpentMs": 3931,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 39.08,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -28401,8 +28411,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1966,
-    "totalCorrect": 1406,
+    "totalReviews": 1967,
+    "totalCorrect": 1407,
     "currentStreak": 6,
     "longestStreak": 6,
     "lastReviewDate": "2026-10-26",
@@ -28440,7 +28450,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:55:06.928Z"
+    "updatedAt": "2026-10-26T19:55:23.646Z"
   },
   "settings": {
     "audioEnabled": true,
