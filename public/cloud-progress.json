@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:53:40.800Z",
+  "exportedAt": "2026-10-26T19:53:46.790Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -9847,14 +9847,14 @@
         "id": "UZB:location",
         "countryId": "UZB",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.2,
-        "intervalDays": 3,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.25,
+        "intervalDays": 12,
+        "reps": 3,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-22T10:05:59.527Z",
-        "nextDueAt": "2026-10-25T10:05:59.527Z",
+        "lastReviewedAt": "2026-10-26T19:53:42.205Z",
+        "nextDueAt": "2026-11-07T19:53:42.205Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:30:26.859Z",
@@ -9885,11 +9885,19 @@
             "isCorrect": true,
             "timeSpentMs": 5663,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-26T19:53:42.205Z",
+            "inputMode": "map_click",
+            "userAnswer": "Uzbekistan",
+            "isCorrect": true,
+            "timeSpentMs": 5017,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 2.87,
-        "difficulty": 6.58,
+        "stability": 12.03,
+        "difficulty": 6.13,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "TKM"
@@ -15035,13 +15043,13 @@
         "countryId": "GIN",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.35,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-06T12:19:55.757Z",
-        "nextDueAt": "2026-10-07T12:19:55.757Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-26T19:53:46.219Z",
+        "nextDueAt": "2026-10-26T20:03:46.219Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:19:55.757Z",
@@ -15049,11 +15057,21 @@
             "userAnswer": "Conakry",
             "isCorrect": true,
             "timeSpentMs": 7984
+          },
+          {
+            "timestamp": "2026-10-26T19:53:46.219Z",
+            "inputMode": "typing",
+            "userAnswer": "u",
+            "isCorrect": false,
+            "timeSpentMs": 2708,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 5.09
+        "stability": 0.6,
+        "difficulty": 6.23,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
       }
     ],
     [
@@ -28235,8 +28253,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1957,
-    "totalCorrect": 1400,
+    "totalReviews": 1959,
+    "totalCorrect": 1401,
     "currentStreak": 6,
     "longestStreak": 6,
     "lastReviewDate": "2026-10-26",
@@ -28253,8 +28271,8 @@
       },
       "Asia": {
         "total": 96,
-        "mastered": 66,
-        "learning": 30
+        "mastered": 67,
+        "learning": 29
       },
       "Europe": {
         "total": 90,
@@ -28274,7 +28292,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:53:35.401Z"
+    "updatedAt": "2026-10-26T19:53:46.223Z"
   },
   "settings": {
     "audioEnabled": true,
