@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T20:00:52.739Z",
+  "exportedAt": "2026-10-26T20:01:00.023Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -5781,13 +5781,13 @@
         "countryId": "AZE",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.249999999999999,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.3,
+        "intervalDays": 31,
+        "reps": 4,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-09T20:11:53.636Z",
-        "nextDueAt": "2026-10-16T20:11:53.636Z",
+        "lastReviewedAt": "2026-10-26T20:00:56.897Z",
+        "nextDueAt": "2026-11-26T20:00:56.897Z",
         "history": [
           {
             "timestamp": "2026-10-04T18:42:58.394Z",
@@ -5823,11 +5823,21 @@
             "userAnswer": "Azerbaijan",
             "isCorrect": true,
             "timeSpentMs": 7954
+          },
+          {
+            "timestamp": "2026-10-26T20:00:56.897Z",
+            "inputMode": "map_click",
+            "userAnswer": "Azerbaijan",
+            "isCorrect": true,
+            "timeSpentMs": 4234,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 7.31
+        "stability": 31.03,
+        "difficulty": 6.81,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -28768,8 +28778,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1988,
-    "totalCorrect": 1423,
+    "totalReviews": 1989,
+    "totalCorrect": 1424,
     "currentStreak": 6,
     "longestStreak": 6,
     "lastReviewDate": "2026-10-26",
@@ -28807,7 +28817,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T20:00:52.273Z"
+    "updatedAt": "2026-10-26T20:00:56.901Z"
   },
   "settings": {
     "audioEnabled": true,
