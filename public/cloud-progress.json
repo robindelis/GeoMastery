@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:53:33.504Z",
+  "exportedAt": "2026-10-26T19:53:40.800Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -28202,10 +28202,40 @@
           "PAN"
         ]
       }
+    ],
+    [
+      "BIH:flag",
+      {
+        "id": "BIH:flag",
+        "countryId": "BIH",
+        "attributeId": "flag",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-26T19:53:35.398Z",
+        "nextDueAt": "2026-10-26T20:03:35.398Z",
+        "history": [
+          {
+            "timestamp": "2026-10-26T19:53:35.398Z",
+            "inputMode": "typing",
+            "userAnswer": "Saint Kittis u",
+            "isCorrect": false,
+            "timeSpentMs": 4699,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1956,
+    "totalReviews": 1957,
     "totalCorrect": 1400,
     "currentStreak": 6,
     "longestStreak": 6,
@@ -28244,7 +28274,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:53:28.926Z"
+    "updatedAt": "2026-10-26T19:53:35.401Z"
   },
   "settings": {
     "audioEnabled": true,
