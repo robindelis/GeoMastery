@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:52:17.652Z",
+  "exportedAt": "2026-10-26T19:52:24.813Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -18803,14 +18803,14 @@
         "id": "HTI:location",
         "countryId": "HTI",
         "attributeId": "location",
-        "stage": 2,
-        "step": 3,
-        "easeFactor": 2.4499999999999993,
-        "intervalDays": 7,
+        "stage": 1,
+        "step": 0,
+        "easeFactor": 2.25,
+        "intervalDays": 0,
         "reps": 3,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-10T13:48:23.313Z",
-        "nextDueAt": "2026-10-17T13:48:23.313Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-26T19:52:19.673Z",
+        "nextDueAt": "2026-10-26T20:02:19.673Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:45:17.854Z",
@@ -18839,11 +18839,23 @@
             "userAnswer": "Haiti",
             "isCorrect": true,
             "timeSpentMs": 2590
+          },
+          {
+            "timestamp": "2026-10-26T19:52:19.673Z",
+            "inputMode": "map_click",
+            "userAnswer": "Jamaica",
+            "isCorrect": false,
+            "timeSpentMs": 4640,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 5.98
+        "stability": 1.32,
+        "difficulty": 6.78,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "JAM"
+        ]
       }
     ],
     [
@@ -28043,7 +28055,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1948,
+    "totalReviews": 1949,
     "totalCorrect": 1396,
     "currentStreak": 6,
     "longestStreak": 6,
@@ -28056,8 +28068,8 @@
       },
       "Americas": {
         "total": 70,
-        "mastered": 42,
-        "learning": 28
+        "mastered": 41,
+        "learning": 29
       },
       "Asia": {
         "total": 96,
@@ -28082,7 +28094,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:52:13.059Z"
+    "updatedAt": "2026-10-26T19:52:19.676Z"
   },
   "settings": {
     "audioEnabled": true,
