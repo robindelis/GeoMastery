@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-25T13:52:51.565Z",
+  "exportedAt": "2026-10-26T19:46:30.001Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -9636,14 +9636,14 @@
         "id": "LKA:location",
         "countryId": "LKA",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2,
-        "intervalDays": 2,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.05,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-24T14:46:30.868Z",
-        "nextDueAt": "2026-10-26T14:46:30.868Z",
+        "lastReviewedAt": "2026-10-26T19:46:25.121Z",
+        "nextDueAt": "2026-11-02T19:46:25.121Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:29:57.267Z",
@@ -9681,11 +9681,19 @@
             "isCorrect": true,
             "timeSpentMs": 3053,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-26T19:46:25.121Z",
+            "inputMode": "map_click",
+            "userAnswer": "Sri Lanka",
+            "isCorrect": true,
+            "timeSpentMs": 4298,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 2.45,
-        "difficulty": 6.99,
+        "stability": 7.1,
+        "difficulty": 6.51,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "BTN"
@@ -23902,14 +23910,14 @@
         "id": "ISR:flag",
         "countryId": "ISR",
         "attributeId": "flag",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 13,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-23T11:33:06.513Z",
-        "nextDueAt": "2026-10-23T11:48:06.513Z",
+        "lastReviewedAt": "2026-10-26T19:46:29.632Z",
+        "nextDueAt": "2026-11-08T19:46:29.632Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:33:06.513Z",
@@ -23918,11 +23926,19 @@
             "isCorrect": true,
             "timeSpentMs": 2513,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-26T19:46:29.632Z",
+            "inputMode": "typing",
+            "userAnswer": "Israel",
+            "isCorrect": true,
+            "timeSpentMs": 3371,
+            "grade": 3
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
-        "lastLatencyGrade": 4,
+        "difficulty": 3.41,
+        "stability": 13,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -27540,11 +27556,11 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1913,
-    "totalCorrect": 1378,
-    "currentStreak": 5,
-    "longestStreak": 5,
-    "lastReviewDate": "2026-10-25",
+    "totalReviews": 1915,
+    "totalCorrect": 1380,
+    "currentStreak": 6,
+    "longestStreak": 6,
+    "lastReviewDate": "2026-10-26",
     "continentMastery": {
       "Africa": {
         "total": 108,
@@ -27558,8 +27574,8 @@
       },
       "Asia": {
         "total": 96,
-        "mastered": 65,
-        "learning": 31
+        "mastered": 66,
+        "learning": 30
       },
       "Europe": {
         "total": 90,
@@ -27579,7 +27595,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-25T13:52:46.485Z"
+    "updatedAt": "2026-10-26T19:46:29.635Z"
   },
   "settings": {
     "audioEnabled": true,
