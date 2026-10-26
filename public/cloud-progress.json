@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:48:45.651Z",
+  "exportedAt": "2026-10-26T19:49:05.772Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20527,13 +20527,13 @@
         "countryId": "KNA",
         "attributeId": "capital",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.03,
-        "intervalDays": 3,
+        "step": 0,
+        "easeFactor": 1.83,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-23T10:56:49.898Z",
-        "nextDueAt": "2026-10-26T10:56:49.898Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-10-26T19:49:00.834Z",
+        "nextDueAt": "2026-10-26T19:59:00.834Z",
         "history": [
           {
             "timestamp": "2026-10-14T21:15:39.146Z",
@@ -20573,13 +20573,23 @@
             "isCorrect": true,
             "timeSpentMs": 2811,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-26T19:49:00.834Z",
+            "inputMode": "typing",
+            "userAnswer": "Georgetown",
+            "isCorrect": false,
+            "timeSpentMs": 7576,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 2.5,
-        "difficulty": 6.33,
-        "lastLatencyGrade": 4,
-        "confusedWith": []
+        "stability": 0.63,
+        "difficulty": 7,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "GUY"
+        ]
       }
     ],
     [
@@ -27810,7 +27820,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1934,
+    "totalReviews": 1935,
     "totalCorrect": 1390,
     "currentStreak": 6,
     "longestStreak": 6,
@@ -27849,7 +27859,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:48:41.117Z"
+    "updatedAt": "2026-10-26T19:49:00.836Z"
   },
   "settings": {
     "audioEnabled": true,
