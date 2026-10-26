@@ -79,6 +79,7 @@ venv/
 src/assets/audio/test/
 
 # AI Agent & Assistant workspaces / artifacts
+AGENTS.md
 .aistudio/
 .gemini/
 .claude/
