@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:51:25.075Z",
+  "exportedAt": "2026-10-26T19:51:48.853Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26512,13 +26512,13 @@
         "countryId": "ATG",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
+        "step": 0,
+        "easeFactor": 2.35,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-24T16:01:53.615Z",
-        "nextDueAt": "2026-10-24T16:16:53.615Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-26T19:51:48.213Z",
+        "nextDueAt": "2026-10-26T20:01:48.213Z",
         "history": [
           {
             "timestamp": "2026-10-24T16:01:53.615Z",
@@ -26527,11 +26527,19 @@
             "isCorrect": true,
             "timeSpentMs": 4031,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-26T19:51:48.213Z",
+            "inputMode": "typing",
+            "userAnswer": "i",
+            "isCorrect": false,
+            "timeSpentMs": 4020,
+            "grade": 1
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 5.81,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
         "confusedWith": []
       }
     ],
@@ -27950,10 +27958,42 @@
         "lastLatencyGrade": 1,
         "confusedWith": []
       }
+    ],
+    [
+      "NAM:capital_to_country",
+      {
+        "id": "NAM:capital_to_country",
+        "countryId": "NAM",
+        "attributeId": "capital_to_country",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-26T19:51:43.215Z",
+        "nextDueAt": "2026-10-26T20:01:43.215Z",
+        "history": [
+          {
+            "timestamp": "2026-10-26T19:51:43.215Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Somalia",
+            "isCorrect": false,
+            "timeSpentMs": 2050,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "SOM"
+        ]
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1943,
+    "totalReviews": 1945,
     "totalCorrect": 1395,
     "currentStreak": 6,
     "longestStreak": 6,
@@ -27992,7 +28032,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:51:20.727Z"
+    "updatedAt": "2026-10-26T19:51:48.216Z"
   },
   "settings": {
     "audioEnabled": true,
