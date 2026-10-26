@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:53:12.336Z",
+  "exportedAt": "2026-10-26T19:53:19.462Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6971,14 +6971,14 @@
         "id": "PNG:location",
         "countryId": "PNG",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.0499999999999994,
-        "intervalDays": 1,
-        "reps": 3,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.1,
+        "intervalDays": 15,
+        "reps": 4,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-14T21:20:33.162Z",
-        "nextDueAt": "2026-10-15T21:20:33.162Z",
+        "lastReviewedAt": "2026-10-26T19:53:18.916Z",
+        "nextDueAt": "2026-11-10T19:53:18.916Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:26:24.417Z",
@@ -7021,11 +7021,21 @@
             "userAnswer": "Papua New Guinea",
             "isCorrect": true,
             "timeSpentMs": 5166
+          },
+          {
+            "timestamp": "2026-10-26T19:53:18.916Z",
+            "inputMode": "map_click",
+            "userAnswer": "Papua New Guinea",
+            "isCorrect": true,
+            "timeSpentMs": 2855,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 8.64
+        "stability": 15,
+        "difficulty": 8.03,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -26071,12 +26081,12 @@
         "attributeId": "flag",
         "stage": 0,
         "step": 0,
-        "easeFactor": 2.3,
+        "easeFactor": 2.1,
         "intervalDays": 0,
         "reps": 0,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-24T14:41:13.353Z",
-        "nextDueAt": "2026-10-24T14:51:13.353Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-26T19:53:13.904Z",
+        "nextDueAt": "2026-10-26T20:03:13.904Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:41:13.353Z",
@@ -26085,9 +26095,17 @@
             "isCorrect": false,
             "timeSpentMs": 3713,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-26T19:53:13.904Z",
+            "inputMode": "typing",
+            "userAnswer": "Timor Leste",
+            "isCorrect": false,
+            "timeSpentMs": 4850,
+            "grade": 1
           }
         ],
-        "difficulty": 5.99,
+        "difficulty": 6.79,
         "stability": 0.6,
         "lastLatencyGrade": 1,
         "confusedWith": [
@@ -28123,8 +28141,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1952,
-    "totalCorrect": 1399,
+    "totalReviews": 1954,
+    "totalCorrect": 1400,
     "currentStreak": 6,
     "longestStreak": 6,
     "lastReviewDate": "2026-10-26",
@@ -28151,8 +28169,8 @@
       },
       "Oceania": {
         "total": 28,
-        "mastered": 14,
-        "learning": 14
+        "mastered": 15,
+        "learning": 13
       }
     },
     "timeAttackRecords": {
@@ -28162,7 +28180,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:53:07.453Z"
+    "updatedAt": "2026-10-26T19:53:18.919Z"
   },
   "settings": {
     "audioEnabled": true,
