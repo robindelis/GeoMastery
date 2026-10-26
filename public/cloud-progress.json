@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:48:12.464Z",
+  "exportedAt": "2026-10-26T19:48:24.380Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -27180,12 +27180,12 @@
         "attributeId": "capital_to_country",
         "stage": 0,
         "step": 0,
-        "easeFactor": 2.3,
+        "easeFactor": 2.1,
         "intervalDays": 0,
         "reps": 0,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-25T13:48:33.928Z",
-        "nextDueAt": "2026-10-25T13:58:33.928Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-26T19:48:19.198Z",
+        "nextDueAt": "2026-10-26T19:58:19.198Z",
         "history": [
           {
             "timestamp": "2026-10-25T13:48:33.928Z",
@@ -27194,9 +27194,17 @@
             "isCorrect": false,
             "timeSpentMs": 2520,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-26T19:48:19.198Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Austria",
+            "isCorrect": false,
+            "timeSpentMs": 3366,
+            "grade": 1
           }
         ],
-        "difficulty": 5.99,
+        "difficulty": 6.79,
         "stability": 0.6,
         "lastLatencyGrade": 1,
         "confusedWith": [
@@ -27753,11 +27761,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "MYS:capital_to_country",
+      {
+        "id": "MYS:capital_to_country",
+        "countryId": "MYS",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-26T19:48:22.172Z",
+        "nextDueAt": "2026-10-26T20:03:22.172Z",
+        "history": [
+          {
+            "timestamp": "2026-10-26T19:48:22.172Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Malaysia",
+            "isCorrect": true,
+            "timeSpentMs": 2028,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1930,
-    "totalCorrect": 1388,
+    "totalReviews": 1932,
+    "totalCorrect": 1389,
     "currentStreak": 6,
     "longestStreak": 6,
     "lastReviewDate": "2026-10-26",
@@ -27795,7 +27833,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:48:07.743Z"
+    "updatedAt": "2026-10-26T19:48:22.175Z"
   },
   "settings": {
     "audioEnabled": true,
