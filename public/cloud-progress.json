@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T20:00:12.249Z",
+  "exportedAt": "2026-10-26T20:00:52.739Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26596,14 +26596,14 @@
         "id": "TON:country",
         "countryId": "TON",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.28,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.33,
+        "intervalDays": 7,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-24T16:03:13.452Z",
-        "nextDueAt": "2026-10-24T16:18:13.452Z",
+        "lastReviewedAt": "2026-10-26T20:00:49.321Z",
+        "nextDueAt": "2026-11-02T20:00:49.321Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:49:42.463Z",
@@ -26620,11 +26620,19 @@
             "isCorrect": true,
             "timeSpentMs": 13791,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-26T20:00:49.321Z",
+            "inputMode": "typing",
+            "userAnswer": "Tonga",
+            "isCorrect": true,
+            "timeSpentMs": 7376,
+            "grade": 3
           }
         ],
-        "difficulty": 6.19,
-        "stability": 0.85,
-        "lastLatencyGrade": 2,
+        "difficulty": 5.77,
+        "stability": 7,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -28727,11 +28735,41 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "LUX:capital_to_country",
+      {
+        "id": "LUX:capital_to_country",
+        "countryId": "LUX",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-26T20:00:52.268Z",
+        "nextDueAt": "2026-10-26T20:15:52.268Z",
+        "history": [
+          {
+            "timestamp": "2026-10-26T20:00:52.268Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Luxembourg",
+            "isCorrect": true,
+            "timeSpentMs": 2474,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1986,
-    "totalCorrect": 1421,
+    "totalReviews": 1988,
+    "totalCorrect": 1423,
     "currentStreak": 6,
     "longestStreak": 6,
     "lastReviewDate": "2026-10-26",
@@ -28769,7 +28807,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T20:00:07.969Z"
+    "updatedAt": "2026-10-26T20:00:52.273Z"
   },
   "settings": {
     "audioEnabled": true,
