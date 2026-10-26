@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:54:41.982Z",
+  "exportedAt": "2026-10-26T19:54:50.750Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -28320,11 +28320,71 @@
           "SRB"
         ]
       }
+    ],
+    [
+      "GNB:capital_to_country",
+      {
+        "id": "GNB:capital_to_country",
+        "countryId": "GNB",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-26T19:54:45.783Z",
+        "nextDueAt": "2026-10-26T20:09:45.783Z",
+        "history": [
+          {
+            "timestamp": "2026-10-26T19:54:45.783Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Guinea-Bissau",
+            "isCorrect": true,
+            "timeSpentMs": 2352,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "GAB:capital_to_country",
+      {
+        "id": "GAB:capital_to_country",
+        "countryId": "GAB",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-26T19:54:49.008Z",
+        "nextDueAt": "2026-10-26T20:09:49.008Z",
+        "history": [
+          {
+            "timestamp": "2026-10-26T19:54:49.008Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Gabon",
+            "isCorrect": true,
+            "timeSpentMs": 2355,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1962,
-    "totalCorrect": 1402,
+    "totalReviews": 1964,
+    "totalCorrect": 1404,
     "currentStreak": 6,
     "longestStreak": 6,
     "lastReviewDate": "2026-10-26",
@@ -28362,7 +28422,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:54:37.477Z"
+    "updatedAt": "2026-10-26T19:54:49.012Z"
   },
   "settings": {
     "audioEnabled": true,
