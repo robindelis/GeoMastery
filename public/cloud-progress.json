@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T19:54:23.743Z",
+  "exportedAt": "2026-10-26T19:54:41.982Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -28288,10 +28288,42 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "SVN:country",
+      {
+        "id": "SVN:country",
+        "countryId": "SVN",
+        "attributeId": "country",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-26T19:54:37.473Z",
+        "nextDueAt": "2026-10-26T20:04:37.473Z",
+        "history": [
+          {
+            "timestamp": "2026-10-26T19:54:37.473Z",
+            "inputMode": "typing",
+            "userAnswer": "Serbia",
+            "isCorrect": false,
+            "timeSpentMs": 12371,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "SRB"
+        ]
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 1961,
+    "totalReviews": 1962,
     "totalCorrect": 1402,
     "currentStreak": 6,
     "longestStreak": 6,
@@ -28330,7 +28362,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T19:54:19.590Z"
+    "updatedAt": "2026-10-26T19:54:37.477Z"
   },
   "settings": {
     "audioEnabled": true,
