@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:31:19.904Z",
+  "exportedAt": "2026-10-27T12:31:31.355Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -29071,11 +29071,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "VCT:capital_to_country",
+      {
+        "id": "VCT:capital_to_country",
+        "countryId": "VCT",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:31:27.776Z",
+        "nextDueAt": "2026-10-27T12:46:27.776Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:31:27.776Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Saint Vincent and the Grenadines",
+            "isCorrect": true,
+            "timeSpentMs": 10432,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2019,
-    "totalCorrect": 1445,
+    "totalReviews": 2020,
+    "totalCorrect": 1446,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -29113,7 +29143,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:31:16.486Z"
+    "updatedAt": "2026-10-27T12:31:27.780Z"
   },
   "settings": {
     "audioEnabled": true,
