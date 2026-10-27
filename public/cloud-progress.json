@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:34:48.400Z",
+  "exportedAt": "2026-10-27T12:34:58.621Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7228,12 +7228,12 @@
         "attributeId": "location",
         "stage": 1,
         "step": 0,
-        "easeFactor": 2,
+        "easeFactor": 1.8,
         "intervalDays": 0,
         "reps": 2,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-21T11:31:21.357Z",
-        "nextDueAt": "2026-10-21T11:31:21.357Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-10-27T12:34:55.004Z",
+        "nextDueAt": "2026-10-27T12:44:55.004Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:26:43.015Z",
@@ -7270,13 +7270,22 @@
             "isCorrect": false,
             "timeSpentMs": 5614,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-27T12:34:55.004Z",
+            "inputMode": "map_click",
+            "userAnswer": "United States",
+            "isCorrect": false,
+            "timeSpentMs": 5732,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.91,
-        "difficulty": 7.37,
+        "stability": 0.6,
+        "difficulty": 7.65,
         "lastLatencyGrade": 1,
         "confusedWith": [
+          "USA",
           "WATER_OCEAN_PACIFIC"
         ]
       }
@@ -29383,7 +29392,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2040,
+    "totalReviews": 2041,
     "totalCorrect": 1461,
     "currentStreak": 7,
     "longestStreak": 7,
@@ -29422,7 +29431,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:34:44.787Z"
+    "updatedAt": "2026-10-27T12:34:55.007Z"
   },
   "settings": {
     "audioEnabled": true,
