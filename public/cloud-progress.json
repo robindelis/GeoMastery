@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:30:04.343Z",
+  "exportedAt": "2026-10-27T12:30:15.196Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -28960,11 +28960,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "BRB:capital_to_country",
+      {
+        "id": "BRB:capital_to_country",
+        "countryId": "BRB",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:30:11.905Z",
+        "nextDueAt": "2026-10-27T12:45:11.905Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:30:11.905Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Barbados",
+            "isCorrect": true,
+            "timeSpentMs": 3934,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2011,
-    "totalCorrect": 1438,
+    "totalReviews": 2012,
+    "totalCorrect": 1439,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -29002,7 +29032,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:30:00.847Z"
+    "updatedAt": "2026-10-27T12:30:11.908Z"
   },
   "settings": {
     "audioEnabled": true,
