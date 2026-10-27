@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:35:42.712Z",
+  "exportedAt": "2026-10-27T12:35:46.960Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -1678,13 +1678,13 @@
         "countryId": "EST",
         "attributeId": "capital",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.73,
+        "intervalDays": 69,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:10:52.808Z",
-        "nextDueAt": "2026-10-15T20:10:52.808Z",
+        "lastReviewedAt": "2026-10-27T12:35:46.781Z",
+        "nextDueAt": "2027-01-04T12:35:46.781Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:07:44.238Z",
@@ -1706,11 +1706,21 @@
             "userAnswer": "Talinn",
             "isCorrect": true,
             "timeSpentMs": 3710
+          },
+          {
+            "timestamp": "2026-10-27T12:35:46.781Z",
+            "inputMode": "typing",
+            "userAnswer": "Talinn",
+            "isCorrect": true,
+            "timeSpentMs": 2803,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.64
+        "stability": 69.04,
+        "difficulty": 3.55,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -28721,14 +28731,14 @@
         "id": "CHL:capital_to_country",
         "countryId": "CHL",
         "attributeId": "capital_to_country",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.35,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-26T19:53:28.923Z",
-        "nextDueAt": "2026-10-26T20:03:28.923Z",
+        "lastReviewedAt": "2026-10-27T12:35:43.438Z",
+        "nextDueAt": "2026-10-27T12:50:43.438Z",
         "history": [
           {
             "timestamp": "2026-10-26T19:53:28.923Z",
@@ -28737,11 +28747,19 @@
             "isCorrect": false,
             "timeSpentMs": 3212,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-27T12:35:43.438Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Chile",
+            "isCorrect": true,
+            "timeSpentMs": 2857,
+            "grade": 3
           }
         ],
-        "difficulty": 5.99,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 5.59,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "PAN"
         ]
@@ -29459,8 +29477,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2044,
-    "totalCorrect": 1463,
+    "totalReviews": 2046,
+    "totalCorrect": 1465,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -29498,7 +29516,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:35:39.353Z"
+    "updatedAt": "2026-10-27T12:35:46.785Z"
   },
   "settings": {
     "audioEnabled": true,
