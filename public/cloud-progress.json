@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:34:01.719Z",
+  "exportedAt": "2026-10-27T12:34:14.190Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -12491,14 +12491,14 @@
         "id": "WATER_SEA_NORWEGIAN:location",
         "countryId": "WATER_SEA_NORWEGIAN",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3999999999999995,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.48,
+        "intervalDays": 52,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-06T13:16:06.557Z",
-        "nextDueAt": "2026-10-07T13:16:06.557Z",
+        "lastReviewedAt": "2026-10-27T12:34:10.846Z",
+        "nextDueAt": "2026-12-18T12:34:10.846Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:53:05.566Z",
@@ -12520,11 +12520,21 @@
             "userAnswer": "Norwegian Sea",
             "isCorrect": true,
             "timeSpentMs": 1559
+          },
+          {
+            "timestamp": "2026-10-27T12:34:10.846Z",
+            "inputMode": "map_click",
+            "userAnswer": "Norwegian Sea",
+            "isCorrect": true,
+            "timeSpentMs": 2385,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 5.6
+        "stability": 52.31,
+        "difficulty": 4.58,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -29325,8 +29335,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2036,
-    "totalCorrect": 1457,
+    "totalReviews": 2037,
+    "totalCorrect": 1458,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -29364,7 +29374,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:33:58.117Z"
+    "updatedAt": "2026-10-27T12:34:10.849Z"
   },
   "settings": {
     "audioEnabled": true,
