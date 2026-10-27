@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:28:46.132Z",
+  "exportedAt": "2026-10-27T12:28:54.083Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8725,13 +8725,13 @@
         "countryId": "TLS",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.18,
-        "intervalDays": 9,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.23,
+        "intervalDays": 29,
+        "reps": 4,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-15T17:48:33.142Z",
-        "nextDueAt": "2026-10-24T17:48:33.142Z",
+        "lastReviewedAt": "2026-10-27T12:28:51.063Z",
+        "nextDueAt": "2026-11-25T12:28:51.063Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:24:56.737Z",
@@ -8768,12 +8768,20 @@
             "isCorrect": true,
             "timeSpentMs": 12967,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-27T12:28:51.063Z",
+            "inputMode": "map_click",
+            "userAnswer": "Timor-Leste",
+            "isCorrect": true,
+            "timeSpentMs": 4905,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 9.44,
-        "difficulty": 6.91,
-        "lastLatencyGrade": 2,
+        "stability": 29,
+        "difficulty": 6.44,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -28906,8 +28914,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2004,
-    "totalCorrect": 1433,
+    "totalReviews": 2005,
+    "totalCorrect": 1434,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -28945,7 +28953,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:28:43.042Z"
+    "updatedAt": "2026-10-27T12:28:51.066Z"
   },
   "settings": {
     "audioEnabled": true,
