@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:47:39.677Z",
+  "exportedAt": "2026-10-27T12:47:43.878Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16676,13 +16676,13 @@
         "countryId": "BEN",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 46,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-11T22:54:55.292Z",
-        "nextDueAt": "2026-10-18T22:54:55.292Z",
+        "lastReviewedAt": "2026-10-27T12:47:40.579Z",
+        "nextDueAt": "2026-12-12T12:47:40.579Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:28:47.276Z",
@@ -16704,11 +16704,21 @@
             "userAnswer": "Benin",
             "isCorrect": true,
             "timeSpentMs": 7116
+          },
+          {
+            "timestamp": "2026-10-27T12:47:40.579Z",
+            "inputMode": "map_click",
+            "userAnswer": "Benin",
+            "isCorrect": true,
+            "timeSpentMs": 2756,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 46,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -30910,8 +30920,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2131,
-    "totalCorrect": 1533,
+    "totalReviews": 2132,
+    "totalCorrect": 1534,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -30949,7 +30959,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:47:36.089Z"
+    "updatedAt": "2026-10-27T12:47:40.583Z"
   },
   "settings": {
     "audioEnabled": true,
