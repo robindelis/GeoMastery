@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:36:23.727Z",
+  "exportedAt": "2026-10-27T12:36:29.866Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -29558,11 +29558,71 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "KGZ:country",
+      {
+        "id": "KGZ:country",
+        "countryId": "KGZ",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:36:26.590Z",
+        "nextDueAt": "2026-10-27T12:51:26.590Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:36:26.590Z",
+            "inputMode": "typing",
+            "userAnswer": "Kyrgystan",
+            "isCorrect": true,
+            "timeSpentMs": 6117,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "COM:capital_to_country",
+      {
+        "id": "COM:capital_to_country",
+        "countryId": "COM",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:36:29.493Z",
+        "nextDueAt": "2026-10-27T12:51:29.493Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:36:29.493Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Comoros",
+            "isCorrect": true,
+            "timeSpentMs": 2122,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2051,
-    "totalCorrect": 1470,
+    "totalReviews": 2053,
+    "totalCorrect": 1472,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -29600,7 +29660,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:36:20.204Z"
+    "updatedAt": "2026-10-27T12:36:29.497Z"
   },
   "settings": {
     "audioEnabled": true,
