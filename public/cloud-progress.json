@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:36:29.866Z",
+  "exportedAt": "2026-10-27T12:36:40.638Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7588,12 +7588,12 @@
         "attributeId": "capital",
         "stage": 1,
         "step": 0,
-        "easeFactor": 1.7,
+        "easeFactor": 1.5,
         "intervalDays": 0,
         "reps": 4,
-        "lapses": 5,
-        "lastReviewedAt": "2026-10-25T13:46:11.471Z",
-        "nextDueAt": "2026-10-25T13:56:11.471Z",
+        "lapses": 6,
+        "lastReviewedAt": "2026-10-27T12:36:37.159Z",
+        "nextDueAt": "2026-10-27T12:46:37.159Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:27:15.359Z",
@@ -7661,11 +7661,19 @@
             "isCorrect": false,
             "timeSpentMs": 4011,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-27T12:36:37.159Z",
+            "inputMode": "typing",
+            "userAnswer": "Suva",
+            "isCorrect": false,
+            "timeSpentMs": 1711,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
         "stability": 0.6,
-        "difficulty": 7.44,
+        "difficulty": 7.69,
         "lastLatencyGrade": 1,
         "confusedWith": [
           "FJI"
@@ -29618,11 +29626,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "GTM:capital_to_country",
+      {
+        "id": "GTM:capital_to_country",
+        "countryId": "GTM",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:36:34.963Z",
+        "nextDueAt": "2026-10-27T12:51:34.963Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:36:34.963Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Guatemala",
+            "isCorrect": true,
+            "timeSpentMs": 1600,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2053,
-    "totalCorrect": 1472,
+    "totalReviews": 2055,
+    "totalCorrect": 1473,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -29660,7 +29698,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:36:29.497Z"
+    "updatedAt": "2026-10-27T12:36:37.162Z"
   },
   "settings": {
     "audioEnabled": true,
