@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:46:48.659Z",
+  "exportedAt": "2026-10-27T12:46:55.673Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15439,14 +15439,14 @@
         "id": "BEN:capital",
         "countryId": "BEN",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.4,
+        "intervalDays": 22,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-06T12:19:45.502Z",
-        "nextDueAt": "2026-10-07T12:19:45.502Z",
+        "lastReviewedAt": "2026-10-27T12:46:52.279Z",
+        "nextDueAt": "2026-11-18T12:46:52.279Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:17:02.531Z",
@@ -15461,11 +15461,21 @@
             "userAnswer": "Porto-Novo",
             "isCorrect": true,
             "timeSpentMs": 5717
+          },
+          {
+            "timestamp": "2026-10-27T12:46:52.279Z",
+            "inputMode": "typing",
+            "userAnswer": "Porto Novo",
+            "isCorrect": true,
+            "timeSpentMs": 3607,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 6.42
+        "stability": 22.39,
+        "difficulty": 5.99,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -30800,16 +30810,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2126,
-    "totalCorrect": 1528,
+    "totalReviews": 2127,
+    "totalCorrect": 1529,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 72,
-        "learning": 36
+        "mastered": 73,
+        "learning": 35
       },
       "Americas": {
         "total": 70,
@@ -30839,7 +30849,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:46:48.017Z"
+    "updatedAt": "2026-10-27T12:46:52.284Z"
   },
   "settings": {
     "audioEnabled": true,
