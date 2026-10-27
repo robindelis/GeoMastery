@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:42:03.700Z",
+  "exportedAt": "2026-10-27T12:42:16.174Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15937,13 +15937,13 @@
         "countryId": "MOZ",
         "attributeId": "location",
         "stage": 2,
-        "step": 2,
-        "easeFactor": 2.249999999999999,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 3,
+        "easeFactor": 2.33,
+        "intervalDays": 48,
+        "reps": 4,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-10T13:35:59.883Z",
-        "nextDueAt": "2026-10-17T13:35:59.883Z",
+        "lastReviewedAt": "2026-10-27T12:42:12.618Z",
+        "nextDueAt": "2026-12-14T12:42:12.618Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:22:43.524Z",
@@ -15979,11 +15979,21 @@
             "userAnswer": "Mozambique",
             "isCorrect": true,
             "timeSpentMs": 5674
+          },
+          {
+            "timestamp": "2026-10-27T12:42:12.618Z",
+            "inputMode": "map_click",
+            "userAnswer": "Mozambique",
+            "isCorrect": true,
+            "timeSpentMs": 2072,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 6.71
+        "stability": 48,
+        "difficulty": 5.76,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -20637,14 +20647,14 @@
         "id": "HTI:capital",
         "countryId": "HTI",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.4,
-        "intervalDays": 4,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.45,
+        "intervalDays": 14,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-23T11:46:14.477Z",
-        "nextDueAt": "2026-10-27T11:46:14.477Z",
+        "lastReviewedAt": "2026-10-27T12:42:10.115Z",
+        "nextDueAt": "2026-11-10T12:42:10.115Z",
         "history": [
           {
             "timestamp": "2026-10-14T19:32:48.512Z",
@@ -20668,11 +20678,19 @@
             "isCorrect": true,
             "timeSpentMs": 3764,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-27T12:42:10.115Z",
+            "inputMode": "typing",
+            "userAnswer": "Port au Prince",
+            "isCorrect": true,
+            "timeSpentMs": 3511,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 3.8,
-        "difficulty": 5.47,
+        "stability": 14,
+        "difficulty": 5.11,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -30043,8 +30061,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2084,
-    "totalCorrect": 1495,
+    "totalReviews": 2086,
+    "totalCorrect": 1497,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -30056,8 +30074,8 @@
       },
       "Americas": {
         "total": 70,
-        "mastered": 43,
-        "learning": 27
+        "mastered": 44,
+        "learning": 26
       },
       "Asia": {
         "total": 96,
@@ -30082,7 +30100,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:42:00.188Z"
+    "updatedAt": "2026-10-27T12:42:12.625Z"
   },
   "settings": {
     "audioEnabled": true,
