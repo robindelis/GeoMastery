@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:41:28.078Z",
+  "exportedAt": "2026-10-27T12:41:34.103Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -29966,11 +29966,41 @@
           "LSO"
         ]
       }
+    ],
+    [
+      "EGY:capital_to_country",
+      {
+        "id": "EGY:capital_to_country",
+        "countryId": "EGY",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:41:30.143Z",
+        "nextDueAt": "2026-10-27T12:56:30.143Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:41:30.143Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Egypt",
+            "isCorrect": true,
+            "timeSpentMs": 2046,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2078,
-    "totalCorrect": 1490,
+    "totalReviews": 2079,
+    "totalCorrect": 1491,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -30008,7 +30038,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:41:24.572Z"
+    "updatedAt": "2026-10-27T12:41:30.147Z"
   },
   "settings": {
     "audioEnabled": true,
