@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:42:53.643Z",
+  "exportedAt": "2026-10-27T12:42:57.555Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13268,14 +13268,14 @@
         "id": "WATER_SEA_BLACK:location",
         "countryId": "WATER_SEA_BLACK",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.65,
+        "intervalDays": 43,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-06T13:15:58.084Z",
-        "nextDueAt": "2026-10-07T13:15:58.084Z",
+        "lastReviewedAt": "2026-10-27T12:42:53.946Z",
+        "nextDueAt": "2026-12-09T12:42:53.946Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:25:05.368Z",
@@ -13290,11 +13290,21 @@
             "userAnswer": "Black Sea",
             "isCorrect": true,
             "timeSpentMs": 9414
+          },
+          {
+            "timestamp": "2026-10-27T12:42:53.946Z",
+            "inputMode": "map_click",
+            "userAnswer": "Black Sea",
+            "isCorrect": true,
+            "timeSpentMs": 2830,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 4.26
+        "stability": 43,
+        "difficulty": 4,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -30221,8 +30231,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2092,
-    "totalCorrect": 1502,
+    "totalReviews": 2093,
+    "totalCorrect": 1503,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -30260,7 +30270,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:42:50.110Z"
+    "updatedAt": "2026-10-27T12:42:53.951Z"
   },
   "settings": {
     "audioEnabled": true,
