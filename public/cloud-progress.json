@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:37:38.026Z",
+  "exportedAt": "2026-10-27T12:37:47.287Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25542,14 +25542,14 @@
         "id": "CAF:country",
         "countryId": "CAF",
         "attributeId": "country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.33,
-        "intervalDays": 2,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.38,
+        "intervalDays": 10,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-24T16:32:25.358Z",
-        "nextDueAt": "2026-10-26T16:32:25.358Z",
+        "lastReviewedAt": "2026-10-27T12:37:44.075Z",
+        "nextDueAt": "2026-11-06T12:37:44.075Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:53:14.919Z",
@@ -25574,10 +25574,18 @@
             "isCorrect": true,
             "timeSpentMs": 7290,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-27T12:37:44.075Z",
+            "inputMode": "typing",
+            "userAnswer": "Central African Republic",
+            "isCorrect": true,
+            "timeSpentMs": 8011,
+            "grade": 3
           }
         ],
-        "difficulty": 5.77,
-        "stability": 2.45,
+        "difficulty": 5.39,
+        "stability": 10,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -29695,8 +29703,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2059,
-    "totalCorrect": 1475,
+    "totalReviews": 2060,
+    "totalCorrect": 1476,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -29734,7 +29742,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:37:34.791Z"
+    "updatedAt": "2026-10-27T12:37:44.079Z"
   },
   "settings": {
     "audioEnabled": true,
