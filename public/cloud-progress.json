@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:31:43.209Z",
+  "exportedAt": "2026-10-27T12:31:57.438Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -22996,13 +22996,13 @@
         "countryId": "ERI",
         "attributeId": "flag",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 1.88,
-        "intervalDays": 0.0104,
+        "step": 0,
+        "easeFactor": 1.68,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-24T14:20:48.374Z",
-        "nextDueAt": "2026-10-24T14:35:48.374Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-10-27T12:31:54.072Z",
+        "nextDueAt": "2026-10-27T12:41:54.072Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:20:46.350Z",
@@ -23035,12 +23035,21 @@
             "isCorrect": true,
             "timeSpentMs": 21094,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-27T12:31:54.072Z",
+            "inputMode": "typing",
+            "userAnswer": "Central African Republic",
+            "isCorrect": false,
+            "timeSpentMs": 12160,
+            "grade": 1
           }
         ],
-        "difficulty": 7.19,
-        "stability": 0.85,
-        "lastLatencyGrade": 2,
+        "difficulty": 7.53,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
         "confusedWith": [
+          "CAF",
           "ETH",
           "AGO"
         ]
@@ -29142,7 +29151,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2022,
+    "totalReviews": 2023,
     "totalCorrect": 1448,
     "currentStreak": 7,
     "longestStreak": 7,
@@ -29181,7 +29190,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:31:39.830Z"
+    "updatedAt": "2026-10-27T12:31:54.075Z"
   },
   "settings": {
     "audioEnabled": true,
