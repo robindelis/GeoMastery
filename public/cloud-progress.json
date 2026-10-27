@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:34:14.190Z",
+  "exportedAt": "2026-10-27T12:34:32.413Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -29332,11 +29332,41 @@
           "MUS"
         ]
       }
+    ],
+    [
+      "CYP:country",
+      {
+        "id": "CYP:country",
+        "countryId": "CYP",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:34:29.073Z",
+        "nextDueAt": "2026-10-27T12:49:29.073Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:34:29.073Z",
+            "inputMode": "typing",
+            "userAnswer": "Cyprus",
+            "isCorrect": true,
+            "timeSpentMs": 11933,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2037,
-    "totalCorrect": 1458,
+    "totalReviews": 2038,
+    "totalCorrect": 1459,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -29374,7 +29404,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:34:10.849Z"
+    "updatedAt": "2026-10-27T12:34:29.077Z"
   },
   "settings": {
     "audioEnabled": true,
