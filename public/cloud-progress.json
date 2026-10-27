@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:34:42.802Z",
+  "exportedAt": "2026-10-27T12:34:48.400Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26526,14 +26526,14 @@
         "id": "LAO:flag",
         "countryId": "LAO",
         "attributeId": "flag",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.1,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.15,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-26T19:53:13.904Z",
-        "nextDueAt": "2026-10-26T20:03:13.904Z",
+        "lastReviewedAt": "2026-10-27T12:34:44.783Z",
+        "nextDueAt": "2026-10-27T12:49:44.783Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:41:13.353Z",
@@ -26550,11 +26550,19 @@
             "isCorrect": false,
             "timeSpentMs": 4850,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-27T12:34:44.783Z",
+            "inputMode": "typing",
+            "userAnswer": "Laos",
+            "isCorrect": true,
+            "timeSpentMs": 4478,
+            "grade": 3
           }
         ],
-        "difficulty": 6.79,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 6.33,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "MNG"
         ]
@@ -29375,8 +29383,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2039,
-    "totalCorrect": 1460,
+    "totalReviews": 2040,
+    "totalCorrect": 1461,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -29414,7 +29422,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:34:39.361Z"
+    "updatedAt": "2026-10-27T12:34:44.787Z"
   },
   "settings": {
     "audioEnabled": true,
