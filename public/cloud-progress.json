@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:43:34.880Z",
+  "exportedAt": "2026-10-27T12:43:43.289Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30292,11 +30292,71 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "ATG:country",
+      {
+        "id": "ATG:country",
+        "countryId": "ATG",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:43:39.880Z",
+        "nextDueAt": "2026-10-27T12:58:39.880Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:43:39.880Z",
+            "inputMode": "typing",
+            "userAnswer": "Antigua and Barbuda",
+            "isCorrect": true,
+            "timeSpentMs": 6867,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "POL:capital_to_country",
+      {
+        "id": "POL:capital_to_country",
+        "countryId": "POL",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:43:42.955Z",
+        "nextDueAt": "2026-10-27T12:58:42.955Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:43:42.955Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Poland",
+            "isCorrect": true,
+            "timeSpentMs": 1824,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2098,
-    "totalCorrect": 1507,
+    "totalReviews": 2100,
+    "totalCorrect": 1509,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -30334,7 +30394,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:43:31.437Z"
+    "updatedAt": "2026-10-27T12:43:42.960Z"
   },
   "settings": {
     "audioEnabled": true,
