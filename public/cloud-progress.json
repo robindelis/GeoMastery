@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:26:59.030Z",
+  "exportedAt": "2026-10-27T12:27:10.250Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6914,13 +6914,13 @@
         "countryId": "KIR",
         "attributeId": "capital",
         "stage": 1,
-        "step": 0,
+        "step": 1,
         "easeFactor": 1.3,
-        "intervalDays": 0,
-        "reps": 2,
+        "intervalDays": 2,
+        "reps": 3,
         "lapses": 8,
-        "lastReviewedAt": "2026-10-26T19:48:30.215Z",
-        "nextDueAt": "2026-10-26T19:58:30.215Z",
+        "lastReviewedAt": "2026-10-27T12:27:06.305Z",
+        "nextDueAt": "2026-10-29T12:27:06.305Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:26:14.234Z",
@@ -6994,12 +6994,20 @@
             "isCorrect": false,
             "timeSpentMs": 7056,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-27T12:27:06.305Z",
+            "inputMode": "typing",
+            "userAnswer": "South Tarrawa",
+            "isCorrect": true,
+            "timeSpentMs": 9324,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 0.6,
-        "difficulty": 8.55,
-        "lastLatencyGrade": 1,
+        "stability": 2.2,
+        "difficulty": 8.16,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "FSM"
         ]
@@ -28848,8 +28856,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1997,
-    "totalCorrect": 1429,
+    "totalReviews": 1998,
+    "totalCorrect": 1430,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -28887,7 +28895,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:26:55.003Z"
+    "updatedAt": "2026-10-27T12:27:06.307Z"
   },
   "settings": {
     "audioEnabled": true,
