@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:36:17.632Z",
+  "exportedAt": "2026-10-27T12:36:23.727Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -27458,14 +27458,14 @@
         "id": "KOR:flag",
         "countryId": "KOR",
         "attributeId": "flag",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 14,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-24T16:23:04.506Z",
-        "nextDueAt": "2026-10-24T16:38:04.506Z",
+        "lastReviewedAt": "2026-10-27T12:36:18.054Z",
+        "nextDueAt": "2026-11-10T12:36:18.054Z",
         "history": [
           {
             "timestamp": "2026-10-24T16:23:04.506Z",
@@ -27474,11 +27474,19 @@
             "isCorrect": true,
             "timeSpentMs": 3542,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-27T12:36:18.054Z",
+            "inputMode": "typing",
+            "userAnswer": "South Korea",
+            "isCorrect": true,
+            "timeSpentMs": 2487,
+            "grade": 4
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 3.3,
+        "stability": 14.48,
+        "lastLatencyGrade": 4,
         "confusedWith": []
       }
     ],
@@ -29520,11 +29528,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "TUN:capital_to_country",
+      {
+        "id": "TUN:capital_to_country",
+        "countryId": "TUN",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:36:20.200Z",
+        "nextDueAt": "2026-10-27T12:51:20.200Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:36:20.200Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Tunisia",
+            "isCorrect": true,
+            "timeSpentMs": 1405,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2049,
-    "totalCorrect": 1468,
+    "totalReviews": 2051,
+    "totalCorrect": 1470,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -29562,7 +29600,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:36:14.346Z"
+    "updatedAt": "2026-10-27T12:36:20.204Z"
   },
   "settings": {
     "audioEnabled": true,
