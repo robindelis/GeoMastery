@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:44:36.983Z",
+  "exportedAt": "2026-10-27T12:44:41.265Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25361,13 +25361,13 @@
         "countryId": "NER",
         "attributeId": "flag",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 1.68,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 1.73,
+        "intervalDays": 2,
+        "reps": 2,
         "lapses": 4,
-        "lastReviewedAt": "2026-10-27T12:30:00.844Z",
-        "nextDueAt": "2026-10-27T12:40:00.844Z",
+        "lastReviewedAt": "2026-10-27T12:44:37.838Z",
+        "nextDueAt": "2026-10-29T12:44:37.838Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:42:45.418Z",
@@ -25408,11 +25408,19 @@
             "isCorrect": false,
             "timeSpentMs": 17081,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-27T12:44:37.838Z",
+            "inputMode": "typing",
+            "userAnswer": "Niger",
+            "isCorrect": true,
+            "timeSpentMs": 3287,
+            "grade": 3
           }
         ],
-        "difficulty": 7.6,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 7.07,
+        "stability": 2.45,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "CAF",
           "IND"
@@ -30518,8 +30526,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2109,
-    "totalCorrect": 1516,
+    "totalReviews": 2110,
+    "totalCorrect": 1517,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -30557,7 +30565,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:44:33.650Z"
+    "updatedAt": "2026-10-27T12:44:37.841Z"
   },
   "settings": {
     "audioEnabled": true,
