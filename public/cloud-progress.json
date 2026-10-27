@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:45:24.055Z",
+  "exportedAt": "2026-10-27T12:45:28.027Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30625,11 +30625,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "HND:capital_to_country",
+      {
+        "id": "HND:capital_to_country",
+        "countryId": "HND",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:45:24.569Z",
+        "nextDueAt": "2026-10-27T13:00:24.569Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:45:24.569Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Honduras",
+            "isCorrect": true,
+            "timeSpentMs": 2622,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2117,
-    "totalCorrect": 1522,
+    "totalReviews": 2118,
+    "totalCorrect": 1523,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -30667,7 +30697,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:45:20.404Z"
+    "updatedAt": "2026-10-27T12:45:24.574Z"
   },
   "settings": {
     "audioEnabled": true,
