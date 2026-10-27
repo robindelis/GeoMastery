@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:44:46.941Z",
+  "exportedAt": "2026-10-27T12:44:50.771Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -22492,14 +22492,14 @@
         "id": "SEN:country",
         "countryId": "SEN",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 17,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-21T12:15:43.587Z",
-        "nextDueAt": "2026-10-22T12:15:43.587Z",
+        "lastReviewedAt": "2026-10-27T12:44:47.058Z",
+        "nextDueAt": "2026-11-13T12:44:47.058Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:15:43.587Z",
@@ -22508,10 +22508,18 @@
             "isCorrect": true,
             "timeSpentMs": 3687,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-27T12:44:47.058Z",
+            "inputMode": "typing",
+            "userAnswer": "Senegal",
+            "isCorrect": true,
+            "timeSpentMs": 3455,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.4,
+        "difficulty": 4.14,
+        "stability": 17,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -30553,11 +30561,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "TZA:capital_to_country",
+      {
+        "id": "TZA:capital_to_country",
+        "countryId": "TZA",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:44:49.577Z",
+        "nextDueAt": "2026-10-27T12:59:49.577Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:44:49.577Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Tanzania",
+            "isCorrect": true,
+            "timeSpentMs": 1893,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2111,
-    "totalCorrect": 1518,
+    "totalReviews": 2113,
+    "totalCorrect": 1520,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -30595,7 +30633,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:44:43.449Z"
+    "updatedAt": "2026-10-27T12:44:49.581Z"
   },
   "settings": {
     "audioEnabled": true,
