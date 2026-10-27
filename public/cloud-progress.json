@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:46:42.409Z",
+  "exportedAt": "2026-10-27T12:46:48.659Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30735,11 +30735,73 @@
           "CMR"
         ]
       }
+    ],
+    [
+      "DOM:capital_to_country",
+      {
+        "id": "DOM:capital_to_country",
+        "countryId": "DOM",
+        "attributeId": "capital_to_country",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-27T12:46:45.049Z",
+        "nextDueAt": "2026-10-27T12:56:45.049Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:46:45.049Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Panama",
+            "isCorrect": false,
+            "timeSpentMs": 5011,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "PAN"
+        ]
+      }
+    ],
+    [
+      "BWA:capital_to_country",
+      {
+        "id": "BWA:capital_to_country",
+        "countryId": "BWA",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:46:48.012Z",
+        "nextDueAt": "2026-10-27T13:01:48.012Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:46:48.012Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Botswana",
+            "isCorrect": true,
+            "timeSpentMs": 1554,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2124,
-    "totalCorrect": 1527,
+    "totalReviews": 2126,
+    "totalCorrect": 1528,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -30777,7 +30839,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:46:38.953Z"
+    "updatedAt": "2026-10-27T12:46:48.017Z"
   },
   "settings": {
     "audioEnabled": true,
