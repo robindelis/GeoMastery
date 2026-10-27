@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:30:35.873Z",
+  "exportedAt": "2026-10-27T12:30:41.667Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -29006,11 +29006,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "NPL:capital_to_country",
+      {
+        "id": "NPL:capital_to_country",
+        "countryId": "NPL",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:30:38.342Z",
+        "nextDueAt": "2026-10-27T12:45:38.342Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:30:38.342Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Nepal",
+            "isCorrect": true,
+            "timeSpentMs": 4484,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2014,
-    "totalCorrect": 1441,
+    "totalReviews": 2015,
+    "totalCorrect": 1442,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -29048,7 +29078,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:30:32.477Z"
+    "updatedAt": "2026-10-27T12:30:38.346Z"
   },
   "settings": {
     "audioEnabled": true,
