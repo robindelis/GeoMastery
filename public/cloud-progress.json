@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:43:59.606Z",
+  "exportedAt": "2026-10-27T12:44:04.369Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30369,11 +30369,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "SWE:capital_to_country",
+      {
+        "id": "SWE:capital_to_country",
+        "countryId": "SWE",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:44:00.969Z",
+        "nextDueAt": "2026-10-27T12:59:00.969Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:44:00.969Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Sweden",
+            "isCorrect": true,
+            "timeSpentMs": 2880,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2102,
-    "totalCorrect": 1510,
+    "totalReviews": 2103,
+    "totalCorrect": 1511,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -30411,7 +30441,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:43:55.990Z"
+    "updatedAt": "2026-10-27T12:44:00.974Z"
   },
   "settings": {
     "audioEnabled": true,
