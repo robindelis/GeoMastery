@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-26T20:01:15.843Z",
+  "exportedAt": "2026-10-27T12:26:24.095Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -12311,13 +12311,13 @@
         "countryId": "WATER_SEA_CORAL",
         "attributeId": "location",
         "stage": 1,
-        "step": 2,
-        "easeFactor": 2.5999999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.4,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-06T13:12:41.621Z",
-        "nextDueAt": "2026-10-07T13:12:41.621Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-27T12:26:20.466Z",
+        "nextDueAt": "2026-10-27T12:36:20.466Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:51:59.485Z",
@@ -12332,11 +12332,23 @@
             "userAnswer": "Coral Sea",
             "isCorrect": true,
             "timeSpentMs": 3457
+          },
+          {
+            "timestamp": "2026-10-27T12:26:20.466Z",
+            "inputMode": "map_click",
+            "userAnswer": "Tasman Sea",
+            "isCorrect": false,
+            "timeSpentMs": 3379,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 2.8,
-        "difficulty": 4.86
+        "stability": 1.08,
+        "difficulty": 6.09,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "WATER_SEA_TASMAN"
+        ]
       }
     ],
     [
@@ -28804,11 +28816,11 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1992,
+    "totalReviews": 1993,
     "totalCorrect": 1426,
-    "currentStreak": 6,
-    "longestStreak": 6,
-    "lastReviewDate": "2026-10-26",
+    "currentStreak": 7,
+    "longestStreak": 7,
+    "lastReviewDate": "2026-10-27",
     "continentMastery": {
       "Africa": {
         "total": 108,
@@ -28843,7 +28855,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-26T20:01:15.716Z"
+    "updatedAt": "2026-10-27T12:26:20.468Z"
   },
   "settings": {
     "audioEnabled": true,
