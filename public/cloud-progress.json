@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:42:43.012Z",
+  "exportedAt": "2026-10-27T12:42:49.255Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30158,11 +30158,41 @@
         "lastLatencyGrade": 1,
         "confusedWith": []
       }
+    ],
+    [
+      "ZMB:capital_to_country",
+      {
+        "id": "ZMB:capital_to_country",
+        "countryId": "ZMB",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:42:45.793Z",
+        "nextDueAt": "2026-10-27T12:57:45.793Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:42:45.793Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Zambia",
+            "isCorrect": true,
+            "timeSpentMs": 2879,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2090,
-    "totalCorrect": 1500,
+    "totalReviews": 2091,
+    "totalCorrect": 1501,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -30200,7 +30230,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:42:39.507Z"
+    "updatedAt": "2026-10-27T12:42:45.798Z"
   },
   "settings": {
     "audioEnabled": true,
