@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:46:09.040Z",
+  "exportedAt": "2026-10-27T12:46:16.427Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -18546,13 +18546,13 @@
         "countryId": "CMR",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 44,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-12T17:18:03.745Z",
-        "nextDueAt": "2026-10-19T17:18:03.745Z",
+        "lastReviewedAt": "2026-10-27T12:46:12.984Z",
+        "nextDueAt": "2026-12-10T12:46:12.984Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:36:26.463Z",
@@ -18574,11 +18574,21 @@
             "userAnswer": "Cameroon",
             "isCorrect": true,
             "timeSpentMs": 3702
+          },
+          {
+            "timestamp": "2026-10-27T12:46:12.984Z",
+            "inputMode": "map_click",
+            "userAnswer": "Cameroon",
+            "isCorrect": true,
+            "timeSpentMs": 3927,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 44.05,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -30696,8 +30706,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2122,
-    "totalCorrect": 1526,
+    "totalReviews": 2123,
+    "totalCorrect": 1527,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -30735,7 +30745,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:46:05.380Z"
+    "updatedAt": "2026-10-27T12:46:12.987Z"
   },
   "settings": {
     "audioEnabled": true,
