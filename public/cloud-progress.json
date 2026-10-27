@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:42:16.174Z",
+  "exportedAt": "2026-10-27T12:42:26.325Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30058,11 +30058,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "CPV:country",
+      {
+        "id": "CPV:country",
+        "countryId": "CPV",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-27T12:42:22.891Z",
+        "nextDueAt": "2026-10-27T12:57:22.891Z",
+        "history": [
+          {
+            "timestamp": "2026-10-27T12:42:22.891Z",
+            "inputMode": "typing",
+            "userAnswer": "Cabo veerdo",
+            "isCorrect": true,
+            "timeSpentMs": 9537,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2086,
-    "totalCorrect": 1497,
+    "totalReviews": 2087,
+    "totalCorrect": 1498,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -30100,7 +30130,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:42:12.625Z"
+    "updatedAt": "2026-10-27T12:42:22.896Z"
   },
   "settings": {
     "audioEnabled": true,
