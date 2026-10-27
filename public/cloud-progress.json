@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:33:30.297Z",
+  "exportedAt": "2026-10-27T12:33:39.141Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -23276,13 +23276,13 @@
         "countryId": "ATG",
         "attributeId": "flag",
         "stage": 1,
-        "step": 2,
-        "easeFactor": 2,
-        "intervalDays": 2,
+        "step": 0,
+        "easeFactor": 1.8,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-24T16:02:33.514Z",
-        "nextDueAt": "2026-10-26T16:02:33.514Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-10-27T12:33:35.650Z",
+        "nextDueAt": "2026-10-27T12:43:35.650Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:21:22.198Z",
@@ -23323,11 +23323,19 @@
             "isCorrect": true,
             "timeSpentMs": 3909,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-27T12:33:35.650Z",
+            "inputMode": "typing",
+            "userAnswer": "Saint vincent and the grenades",
+            "isCorrect": false,
+            "timeSpentMs": 5898,
+            "grade": 1
           }
         ],
-        "difficulty": 6.33,
-        "stability": 2.45,
-        "lastLatencyGrade": 3,
+        "difficulty": 7,
+        "stability": 0.61,
+        "lastLatencyGrade": 1,
         "confusedWith": [
           "BHS"
         ]
@@ -29269,7 +29277,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2032,
+    "totalReviews": 2033,
     "totalCorrect": 1455,
     "currentStreak": 7,
     "longestStreak": 7,
@@ -29308,7 +29316,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:33:26.897Z"
+    "updatedAt": "2026-10-27T12:33:35.653Z"
   },
   "settings": {
     "audioEnabled": true,
