@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:32:01.815Z",
+  "exportedAt": "2026-10-27T12:32:12.327Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25320,14 +25320,14 @@
         "id": "BEL:flag",
         "countryId": "BEL",
         "attributeId": "flag",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.66,
+        "intervalDays": 21,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-23T11:50:37.073Z",
-        "nextDueAt": "2026-10-23T12:05:37.073Z",
+        "lastReviewedAt": "2026-10-27T12:32:09.120Z",
+        "nextDueAt": "2026-11-17T12:32:09.120Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:50:37.073Z",
@@ -25336,10 +25336,18 @@
             "isCorrect": true,
             "timeSpentMs": 1660,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-27T12:32:09.120Z",
+            "inputMode": "typing",
+            "userAnswer": "Belgium",
+            "isCorrect": true,
+            "timeSpentMs": 1611,
+            "grade": 4
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
+        "difficulty": 2.46,
+        "stability": 21.08,
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
@@ -29181,8 +29189,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2024,
-    "totalCorrect": 1448,
+    "totalReviews": 2025,
+    "totalCorrect": 1449,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -29220,7 +29228,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:31:58.310Z"
+    "updatedAt": "2026-10-27T12:32:09.123Z"
   },
   "settings": {
     "audioEnabled": true,
