@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:27:43.726Z",
+  "exportedAt": "2026-10-27T12:27:48.404Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -14134,14 +14134,14 @@
         "id": "ZMB:location",
         "countryId": "ZMB",
         "attributeId": "location",
-        "stage": 2,
-        "step": 1,
-        "easeFactor": 2,
-        "intervalDays": 7,
+        "stage": 1,
+        "step": 0,
+        "easeFactor": 1.8,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-15T17:47:31.015Z",
-        "nextDueAt": "2026-10-22T17:47:31.015Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-10-27T12:27:44.671Z",
+        "nextDueAt": "2026-10-27T12:37:44.671Z",
         "history": [
           {
             "timestamp": "2026-10-06T11:49:00.265Z",
@@ -14178,13 +14178,23 @@
             "isCorrect": true,
             "timeSpentMs": 5655,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-27T12:27:44.671Z",
+            "inputMode": "map_click",
+            "userAnswer": "Zimbabwe",
+            "isCorrect": false,
+            "timeSpentMs": 3674,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 7,
-        "difficulty": 8.43,
-        "lastLatencyGrade": 3,
-        "confusedWith": []
+        "stability": 1.22,
+        "difficulty": 8.3,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "ZWE"
+        ]
       }
     ],
     [
@@ -28888,7 +28898,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2002,
+    "totalReviews": 2003,
     "totalCorrect": 1433,
     "currentStreak": 7,
     "longestStreak": 7,
@@ -28896,8 +28906,8 @@
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 71,
-        "learning": 37
+        "mastered": 70,
+        "learning": 38
       },
       "Americas": {
         "total": 70,
@@ -28927,7 +28937,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:27:40.171Z"
+    "updatedAt": "2026-10-27T12:27:44.674Z"
   },
   "settings": {
     "audioEnabled": true,
