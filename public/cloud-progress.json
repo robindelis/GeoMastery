@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:41:12.234Z",
+  "exportedAt": "2026-10-27T12:41:17.258Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15746,13 +15746,13 @@
         "countryId": "COG",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 41,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-14T10:17:24.372Z",
-        "nextDueAt": "2026-10-21T10:17:24.372Z",
+        "lastReviewedAt": "2026-10-27T12:41:13.862Z",
+        "nextDueAt": "2026-12-07T12:41:13.862Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:22:05.579Z",
@@ -15774,11 +15774,21 @@
             "userAnswer": "Republic of the Congo",
             "isCorrect": true,
             "timeSpentMs": 6700
+          },
+          {
+            "timestamp": "2026-10-27T12:41:13.862Z",
+            "inputMode": "map_click",
+            "userAnswer": "Republic of the Congo",
+            "isCorrect": true,
+            "timeSpentMs": 3688,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 41,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -29919,8 +29929,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2075,
-    "totalCorrect": 1488,
+    "totalReviews": 2076,
+    "totalCorrect": 1489,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
@@ -29958,7 +29968,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:41:08.949Z"
+    "updatedAt": "2026-10-27T12:41:13.867Z"
   },
   "settings": {
     "audioEnabled": true,
