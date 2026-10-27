@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-27T12:26:54.231Z",
+  "exportedAt": "2026-10-27T12:26:59.030Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16659,14 +16659,14 @@
         "id": "STP:location",
         "countryId": "STP",
         "attributeId": "location",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 2.15,
-        "intervalDays": 0,
-        "reps": 1,
+        "stage": 2,
+        "step": 1,
+        "easeFactor": 2.2,
+        "intervalDays": 7,
+        "reps": 2,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-24T14:39:12.993Z",
-        "nextDueAt": "2026-10-24T14:49:12.993Z",
+        "lastReviewedAt": "2026-10-27T12:26:55.000Z",
+        "nextDueAt": "2026-11-03T12:26:55.000Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:30:39.943Z",
@@ -16689,12 +16689,20 @@
             "isCorrect": false,
             "timeSpentMs": 4997,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-27T12:26:55.000Z",
+            "inputMode": "map_click",
+            "userAnswer": "Sao Tome and Principe",
+            "isCorrect": true,
+            "timeSpentMs": 3440,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 0.6,
-        "difficulty": 6.68,
-        "lastLatencyGrade": 1,
+        "stability": 7,
+        "difficulty": 6.23,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "CPV"
         ]
@@ -28840,16 +28848,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 1996,
-    "totalCorrect": 1428,
+    "totalReviews": 1997,
+    "totalCorrect": 1429,
     "currentStreak": 7,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-27",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 70,
-        "learning": 38
+        "mastered": 71,
+        "learning": 37
       },
       "Americas": {
         "total": 70,
@@ -28879,7 +28887,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-27T12:26:50.557Z"
+    "updatedAt": "2026-10-27T12:26:55.003Z"
   },
   "settings": {
     "audioEnabled": true,
