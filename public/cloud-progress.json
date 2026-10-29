@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:16:59.424Z",
+  "exportedAt": "2026-10-29T23:17:08.211Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -4602,13 +4602,13 @@
         "countryId": "ROU",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 52,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:12:33.876Z",
-        "nextDueAt": "2026-10-15T20:12:33.876Z",
+        "lastReviewedAt": "2026-10-29T23:17:02.736Z",
+        "nextDueAt": "2026-12-20T23:17:02.736Z",
         "history": [
           {
             "timestamp": "2026-10-04T17:04:05.816Z",
@@ -4630,11 +4630,21 @@
             "userAnswer": "Romania",
             "isCorrect": true,
             "timeSpentMs": 3075
+          },
+          {
+            "timestamp": "2026-10-29T23:17:02.736Z",
+            "inputMode": "map_click",
+            "userAnswer": "Romania",
+            "isCorrect": true,
+            "timeSpentMs": 4548,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.64
+        "stability": 52,
+        "difficulty": 4.35,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -34100,8 +34110,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2326,
-    "totalCorrect": 1694,
+    "totalReviews": 2327,
+    "totalCorrect": 1695,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -34139,7 +34149,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:16:55.236Z"
+    "updatedAt": "2026-10-29T23:17:02.742Z"
   },
   "settings": {
     "audioEnabled": true,
