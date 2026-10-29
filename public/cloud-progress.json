@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:22:20.733Z",
+  "exportedAt": "2026-10-29T13:22:26.670Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -2593,13 +2593,13 @@
         "countryId": "VAT",
         "attributeId": "capital",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.73,
+        "intervalDays": 80,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:01:01.743Z",
-        "nextDueAt": "2026-10-15T20:01:01.743Z",
+        "lastReviewedAt": "2026-10-29T13:22:26.217Z",
+        "nextDueAt": "2027-01-17T13:22:26.217Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:11:08.132Z",
@@ -2621,11 +2621,21 @@
             "userAnswer": "Vatican",
             "isCorrect": true,
             "timeSpentMs": 2134
+          },
+          {
+            "timestamp": "2026-10-29T13:22:26.217Z",
+            "inputMode": "typing",
+            "userAnswer": "Vatican",
+            "isCorrect": true,
+            "timeSpentMs": 1777,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 80,
+        "difficulty": 2.91,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -8118,14 +8128,14 @@
         "id": "PNG:capital",
         "countryId": "PNG",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 1.65,
-        "intervalDays": 3,
-        "reps": 3,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 1.7,
+        "intervalDays": 10,
+        "reps": 4,
         "lapses": 5,
-        "lastReviewedAt": "2026-10-25T13:51:43.435Z",
-        "nextDueAt": "2026-10-28T13:51:43.435Z",
+        "lastReviewedAt": "2026-10-29T13:22:23.281Z",
+        "nextDueAt": "2026-11-08T13:22:23.281Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:55:49.285Z",
@@ -8186,11 +8196,19 @@
             "isCorrect": true,
             "timeSpentMs": 3697,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-29T13:22:23.281Z",
+            "inputMode": "typing",
+            "userAnswer": "Port Moresby",
+            "isCorrect": true,
+            "timeSpentMs": 4742,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 2.51,
-        "difficulty": 7.16,
+        "stability": 10,
+        "difficulty": 6.67,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -31378,8 +31396,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2160,
-    "totalCorrect": 1559,
+    "totalReviews": 2162,
+    "totalCorrect": 1561,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -31406,8 +31424,8 @@
       },
       "Oceania": {
         "total": 28,
-        "mastered": 19,
-        "learning": 9
+        "mastered": 20,
+        "learning": 8
       }
     },
     "timeAttackRecords": {
@@ -31417,7 +31435,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:22:17.460Z"
+    "updatedAt": "2026-10-29T13:22:26.220Z"
   },
   "settings": {
     "audioEnabled": true,
