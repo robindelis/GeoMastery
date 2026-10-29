@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:35:36.921Z",
+  "exportedAt": "2026-10-29T13:35:40.767Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -1532,14 +1532,14 @@
         "id": "AND:capital",
         "countryId": "AND",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.25,
-        "intervalDays": 6,
-        "reps": 3,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.3,
+        "intervalDays": 19,
+        "reps": 4,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-23T11:42:12.189Z",
-        "nextDueAt": "2026-10-29T11:42:12.189Z",
+        "lastReviewedAt": "2026-10-29T13:35:37.630Z",
+        "nextDueAt": "2026-11-17T13:35:37.630Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:07:07.613Z",
@@ -1577,11 +1577,19 @@
             "isCorrect": true,
             "timeSpentMs": 4900,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-29T13:35:37.630Z",
+            "inputMode": "typing",
+            "userAnswer": "Andorra la vella",
+            "isCorrect": true,
+            "timeSpentMs": 3400,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 5.71,
-        "difficulty": 6.11,
+        "stability": 19,
+        "difficulty": 5.7,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -32393,8 +32401,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2226,
-    "totalCorrect": 1610,
+    "totalReviews": 2227,
+    "totalCorrect": 1611,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -32416,8 +32424,8 @@
       },
       "Europe": {
         "total": 90,
-        "mastered": 86,
-        "learning": 4
+        "mastered": 87,
+        "learning": 3
       },
       "Oceania": {
         "total": 28,
@@ -32432,7 +32440,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:35:33.570Z"
+    "updatedAt": "2026-10-29T13:35:37.636Z"
   },
   "settings": {
     "audioEnabled": true,
