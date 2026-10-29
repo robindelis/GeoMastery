@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:17:31.626Z",
+  "exportedAt": "2026-10-29T23:17:50.018Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -34171,11 +34171,71 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "PRK:country",
+      {
+        "id": "PRK:country",
+        "countryId": "PRK",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:17:41.978Z",
+        "nextDueAt": "2026-10-29T23:32:41.978Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:17:41.978Z",
+            "inputMode": "typing",
+            "userAnswer": "North Korea",
+            "isCorrect": true,
+            "timeSpentMs": 4496,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "FSM:capital_to_country",
+      {
+        "id": "FSM:capital_to_country",
+        "countryId": "FSM",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:17:46.262Z",
+        "nextDueAt": "2026-10-29T23:32:46.262Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:17:46.262Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Micronesia",
+            "isCorrect": true,
+            "timeSpentMs": 3704,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2331,
-    "totalCorrect": 1699,
+    "totalReviews": 2334,
+    "totalCorrect": 1702,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -34213,7 +34273,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:17:26.028Z"
+    "updatedAt": "2026-10-29T23:17:46.272Z"
   },
   "settings": {
     "audioEnabled": true,
