@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:21:39.707Z",
+  "exportedAt": "2026-10-29T13:21:43.802Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -31189,11 +31189,71 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "IRQ:capital_to_country",
+      {
+        "id": "IRQ:capital_to_country",
+        "countryId": "IRQ",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:21:40.332Z",
+        "nextDueAt": "2026-10-29T13:36:40.332Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:21:40.332Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Iraq",
+            "isCorrect": true,
+            "timeSpentMs": 2982,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "STP:capital_to_country",
+      {
+        "id": "STP:capital_to_country",
+        "countryId": "STP",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:21:43.483Z",
+        "nextDueAt": "2026-10-29T13:36:43.483Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:21:43.483Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Sao Tome and Principe",
+            "isCorrect": true,
+            "timeSpentMs": 1596,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2151,
-    "totalCorrect": 1550,
+    "totalReviews": 2153,
+    "totalCorrect": 1552,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -31231,7 +31291,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:21:36.487Z"
+    "updatedAt": "2026-10-29T13:21:43.485Z"
   },
   "settings": {
     "audioEnabled": true,
