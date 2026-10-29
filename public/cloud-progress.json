@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:28:16.262Z",
+  "exportedAt": "2026-10-29T23:28:23.999Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35911,11 +35911,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "TWN:country",
+      {
+        "id": "TWN:country",
+        "countryId": "TWN",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:28:19.096Z",
+        "nextDueAt": "2026-10-29T23:43:19.096Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:28:19.096Z",
+            "inputMode": "typing",
+            "userAnswer": "Taiwan",
+            "isCorrect": true,
+            "timeSpentMs": 7593,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2417,
-    "totalCorrect": 1779,
+    "totalReviews": 2418,
+    "totalCorrect": 1780,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35953,7 +35983,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:28:10.787Z"
+    "updatedAt": "2026-10-29T23:28:19.103Z"
   },
   "settings": {
     "audioEnabled": true,
