@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:21:28.676Z",
+  "exportedAt": "2026-10-29T13:21:35.904Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -31148,14 +31148,14 @@
         "id": "FJI:country",
         "countryId": "FJI",
         "attributeId": "country",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.35,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-27T12:52:57.924Z",
-        "nextDueAt": "2026-10-27T13:02:57.924Z",
+        "lastReviewedAt": "2026-10-29T13:21:32.808Z",
+        "nextDueAt": "2026-10-29T13:36:32.808Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:52:57.924Z",
@@ -31164,18 +31164,26 @@
             "isCorrect": false,
             "timeSpentMs": 257561,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-29T13:21:32.808Z",
+            "inputMode": "typing",
+            "userAnswer": "Fidji",
+            "isCorrect": true,
+            "timeSpentMs": 4797,
+            "grade": 3
           }
         ],
-        "difficulty": 5.99,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 5.59,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ]
   ],
   "stats": {
-    "totalReviews": 2149,
-    "totalCorrect": 1548,
+    "totalReviews": 2150,
+    "totalCorrect": 1549,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -31213,7 +31221,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:21:25.520Z"
+    "updatedAt": "2026-10-29T13:21:32.811Z"
   },
   "settings": {
     "audioEnabled": true,
