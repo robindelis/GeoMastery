@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:23:06.302Z",
+  "exportedAt": "2026-10-29T13:23:13.312Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -31475,11 +31475,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "LTU:capital_to_country",
+      {
+        "id": "LTU:capital_to_country",
+        "countryId": "LTU",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:23:10.114Z",
+        "nextDueAt": "2026-10-29T13:38:10.114Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:23:10.114Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Lithuania",
+            "isCorrect": true,
+            "timeSpentMs": 2655,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2169,
-    "totalCorrect": 1565,
+    "totalReviews": 2170,
+    "totalCorrect": 1566,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -31517,7 +31547,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:23:06.033Z"
+    "updatedAt": "2026-10-29T13:23:10.119Z"
   },
   "settings": {
     "audioEnabled": true,
