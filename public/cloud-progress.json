@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:37:01.135Z",
+  "exportedAt": "2026-10-29T13:37:09.163Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -32658,11 +32658,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "CRI:country",
+      {
+        "id": "CRI:country",
+        "countryId": "CRI",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:37:05.882Z",
+        "nextDueAt": "2026-10-29T13:52:05.882Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:37:05.882Z",
+            "inputMode": "typing",
+            "userAnswer": "Costa Rica",
+            "isCorrect": true,
+            "timeSpentMs": 7789,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2240,
-    "totalCorrect": 1623,
+    "totalReviews": 2241,
+    "totalCorrect": 1624,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -32700,7 +32730,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:36:57.738Z"
+    "updatedAt": "2026-10-29T13:37:05.890Z"
   },
   "settings": {
     "audioEnabled": true,
