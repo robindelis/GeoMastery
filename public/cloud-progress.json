@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:23:09.477Z",
+  "exportedAt": "2026-10-29T23:23:18.555Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -34953,11 +34953,71 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "NZL:country",
+      {
+        "id": "NZL:country",
+        "countryId": "NZL",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:23:13.154Z",
+        "nextDueAt": "2026-10-29T23:38:13.154Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:23:13.154Z",
+            "inputMode": "typing",
+            "userAnswer": "New zealand",
+            "isCorrect": true,
+            "timeSpentMs": 5289,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "SMR:country",
+      {
+        "id": "SMR:country",
+        "countryId": "SMR",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:23:17.977Z",
+        "nextDueAt": "2026-10-29T23:38:17.977Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:23:17.977Z",
+            "inputMode": "typing",
+            "userAnswer": "Saint Marino",
+            "isCorrect": true,
+            "timeSpentMs": 4215,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2375,
-    "totalCorrect": 1739,
+    "totalReviews": 2377,
+    "totalCorrect": 1741,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -34995,7 +35055,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:23:05.730Z"
+    "updatedAt": "2026-10-29T23:23:17.983Z"
   },
   "settings": {
     "audioEnabled": true,
