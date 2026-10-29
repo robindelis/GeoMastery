@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:26:24.748Z",
+  "exportedAt": "2026-10-29T23:26:47.230Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -1718,13 +1718,13 @@
         "countryId": "BEL",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 43,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-15T16:22:50.252Z",
-        "nextDueAt": "2026-10-22T16:22:50.252Z",
+        "lastReviewedAt": "2026-10-29T23:26:44.556Z",
+        "nextDueAt": "2026-12-11T23:26:44.556Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:07:40.669Z",
@@ -1746,11 +1746,21 @@
             "userAnswer": "Belgium",
             "isCorrect": true,
             "timeSpentMs": 2728
+          },
+          {
+            "timestamp": "2026-10-29T23:26:44.556Z",
+            "inputMode": "map_click",
+            "userAnswer": "Belgium",
+            "isCorrect": true,
+            "timeSpentMs": 3866,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 43.01,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -35569,11 +35579,71 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "AFG:country",
+      {
+        "id": "AFG:country",
+        "countryId": "AFG",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:26:32.271Z",
+        "nextDueAt": "2026-10-29T23:41:32.271Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:26:32.271Z",
+            "inputMode": "typing",
+            "userAnswer": "Afghanistan",
+            "isCorrect": true,
+            "timeSpentMs": 9221,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
+    ],
+    [
+      "CIV:capital_to_country",
+      {
+        "id": "CIV:capital_to_country",
+        "countryId": "CIV",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:26:39.588Z",
+        "nextDueAt": "2026-10-29T23:41:39.588Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:26:39.588Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Ivory Coast",
+            "isCorrect": true,
+            "timeSpentMs": 3004,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2402,
-    "totalCorrect": 1765,
+    "totalReviews": 2405,
+    "totalCorrect": 1768,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35611,7 +35681,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:26:21.959Z"
+    "updatedAt": "2026-10-29T23:26:44.567Z"
   },
   "settings": {
     "audioEnabled": true,
