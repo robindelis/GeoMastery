@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:19:01.087Z",
+  "exportedAt": "2026-10-29T23:19:14.923Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30216,13 +30216,13 @@
         "countryId": "SVN",
         "attributeId": "country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.35,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.33,
+        "intervalDays": 5,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-27T12:29:37.656Z",
-        "nextDueAt": "2026-10-27T12:44:37.656Z",
+        "lastReviewedAt": "2026-10-29T23:19:09.334Z",
+        "nextDueAt": "2026-11-03T23:19:09.334Z",
         "history": [
           {
             "timestamp": "2026-10-26T19:54:37.473Z",
@@ -30239,11 +30239,19 @@
             "isCorrect": true,
             "timeSpentMs": 5475,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-29T23:19:09.334Z",
+            "inputMode": "typing",
+            "userAnswer": "Slovenia",
+            "isCorrect": true,
+            "timeSpentMs": 13879,
+            "grade": 2
           }
         ],
-        "difficulty": 5.59,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 5.88,
+        "stability": 4.63,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "SRB"
         ]
@@ -34403,11 +34411,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "GUY:country",
+      {
+        "id": "GUY:country",
+        "countryId": "GUY",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:19:13.458Z",
+        "nextDueAt": "2026-10-29T23:34:13.458Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:19:13.458Z",
+            "inputMode": "typing",
+            "userAnswer": "Guyana",
+            "isCorrect": true,
+            "timeSpentMs": 3171,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2344,
-    "totalCorrect": 1711,
+    "totalReviews": 2346,
+    "totalCorrect": 1713,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -34445,7 +34483,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:18:54.145Z"
+    "updatedAt": "2026-10-29T23:19:13.467Z"
   },
   "settings": {
     "audioEnabled": true,
