@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:10:00.925Z",
+  "exportedAt": "2026-10-29T23:10:07.710Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -27504,14 +27504,14 @@
         "id": "IDN:country",
         "countryId": "IDN",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 15,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-24T14:40:23.245Z",
-        "nextDueAt": "2026-10-24T14:55:23.245Z",
+        "lastReviewedAt": "2026-10-29T23:10:05.337Z",
+        "nextDueAt": "2026-11-13T23:10:05.337Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:40:23.245Z",
@@ -27520,10 +27520,18 @@
             "isCorrect": true,
             "timeSpentMs": 4028,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-29T23:10:05.337Z",
+            "inputMode": "typing",
+            "userAnswer": "Indonesia",
+            "isCorrect": true,
+            "timeSpentMs": 3683,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 15,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -33570,11 +33578,41 @@
           "MUS"
         ]
       }
+    ],
+    [
+      "AZE:capital_to_country",
+      {
+        "id": "AZE:capital_to_country",
+        "countryId": "AZE",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:10:00.943Z",
+        "nextDueAt": "2026-10-29T23:25:00.943Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:10:00.943Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Azerbaijan",
+            "isCorrect": true,
+            "timeSpentMs": 2190,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2299,
-    "totalCorrect": 1671,
+    "totalReviews": 2301,
+    "totalCorrect": 1673,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -33612,7 +33650,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:09:55.824Z"
+    "updatedAt": "2026-10-29T23:10:05.342Z"
   },
   "settings": {
     "audioEnabled": true,
