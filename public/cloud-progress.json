@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:21:50.735Z",
+  "exportedAt": "2026-10-29T23:21:19.076Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -34711,71 +34711,11 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
-    ],
-    [
-      "SLB:country",
-      {
-        "id": "SLB:country",
-        "countryId": "SLB",
-        "attributeId": "country",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-29T23:21:44.363Z",
-        "nextDueAt": "2026-10-29T23:31:44.363Z",
-        "history": [
-          {
-            "timestamp": "2026-10-29T23:21:44.363Z",
-            "inputMode": "typing",
-            "userAnswer": "t",
-            "isCorrect": false,
-            "timeSpentMs": 28840,
-            "grade": 1
-          }
-        ],
-        "difficulty": 5.99,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
-        "confusedWith": []
-      }
-    ],
-    [
-      "IRL:country",
-      {
-        "id": "IRL:country",
-        "countryId": "IRL",
-        "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:21:49.717Z",
-        "nextDueAt": "2026-10-29T23:36:49.717Z",
-        "history": [
-          {
-            "timestamp": "2026-10-29T23:21:49.717Z",
-            "inputMode": "typing",
-            "userAnswer": "Ireland",
-            "isCorrect": true,
-            "timeSpentMs": 2935,
-            "grade": 4
-          }
-        ],
-        "difficulty": 3.62,
-        "stability": 1.4,
-        "lastLatencyGrade": 4,
-        "confusedWith": []
-      }
     ]
   ],
   "stats": {
-    "totalReviews": 2364,
-    "totalCorrect": 1729,
+    "totalReviews": 2362,
+    "totalCorrect": 1728,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -34813,7 +34753,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:21:49.726Z"
+    "updatedAt": "2026-10-29T23:21:15.078Z"
   },
   "settings": {
     "audioEnabled": true,
