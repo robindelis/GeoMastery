@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:13:47.935Z",
+  "exportedAt": "2026-10-29T23:13:53.254Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -33831,11 +33831,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "MUS:capital_to_country",
+      {
+        "id": "MUS:capital_to_country",
+        "countryId": "MUS",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:13:52.854Z",
+        "nextDueAt": "2026-10-29T23:28:52.854Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:13:52.854Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Mauritius",
+            "isCorrect": true,
+            "timeSpentMs": 2555,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2312,
-    "totalCorrect": 1682,
+    "totalReviews": 2313,
+    "totalCorrect": 1683,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -33873,7 +33903,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:13:46.160Z"
+    "updatedAt": "2026-10-29T23:13:52.859Z"
   },
   "settings": {
     "audioEnabled": true,
