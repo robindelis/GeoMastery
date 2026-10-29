@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:36:17.491Z",
+  "exportedAt": "2026-10-29T13:36:21.152Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -32474,11 +32474,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "MLT:capital_to_country",
+      {
+        "id": "MLT:capital_to_country",
+        "countryId": "MLT",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:36:17.722Z",
+        "nextDueAt": "2026-10-29T13:51:17.722Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:36:17.722Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Malta",
+            "isCorrect": true,
+            "timeSpentMs": 2855,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2231,
-    "totalCorrect": 1615,
+    "totalReviews": 2232,
+    "totalCorrect": 1616,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -32516,7 +32546,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:36:13.909Z"
+    "updatedAt": "2026-10-29T13:36:17.732Z"
   },
   "settings": {
     "audioEnabled": true,
