@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:39:30.468Z",
+  "exportedAt": "2026-10-29T13:39:37.314Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -23285,14 +23285,14 @@
         "id": "BOL:country",
         "countryId": "BOL",
         "attributeId": "country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.56,
-        "intervalDays": 6,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.64,
+        "intervalDays": 31,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-23T11:50:05.099Z",
-        "nextDueAt": "2026-10-29T11:50:05.099Z",
+        "lastReviewedAt": "2026-10-29T13:39:36.881Z",
+        "nextDueAt": "2026-11-29T13:39:36.881Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:18:14.743Z",
@@ -23309,11 +23309,19 @@
             "isCorrect": true,
             "timeSpentMs": 21184,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-29T13:39:36.881Z",
+            "inputMode": "typing",
+            "userAnswer": "Bolivia",
+            "isCorrect": true,
+            "timeSpentMs": 2748,
+            "grade": 4
           }
         ],
-        "difficulty": 4.36,
-        "stability": 5.71,
-        "lastLatencyGrade": 2,
+        "difficulty": 3.25,
+        "stability": 31.15,
+        "lastLatencyGrade": 4,
         "confusedWith": []
       }
     ],
@@ -32879,11 +32887,41 @@
           "BDI"
         ]
       }
+    ],
+    [
+      "KOR:capital_to_country",
+      {
+        "id": "KOR:capital_to_country",
+        "countryId": "KOR",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:39:33.809Z",
+        "nextDueAt": "2026-10-29T13:54:33.809Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:39:33.809Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "South Korea",
+            "isCorrect": true,
+            "timeSpentMs": 1446,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2256,
-    "totalCorrect": 1636,
+    "totalReviews": 2258,
+    "totalCorrect": 1638,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -32921,7 +32959,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:39:27.214Z"
+    "updatedAt": "2026-10-29T13:39:36.891Z"
   },
   "settings": {
     "audioEnabled": true,
