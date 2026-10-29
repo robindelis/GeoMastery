@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:31:52.387Z",
+  "exportedAt": "2026-10-29T13:31:55.794Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -32288,11 +32288,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "SYR:capital_to_country",
+      {
+        "id": "SYR:capital_to_country",
+        "countryId": "SYR",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:31:52.455Z",
+        "nextDueAt": "2026-10-29T13:46:52.455Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:31:52.455Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Syria",
+            "isCorrect": true,
+            "timeSpentMs": 3094,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2219,
-    "totalCorrect": 1606,
+    "totalReviews": 2220,
+    "totalCorrect": 1607,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -32330,7 +32360,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:31:49.083Z"
+    "updatedAt": "2026-10-29T13:31:52.463Z"
   },
   "settings": {
     "audioEnabled": true,
