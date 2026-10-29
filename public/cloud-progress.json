@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:08:57.398Z",
+  "exportedAt": "2026-10-29T23:09:05.464Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8073,14 +8073,14 @@
         "id": "TON:location",
         "countryId": "TON",
         "attributeId": "location",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 2,
-        "intervalDays": 0,
-        "reps": 2,
+        "stage": 2,
+        "step": 1,
+        "easeFactor": 2.05,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-26T19:49:34.675Z",
-        "nextDueAt": "2026-10-26T19:59:34.675Z",
+        "lastReviewedAt": "2026-10-29T23:08:58.774Z",
+        "nextDueAt": "2026-11-05T23:08:58.774Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:55:38.545Z",
@@ -8118,12 +8118,20 @@
             "isCorrect": false,
             "timeSpentMs": 4427,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-29T23:08:58.774Z",
+            "inputMode": "map_click",
+            "userAnswer": "Tonga",
+            "isCorrect": true,
+            "timeSpentMs": 6061,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.6,
-        "difficulty": 7.14,
-        "lastLatencyGrade": 1,
+        "stability": 7,
+        "difficulty": 6.65,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "WSM",
           "FJI"
@@ -28957,14 +28965,14 @@
         "id": "SGP:country",
         "countryId": "SGP",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 15,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-25T13:49:14.990Z",
-        "nextDueAt": "2026-10-25T14:04:14.990Z",
+        "lastReviewedAt": "2026-10-29T23:09:04.647Z",
+        "nextDueAt": "2026-11-13T23:09:04.647Z",
         "history": [
           {
             "timestamp": "2026-10-25T13:49:14.990Z",
@@ -28973,11 +28981,19 @@
             "isCorrect": true,
             "timeSpentMs": 2775,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-29T23:09:04.647Z",
+            "inputMode": "typing",
+            "userAnswer": "Singapor",
+            "isCorrect": true,
+            "timeSpentMs": 4234,
+            "grade": 3
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
-        "lastLatencyGrade": 4,
+        "difficulty": 3.41,
+        "stability": 15.21,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -33447,8 +33463,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2290,
-    "totalCorrect": 1665,
+    "totalReviews": 2292,
+    "totalCorrect": 1667,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -33475,8 +33491,8 @@
       },
       "Oceania": {
         "total": 28,
-        "mastered": 20,
-        "learning": 8
+        "mastered": 21,
+        "learning": 7
       }
     },
     "timeAttackRecords": {
@@ -33486,7 +33502,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:08:51.279Z"
+    "updatedAt": "2026-10-29T23:09:04.651Z"
   },
   "settings": {
     "audioEnabled": true,
