@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:16:44.023Z",
+  "exportedAt": "2026-10-29T23:16:52.611Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -24572,14 +24572,14 @@
         "id": "THA:country",
         "countryId": "THA",
         "attributeId": "country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.46,
-        "intervalDays": 5,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.51,
+        "intervalDays": 18,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-24T14:24:02.647Z",
-        "nextDueAt": "2026-10-29T14:24:02.647Z",
+        "lastReviewedAt": "2026-10-29T23:16:47.120Z",
+        "nextDueAt": "2026-11-16T23:16:47.120Z",
         "history": [
           {
             "timestamp": "2026-10-21T22:17:06.100Z",
@@ -24596,11 +24596,19 @@
             "isCorrect": true,
             "timeSpentMs": 9195,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-29T23:16:47.120Z",
+            "inputMode": "typing",
+            "userAnswer": "Tailand",
+            "isCorrect": true,
+            "timeSpentMs": 3279,
+            "grade": 3
           }
         ],
-        "difficulty": 5.58,
-        "stability": 4.98,
-        "lastLatencyGrade": 2,
+        "difficulty": 5.21,
+        "stability": 18,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -34062,8 +34070,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2324,
-    "totalCorrect": 1692,
+    "totalReviews": 2325,
+    "totalCorrect": 1693,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -34101,7 +34109,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:16:43.469Z"
+    "updatedAt": "2026-10-29T23:16:47.127Z"
   },
   "settings": {
     "audioEnabled": true,
