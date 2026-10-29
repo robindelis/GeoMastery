@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:22:24.891Z",
+  "exportedAt": "2026-10-29T23:22:39.680Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -32555,13 +32555,13 @@
         "countryId": "MYS",
         "attributeId": "country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.28,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.33,
+        "intervalDays": 3,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-29T13:38:45.254Z",
-        "nextDueAt": "2026-10-29T13:53:45.254Z",
+        "lastReviewedAt": "2026-10-29T23:22:35.054Z",
+        "nextDueAt": "2026-11-01T23:22:35.054Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:23:50.411Z",
@@ -32578,11 +32578,19 @@
             "isCorrect": true,
             "timeSpentMs": 17655,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-29T23:22:35.054Z",
+            "inputMode": "typing",
+            "userAnswer": "Malaysia",
+            "isCorrect": true,
+            "timeSpentMs": 3654,
+            "grade": 3
           }
         ],
-        "difficulty": 6.19,
-        "stability": 0.85,
-        "lastLatencyGrade": 2,
+        "difficulty": 5.77,
+        "stability": 2.8,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "KHM"
         ]
@@ -32715,13 +32723,13 @@
         "countryId": "SOM",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 4,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T13:29:09.376Z",
-        "nextDueAt": "2026-10-29T13:44:09.376Z",
+        "lastReviewedAt": "2026-10-29T23:22:29.667Z",
+        "nextDueAt": "2026-11-02T23:22:29.667Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:29:09.376Z",
@@ -32730,10 +32738,18 @@
             "isCorrect": true,
             "timeSpentMs": 4008,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-29T23:22:29.667Z",
+            "inputMode": "typing",
+            "userAnswer": "Somalia",
+            "isCorrect": true,
+            "timeSpentMs": 8459,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 4.28,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -34894,8 +34910,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2370,
-    "totalCorrect": 1735,
+    "totalReviews": 2372,
+    "totalCorrect": 1737,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -34933,7 +34949,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:22:20.131Z"
+    "updatedAt": "2026-10-29T23:22:35.064Z"
   },
   "settings": {
     "audioEnabled": true,
