@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:23:18.555Z",
+  "exportedAt": "2026-10-29T23:23:30.856Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -3766,13 +3766,13 @@
         "countryId": "RUS",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 59,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:03:31.643Z",
-        "nextDueAt": "2026-10-15T20:03:31.643Z",
+        "lastReviewedAt": "2026-10-29T23:23:25.572Z",
+        "nextDueAt": "2026-12-27T23:23:25.572Z",
         "history": [
           {
             "timestamp": "2026-10-04T17:01:33.492Z",
@@ -3794,11 +3794,21 @@
             "userAnswer": "Russia",
             "isCorrect": true,
             "timeSpentMs": 1395
+          },
+          {
+            "timestamp": "2026-10-29T23:23:25.572Z",
+            "inputMode": "map_click",
+            "userAnswer": "Russia",
+            "isCorrect": true,
+            "timeSpentMs": 2896,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 3.54
+        "stability": 59,
+        "difficulty": 3.34,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -30975,14 +30985,14 @@
         "id": "CYP:country",
         "countryId": "CYP",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.48,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 8,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-27T12:34:29.073Z",
-        "nextDueAt": "2026-10-27T12:49:29.073Z",
+        "lastReviewedAt": "2026-10-29T23:23:22.068Z",
+        "nextDueAt": "2026-11-06T23:23:22.068Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:34:29.073Z",
@@ -30991,11 +31001,19 @@
             "isCorrect": true,
             "timeSpentMs": 11933,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-29T23:23:22.068Z",
+            "inputMode": "typing",
+            "userAnswer": "Chyprus",
+            "isCorrect": true,
+            "timeSpentMs": 3466,
+            "grade": 3
           }
         ],
-        "difficulty": 5.2,
-        "stability": 0.85,
-        "lastLatencyGrade": 2,
+        "difficulty": 4.86,
+        "stability": 8,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -35013,11 +35031,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "IRN:country",
+      {
+        "id": "IRN:country",
+        "countryId": "IRN",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:23:30.471Z",
+        "nextDueAt": "2026-10-29T23:38:30.471Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:23:30.471Z",
+            "inputMode": "typing",
+            "userAnswer": "Iran",
+            "isCorrect": true,
+            "timeSpentMs": 3677,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2377,
-    "totalCorrect": 1741,
+    "totalReviews": 2380,
+    "totalCorrect": 1744,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35055,7 +35103,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:23:17.983Z"
+    "updatedAt": "2026-10-29T23:23:30.481Z"
   },
   "settings": {
     "audioEnabled": true,
