@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:20:36.367Z",
+  "exportedAt": "2026-10-29T23:20:56.532Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -22437,14 +22437,14 @@
         "id": "MEX:location",
         "countryId": "MEX",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 26,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-15T11:53:50.828Z",
-        "nextDueAt": "2026-10-16T11:53:50.828Z",
+        "lastReviewedAt": "2026-10-29T23:20:52.287Z",
+        "nextDueAt": "2026-11-24T23:20:52.287Z",
         "history": [
           {
             "timestamp": "2026-10-15T11:53:50.828Z",
@@ -22452,11 +22452,21 @@
             "userAnswer": "Mexico",
             "isCorrect": true,
             "timeSpentMs": 3412
+          },
+          {
+            "timestamp": "2026-10-29T23:20:52.287Z",
+            "inputMode": "map_click",
+            "userAnswer": "Mexico",
+            "isCorrect": true,
+            "timeSpentMs": 5743,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 4.49
+        "stability": 26,
+        "difficulty": 4.21,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -34585,11 +34595,71 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "MRT:country",
+      {
+        "id": "MRT:country",
+        "countryId": "MRT",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:20:45.000Z",
+        "nextDueAt": "2026-10-29T23:35:45.000Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:20:45.000Z",
+            "inputMode": "typing",
+            "userAnswer": "Mauritania",
+            "isCorrect": true,
+            "timeSpentMs": 18697,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
+    ],
+    [
+      "SGP:capital_to_country",
+      {
+        "id": "SGP:capital_to_country",
+        "countryId": "SGP",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:20:54.580Z",
+        "nextDueAt": "2026-10-29T23:35:54.580Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:20:54.580Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Singapore",
+            "isCorrect": true,
+            "timeSpentMs": 1323,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2355,
-    "totalCorrect": 1721,
+    "totalReviews": 2358,
+    "totalCorrect": 1724,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -34601,8 +34671,8 @@
       },
       "Americas": {
         "total": 70,
-        "mastered": 53,
-        "learning": 17
+        "mastered": 54,
+        "learning": 16
       },
       "Asia": {
         "total": 96,
@@ -34627,7 +34697,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:20:24.842Z"
+    "updatedAt": "2026-10-29T23:20:54.586Z"
   },
   "settings": {
     "audioEnabled": true,
