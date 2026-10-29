@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:09:33.883Z",
+  "exportedAt": "2026-10-29T23:09:45.624Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13792,13 +13792,13 @@
         "countryId": "WATER_SEA_SARGASSO",
         "attributeId": "location",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.15,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-06T13:10:48.567Z",
-        "nextDueAt": "2026-10-07T13:10:48.567Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-29T23:09:45.402Z",
+        "nextDueAt": "2026-10-29T23:19:45.402Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:25:28.541Z",
@@ -13813,11 +13813,23 @@
             "userAnswer": "Sargasso Sea",
             "isCorrect": true,
             "timeSpentMs": 58580
+          },
+          {
+            "timestamp": "2026-10-29T23:09:45.402Z",
+            "inputMode": "map_click",
+            "userAnswer": "Gulf of California",
+            "isCorrect": false,
+            "timeSpentMs": 5638,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 6.42
+        "stability": 0.6,
+        "difficulty": 7.06,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "WATER_GULF_CALIFORNIA"
+        ]
       }
     ],
     [
@@ -32743,12 +32755,12 @@
         "attributeId": "country",
         "stage": 0,
         "step": 0,
-        "easeFactor": 2.3,
+        "easeFactor": 2.1,
         "intervalDays": 0,
         "reps": 0,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-29T13:35:23.210Z",
-        "nextDueAt": "2026-10-29T13:45:23.210Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-29T23:09:38.981Z",
+        "nextDueAt": "2026-10-29T23:19:38.981Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:35:23.210Z",
@@ -32757,12 +32769,22 @@
             "isCorrect": false,
             "timeSpentMs": 110385,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-29T23:09:38.981Z",
+            "inputMode": "typing",
+            "userAnswer": "Tuvalu",
+            "isCorrect": false,
+            "timeSpentMs": 12894,
+            "grade": 1
           }
         ],
-        "difficulty": 5.99,
+        "difficulty": 6.79,
         "stability": 0.6,
         "lastLatencyGrade": 1,
-        "confusedWith": []
+        "confusedWith": [
+          "TUV"
+        ]
       }
     ],
     [
@@ -33519,7 +33541,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2296,
+    "totalReviews": 2298,
     "totalCorrect": 1671,
     "currentStreak": 2,
     "longestStreak": 7,
@@ -33558,7 +33580,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:09:24.963Z"
+    "updatedAt": "2026-10-29T23:09:45.406Z"
   },
   "settings": {
     "audioEnabled": true,
