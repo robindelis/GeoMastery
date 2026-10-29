@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:21:57.612Z",
+  "exportedAt": "2026-10-29T13:22:08.252Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19638,14 +19638,14 @@
         "id": "GRD:location",
         "countryId": "GRD",
         "attributeId": "location",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 1.33,
-        "intervalDays": 4,
-        "reps": 4,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 1.31,
+        "intervalDays": 8,
+        "reps": 5,
         "lapses": 7,
-        "lastReviewedAt": "2026-10-24T14:24:24.744Z",
-        "nextDueAt": "2026-10-28T14:24:24.744Z",
+        "lastReviewedAt": "2026-10-29T13:22:04.771Z",
+        "nextDueAt": "2026-11-06T13:22:04.771Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:46:07.775Z",
@@ -19727,11 +19727,19 @@
             "isCorrect": true,
             "timeSpentMs": 17418,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-29T13:22:04.771Z",
+            "inputMode": "map_click",
+            "userAnswer": "Grenada",
+            "isCorrect": true,
+            "timeSpentMs": 6547,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 4.13,
-        "difficulty": 7.89,
+        "stability": 8.29,
+        "difficulty": 7.65,
         "lastLatencyGrade": 2,
         "confusedWith": [
           "BRB",
@@ -31299,11 +31307,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "USA:capital_to_country",
+      {
+        "id": "USA:capital_to_country",
+        "countryId": "USA",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:22:07.941Z",
+        "nextDueAt": "2026-10-29T13:37:07.941Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:22:07.941Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "United States",
+            "isCorrect": true,
+            "timeSpentMs": 1751,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2156,
-    "totalCorrect": 1555,
+    "totalReviews": 2158,
+    "totalCorrect": 1557,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -31315,8 +31353,8 @@
       },
       "Americas": {
         "total": 70,
-        "mastered": 46,
-        "learning": 24
+        "mastered": 47,
+        "learning": 23
       },
       "Asia": {
         "total": 96,
@@ -31341,7 +31379,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:21:53.735Z"
+    "updatedAt": "2026-10-29T13:22:07.945Z"
   },
   "settings": {
     "audioEnabled": true,
