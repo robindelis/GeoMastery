@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:31:09.664Z",
+  "exportedAt": "2026-10-29T13:31:14.314Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -12606,14 +12606,14 @@
         "id": "WATER_BAY_HUDSON:location",
         "countryId": "WATER_BAY_HUDSON",
         "attributeId": "location",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 2.45,
-        "intervalDays": 0,
-        "reps": 3,
+        "stage": 2,
+        "step": 1,
+        "easeFactor": 2.5,
+        "intervalDays": 7,
+        "reps": 4,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-27T12:53:45.248Z",
-        "nextDueAt": "2026-10-27T13:03:45.248Z",
+        "lastReviewedAt": "2026-10-29T13:31:10.710Z",
+        "nextDueAt": "2026-11-05T13:31:10.710Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:50:08.101Z",
@@ -12643,12 +12643,20 @@
             "isCorrect": false,
             "timeSpentMs": 2677,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-29T13:31:10.710Z",
+            "inputMode": "map_click",
+            "userAnswer": "Hudson Bay",
+            "isCorrect": true,
+            "timeSpentMs": 2666,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 1.37,
-        "difficulty": 5.58,
-        "lastLatencyGrade": 1,
+        "stability": 7.07,
+        "difficulty": 5.21,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "WATER_SEA_BERING"
         ]
@@ -32161,8 +32169,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2211,
-    "totalCorrect": 1598,
+    "totalReviews": 2212,
+    "totalCorrect": 1599,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -32200,7 +32208,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:31:06.251Z"
+    "updatedAt": "2026-10-29T13:31:10.716Z"
   },
   "settings": {
     "audioEnabled": true,
