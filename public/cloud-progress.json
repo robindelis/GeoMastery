@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:39:40.377Z",
+  "exportedAt": "2026-10-29T13:39:45.149Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -388,13 +388,13 @@
         "countryId": "NOR",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 52,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T16:16:02.816Z",
-        "nextDueAt": "2026-10-17T16:16:02.816Z",
+        "lastReviewedAt": "2026-10-29T13:39:41.574Z",
+        "nextDueAt": "2026-12-20T13:39:41.574Z",
         "history": [
           {
             "timestamp": "2026-10-04T14:34:48.174Z",
@@ -416,11 +416,21 @@
             "userAnswer": "Norway",
             "isCorrect": true,
             "timeSpentMs": 3970
+          },
+          {
+            "timestamp": "2026-10-29T13:39:41.574Z",
+            "inputMode": "map_click",
+            "userAnswer": "Norway",
+            "isCorrect": true,
+            "timeSpentMs": 3843,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 52,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -32920,8 +32930,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2258,
-    "totalCorrect": 1638,
+    "totalReviews": 2259,
+    "totalCorrect": 1639,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -32959,7 +32969,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:39:36.891Z"
+    "updatedAt": "2026-10-29T13:39:41.579Z"
   },
   "settings": {
     "audioEnabled": true,
