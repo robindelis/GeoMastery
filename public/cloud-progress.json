@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:16:33.855Z",
+  "exportedAt": "2026-10-29T23:16:44.023Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15213,14 +15213,14 @@
         "id": "MWI:capital",
         "countryId": "MWI",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 2.15,
-        "intervalDays": 0,
-        "reps": 1,
+        "stage": 2,
+        "step": 1,
+        "easeFactor": 2.2,
+        "intervalDays": 8,
+        "reps": 2,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-24T14:22:40.470Z",
-        "nextDueAt": "2026-10-24T14:32:40.470Z",
+        "lastReviewedAt": "2026-10-29T23:16:37.406Z",
+        "nextDueAt": "2026-11-06T23:16:37.406Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:13:23.895Z",
@@ -15243,12 +15243,20 @@
             "isCorrect": false,
             "timeSpentMs": 6199,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-29T23:16:37.406Z",
+            "inputMode": "typing",
+            "userAnswer": "Lilongwe",
+            "isCorrect": true,
+            "timeSpentMs": 3444,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 0.6,
-        "difficulty": 7.06,
-        "lastLatencyGrade": 1,
+        "stability": 8.31,
+        "difficulty": 6.58,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -29490,14 +29498,14 @@
         "id": "BLZ:capital_to_country",
         "countryId": "BLZ",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 19,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-25T13:52:26.139Z",
-        "nextDueAt": "2026-10-25T14:07:26.139Z",
+        "lastReviewedAt": "2026-10-29T23:16:40.384Z",
+        "nextDueAt": "2026-11-17T23:16:40.384Z",
         "history": [
           {
             "timestamp": "2026-10-25T13:52:26.139Z",
@@ -29506,11 +29514,19 @@
             "isCorrect": true,
             "timeSpentMs": 2365,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-29T23:16:40.384Z",
+            "inputMode": "typing",
+            "userAnswer": "Belize",
+            "isCorrect": true,
+            "timeSpentMs": 2071,
+            "grade": 4
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 3.3,
+        "stability": 19.47,
+        "lastLatencyGrade": 4,
         "confusedWith": []
       }
     ],
@@ -34013,19 +34029,49 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "NZL:capital_to_country",
+      {
+        "id": "NZL:capital_to_country",
+        "countryId": "NZL",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:16:43.462Z",
+        "nextDueAt": "2026-10-29T23:31:43.462Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:16:43.462Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "New Zealand",
+            "isCorrect": true,
+            "timeSpentMs": 2499,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2321,
-    "totalCorrect": 1689,
+    "totalReviews": 2324,
+    "totalCorrect": 1692,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 81,
-        "learning": 27
+        "mastered": 82,
+        "learning": 26
       },
       "Americas": {
         "total": 70,
@@ -34055,7 +34101,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:16:30.445Z"
+    "updatedAt": "2026-10-29T23:16:43.469Z"
   },
   "settings": {
     "audioEnabled": true,
