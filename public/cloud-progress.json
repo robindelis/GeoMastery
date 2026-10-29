@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:36:55.518Z",
+  "exportedAt": "2026-10-29T13:36:58.560Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -32628,11 +32628,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "JPN:capital_to_country",
+      {
+        "id": "JPN:capital_to_country",
+        "countryId": "JPN",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:36:57.731Z",
+        "nextDueAt": "2026-10-29T13:51:57.731Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:36:57.731Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Japan",
+            "isCorrect": true,
+            "timeSpentMs": 2188,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2239,
-    "totalCorrect": 1622,
+    "totalReviews": 2240,
+    "totalCorrect": 1623,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -32670,7 +32700,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:36:55.168Z"
+    "updatedAt": "2026-10-29T13:36:57.738Z"
   },
   "settings": {
     "audioEnabled": true,
