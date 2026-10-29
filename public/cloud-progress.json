@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:25:54.057Z",
+  "exportedAt": "2026-10-29T23:26:08.918Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8411,13 +8411,13 @@
         "countryId": "FSM",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.2,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 2.18,
+        "intervalDays": 6,
+        "reps": 3,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-23T11:47:46.624Z",
-        "nextDueAt": "2026-10-23T11:57:46.624Z",
+        "lastReviewedAt": "2026-10-29T23:25:59.399Z",
+        "nextDueAt": "2026-11-04T23:25:59.399Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:55:52.962Z",
@@ -8448,12 +8448,20 @@
             "isCorrect": false,
             "timeSpentMs": 9861,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-29T23:25:59.399Z",
+            "inputMode": "map_click",
+            "userAnswer": "Micronesia",
+            "isCorrect": true,
+            "timeSpentMs": 10038,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.6,
-        "difficulty": 6.61,
-        "lastLatencyGrade": 1,
+        "stability": 5.6,
+        "difficulty": 6.67,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "PLW",
           "FJI"
@@ -35441,11 +35449,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "CHN:capital_to_country",
+      {
+        "id": "CHN:capital_to_country",
+        "countryId": "CHN",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:26:03.601Z",
+        "nextDueAt": "2026-10-29T23:41:03.601Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:26:03.601Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "China",
+            "isCorrect": true,
+            "timeSpentMs": 2338,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2397,
-    "totalCorrect": 1760,
+    "totalReviews": 2399,
+    "totalCorrect": 1762,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35483,7 +35521,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:25:48.877Z"
+    "updatedAt": "2026-10-29T23:26:03.612Z"
   },
   "settings": {
     "audioEnabled": true,
