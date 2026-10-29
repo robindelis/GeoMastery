@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:25:02.285Z",
+  "exportedAt": "2026-10-29T23:25:15.057Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35339,11 +35339,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "GAB:country",
+      {
+        "id": "GAB:country",
+        "countryId": "GAB",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:25:09.032Z",
+        "nextDueAt": "2026-10-29T23:40:09.032Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:25:09.032Z",
+            "inputMode": "typing",
+            "userAnswer": "Gabon",
+            "isCorrect": true,
+            "timeSpentMs": 12338,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2390,
-    "totalCorrect": 1753,
+    "totalReviews": 2391,
+    "totalCorrect": 1754,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35381,7 +35411,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:24:55.889Z"
+    "updatedAt": "2026-10-29T23:25:09.042Z"
   },
   "settings": {
     "audioEnabled": true,
