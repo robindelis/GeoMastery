@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:25:43.047Z",
+  "exportedAt": "2026-10-29T23:25:46.968Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35403,11 +35403,41 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "PNG:capital_to_country",
+      {
+        "id": "PNG:capital_to_country",
+        "countryId": "PNG",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:25:44.351Z",
+        "nextDueAt": "2026-10-29T23:40:44.351Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:25:44.351Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Papua New Guinea",
+            "isCorrect": true,
+            "timeSpentMs": 3102,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2395,
-    "totalCorrect": 1758,
+    "totalReviews": 2396,
+    "totalCorrect": 1759,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35445,7 +35475,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:25:40.743Z"
+    "updatedAt": "2026-10-29T23:25:44.361Z"
   },
   "settings": {
     "audioEnabled": true,
