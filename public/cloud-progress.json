@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:28:36.850Z",
+  "exportedAt": "2026-10-29T13:28:49.623Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25973,14 +25973,14 @@
         "id": "CUB:country",
         "countryId": "CUB",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.35,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.4,
+        "intervalDays": 12,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-24T14:24:07.112Z",
-        "nextDueAt": "2026-10-24T14:39:07.112Z",
+        "lastReviewedAt": "2026-10-29T13:28:46.247Z",
+        "nextDueAt": "2026-11-10T13:28:46.247Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:50:26.133Z",
@@ -25997,10 +25997,18 @@
             "isCorrect": true,
             "timeSpentMs": 3795,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-29T13:28:46.247Z",
+            "inputMode": "typing",
+            "userAnswer": "Cuba",
+            "isCorrect": true,
+            "timeSpentMs": 7842,
+            "grade": 3
           }
         ],
-        "difficulty": 5.59,
-        "stability": 1.1,
+        "difficulty": 5.22,
+        "stability": 12.2,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "DOM"
@@ -31834,8 +31842,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2193,
-    "totalCorrect": 1583,
+    "totalReviews": 2194,
+    "totalCorrect": 1584,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -31873,7 +31881,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:28:33.509Z"
+    "updatedAt": "2026-10-29T13:28:46.257Z"
   },
   "settings": {
     "audioEnabled": true,
