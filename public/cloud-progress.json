@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:38:02.200Z",
+  "exportedAt": "2026-10-29T13:38:06.403Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -22624,14 +22624,14 @@
         "id": "KNA:location",
         "countryId": "KNA",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.13,
-        "intervalDays": 2,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.18,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-27T12:53:55.072Z",
-        "nextDueAt": "2026-10-29T12:53:55.072Z",
+        "lastReviewedAt": "2026-10-29T13:38:02.920Z",
+        "nextDueAt": "2026-11-05T13:38:02.920Z",
         "history": [
           {
             "timestamp": "2026-10-15T16:25:49.265Z",
@@ -22663,12 +22663,20 @@
             "isCorrect": true,
             "timeSpentMs": 6348,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-29T13:38:02.920Z",
+            "inputMode": "map_click",
+            "userAnswer": "Saint Kitts and Nevis",
+            "isCorrect": true,
+            "timeSpentMs": 4012,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 2.2,
-        "difficulty": 6.92,
-        "lastLatencyGrade": 2,
+        "stability": 7,
+        "difficulty": 6.45,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "VCT",
           "GRD"
@@ -32793,8 +32801,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2248,
-    "totalCorrect": 1630,
+    "totalReviews": 2249,
+    "totalCorrect": 1631,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -32806,8 +32814,8 @@
       },
       "Americas": {
         "total": 70,
-        "mastered": 47,
-        "learning": 23
+        "mastered": 48,
+        "learning": 22
       },
       "Asia": {
         "total": 96,
@@ -32832,7 +32840,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:37:58.529Z"
+    "updatedAt": "2026-10-29T13:38:02.929Z"
   },
   "settings": {
     "audioEnabled": true,
