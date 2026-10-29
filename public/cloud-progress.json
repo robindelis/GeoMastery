@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:24:44.230Z",
+  "exportedAt": "2026-10-29T23:24:58.908Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35249,11 +35249,101 @@
         "lastLatencyGrade": 1,
         "confusedWith": []
       }
+    ],
+    [
+      "HTI:capital_to_country",
+      {
+        "id": "HTI:capital_to_country",
+        "countryId": "HTI",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:24:47.746Z",
+        "nextDueAt": "2026-10-29T23:39:47.746Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:24:47.746Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Haiti",
+            "isCorrect": true,
+            "timeSpentMs": 2316,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "LUX:country",
+      {
+        "id": "LUX:country",
+        "countryId": "LUX",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:24:52.834Z",
+        "nextDueAt": "2026-10-29T23:39:52.834Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:24:52.834Z",
+            "inputMode": "typing",
+            "userAnswer": "Luxembourg",
+            "isCorrect": true,
+            "timeSpentMs": 4129,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "DNK:capital_to_country",
+      {
+        "id": "DNK:capital_to_country",
+        "countryId": "DNK",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:24:55.878Z",
+        "nextDueAt": "2026-10-29T23:39:55.878Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:24:55.878Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Denmark",
+            "isCorrect": true,
+            "timeSpentMs": 2659,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2387,
-    "totalCorrect": 1750,
+    "totalReviews": 2390,
+    "totalCorrect": 1753,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35291,7 +35381,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:24:39.191Z"
+    "updatedAt": "2026-10-29T23:24:55.889Z"
   },
   "settings": {
     "audioEnabled": true,
