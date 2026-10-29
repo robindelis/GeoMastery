@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:26:39.020Z",
+  "exportedAt": "2026-10-29T23:26:06.938Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35479,131 +35479,11 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
-    ],
-    [
-      "NGA:country",
-      {
-        "id": "NGA:country",
-        "countryId": "NGA",
-        "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.48,
-        "intervalDays": 0.0104,
-        "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:26:13.782Z",
-        "nextDueAt": "2026-10-29T23:41:13.782Z",
-        "history": [
-          {
-            "timestamp": "2026-10-29T23:26:13.782Z",
-            "inputMode": "typing",
-            "userAnswer": "Nigeria",
-            "isCorrect": true,
-            "timeSpentMs": 9263,
-            "grade": 2
-          }
-        ],
-        "difficulty": 5.2,
-        "stability": 0.85,
-        "lastLatencyGrade": 2,
-        "confusedWith": []
-      }
-    ],
-    [
-      "DEU:capital_to_country",
-      {
-        "id": "DEU:capital_to_country",
-        "countryId": "DEU",
-        "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:26:17.856Z",
-        "nextDueAt": "2026-10-29T23:41:17.856Z",
-        "history": [
-          {
-            "timestamp": "2026-10-29T23:26:17.856Z",
-            "inputMode": "multiple_choice",
-            "userAnswer": "Germany",
-            "isCorrect": true,
-            "timeSpentMs": 2308,
-            "grade": 3
-          }
-        ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
-        "confusedWith": []
-      }
-    ],
-    [
-      "MAR:country",
-      {
-        "id": "MAR:country",
-        "countryId": "MAR",
-        "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:26:21.950Z",
-        "nextDueAt": "2026-10-29T23:41:21.950Z",
-        "history": [
-          {
-            "timestamp": "2026-10-29T23:26:21.950Z",
-            "inputMode": "typing",
-            "userAnswer": "Morocco",
-            "isCorrect": true,
-            "timeSpentMs": 3288,
-            "grade": 3
-          }
-        ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
-        "confusedWith": []
-      }
-    ],
-    [
-      "AFG:country",
-      {
-        "id": "AFG:country",
-        "countryId": "AFG",
-        "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.48,
-        "intervalDays": 0.0104,
-        "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:26:32.271Z",
-        "nextDueAt": "2026-10-29T23:41:32.271Z",
-        "history": [
-          {
-            "timestamp": "2026-10-29T23:26:32.271Z",
-            "inputMode": "typing",
-            "userAnswer": "Afghanistan",
-            "isCorrect": true,
-            "timeSpentMs": 9221,
-            "grade": 2
-          }
-        ],
-        "difficulty": 5.2,
-        "stability": 0.85,
-        "lastLatencyGrade": 2,
-        "confusedWith": []
-      }
     ]
   ],
   "stats": {
-    "totalReviews": 2403,
-    "totalCorrect": 1766,
+    "totalReviews": 2399,
+    "totalCorrect": 1762,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35641,7 +35521,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:26:32.289Z"
+    "updatedAt": "2026-10-29T23:26:03.612Z"
   },
   "settings": {
     "audioEnabled": true,
