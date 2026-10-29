@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:14:42.061Z",
+  "exportedAt": "2026-10-29T23:15:02.078Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -21679,13 +21679,13 @@
         "countryId": "KNA",
         "attributeId": "capital",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 1.63,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 1.68,
+        "intervalDays": 5,
+        "reps": 3,
         "lapses": 5,
-        "lastReviewedAt": "2026-10-27T12:35:12.983Z",
-        "nextDueAt": "2026-10-27T12:45:12.983Z",
+        "lastReviewedAt": "2026-10-29T23:14:55.789Z",
+        "nextDueAt": "2026-11-03T23:14:55.789Z",
         "history": [
           {
             "timestamp": "2026-10-14T21:15:39.146Z",
@@ -21741,12 +21741,20 @@
             "isCorrect": false,
             "timeSpentMs": 12207,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-29T23:14:55.789Z",
+            "inputMode": "typing",
+            "userAnswer": "Basse Terre",
+            "isCorrect": true,
+            "timeSpentMs": 8324,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 0.6,
-        "difficulty": 7.42,
-        "lastLatencyGrade": 1,
+        "stability": 5.02,
+        "difficulty": 6.91,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "GUY"
         ]
@@ -33984,8 +33992,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2317,
-    "totalCorrect": 1687,
+    "totalReviews": 2318,
+    "totalCorrect": 1688,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -34023,7 +34031,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:14:36.567Z"
+    "updatedAt": "2026-10-29T23:14:55.793Z"
   },
   "settings": {
     "audioEnabled": true,
