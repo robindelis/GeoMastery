@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:39:20.794Z",
+  "exportedAt": "2026-10-29T13:39:30.468Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11960,14 +11960,14 @@
         "id": "WATER_CANAL_SUEZ:location",
         "countryId": "WATER_CANAL_SUEZ",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 1.98,
-        "intervalDays": 4,
-        "reps": 3,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.03,
+        "intervalDays": 12,
+        "reps": 4,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-24T14:34:58.690Z",
-        "nextDueAt": "2026-10-28T14:34:58.690Z",
+        "lastReviewedAt": "2026-10-29T13:39:27.209Z",
+        "nextDueAt": "2026-11-10T13:39:27.209Z",
         "history": [
           {
             "timestamp": "2026-10-05T09:45:09.291Z",
@@ -12012,12 +12012,20 @@
             "isCorrect": true,
             "timeSpentMs": 6558,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-29T13:39:27.209Z",
+            "inputMode": "map_click",
+            "userAnswer": "Suez Canal",
+            "isCorrect": true,
+            "timeSpentMs": 5730,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 3.78,
-        "difficulty": 7.55,
-        "lastLatencyGrade": 2,
+        "stability": 12,
+        "difficulty": 7.03,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "WATER_STRAIT_HORMUZ"
         ]
@@ -32874,8 +32882,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2255,
-    "totalCorrect": 1635,
+    "totalReviews": 2256,
+    "totalCorrect": 1636,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -32913,7 +32921,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:39:17.449Z"
+    "updatedAt": "2026-10-29T13:39:27.214Z"
   },
   "settings": {
     "audioEnabled": true,
