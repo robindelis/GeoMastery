@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:26:20.124Z",
+  "exportedAt": "2026-10-29T23:26:26.047Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35539,11 +35539,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "MAR:country",
+      {
+        "id": "MAR:country",
+        "countryId": "MAR",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:26:21.950Z",
+        "nextDueAt": "2026-10-29T23:41:21.950Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:26:21.950Z",
+            "inputMode": "typing",
+            "userAnswer": "Morocco",
+            "isCorrect": true,
+            "timeSpentMs": 3288,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2401,
-    "totalCorrect": 1764,
+    "totalReviews": 2402,
+    "totalCorrect": 1765,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35581,7 +35611,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:26:17.873Z"
+    "updatedAt": "2026-10-29T23:26:21.959Z"
   },
   "settings": {
     "audioEnabled": true,
