@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:23:26.751Z",
+  "exportedAt": "2026-10-29T23:23:36.738Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -33504,14 +33504,14 @@
         "id": "KOR:capital_to_country",
         "countryId": "KOR",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.66,
+        "intervalDays": 8,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T13:39:33.809Z",
-        "nextDueAt": "2026-10-29T13:54:33.809Z",
+        "lastReviewedAt": "2026-10-29T23:23:34.021Z",
+        "nextDueAt": "2026-11-06T23:23:34.021Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:39:33.809Z",
@@ -33520,10 +33520,18 @@
             "isCorrect": true,
             "timeSpentMs": 1446,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-29T23:23:34.021Z",
+            "inputMode": "typing",
+            "userAnswer": "South Korea",
+            "isCorrect": true,
+            "timeSpentMs": 2951,
+            "grade": 4
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
+        "difficulty": 2.46,
+        "stability": 8,
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
@@ -35031,11 +35039,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "IRN:country",
+      {
+        "id": "IRN:country",
+        "countryId": "IRN",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:23:30.471Z",
+        "nextDueAt": "2026-10-29T23:38:30.471Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:23:30.471Z",
+            "inputMode": "typing",
+            "userAnswer": "Iran",
+            "isCorrect": true,
+            "timeSpentMs": 3677,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2379,
-    "totalCorrect": 1743,
+    "totalReviews": 2381,
+    "totalCorrect": 1745,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35073,7 +35111,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:23:25.581Z"
+    "updatedAt": "2026-10-29T23:23:34.031Z"
   },
   "settings": {
     "audioEnabled": true,
