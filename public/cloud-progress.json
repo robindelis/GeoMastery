@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:08:24.217Z",
+  "exportedAt": "2026-10-29T23:08:28.186Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -33376,11 +33376,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "ITA:capital_to_country",
+      {
+        "id": "ITA:capital_to_country",
+        "countryId": "ITA",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:08:24.991Z",
+        "nextDueAt": "2026-10-29T23:23:24.991Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:08:24.991Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Italy",
+            "isCorrect": true,
+            "timeSpentMs": 2498,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2287,
-    "totalCorrect": 1662,
+    "totalReviews": 2288,
+    "totalCorrect": 1663,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -33418,7 +33448,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:08:21.115Z"
+    "updatedAt": "2026-10-29T23:08:25.004Z"
   },
   "settings": {
     "audioEnabled": true,
