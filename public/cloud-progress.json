@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:40:15.117Z",
+  "exportedAt": "2026-10-29T13:40:21.875Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30978,14 +30978,14 @@
         "id": "CPV:country",
         "countryId": "CPV",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.48,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 7,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-27T12:42:22.891Z",
-        "nextDueAt": "2026-10-27T12:57:22.891Z",
+        "lastReviewedAt": "2026-10-29T13:40:18.253Z",
+        "nextDueAt": "2026-11-05T13:40:18.253Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:42:22.891Z",
@@ -30994,11 +30994,19 @@
             "isCorrect": true,
             "timeSpentMs": 9537,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-29T13:40:18.253Z",
+            "inputMode": "typing",
+            "userAnswer": "Cabo Verde",
+            "isCorrect": true,
+            "timeSpentMs": 4626,
+            "grade": 3
           }
         ],
-        "difficulty": 5.2,
-        "stability": 0.85,
-        "lastLatencyGrade": 2,
+        "difficulty": 4.86,
+        "stability": 7,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -33011,11 +33019,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "ALB:capital_to_country",
+      {
+        "id": "ALB:capital_to_country",
+        "countryId": "ALB",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:40:21.631Z",
+        "nextDueAt": "2026-10-29T13:55:21.631Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:40:21.631Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Albania",
+            "isCorrect": true,
+            "timeSpentMs": 2291,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2264,
-    "totalCorrect": 1644,
+    "totalReviews": 2266,
+    "totalCorrect": 1646,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -33053,7 +33091,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:40:11.631Z"
+    "updatedAt": "2026-10-29T13:40:21.642Z"
   },
   "settings": {
     "audioEnabled": true,
