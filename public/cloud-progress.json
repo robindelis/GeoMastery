@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:21:51.447Z",
+  "exportedAt": "2026-10-29T13:21:57.612Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19320,13 +19320,13 @@
         "countryId": "HND",
         "attributeId": "location",
         "stage": 2,
-        "step": 2,
-        "easeFactor": 2.249999999999999,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 3,
+        "easeFactor": 2.3,
+        "intervalDays": 31,
+        "reps": 4,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-14T19:36:57.054Z",
-        "nextDueAt": "2026-10-21T19:36:57.054Z",
+        "lastReviewedAt": "2026-10-29T13:21:53.732Z",
+        "nextDueAt": "2026-11-29T13:21:53.732Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:44:11.637Z",
@@ -19362,11 +19362,21 @@
             "userAnswer": "Honduras",
             "isCorrect": true,
             "timeSpentMs": 3079
+          },
+          {
+            "timestamp": "2026-10-29T13:21:53.732Z",
+            "inputMode": "map_click",
+            "userAnswer": "Honduras",
+            "isCorrect": true,
+            "timeSpentMs": 4938,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 6.71
+        "stability": 31.35,
+        "difficulty": 6.25,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -31292,8 +31302,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2155,
-    "totalCorrect": 1554,
+    "totalReviews": 2156,
+    "totalCorrect": 1555,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -31331,7 +31341,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:21:48.289Z"
+    "updatedAt": "2026-10-29T13:21:53.735Z"
   },
   "settings": {
     "audioEnabled": true,
