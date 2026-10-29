@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:22:11.370Z",
+  "exportedAt": "2026-10-29T13:22:20.733Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -28151,13 +28151,13 @@
         "countryId": "TUV",
         "attributeId": "country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.08,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.13,
+        "intervalDays": 5,
+        "reps": 2,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-27T12:48:31.063Z",
-        "nextDueAt": "2026-10-27T13:03:31.063Z",
+        "lastReviewedAt": "2026-10-29T13:22:17.457Z",
+        "nextDueAt": "2026-11-03T13:22:17.457Z",
         "history": [
           {
             "timestamp": "2026-10-25T13:46:35.376Z",
@@ -28182,11 +28182,19 @@
             "isCorrect": true,
             "timeSpentMs": 9553,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-29T13:22:17.457Z",
+            "inputMode": "typing",
+            "userAnswer": "Tuvalu",
+            "isCorrect": true,
+            "timeSpentMs": 5974,
+            "grade": 3
           }
         ],
-        "difficulty": 6.81,
-        "stability": 0.85,
-        "lastLatencyGrade": 2,
+        "difficulty": 6.35,
+        "stability": 5.38,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "NRU"
         ]
@@ -31370,8 +31378,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2159,
-    "totalCorrect": 1558,
+    "totalReviews": 2160,
+    "totalCorrect": 1559,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -31409,7 +31417,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:22:10.988Z"
+    "updatedAt": "2026-10-29T13:22:17.460Z"
   },
   "settings": {
     "audioEnabled": true,
