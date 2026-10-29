@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:40:21.875Z",
+  "exportedAt": "2026-10-29T13:40:32.388Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -23837,12 +23837,12 @@
         "attributeId": "flag",
         "stage": 1,
         "step": 0,
-        "easeFactor": 1.68,
+        "easeFactor": 1.48,
         "intervalDays": 0,
         "reps": 1,
-        "lapses": 4,
-        "lastReviewedAt": "2026-10-27T12:31:54.072Z",
-        "nextDueAt": "2026-10-27T12:41:54.072Z",
+        "lapses": 5,
+        "lastReviewedAt": "2026-10-29T13:40:28.662Z",
+        "nextDueAt": "2026-10-29T13:50:28.662Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:20:46.350Z",
@@ -23883,12 +23883,21 @@
             "isCorrect": false,
             "timeSpentMs": 12160,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-29T13:40:28.662Z",
+            "inputMode": "typing",
+            "userAnswer": "Mozambique",
+            "isCorrect": false,
+            "timeSpentMs": 6761,
+            "grade": 1
           }
         ],
-        "difficulty": 7.53,
+        "difficulty": 7.75,
         "stability": 0.6,
         "lastLatencyGrade": 1,
         "confusedWith": [
+          "MOZ",
           "CAF",
           "ETH",
           "AGO"
@@ -33049,11 +33058,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "MOZ:capital_to_country",
+      {
+        "id": "MOZ:capital_to_country",
+        "countryId": "MOZ",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:40:31.832Z",
+        "nextDueAt": "2026-10-29T13:55:31.832Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:40:31.832Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Mozambique",
+            "isCorrect": true,
+            "timeSpentMs": 2276,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2266,
-    "totalCorrect": 1646,
+    "totalReviews": 2268,
+    "totalCorrect": 1647,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -33091,7 +33130,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:40:21.642Z"
+    "updatedAt": "2026-10-29T13:40:31.837Z"
   },
   "settings": {
     "audioEnabled": true,
