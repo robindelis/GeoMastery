@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:20:56.532Z",
+  "exportedAt": "2026-10-29T23:21:04.910Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -18337,13 +18337,13 @@
         "countryId": "SSD",
         "attributeId": "capital",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 1.55,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 1.63,
+        "intervalDays": 6,
+        "reps": 2,
         "lapses": 5,
-        "lastReviewedAt": "2026-10-27T12:33:16.483Z",
-        "nextDueAt": "2026-10-27T12:43:16.483Z",
+        "lastReviewedAt": "2026-10-29T23:20:57.593Z",
+        "nextDueAt": "2026-11-04T23:20:57.593Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:34:59.895Z",
@@ -18388,12 +18388,20 @@
             "isCorrect": false,
             "timeSpentMs": 10421,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-29T23:20:57.593Z",
+            "inputMode": "typing",
+            "userAnswer": "Juba",
+            "isCorrect": true,
+            "timeSpentMs": 2424,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 0.6,
-        "difficulty": 8.25,
-        "lastLatencyGrade": 1,
+        "stability": 5.85,
+        "difficulty": 7.41,
+        "lastLatencyGrade": 4,
         "confusedWith": [
           "NGA"
         ]
@@ -22323,14 +22331,14 @@
         "id": "USA:capital",
         "countryId": "USA",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 28,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-14T21:21:40.872Z",
-        "nextDueAt": "2026-10-15T21:21:40.872Z",
+        "lastReviewedAt": "2026-10-29T23:21:02.681Z",
+        "nextDueAt": "2026-11-26T23:21:02.681Z",
         "history": [
           {
             "timestamp": "2026-10-14T21:21:40.872Z",
@@ -22338,11 +22346,21 @@
             "userAnswer": "Washington, D.C.",
             "isCorrect": true,
             "timeSpentMs": 1348
+          },
+          {
+            "timestamp": "2026-10-29T23:21:02.681Z",
+            "inputMode": "typing",
+            "userAnswer": "Washinton",
+            "isCorrect": true,
+            "timeSpentMs": 3668,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 3.99
+        "stability": 28,
+        "difficulty": 3.75,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -34658,8 +34676,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2358,
-    "totalCorrect": 1724,
+    "totalReviews": 2360,
+    "totalCorrect": 1726,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -34671,8 +34689,8 @@
       },
       "Americas": {
         "total": 70,
-        "mastered": 54,
-        "learning": 16
+        "mastered": 55,
+        "learning": 15
       },
       "Asia": {
         "total": 96,
@@ -34697,7 +34715,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:20:54.586Z"
+    "updatedAt": "2026-10-29T23:21:02.689Z"
   },
   "settings": {
     "audioEnabled": true,
