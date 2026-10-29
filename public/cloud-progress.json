@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:36:30.021Z",
+  "exportedAt": "2026-10-29T13:36:37.942Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -32544,11 +32544,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "SLB:capital_to_country",
+      {
+        "id": "SLB:capital_to_country",
+        "countryId": "SLB",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:36:34.830Z",
+        "nextDueAt": "2026-10-29T13:51:34.830Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:36:34.830Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Solomon Islands",
+            "isCorrect": true,
+            "timeSpentMs": 7630,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2234,
-    "totalCorrect": 1618,
+    "totalReviews": 2235,
+    "totalCorrect": 1619,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -32586,7 +32616,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:36:26.545Z"
+    "updatedAt": "2026-10-29T13:36:34.838Z"
   },
   "settings": {
     "audioEnabled": true,
