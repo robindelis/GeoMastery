@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:25:13.703Z",
+  "exportedAt": "2026-10-29T13:25:18.307Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -524,13 +524,13 @@
         "countryId": "LUX",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 55,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:21:00.231Z",
-        "nextDueAt": "2026-10-15T20:21:00.231Z",
+        "lastReviewedAt": "2026-10-29T13:25:14.818Z",
+        "nextDueAt": "2026-12-23T13:25:14.818Z",
         "history": [
           {
             "timestamp": "2026-10-04T14:36:06.027Z",
@@ -552,11 +552,21 @@
             "userAnswer": "Luxembourg",
             "isCorrect": true,
             "timeSpentMs": 2510
+          },
+          {
+            "timestamp": "2026-10-29T13:25:14.818Z",
+            "inputMode": "map_click",
+            "userAnswer": "Luxembourg",
+            "isCorrect": true,
+            "timeSpentMs": 4514,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 55,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -31698,8 +31708,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2182,
-    "totalCorrect": 1573,
+    "totalReviews": 2183,
+    "totalCorrect": 1574,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -31737,7 +31747,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:25:09.792Z"
+    "updatedAt": "2026-10-29T13:25:14.827Z"
   },
   "settings": {
     "audioEnabled": true,
