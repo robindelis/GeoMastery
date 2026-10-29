@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:31:48.871Z",
+  "exportedAt": "2026-10-29T13:31:52.387Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -32258,11 +32258,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "PAN:country",
+      {
+        "id": "PAN:country",
+        "countryId": "PAN",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:31:49.072Z",
+        "nextDueAt": "2026-10-29T13:46:49.072Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:31:49.072Z",
+            "inputMode": "typing",
+            "userAnswer": "Panama",
+            "isCorrect": true,
+            "timeSpentMs": 3378,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2218,
-    "totalCorrect": 1605,
+    "totalReviews": 2219,
+    "totalCorrect": 1606,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -32300,7 +32330,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:31:45.523Z"
+    "updatedAt": "2026-10-29T13:31:49.083Z"
   },
   "settings": {
     "audioEnabled": true,
