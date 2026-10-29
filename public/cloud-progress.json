@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:17:54.470Z",
+  "exportedAt": "2026-10-29T23:18:10.783Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -34231,11 +34231,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "KHM:country",
+      {
+        "id": "KHM:country",
+        "countryId": "KHM",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:18:06.039Z",
+        "nextDueAt": "2026-10-29T23:33:06.039Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:18:06.039Z",
+            "inputMode": "typing",
+            "userAnswer": "Cambodia",
+            "isCorrect": true,
+            "timeSpentMs": 18846,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2334,
-    "totalCorrect": 1702,
+    "totalReviews": 2335,
+    "totalCorrect": 1703,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -34273,7 +34303,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:17:46.272Z"
+    "updatedAt": "2026-10-29T23:18:06.048Z"
   },
   "settings": {
     "audioEnabled": true,
