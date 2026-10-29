@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:26:47.230Z",
+  "exportedAt": "2026-10-29T23:26:51.435Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35639,11 +35639,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "IND:country",
+      {
+        "id": "IND:country",
+        "countryId": "IND",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:26:48.750Z",
+        "nextDueAt": "2026-10-29T23:41:48.750Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:26:48.750Z",
+            "inputMode": "typing",
+            "userAnswer": "India",
+            "isCorrect": true,
+            "timeSpentMs": 3197,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2405,
-    "totalCorrect": 1768,
+    "totalReviews": 2406,
+    "totalCorrect": 1769,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35681,7 +35711,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:26:44.567Z"
+    "updatedAt": "2026-10-29T23:26:48.765Z"
   },
   "settings": {
     "audioEnabled": true,
