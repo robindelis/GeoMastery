@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:30:41.301Z",
+  "exportedAt": "2026-10-29T13:30:45.805Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -32028,11 +32028,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "CHL:country",
+      {
+        "id": "CHL:country",
+        "countryId": "CHL",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:30:42.324Z",
+        "nextDueAt": "2026-10-29T13:45:42.324Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:30:42.324Z",
+            "inputMode": "typing",
+            "userAnswer": "Chile",
+            "isCorrect": true,
+            "timeSpentMs": 2376,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2206,
-    "totalCorrect": 1593,
+    "totalReviews": 2207,
+    "totalCorrect": 1594,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -32070,7 +32100,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:30:38.020Z"
+    "updatedAt": "2026-10-29T13:30:42.328Z"
   },
   "settings": {
     "audioEnabled": true,
