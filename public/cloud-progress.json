@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:23:53.661Z",
+  "exportedAt": "2026-10-29T13:24:22.761Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26417,14 +26417,14 @@
         "id": "VCT:country",
         "countryId": "VCT",
         "attributeId": "country",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 1.5,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 1.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 5,
-        "lastReviewedAt": "2026-10-27T12:38:19.160Z",
-        "nextDueAt": "2026-10-27T12:48:19.160Z",
+        "lastReviewedAt": "2026-10-29T13:24:19.354Z",
+        "nextDueAt": "2026-10-29T13:39:19.354Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:24:47.742Z",
@@ -26465,11 +26465,19 @@
             "isCorrect": false,
             "timeSpentMs": 34243,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-29T13:24:19.354Z",
+            "inputMode": "typing",
+            "userAnswer": "Saint Vincent and the Grenadines",
+            "isCorrect": true,
+            "timeSpentMs": 9373,
+            "grade": 2
           }
         ],
-        "difficulty": 7.79,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 7.58,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -31580,8 +31588,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2173,
-    "totalCorrect": 1567,
+    "totalReviews": 2174,
+    "totalCorrect": 1568,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -31619,7 +31627,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:23:50.415Z"
+    "updatedAt": "2026-10-29T13:24:19.359Z"
   },
   "settings": {
     "audioEnabled": true,
