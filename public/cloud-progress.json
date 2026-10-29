@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:28:12.810Z",
+  "exportedAt": "2026-10-29T13:28:19.008Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -12729,14 +12729,14 @@
         "id": "WATER_SEA_RED:location",
         "countryId": "WATER_SEA_RED",
         "attributeId": "location",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 2.05,
-        "intervalDays": 0,
-        "reps": 3,
+        "stage": 2,
+        "step": 1,
+        "easeFactor": 2.1,
+        "intervalDays": 8,
+        "reps": 4,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-24T15:25:33.523Z",
-        "nextDueAt": "2026-10-24T15:35:33.523Z",
+        "lastReviewedAt": "2026-10-29T13:28:18.611Z",
+        "nextDueAt": "2026-11-06T13:28:18.611Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:53:00.335Z",
@@ -12780,12 +12780,20 @@
             "isCorrect": false,
             "timeSpentMs": 101692,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-29T13:28:18.611Z",
+            "inputMode": "map_click",
+            "userAnswer": "Red Sea",
+            "isCorrect": true,
+            "timeSpentMs": 2758,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.97,
-        "difficulty": 7.61,
-        "lastLatencyGrade": 1,
+        "stability": 8.29,
+        "difficulty": 7.08,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "WATER_SEA_CASPIAN"
         ]
@@ -24642,14 +24650,14 @@
         "id": "LIE:country",
         "countryId": "LIE",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.35,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.4,
+        "intervalDays": 14,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-23T11:54:45.769Z",
-        "nextDueAt": "2026-10-23T12:09:45.769Z",
+        "lastReviewedAt": "2026-10-29T13:28:15.481Z",
+        "nextDueAt": "2026-11-12T13:28:15.481Z",
         "history": [
           {
             "timestamp": "2026-10-22T10:05:15.725Z",
@@ -24666,10 +24674,18 @@
             "isCorrect": true,
             "timeSpentMs": 4486,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-29T13:28:15.481Z",
+            "inputMode": "typing",
+            "userAnswer": "Liechtenstein",
+            "isCorrect": true,
+            "timeSpentMs": 5009,
+            "grade": 3
           }
         ],
-        "difficulty": 5.59,
-        "stability": 1.1,
+        "difficulty": 5.22,
+        "stability": 14,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -31810,8 +31826,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2190,
-    "totalCorrect": 1580,
+    "totalReviews": 2192,
+    "totalCorrect": 1582,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -31849,7 +31865,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:28:09.545Z"
+    "updatedAt": "2026-10-29T13:28:18.619Z"
   },
   "settings": {
     "audioEnabled": true,
