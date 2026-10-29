@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:27:29.445Z",
+  "exportedAt": "2026-10-29T23:27:41.042Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -31903,13 +31903,13 @@
         "countryId": "TON",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
+        "step": 0,
+        "easeFactor": 2.38,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-27T12:44:33.646Z",
-        "nextDueAt": "2026-10-27T12:59:33.646Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-29T23:27:36.526Z",
+        "nextDueAt": "2026-10-29T23:37:36.526Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:44:33.646Z",
@@ -31918,11 +31918,19 @@
             "isCorrect": true,
             "timeSpentMs": 1609,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-29T23:27:36.526Z",
+            "inputMode": "typing",
+            "userAnswer": "h",
+            "isCorrect": false,
+            "timeSpentMs": 16083,
+            "grade": 1
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
-        "lastLatencyGrade": 4,
+        "difficulty": 5.32,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
         "confusedWith": []
       }
     ],
@@ -35827,11 +35835,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "KWT:capital_to_country",
+      {
+        "id": "KWT:capital_to_country",
+        "countryId": "KWT",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:27:40.336Z",
+        "nextDueAt": "2026-10-29T23:42:40.336Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:27:40.336Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Kuwait",
+            "isCorrect": true,
+            "timeSpentMs": 2347,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2412,
-    "totalCorrect": 1775,
+    "totalReviews": 2414,
+    "totalCorrect": 1776,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35869,7 +35907,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:27:19.419Z"
+    "updatedAt": "2026-10-29T23:27:40.340Z"
   },
   "settings": {
     "audioEnabled": true,
