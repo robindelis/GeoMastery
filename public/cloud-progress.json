@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:27:53.973Z",
+  "exportedAt": "2026-10-29T23:28:12.935Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13330,13 +13330,13 @@
         "countryId": "WATER_STRAIT_MALACCA",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 1.8,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 1.78,
+        "intervalDays": 5,
+        "reps": 3,
         "lapses": 4,
-        "lastReviewedAt": "2026-10-23T11:36:42.006Z",
-        "nextDueAt": "2026-10-23T11:46:42.006Z",
+        "lastReviewedAt": "2026-10-29T23:28:05.969Z",
+        "nextDueAt": "2026-11-03T23:28:05.969Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:17:12.671Z",
@@ -13380,12 +13380,20 @@
             "isCorrect": false,
             "timeSpentMs": 39521,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-29T23:28:05.969Z",
+            "inputMode": "map_click",
+            "userAnswer": "Strait of Malacca",
+            "isCorrect": true,
+            "timeSpentMs": 14773,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.98,
-        "difficulty": 8.57,
-        "lastLatencyGrade": 1,
+        "stability": 4.74,
+        "difficulty": 8.18,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "MEX"
         ]
@@ -35873,11 +35881,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "SLV:capital_to_country",
+      {
+        "id": "SLV:capital_to_country",
+        "countryId": "SLV",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:28:10.767Z",
+        "nextDueAt": "2026-10-29T23:43:10.767Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:28:10.767Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "El Salvador",
+            "isCorrect": true,
+            "timeSpentMs": 2109,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2415,
-    "totalCorrect": 1777,
+    "totalReviews": 2417,
+    "totalCorrect": 1779,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35915,7 +35953,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:27:48.610Z"
+    "updatedAt": "2026-10-29T23:28:10.787Z"
   },
   "settings": {
     "audioEnabled": true,
