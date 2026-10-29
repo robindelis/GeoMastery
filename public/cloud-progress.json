@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:14:00.182Z",
+  "exportedAt": "2026-10-29T23:14:17.837Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -33891,11 +33891,71 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "CIV:country",
+      {
+        "id": "CIV:country",
+        "countryId": "CIV",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:14:10.867Z",
+        "nextDueAt": "2026-10-29T23:29:10.867Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:14:10.867Z",
+            "inputMode": "typing",
+            "userAnswer": "Ivory coast",
+            "isCorrect": true,
+            "timeSpentMs": 9460,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
+    ],
+    [
+      "FJI:capital_to_country",
+      {
+        "id": "FJI:capital_to_country",
+        "countryId": "FJI",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:14:14.087Z",
+        "nextDueAt": "2026-10-29T23:29:14.087Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:14:14.087Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Fiji",
+            "isCorrect": true,
+            "timeSpentMs": 2330,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2314,
-    "totalCorrect": 1684,
+    "totalReviews": 2316,
+    "totalCorrect": 1686,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -33933,7 +33993,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:13:56.573Z"
+    "updatedAt": "2026-10-29T23:14:14.091Z"
   },
   "settings": {
     "audioEnabled": true,
