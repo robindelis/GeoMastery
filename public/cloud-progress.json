@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:26:26.047Z",
+  "exportedAt": "2026-10-29T23:26:39.020Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35569,11 +35569,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "AFG:country",
+      {
+        "id": "AFG:country",
+        "countryId": "AFG",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:26:32.271Z",
+        "nextDueAt": "2026-10-29T23:41:32.271Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:26:32.271Z",
+            "inputMode": "typing",
+            "userAnswer": "Afghanistan",
+            "isCorrect": true,
+            "timeSpentMs": 9221,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2402,
-    "totalCorrect": 1765,
+    "totalReviews": 2403,
+    "totalCorrect": 1766,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35611,7 +35641,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:26:21.959Z"
+    "updatedAt": "2026-10-29T23:26:32.289Z"
   },
   "settings": {
     "audioEnabled": true,
