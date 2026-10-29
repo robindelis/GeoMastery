@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:24:41.161Z",
+  "exportedAt": "2026-10-29T13:24:45.145Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -31602,11 +31602,41 @@
           "KHM"
         ]
       }
+    ],
+    [
+      "CHN:country",
+      {
+        "id": "CHN:country",
+        "countryId": "CHN",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:24:41.176Z",
+        "nextDueAt": "2026-10-29T13:39:41.176Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:24:41.176Z",
+            "inputMode": "typing",
+            "userAnswer": "China",
+            "isCorrect": true,
+            "timeSpentMs": 2322,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2176,
-    "totalCorrect": 1569,
+    "totalReviews": 2177,
+    "totalCorrect": 1570,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -31644,7 +31674,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:24:37.926Z"
+    "updatedAt": "2026-10-29T13:24:41.181Z"
   },
   "settings": {
     "audioEnabled": true,
