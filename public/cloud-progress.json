@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:21:47.009Z",
+  "exportedAt": "2026-10-29T13:21:51.447Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -31259,11 +31259,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "SMR:capital_to_country",
+      {
+        "id": "SMR:capital_to_country",
+        "countryId": "SMR",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T13:21:48.285Z",
+        "nextDueAt": "2026-10-29T13:36:48.285Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T13:21:48.285Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "San Marino",
+            "isCorrect": true,
+            "timeSpentMs": 1361,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2154,
-    "totalCorrect": 1553,
+    "totalReviews": 2155,
+    "totalCorrect": 1554,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-29",
@@ -31301,7 +31331,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:21:46.012Z"
+    "updatedAt": "2026-10-29T13:21:48.289Z"
   },
   "settings": {
     "audioEnabled": true,
