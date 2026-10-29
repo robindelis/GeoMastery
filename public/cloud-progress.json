@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T13:30:27.648Z",
+  "exportedAt": "2026-10-29T13:30:41.301Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -12514,12 +12514,12 @@
         "attributeId": "location",
         "stage": 1,
         "step": 0,
-        "easeFactor": 1.85,
+        "easeFactor": 1.65,
         "intervalDays": 0,
         "reps": 3,
-        "lapses": 4,
-        "lastReviewedAt": "2026-10-23T11:34:11.523Z",
-        "nextDueAt": "2026-10-23T11:44:11.523Z",
+        "lapses": 5,
+        "lastReviewedAt": "2026-10-29T13:30:38.017Z",
+        "nextDueAt": "2026-10-29T13:40:38.017Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:49:52.103Z",
@@ -12570,13 +12570,22 @@
             "isCorrect": false,
             "timeSpentMs": 15989,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-29T13:30:38.017Z",
+            "inputMode": "map_click",
+            "userAnswer": "Coral Sea",
+            "isCorrect": false,
+            "timeSpentMs": 12043,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.91,
-        "difficulty": 8.43,
+        "stability": 0.6,
+        "difficulty": 8.3,
         "lastLatencyGrade": 1,
         "confusedWith": [
+          "WATER_SEA_CORAL",
           "WATER_GULF_ADEN"
         ]
       }
@@ -32022,7 +32031,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2205,
+    "totalReviews": 2206,
     "totalCorrect": 1593,
     "currentStreak": 1,
     "longestStreak": 7,
@@ -32061,7 +32070,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T13:30:24.414Z"
+    "updatedAt": "2026-10-29T13:30:38.020Z"
   },
   "settings": {
     "audioEnabled": true,
