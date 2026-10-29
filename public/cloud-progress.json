@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:24:26.566Z",
+  "exportedAt": "2026-10-29T23:24:32.580Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35189,11 +35189,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "VAT:capital_to_country",
+      {
+        "id": "VAT:capital_to_country",
+        "countryId": "VAT",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:24:26.603Z",
+        "nextDueAt": "2026-10-29T23:39:26.603Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:24:26.603Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Vatican City",
+            "isCorrect": true,
+            "timeSpentMs": 2548,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2385,
-    "totalCorrect": 1749,
+    "totalReviews": 2386,
+    "totalCorrect": 1750,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -35231,7 +35261,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:24:22.043Z"
+    "updatedAt": "2026-10-29T23:24:26.613Z"
   },
   "settings": {
     "audioEnabled": true,
