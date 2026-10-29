@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T23:21:19.076Z",
+  "exportedAt": "2026-10-29T23:21:58.769Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -5732,13 +5732,13 @@
         "countryId": "CHN",
         "attributeId": "capital",
         "stage": 2,
-        "step": 2,
-        "easeFactor": 2.299999999999999,
-        "intervalDays": 7,
-        "reps": 4,
+        "step": 3,
+        "easeFactor": 2.38,
+        "intervalDays": 44,
+        "reps": 5,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-15T11:59:14.977Z",
-        "nextDueAt": "2026-10-22T11:59:14.977Z",
+        "lastReviewedAt": "2026-10-29T23:21:56.735Z",
+        "nextDueAt": "2026-12-12T23:21:56.735Z",
         "history": [
           {
             "timestamp": "2026-10-04T18:41:55.837Z",
@@ -5781,11 +5781,21 @@
             "userAnswer": "Beijing",
             "isCorrect": true,
             "timeSpentMs": 4779
+          },
+          {
+            "timestamp": "2026-10-29T23:21:56.735Z",
+            "inputMode": "typing",
+            "userAnswer": "Beijing",
+            "isCorrect": true,
+            "timeSpentMs": 2956,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 6.49
+        "stability": 44.31,
+        "difficulty": 5.53,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -34711,11 +34721,101 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "SLB:country",
+      {
+        "id": "SLB:country",
+        "countryId": "SLB",
+        "attributeId": "country",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-29T23:21:44.363Z",
+        "nextDueAt": "2026-10-29T23:31:44.363Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:21:44.363Z",
+            "inputMode": "typing",
+            "userAnswer": "t",
+            "isCorrect": false,
+            "timeSpentMs": 28840,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": []
+      }
+    ],
+    [
+      "IRL:country",
+      {
+        "id": "IRL:country",
+        "countryId": "IRL",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:21:49.717Z",
+        "nextDueAt": "2026-10-29T23:36:49.717Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:21:49.717Z",
+            "inputMode": "typing",
+            "userAnswer": "Ireland",
+            "isCorrect": true,
+            "timeSpentMs": 2935,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
+    ],
+    [
+      "CYP:capital_to_country",
+      {
+        "id": "CYP:capital_to_country",
+        "countryId": "CYP",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-29T23:21:52.960Z",
+        "nextDueAt": "2026-10-29T23:36:52.960Z",
+        "history": [
+          {
+            "timestamp": "2026-10-29T23:21:52.960Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Cyprus",
+            "isCorrect": true,
+            "timeSpentMs": 2687,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2362,
-    "totalCorrect": 1728,
+    "totalReviews": 2366,
+    "totalCorrect": 1731,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -34753,7 +34853,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-29T23:21:15.078Z"
+    "updatedAt": "2026-10-29T23:21:56.744Z"
   },
   "settings": {
     "audioEnabled": true,
