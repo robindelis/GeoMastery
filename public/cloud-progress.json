@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:25:35.781Z",
+  "exportedAt": "2026-10-30T14:25:41.244Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -37981,11 +37981,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "GBR:country",
+      {
+        "id": "GBR:country",
+        "countryId": "GBR",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:25:37.653Z",
+        "nextDueAt": "2026-10-30T14:40:37.653Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:25:37.653Z",
+            "inputMode": "typing",
+            "userAnswer": "United Kingdom",
+            "isCorrect": true,
+            "timeSpentMs": 4379,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2527,
-    "totalCorrect": 1873,
+    "totalReviews": 2528,
+    "totalCorrect": 1874,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38023,7 +38053,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:25:31.967Z"
+    "updatedAt": "2026-10-30T14:25:37.658Z"
   },
   "settings": {
     "audioEnabled": true,
