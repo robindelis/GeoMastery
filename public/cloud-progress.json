@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:06:13.596Z",
+  "exportedAt": "2026-10-30T14:06:20.877Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -37217,11 +37217,41 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "AUT:country",
+      {
+        "id": "AUT:country",
+        "countryId": "AUT",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:06:17.347Z",
+        "nextDueAt": "2026-10-30T14:21:17.347Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:06:17.347Z",
+            "inputMode": "typing",
+            "userAnswer": "Austria",
+            "isCorrect": true,
+            "timeSpentMs": 6320,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2490,
-    "totalCorrect": 1839,
+    "totalReviews": 2491,
+    "totalCorrect": 1840,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37259,7 +37289,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:06:09.969Z"
+    "updatedAt": "2026-10-30T14:06:17.351Z"
   },
   "settings": {
     "audioEnabled": true,
