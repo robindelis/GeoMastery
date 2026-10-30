@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:34:46.551Z",
+  "exportedAt": "2026-10-30T14:34:59.180Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30781,13 +30781,13 @@
         "countryId": "CHL",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.15,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2.13,
+        "intervalDays": 2,
+        "reps": 2,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-29T13:41:17.770Z",
-        "nextDueAt": "2026-10-29T13:51:17.770Z",
+        "lastReviewedAt": "2026-10-30T14:34:56.316Z",
+        "nextDueAt": "2026-11-01T14:34:56.316Z",
         "history": [
           {
             "timestamp": "2026-10-26T19:53:28.923Z",
@@ -30812,11 +30812,19 @@
             "isCorrect": false,
             "timeSpentMs": 4232,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-30T14:34:56.316Z",
+            "inputMode": "typing",
+            "userAnswer": "Chile",
+            "isCorrect": true,
+            "timeSpentMs": 12286,
+            "grade": 2
           }
         ],
-        "difficulty": 6.54,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 6.61,
+        "stability": 2.2,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "CUB",
           "PAN"
@@ -38916,8 +38924,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2585,
-    "totalCorrect": 1926,
+    "totalReviews": 2586,
+    "totalCorrect": 1927,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38955,7 +38963,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:34:43.759Z"
+    "updatedAt": "2026-10-30T14:34:56.321Z"
   },
   "settings": {
     "audioEnabled": true,
