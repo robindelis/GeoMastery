@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:45:01.117Z",
+  "exportedAt": "2026-10-30T14:45:08.678Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13506,14 +13506,14 @@
         "id": "WATER_SEA_CARIBBEAN:location",
         "countryId": "WATER_SEA_CARIBBEAN",
         "attributeId": "location",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 2.25,
-        "intervalDays": 0,
-        "reps": 3,
+        "stage": 2,
+        "step": 1,
+        "easeFactor": 2.23,
+        "intervalDays": 7,
+        "reps": 4,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-25T13:45:53.696Z",
-        "nextDueAt": "2026-10-25T13:55:53.696Z",
+        "lastReviewedAt": "2026-10-30T14:45:05.743Z",
+        "nextDueAt": "2026-11-06T14:45:05.743Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:12:24.237Z",
@@ -13550,12 +13550,20 @@
             "isCorrect": false,
             "timeSpentMs": 4958,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-30T14:45:05.743Z",
+            "inputMode": "map_click",
+            "userAnswer": "Caribbean Sea",
+            "isCorrect": true,
+            "timeSpentMs": 7135,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 1.31,
-        "difficulty": 6.78,
-        "lastLatencyGrade": 1,
+        "stability": 7,
+        "difficulty": 6.8,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "WATER_SEA_CORAL"
         ]
@@ -39348,8 +39356,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2628,
-    "totalCorrect": 1966,
+    "totalReviews": 2629,
+    "totalCorrect": 1967,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -39387,7 +39395,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:44:58.011Z"
+    "updatedAt": "2026-10-30T14:45:05.748Z"
   },
   "settings": {
     "audioEnabled": true,
