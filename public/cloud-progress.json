@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T12:46:19.670Z",
+  "exportedAt": "2026-10-30T13:53:30.806Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -36717,11 +36717,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "TUR:country",
+      {
+        "id": "TUR:country",
+        "countryId": "TUR",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T13:53:27.811Z",
+        "nextDueAt": "2026-10-30T14:08:27.811Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T13:53:27.811Z",
+            "inputMode": "typing",
+            "userAnswer": "Turkey",
+            "isCorrect": true,
+            "timeSpentMs": 4030847,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2461,
-    "totalCorrect": 1814,
+    "totalReviews": 2462,
+    "totalCorrect": 1815,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -36759,7 +36789,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T12:46:16.650Z"
+    "updatedAt": "2026-10-30T13:53:27.816Z"
   },
   "settings": {
     "audioEnabled": true,
