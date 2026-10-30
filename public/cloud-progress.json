@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:35:45.313Z",
+  "exportedAt": "2026-10-30T14:35:51.586Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25890,14 +25890,14 @@
         "id": "AGO:country",
         "countryId": "AGO",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 18,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-23T11:28:23.424Z",
-        "nextDueAt": "2026-10-23T11:43:23.424Z",
+        "lastReviewedAt": "2026-10-30T14:35:48.682Z",
+        "nextDueAt": "2026-11-17T14:35:48.682Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:28:23.424Z",
@@ -25906,10 +25906,18 @@
             "isCorrect": true,
             "timeSpentMs": 4079,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:35:48.682Z",
+            "inputMode": "typing",
+            "userAnswer": "Angola",
+            "isCorrect": true,
+            "timeSpentMs": 5444,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 18,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -39042,8 +39050,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2597,
-    "totalCorrect": 1938,
+    "totalReviews": 2598,
+    "totalCorrect": 1939,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -39081,7 +39089,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:35:42.337Z"
+    "updatedAt": "2026-10-30T14:35:48.687Z"
   },
   "settings": {
     "audioEnabled": true,
