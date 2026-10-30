@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T13:53:30.806Z",
+  "exportedAt": "2026-10-30T13:53:35.030Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -34778,14 +34778,14 @@
         "id": "JAM:capital_to_country",
         "countryId": "JAM",
         "attributeId": "capital_to_country",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.35,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-29T23:18:15.611Z",
-        "nextDueAt": "2026-10-29T23:28:15.611Z",
+        "lastReviewedAt": "2026-10-30T13:53:31.111Z",
+        "nextDueAt": "2026-10-30T14:08:31.111Z",
         "history": [
           {
             "timestamp": "2026-10-29T23:18:15.611Z",
@@ -34794,11 +34794,19 @@
             "isCorrect": false,
             "timeSpentMs": 2912,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-30T13:53:31.111Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Jamaica",
+            "isCorrect": true,
+            "timeSpentMs": 2439,
+            "grade": 3
           }
         ],
-        "difficulty": 5.99,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 5.59,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "BRB"
         ]
@@ -36750,8 +36758,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2462,
-    "totalCorrect": 1815,
+    "totalReviews": 2463,
+    "totalCorrect": 1816,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -36789,7 +36797,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T13:53:27.816Z"
+    "updatedAt": "2026-10-30T13:53:31.115Z"
   },
   "settings": {
     "audioEnabled": true,
