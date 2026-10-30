@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:34:04.892Z",
+  "exportedAt": "2026-10-30T14:34:09.493Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20023,13 +20023,13 @@
         "countryId": "SLV",
         "attributeId": "capital",
         "stage": 2,
-        "step": 2,
-        "easeFactor": 2.4499999999999993,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 3,
+        "easeFactor": 2.53,
+        "intervalDays": 65,
+        "reps": 4,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-10T13:49:53.782Z",
-        "nextDueAt": "2026-10-17T13:49:53.782Z",
+        "lastReviewedAt": "2026-10-30T14:34:05.706Z",
+        "nextDueAt": "2027-01-03T14:34:05.706Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:43:45.260Z",
@@ -20058,11 +20058,21 @@
             "userAnswer": "San salvador",
             "isCorrect": true,
             "timeSpentMs": 3457
+          },
+          {
+            "timestamp": "2026-10-30T14:34:05.706Z",
+            "inputMode": "typing",
+            "userAnswer": "San Salvador",
+            "isCorrect": true,
+            "timeSpentMs": 3181,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 5.38
+        "stability": 65.46,
+        "difficulty": 4.34,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -38812,8 +38822,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2578,
-    "totalCorrect": 1919,
+    "totalReviews": 2579,
+    "totalCorrect": 1920,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38851,7 +38861,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:34:02.036Z"
+    "updatedAt": "2026-10-30T14:34:05.711Z"
   },
   "settings": {
     "audioEnabled": true,
