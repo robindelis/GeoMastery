@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:33:10.719Z",
+  "exportedAt": "2026-10-30T14:33:13.684Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -38689,11 +38689,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "FRA:country",
+      {
+        "id": "FRA:country",
+        "countryId": "FRA",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:33:10.798Z",
+        "nextDueAt": "2026-10-30T14:48:10.798Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:33:10.798Z",
+            "inputMode": "typing",
+            "userAnswer": "France",
+            "isCorrect": true,
+            "timeSpentMs": 2413,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2569,
-    "totalCorrect": 1911,
+    "totalReviews": 2570,
+    "totalCorrect": 1912,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38731,7 +38761,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:33:07.160Z"
+    "updatedAt": "2026-10-30T14:33:10.803Z"
   },
   "settings": {
     "audioEnabled": true,
