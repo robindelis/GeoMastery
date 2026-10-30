@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:45:19.677Z",
+  "exportedAt": "2026-10-30T14:45:23.392Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -39369,11 +39369,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "URY:capital_to_country",
+      {
+        "id": "URY:capital_to_country",
+        "countryId": "URY",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:45:19.733Z",
+        "nextDueAt": "2026-10-30T15:00:19.733Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:45:19.733Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Uruguay",
+            "isCorrect": true,
+            "timeSpentMs": 1835,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2631,
-    "totalCorrect": 1969,
+    "totalReviews": 2632,
+    "totalCorrect": 1970,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -39411,7 +39441,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:45:16.563Z"
+    "updatedAt": "2026-10-30T14:45:19.739Z"
   },
   "settings": {
     "audioEnabled": true,
