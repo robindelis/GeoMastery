@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T12:44:40.475Z",
+  "exportedAt": "2026-10-30T12:44:49.316Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -36579,11 +36579,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "RWA:capital_to_country",
+      {
+        "id": "RWA:capital_to_country",
+        "countryId": "RWA",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T12:44:45.761Z",
+        "nextDueAt": "2026-10-30T12:59:45.761Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T12:44:45.761Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Rwanda",
+            "isCorrect": true,
+            "timeSpentMs": 7096,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2455,
-    "totalCorrect": 1808,
+    "totalReviews": 2456,
+    "totalCorrect": 1809,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -36621,7 +36651,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T12:44:36.733Z"
+    "updatedAt": "2026-10-30T12:44:45.765Z"
   },
   "settings": {
     "audioEnabled": true,
