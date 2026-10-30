@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:36:23.051Z",
+  "exportedAt": "2026-10-30T14:36:25.441Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -39131,11 +39131,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "NLD:capital_to_country",
+      {
+        "id": "NLD:capital_to_country",
+        "countryId": "NLD",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:36:25.069Z",
+        "nextDueAt": "2026-10-30T14:51:25.069Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:36:25.069Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Netherlands",
+            "isCorrect": true,
+            "timeSpentMs": 1759,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2605,
-    "totalCorrect": 1945,
+    "totalReviews": 2606,
+    "totalCorrect": 1946,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -39173,7 +39203,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:36:22.503Z"
+    "updatedAt": "2026-10-30T14:36:25.075Z"
   },
   "settings": {
     "audioEnabled": true,
