@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:34:59.180Z",
+  "exportedAt": "2026-10-30T14:35:05.725Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -38921,11 +38921,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "CZE:capital_to_country",
+      {
+        "id": "CZE:capital_to_country",
+        "countryId": "CZE",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:35:02.788Z",
+        "nextDueAt": "2026-10-30T14:50:02.788Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:35:02.788Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Czechia",
+            "isCorrect": true,
+            "timeSpentMs": 2796,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2586,
-    "totalCorrect": 1927,
+    "totalReviews": 2587,
+    "totalCorrect": 1928,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38963,7 +38993,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:34:56.321Z"
+    "updatedAt": "2026-10-30T14:35:02.794Z"
   },
   "settings": {
     "audioEnabled": true,
