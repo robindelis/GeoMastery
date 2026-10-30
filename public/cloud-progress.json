@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:28:21.777Z",
+  "exportedAt": "2026-10-30T14:28:35.648Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -38453,11 +38453,41 @@
           "NZL"
         ]
       }
+    ],
+    [
+      "WSM:capital_to_country",
+      {
+        "id": "WSM:capital_to_country",
+        "countryId": "WSM",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:28:32.778Z",
+        "nextDueAt": "2026-10-30T14:43:32.778Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:28:32.778Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Samoa",
+            "isCorrect": true,
+            "timeSpentMs": 1870,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2554,
-    "totalCorrect": 1898,
+    "totalReviews": 2555,
+    "totalCorrect": 1899,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38495,7 +38525,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:28:18.950Z"
+    "updatedAt": "2026-10-30T14:28:32.783Z"
   },
   "settings": {
     "audioEnabled": true,
