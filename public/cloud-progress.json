@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T12:46:16.440Z",
+  "exportedAt": "2026-10-30T12:46:19.670Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -36687,11 +36687,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "HUN:capital_to_country",
+      {
+        "id": "HUN:capital_to_country",
+        "countryId": "HUN",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T12:46:16.646Z",
+        "nextDueAt": "2026-10-30T13:01:16.646Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T12:46:16.646Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Hungary",
+            "isCorrect": true,
+            "timeSpentMs": 1986,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2460,
-    "totalCorrect": 1813,
+    "totalReviews": 2461,
+    "totalCorrect": 1814,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -36729,7 +36759,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T12:46:13.088Z"
+    "updatedAt": "2026-10-30T12:46:16.650Z"
   },
   "settings": {
     "audioEnabled": true,
