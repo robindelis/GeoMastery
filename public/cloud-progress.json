@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:23:27.734Z",
+  "exportedAt": "2026-10-30T14:23:34.980Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -37711,11 +37711,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "KNA:country",
+      {
+        "id": "KNA:country",
+        "countryId": "KNA",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:23:31.788Z",
+        "nextDueAt": "2026-10-30T14:38:31.788Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:23:31.788Z",
+            "inputMode": "typing",
+            "userAnswer": "Saint Kitts",
+            "isCorrect": true,
+            "timeSpentMs": 6614,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2509,
-    "totalCorrect": 1856,
+    "totalReviews": 2510,
+    "totalCorrect": 1857,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37753,7 +37783,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:23:24.286Z"
+    "updatedAt": "2026-10-30T14:23:31.793Z"
   },
   "settings": {
     "audioEnabled": true,
