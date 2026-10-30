@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:32:39.617Z",
+  "exportedAt": "2026-10-30T14:32:46.539Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35007,13 +35007,13 @@
         "countryId": "NZL",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 6,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:16:43.462Z",
-        "nextDueAt": "2026-10-29T23:31:43.462Z",
+        "lastReviewedAt": "2026-10-30T14:32:42.793Z",
+        "nextDueAt": "2026-11-05T14:32:42.793Z",
         "history": [
           {
             "timestamp": "2026-10-29T23:16:43.462Z",
@@ -35022,11 +35022,19 @@
             "isCorrect": true,
             "timeSpentMs": 2499,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:32:42.793Z",
+            "inputMode": "typing",
+            "userAnswer": "New zealand",
+            "isCorrect": true,
+            "timeSpentMs": 2920,
+            "grade": 4
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 3.3,
+        "stability": 5.91,
+        "lastLatencyGrade": 4,
         "confusedWith": []
       }
     ],
@@ -38608,8 +38616,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2564,
-    "totalCorrect": 1906,
+    "totalReviews": 2565,
+    "totalCorrect": 1907,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38647,7 +38655,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:32:36.740Z"
+    "updatedAt": "2026-10-30T14:32:42.798Z"
   },
   "settings": {
     "audioEnabled": true,
