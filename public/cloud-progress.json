@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:24:21.252Z",
+  "exportedAt": "2026-10-30T14:24:34.102Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -37801,11 +37801,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "SVK:country",
+      {
+        "id": "SVK:country",
+        "countryId": "SVK",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:24:30.526Z",
+        "nextDueAt": "2026-10-30T14:39:30.526Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:24:30.526Z",
+            "inputMode": "typing",
+            "userAnswer": "Slovakia",
+            "isCorrect": true,
+            "timeSpentMs": 6191,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2514,
-    "totalCorrect": 1860,
+    "totalReviews": 2516,
+    "totalCorrect": 1862,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37843,7 +37873,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:24:17.861Z"
+    "updatedAt": "2026-10-30T14:24:30.531Z"
   },
   "settings": {
     "audioEnabled": true,
