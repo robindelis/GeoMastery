@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:23:46.739Z",
+  "exportedAt": "2026-10-30T14:24:27.158Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -23262,13 +23262,13 @@
         "countryId": "GRD",
         "attributeId": "country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.35,
-        "intervalDays": 1,
+        "step": 0,
+        "easeFactor": 2.15,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-21T12:19:21.953Z",
-        "nextDueAt": "2026-10-22T12:19:21.953Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-30T14:23:53.653Z",
+        "nextDueAt": "2026-10-30T14:33:53.653Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:15:09.483Z",
@@ -23285,12 +23285,22 @@
             "isCorrect": true,
             "timeSpentMs": 3366,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:23:53.653Z",
+            "inputMode": "typing",
+            "userAnswer": "Dominica",
+            "isCorrect": false,
+            "timeSpentMs": 9868,
+            "grade": 1
           }
         ],
-        "difficulty": 5.59,
-        "stability": 1.4,
-        "lastLatencyGrade": 3,
-        "confusedWith": []
+        "difficulty": 6.54,
+        "stability": 0.63,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "DMA"
+        ]
       }
     ],
     [
@@ -33951,13 +33961,13 @@
         "countryId": "SYC",
         "attributeId": "country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 3,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T13:40:04.970Z",
-        "nextDueAt": "2026-10-29T13:55:04.970Z",
+        "lastReviewedAt": "2026-10-30T14:24:17.857Z",
+        "nextDueAt": "2026-11-02T14:24:17.857Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:40:04.970Z",
@@ -33966,11 +33976,19 @@
             "isCorrect": true,
             "timeSpentMs": 5654,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:24:17.857Z",
+            "inputMode": "typing",
+            "userAnswer": "Seichelles",
+            "isCorrect": true,
+            "timeSpentMs": 23019,
+            "grade": 2
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.97,
+        "stability": 3.1,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -37072,14 +37090,14 @@
         "id": "SUR:country",
         "countryId": "SUR",
         "attributeId": "country",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 2.3,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.35,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-30T14:02:31.002Z",
-        "nextDueAt": "2026-10-30T14:12:31.002Z",
+        "lastReviewedAt": "2026-10-30T14:24:23.692Z",
+        "nextDueAt": "2026-10-30T14:39:23.692Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:02:31.002Z",
@@ -37088,11 +37106,19 @@
             "isCorrect": false,
             "timeSpentMs": 4000,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-30T14:24:23.692Z",
+            "inputMode": "typing",
+            "userAnswer": "Suriname",
+            "isCorrect": true,
+            "timeSpentMs": 4754,
+            "grade": 3
           }
         ],
-        "difficulty": 5.99,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 5.59,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "GUY"
         ]
@@ -37710,8 +37736,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2512,
-    "totalCorrect": 1859,
+    "totalReviews": 2515,
+    "totalCorrect": 1861,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37749,7 +37775,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:23:43.142Z"
+    "updatedAt": "2026-10-30T14:24:23.697Z"
   },
   "settings": {
     "audioEnabled": true,
