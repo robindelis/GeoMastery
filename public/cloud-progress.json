@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:27:13.485Z",
+  "exportedAt": "2026-10-30T14:27:31.271Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30232,14 +30232,14 @@
         "id": "GUY:capital_to_country",
         "countryId": "GUY",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.35,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.4,
+        "intervalDays": 9,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-27T12:29:26.127Z",
-        "nextDueAt": "2026-10-27T12:44:26.127Z",
+        "lastReviewedAt": "2026-10-30T14:27:28.407Z",
+        "nextDueAt": "2026-11-08T14:27:28.407Z",
         "history": [
           {
             "timestamp": "2026-10-26T19:46:59.075Z",
@@ -30256,10 +30256,18 @@
             "isCorrect": true,
             "timeSpentMs": 2474,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:27:28.407Z",
+            "inputMode": "typing",
+            "userAnswer": "Guyane",
+            "isCorrect": true,
+            "timeSpentMs": 8342,
+            "grade": 3
           }
         ],
-        "difficulty": 5.59,
-        "stability": 1.1,
+        "difficulty": 5.22,
+        "stability": 9.01,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "KNA"
@@ -38308,8 +38316,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2542,
-    "totalCorrect": 1887,
+    "totalReviews": 2545,
+    "totalCorrect": 1890,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38347,7 +38355,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:27:10.670Z"
+    "updatedAt": "2026-10-30T14:27:28.412Z"
   },
   "settings": {
     "audioEnabled": true,
