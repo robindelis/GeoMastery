@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T12:39:48.312Z",
+  "exportedAt": "2026-10-30T12:39:57.924Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25355,13 +25355,13 @@
         "countryId": "ETH",
         "attributeId": "flag",
         "stage": 1,
-        "step": 2,
-        "easeFactor": 2.46,
-        "intervalDays": 5,
+        "step": 0,
+        "easeFactor": 2.26,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-23T10:58:13.871Z",
-        "nextDueAt": "2026-10-28T10:58:13.871Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-30T12:39:54.592Z",
+        "nextDueAt": "2026-10-30T12:49:54.592Z",
         "history": [
           {
             "timestamp": "2026-10-23T10:54:33.112Z",
@@ -25386,11 +25386,19 @@
             "isCorrect": true,
             "timeSpentMs": 3114,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-30T12:39:54.592Z",
+            "inputMode": "typing",
+            "userAnswer": "h",
+            "isCorrect": false,
+            "timeSpentMs": 1324,
+            "grade": 1
           }
         ],
-        "difficulty": 3.92,
-        "stability": 4.84,
-        "lastLatencyGrade": 4,
+        "difficulty": 5.5,
+        "stability": 0.99,
+        "lastLatencyGrade": 1,
         "confusedWith": []
       }
     ],
@@ -31523,12 +31531,12 @@
         "attributeId": "flag",
         "stage": 0,
         "step": 0,
-        "easeFactor": 2.1,
+        "easeFactor": 1.9,
         "intervalDays": 0,
         "reps": 0,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-29T13:24:55.987Z",
-        "nextDueAt": "2026-10-29T13:34:55.987Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-10-30T12:39:52.166Z",
+        "nextDueAt": "2026-10-30T12:49:52.166Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:41:24.569Z",
@@ -31545,9 +31553,17 @@
             "isCorrect": false,
             "timeSpentMs": 7843,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-30T12:39:52.166Z",
+            "inputMode": "typing",
+            "userAnswer": "Ouzbekistan",
+            "isCorrect": false,
+            "timeSpentMs": 4089,
+            "grade": 1
           }
         ],
-        "difficulty": 6.79,
+        "difficulty": 7.29,
         "stability": 0.6,
         "lastLatencyGrade": 1,
         "confusedWith": [
@@ -36110,7 +36126,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2430,
+    "totalReviews": 2432,
     "totalCorrect": 1789,
     "currentStreak": 2,
     "longestStreak": 7,
@@ -36149,7 +36165,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T12:39:45.047Z"
+    "updatedAt": "2026-10-30T12:39:54.596Z"
   },
   "settings": {
     "audioEnabled": true,
