@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:45:26.365Z",
+  "exportedAt": "2026-10-30T14:45:31.590Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -38415,13 +38415,13 @@
         "countryId": "VNM",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 2,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:23:39.232Z",
-        "nextDueAt": "2026-10-30T14:38:39.232Z",
+        "lastReviewedAt": "2026-10-30T14:45:28.689Z",
+        "nextDueAt": "2026-11-01T14:45:28.689Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:23:39.232Z",
@@ -38430,11 +38430,19 @@
             "isCorrect": true,
             "timeSpentMs": 1812,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-30T14:45:28.689Z",
+            "inputMode": "typing",
+            "userAnswer": "Vietnam",
+            "isCorrect": true,
+            "timeSpentMs": 4583,
+            "grade": 3
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
-        "lastLatencyGrade": 4,
+        "difficulty": 3.41,
+        "stability": 2.45,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -39410,8 +39418,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2633,
-    "totalCorrect": 1971,
+    "totalReviews": 2634,
+    "totalCorrect": 1972,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -39449,7 +39457,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:45:23.489Z"
+    "updatedAt": "2026-10-30T14:45:28.693Z"
   },
   "settings": {
     "audioEnabled": true,
