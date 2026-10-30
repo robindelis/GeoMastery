@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:25:51.999Z",
+  "exportedAt": "2026-10-30T14:26:06.266Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7020,14 +7020,14 @@
         "id": "KWT:location",
         "countryId": "KWT",
         "attributeId": "location",
-        "stage": 2,
-        "step": 3,
-        "easeFactor": 2.38,
-        "intervalDays": 10,
+        "stage": 1,
+        "step": 0,
+        "easeFactor": 2.18,
+        "intervalDays": 0,
         "reps": 3,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-15T17:53:38.147Z",
-        "nextDueAt": "2026-10-25T17:53:38.147Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-10-30T14:26:02.700Z",
+        "nextDueAt": "2026-10-30T14:36:02.700Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:11:16.213Z",
@@ -7057,13 +7057,23 @@
             "isCorrect": true,
             "timeSpentMs": 7658,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-30T14:26:02.700Z",
+            "inputMode": "map_click",
+            "userAnswer": "Bahrain",
+            "isCorrect": false,
+            "timeSpentMs": 7404,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 10.45,
-        "difficulty": 6.35,
-        "lastLatencyGrade": 2,
-        "confusedWith": []
+        "stability": 1.47,
+        "difficulty": 7.01,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "BHR"
+        ]
       }
     ],
     [
@@ -38074,8 +38084,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2531,
-    "totalCorrect": 1877,
+    "totalReviews": 2533,
+    "totalCorrect": 1878,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38092,8 +38102,8 @@
       },
       "Asia": {
         "total": 96,
-        "mastered": 83,
-        "learning": 13
+        "mastered": 82,
+        "learning": 14
       },
       "Europe": {
         "total": 90,
@@ -38113,7 +38123,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:25:48.220Z"
+    "updatedAt": "2026-10-30T14:26:02.704Z"
   },
   "settings": {
     "audioEnabled": true,
