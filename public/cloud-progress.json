@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:36:12.413Z",
+  "exportedAt": "2026-10-30T14:36:18.039Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -27023,14 +27023,14 @@
         "id": "COL:country",
         "countryId": "COL",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 18,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-23T11:49:22.370Z",
-        "nextDueAt": "2026-10-23T12:04:22.370Z",
+        "lastReviewedAt": "2026-10-30T14:36:14.246Z",
+        "nextDueAt": "2026-11-17T14:36:14.246Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:49:22.370Z",
@@ -27039,10 +27039,18 @@
             "isCorrect": true,
             "timeSpentMs": 4173,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:36:14.246Z",
+            "inputMode": "typing",
+            "userAnswer": "Colombia",
+            "isCorrect": true,
+            "timeSpentMs": 4233,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 18,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -39075,11 +39083,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "NPL:country",
+      {
+        "id": "NPL:country",
+        "countryId": "NPL",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:36:17.321Z",
+        "nextDueAt": "2026-10-30T14:51:17.321Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:36:17.321Z",
+            "inputMode": "typing",
+            "userAnswer": "Nepal",
+            "isCorrect": true,
+            "timeSpentMs": 2841,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2601,
-    "totalCorrect": 1941,
+    "totalReviews": 2603,
+    "totalCorrect": 1943,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -39117,7 +39155,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:36:09.501Z"
+    "updatedAt": "2026-10-30T14:36:17.328Z"
   },
   "settings": {
     "audioEnabled": true,
