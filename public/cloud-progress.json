@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:03:31.597Z",
+  "exportedAt": "2026-10-30T14:03:45.435Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -11982,14 +11982,14 @@
         "id": "MNG:capital",
         "countryId": "MNG",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.11,
-        "intervalDays": 3,
-        "reps": 3,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.09,
+        "intervalDays": 7,
+        "reps": 4,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-27T12:33:03.919Z",
-        "nextDueAt": "2026-10-30T12:33:03.919Z",
+        "lastReviewedAt": "2026-10-30T14:03:40.961Z",
+        "nextDueAt": "2026-11-06T14:03:40.961Z",
         "history": [
           {
             "timestamp": "2026-10-04T20:35:36.757Z",
@@ -12028,10 +12028,18 @@
             "isCorrect": true,
             "timeSpentMs": 9410,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-30T14:03:40.961Z",
+            "inputMode": "typing",
+            "userAnswer": "Ulaanbaatar",
+            "isCorrect": true,
+            "timeSpentMs": 10711,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 3.2,
+        "stability": 7,
         "difficulty": 6.84,
         "lastLatencyGrade": 2,
         "confusedWith": []
@@ -37004,8 +37012,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2477,
-    "totalCorrect": 1827,
+    "totalReviews": 2478,
+    "totalCorrect": 1828,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37022,8 +37030,8 @@
       },
       "Asia": {
         "total": 96,
-        "mastered": 81,
-        "learning": 15
+        "mastered": 82,
+        "learning": 14
       },
       "Europe": {
         "total": 90,
@@ -37043,7 +37051,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:03:27.922Z"
+    "updatedAt": "2026-10-30T14:03:40.966Z"
   },
   "settings": {
     "audioEnabled": true,
