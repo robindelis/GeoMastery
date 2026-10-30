@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:03:56.032Z",
+  "exportedAt": "2026-10-30T14:04:02.754Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -7656,13 +7656,13 @@
         "countryId": "VUT",
         "attributeId": "location",
         "stage": 2,
-        "step": 1,
-        "easeFactor": 1.9,
-        "intervalDays": 8,
-        "reps": 4,
+        "step": 2,
+        "easeFactor": 1.95,
+        "intervalDays": 22,
+        "reps": 5,
         "lapses": 4,
-        "lastReviewedAt": "2026-10-21T11:38:24.836Z",
-        "nextDueAt": "2026-10-29T11:38:24.836Z",
+        "lastReviewedAt": "2026-10-30T14:03:59.287Z",
+        "nextDueAt": "2026-11-21T14:03:59.287Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:26:51.840Z",
@@ -7721,11 +7721,19 @@
             "isCorrect": true,
             "timeSpentMs": 3886,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:03:59.287Z",
+            "inputMode": "map_click",
+            "userAnswer": "Vanuatu",
+            "isCorrect": true,
+            "timeSpentMs": 4642,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 8,
-        "difficulty": 7.5,
+        "stability": 22,
+        "difficulty": 6.98,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "WATER_OCEAN_PACIFIC"
@@ -37072,8 +37080,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2480,
-    "totalCorrect": 1830,
+    "totalReviews": 2481,
+    "totalCorrect": 1831,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37111,7 +37119,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:03:52.451Z"
+    "updatedAt": "2026-10-30T14:03:59.291Z"
   },
   "settings": {
     "audioEnabled": true,
