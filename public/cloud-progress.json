@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:32:59.339Z",
+  "exportedAt": "2026-10-30T14:33:04.889Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -33517,13 +33517,13 @@
         "countryId": "AUS",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 5,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T13:30:46.501Z",
-        "nextDueAt": "2026-10-29T13:45:46.501Z",
+        "lastReviewedAt": "2026-10-30T14:33:01.246Z",
+        "nextDueAt": "2026-11-04T14:33:01.246Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:30:46.501Z",
@@ -33532,10 +33532,18 @@
             "isCorrect": true,
             "timeSpentMs": 3796,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:33:01.246Z",
+            "inputMode": "typing",
+            "userAnswer": "australia",
+            "isCorrect": true,
+            "timeSpentMs": 4538,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 4.92,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -38676,8 +38684,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2567,
-    "totalCorrect": 1909,
+    "totalReviews": 2568,
+    "totalCorrect": 1910,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38715,7 +38723,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:32:55.587Z"
+    "updatedAt": "2026-10-30T14:33:01.250Z"
   },
   "settings": {
     "audioEnabled": true,
