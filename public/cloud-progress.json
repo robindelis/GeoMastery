@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:29:35.976Z",
+  "exportedAt": "2026-10-30T14:29:40.572Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -32617,13 +32617,13 @@
         "countryId": "CRI",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
+        "step": 0,
+        "easeFactor": 2.35,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-27T12:46:58.927Z",
-        "nextDueAt": "2026-10-27T13:01:58.927Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-30T14:29:37.748Z",
+        "nextDueAt": "2026-10-30T14:39:37.748Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:46:58.927Z",
@@ -32632,12 +32632,22 @@
             "isCorrect": true,
             "timeSpentMs": 5171,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:29:37.748Z",
+            "inputMode": "typing",
+            "userAnswer": "cuba",
+            "isCorrect": false,
+            "timeSpentMs": 3317,
+            "grade": 1
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
-        "confusedWith": []
+        "difficulty": 5.81,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "CUB"
+        ]
       }
     ],
     [
@@ -38512,7 +38522,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2558,
+    "totalReviews": 2559,
     "totalCorrect": 1901,
     "currentStreak": 2,
     "longestStreak": 7,
@@ -38551,7 +38561,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:29:32.783Z"
+    "updatedAt": "2026-10-30T14:29:37.753Z"
   },
   "settings": {
     "audioEnabled": true,
