@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:25:45.279Z",
+  "exportedAt": "2026-10-30T14:25:57.384Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -36723,13 +36723,13 @@
         "countryId": "KAZ",
         "attributeId": "country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.48,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 2,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T12:43:14.011Z",
-        "nextDueAt": "2026-10-30T12:58:14.011Z",
+        "lastReviewedAt": "2026-10-30T14:25:53.970Z",
+        "nextDueAt": "2026-11-01T14:25:53.970Z",
         "history": [
           {
             "timestamp": "2026-10-30T12:43:14.011Z",
@@ -36738,11 +36738,19 @@
             "isCorrect": true,
             "timeSpentMs": 9973,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-30T14:25:53.970Z",
+            "inputMode": "typing",
+            "userAnswer": "Kazakstan",
+            "isCorrect": true,
+            "timeSpentMs": 4464,
+            "grade": 3
           }
         ],
-        "difficulty": 5.2,
-        "stability": 0.85,
-        "lastLatencyGrade": 2,
+        "difficulty": 4.86,
+        "stability": 2.45,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -38033,11 +38041,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "BHR:capital_to_country",
+      {
+        "id": "BHR:capital_to_country",
+        "countryId": "BHR",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:25:48.215Z",
+        "nextDueAt": "2026-10-30T14:40:48.215Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:25:48.215Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Bahrain",
+            "isCorrect": true,
+            "timeSpentMs": 2807,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2530,
-    "totalCorrect": 1876,
+    "totalReviews": 2532,
+    "totalCorrect": 1878,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38075,7 +38113,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:25:44.592Z"
+    "updatedAt": "2026-10-30T14:25:53.975Z"
   },
   "settings": {
     "audioEnabled": true,
