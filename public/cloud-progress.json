@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:34:20.765Z",
+  "exportedAt": "2026-10-30T14:34:37.464Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -34065,13 +34065,13 @@
         "countryId": "CRI",
         "attributeId": "country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 3,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T13:37:05.882Z",
-        "nextDueAt": "2026-10-29T13:52:05.882Z",
+        "lastReviewedAt": "2026-10-30T14:34:34.585Z",
+        "nextDueAt": "2026-11-02T14:34:34.585Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:37:05.882Z",
@@ -34080,11 +34080,19 @@
             "isCorrect": true,
             "timeSpentMs": 7789,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:34:34.585Z",
+            "inputMode": "typing",
+            "userAnswer": "Costa Roca",
+            "isCorrect": true,
+            "timeSpentMs": 14953,
+            "grade": 2
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.97,
+        "stability": 3.11,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -38892,8 +38900,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2582,
-    "totalCorrect": 1923,
+    "totalReviews": 2583,
+    "totalCorrect": 1924,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38931,7 +38939,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:34:17.933Z"
+    "updatedAt": "2026-10-30T14:34:34.590Z"
   },
   "settings": {
     "audioEnabled": true,
