@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T12:42:13.865Z",
+  "exportedAt": "2026-10-30T12:42:23.265Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -36273,11 +36273,41 @@
         "lastLatencyGrade": 1,
         "confusedWith": []
       }
+    ],
+    [
+      "FIN:capital_to_country",
+      {
+        "id": "FIN:capital_to_country",
+        "countryId": "FIN",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T12:42:20.035Z",
+        "nextDueAt": "2026-10-30T12:57:20.035Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T12:42:20.035Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Finland",
+            "isCorrect": true,
+            "timeSpentMs": 3744,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2442,
-    "totalCorrect": 1796,
+    "totalReviews": 2443,
+    "totalCorrect": 1797,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -36315,7 +36345,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T12:42:10.552Z"
+    "updatedAt": "2026-10-30T12:42:20.040Z"
   },
   "settings": {
     "audioEnabled": true,
