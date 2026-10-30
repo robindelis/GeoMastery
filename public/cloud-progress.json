@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:51:43.415Z",
+  "exportedAt": "2026-10-30T14:51:49.560Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -28697,14 +28697,14 @@
         "id": "UKR:country",
         "countryId": "UKR",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 16,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-24T14:43:22.321Z",
-        "nextDueAt": "2026-10-24T14:58:22.321Z",
+        "lastReviewedAt": "2026-10-30T14:51:46.293Z",
+        "nextDueAt": "2026-11-15T14:51:46.293Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:43:22.321Z",
@@ -28713,10 +28713,18 @@
             "isCorrect": true,
             "timeSpentMs": 4131,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:51:46.293Z",
+            "inputMode": "typing",
+            "userAnswer": "Ukraine",
+            "isCorrect": true,
+            "timeSpentMs": 5552,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 16,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -39476,8 +39484,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2641,
-    "totalCorrect": 1978,
+    "totalReviews": 2642,
+    "totalCorrect": 1979,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -39515,7 +39523,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:51:40.524Z"
+    "updatedAt": "2026-10-30T14:51:46.298Z"
   },
   "settings": {
     "audioEnabled": true,
