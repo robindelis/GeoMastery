@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:50:59.964Z",
+  "exportedAt": "2026-10-30T14:51:09.275Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26396,14 +26396,14 @@
         "id": "PNG:country",
         "countryId": "PNG",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.35,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.4,
+        "intervalDays": 14,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-24T14:23:48.467Z",
-        "nextDueAt": "2026-10-24T14:38:48.467Z",
+        "lastReviewedAt": "2026-10-30T14:51:06.136Z",
+        "nextDueAt": "2026-11-13T14:51:06.136Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:35:02.417Z",
@@ -26420,10 +26420,18 @@
             "isCorrect": true,
             "timeSpentMs": 3914,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:51:06.136Z",
+            "inputMode": "typing",
+            "userAnswer": "Papoua new guinea",
+            "isCorrect": true,
+            "timeSpentMs": 7645,
+            "grade": 3
           }
         ],
-        "difficulty": 5.59,
-        "stability": 1.1,
+        "difficulty": 5.22,
+        "stability": 14,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -39444,8 +39452,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2637,
-    "totalCorrect": 1974,
+    "totalReviews": 2638,
+    "totalCorrect": 1975,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -39483,7 +39491,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:50:56.711Z"
+    "updatedAt": "2026-10-30T14:51:06.143Z"
   },
   "settings": {
     "audioEnabled": true,
