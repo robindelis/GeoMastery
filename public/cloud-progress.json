@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:24:47.158Z",
+  "exportedAt": "2026-10-30T14:25:13.765Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26961,14 +26961,14 @@
         "id": "BGR:country",
         "countryId": "BGR",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 10,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-23T11:51:48.649Z",
-        "nextDueAt": "2026-10-23T12:06:48.649Z",
+        "lastReviewedAt": "2026-10-30T14:25:03.921Z",
+        "nextDueAt": "2026-11-09T14:25:03.921Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:51:48.649Z",
@@ -26977,11 +26977,19 @@
             "isCorrect": true,
             "timeSpentMs": 7588,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:25:03.921Z",
+            "inputMode": "typing",
+            "userAnswer": "Bulgaria",
+            "isCorrect": true,
+            "timeSpentMs": 13521,
+            "grade": 2
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.97,
+        "stability": 10,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -31301,14 +31309,14 @@
         "id": "BEN:capital_to_country",
         "countryId": "BEN",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.38,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.46,
+        "intervalDays": 15,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-27T12:48:17.746Z",
-        "nextDueAt": "2026-10-27T13:03:17.746Z",
+        "lastReviewedAt": "2026-10-30T14:25:10.482Z",
+        "nextDueAt": "2026-11-14T14:25:10.482Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:33:58.113Z",
@@ -31325,10 +31333,18 @@
             "isCorrect": true,
             "timeSpentMs": 2080,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-30T14:25:10.482Z",
+            "inputMode": "typing",
+            "userAnswer": "Belnin",
+            "isCorrect": true,
+            "timeSpentMs": 2549,
+            "grade": 4
           }
         ],
-        "difficulty": 4.99,
-        "stability": 1.4,
+        "difficulty": 3.92,
+        "stability": 15,
         "lastLatencyGrade": 4,
         "confusedWith": [
           "MUS"
@@ -37811,11 +37827,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "KHM:capital_to_country",
+      {
+        "id": "KHM:capital_to_country",
+        "countryId": "KHM",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:25:13.245Z",
+        "nextDueAt": "2026-10-30T14:40:13.245Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:25:13.245Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Cambodia",
+            "isCorrect": true,
+            "timeSpentMs": 2030,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2519,
-    "totalCorrect": 1865,
+    "totalReviews": 2522,
+    "totalCorrect": 1868,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37853,7 +37899,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:24:43.611Z"
+    "updatedAt": "2026-10-30T14:25:13.251Z"
   },
   "settings": {
     "audioEnabled": true,
