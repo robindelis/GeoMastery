@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:35:05.725Z",
+  "exportedAt": "2026-10-30T14:35:14.341Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -27378,13 +27378,13 @@
         "countryId": "BFA",
         "attributeId": "country",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.15,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2.2,
+        "intervalDays": 3,
+        "reps": 2,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-29T13:33:21.745Z",
-        "nextDueAt": "2026-10-29T13:43:21.745Z",
+        "lastReviewedAt": "2026-10-30T14:35:10.567Z",
+        "nextDueAt": "2026-11-02T14:35:10.567Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:22:31.908Z",
@@ -27409,11 +27409,19 @@
             "isCorrect": false,
             "timeSpentMs": 60669,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-30T14:35:10.567Z",
+            "inputMode": "typing",
+            "userAnswer": "Burkina Faso",
+            "isCorrect": true,
+            "timeSpentMs": 7034,
+            "grade": 3
           }
         ],
-        "difficulty": 6.54,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 6.1,
+        "stability": 3.37,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -38954,8 +38962,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2587,
-    "totalCorrect": 1928,
+    "totalReviews": 2588,
+    "totalCorrect": 1929,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38993,7 +39001,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:35:02.794Z"
+    "updatedAt": "2026-10-30T14:35:10.572Z"
   },
   "settings": {
     "audioEnabled": true,
