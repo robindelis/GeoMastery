@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:25:31.199Z",
+  "exportedAt": "2026-10-30T14:25:45.279Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -17896,13 +17896,13 @@
         "countryId": "MAR",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 55,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-09T20:11:28.738Z",
-        "nextDueAt": "2026-10-16T20:11:28.738Z",
+        "lastReviewedAt": "2026-10-30T14:25:41.599Z",
+        "nextDueAt": "2026-12-24T14:25:41.599Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:31:13.678Z",
@@ -17924,11 +17924,21 @@
             "userAnswer": "Morocco",
             "isCorrect": true,
             "timeSpentMs": 1637
+          },
+          {
+            "timestamp": "2026-10-30T14:25:41.599Z",
+            "inputMode": "map_click",
+            "userAnswer": "Morocco",
+            "isCorrect": true,
+            "timeSpentMs": 3356,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 55.08,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -18742,13 +18752,13 @@
         "countryId": "TUN",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.58,
-        "intervalDays": 13,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.63,
+        "intervalDays": 46,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-15T17:48:11.155Z",
-        "nextDueAt": "2026-10-28T17:48:11.155Z",
+        "lastReviewedAt": "2026-10-30T14:25:31.962Z",
+        "nextDueAt": "2026-12-15T14:25:31.962Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:35:15.766Z",
@@ -18771,12 +18781,20 @@
             "isCorrect": true,
             "timeSpentMs": 7794,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-30T14:25:31.962Z",
+            "inputMode": "map_click",
+            "userAnswer": "Tunisia",
+            "isCorrect": true,
+            "timeSpentMs": 3417,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 13,
-        "difficulty": 4.86,
-        "lastLatencyGrade": 2,
+        "stability": 46.16,
+        "difficulty": 4.55,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -37955,11 +37973,71 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "GBR:country",
+      {
+        "id": "GBR:country",
+        "countryId": "GBR",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:25:37.653Z",
+        "nextDueAt": "2026-10-30T14:40:37.653Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:25:37.653Z",
+            "inputMode": "typing",
+            "userAnswer": "United Kingdom",
+            "isCorrect": true,
+            "timeSpentMs": 4379,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "AND:capital_to_country",
+      {
+        "id": "AND:capital_to_country",
+        "countryId": "AND",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:25:44.586Z",
+        "nextDueAt": "2026-10-30T14:40:44.586Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:25:44.586Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Andorra",
+            "isCorrect": true,
+            "timeSpentMs": 2109,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2526,
-    "totalCorrect": 1872,
+    "totalReviews": 2530,
+    "totalCorrect": 1876,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37997,7 +38075,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:25:27.651Z"
+    "updatedAt": "2026-10-30T14:25:44.592Z"
   },
   "settings": {
     "audioEnabled": true,
