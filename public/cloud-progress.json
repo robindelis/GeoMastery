@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:36:20.227Z",
+  "exportedAt": "2026-10-30T14:36:23.051Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -20417,13 +20417,13 @@
         "countryId": "ARG",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.73,
+        "intervalDays": 63,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-14T09:55:48.570Z",
-        "nextDueAt": "2026-10-21T09:55:48.570Z",
+        "lastReviewedAt": "2026-10-30T14:36:22.498Z",
+        "nextDueAt": "2027-01-01T14:36:22.498Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:46:04.802Z",
@@ -20445,11 +20445,21 @@
             "userAnswer": "Argentina",
             "isCorrect": true,
             "timeSpentMs": 21292
+          },
+          {
+            "timestamp": "2026-10-30T14:36:22.498Z",
+            "inputMode": "map_click",
+            "userAnswer": "Argentina",
+            "isCorrect": true,
+            "timeSpentMs": 2132,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.64
+        "stability": 63,
+        "difficulty": 3.55,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -39124,8 +39134,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2604,
-    "totalCorrect": 1944,
+    "totalReviews": 2605,
+    "totalCorrect": 1945,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -39163,7 +39173,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:36:19.951Z"
+    "updatedAt": "2026-10-30T14:36:22.503Z"
   },
   "settings": {
     "audioEnabled": true,
