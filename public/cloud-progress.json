@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:22:56.872Z",
+  "exportedAt": "2026-10-30T14:23:11.674Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -33381,13 +33381,13 @@
         "countryId": "KAZ",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 5,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T13:31:36.110Z",
-        "nextDueAt": "2026-10-29T13:46:36.110Z",
+        "lastReviewedAt": "2026-10-30T14:23:04.849Z",
+        "nextDueAt": "2026-11-04T14:23:04.849Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:31:36.110Z",
@@ -33396,10 +33396,18 @@
             "isCorrect": true,
             "timeSpentMs": 2784,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:23:04.849Z",
+            "inputMode": "typing",
+            "userAnswer": "Kazakstan",
+            "isCorrect": true,
+            "timeSpentMs": 3582,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 4.89,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -37511,11 +37519,101 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "LKA:capital_to_country",
+      {
+        "id": "LKA:capital_to_country",
+        "countryId": "LKA",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:23:00.448Z",
+        "nextDueAt": "2026-10-30T14:38:00.448Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:23:00.448Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Sri Lanka",
+            "isCorrect": true,
+            "timeSpentMs": 2837,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "TUR:capital_to_country",
+      {
+        "id": "TUR:capital_to_country",
+        "countryId": "TUR",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:23:08.591Z",
+        "nextDueAt": "2026-10-30T14:38:08.591Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:23:08.591Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Turkey",
+            "isCorrect": true,
+            "timeSpentMs": 2993,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "BLR:capital_to_country",
+      {
+        "id": "BLR:capital_to_country",
+        "countryId": "BLR",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:23:11.572Z",
+        "nextDueAt": "2026-10-30T14:38:11.572Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:23:11.572Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Belarus",
+            "isCorrect": true,
+            "timeSpentMs": 2611,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2504,
-    "totalCorrect": 1851,
+    "totalReviews": 2508,
+    "totalCorrect": 1855,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37553,7 +37651,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:22:53.743Z"
+    "updatedAt": "2026-10-30T14:23:11.577Z"
   },
   "settings": {
     "audioEnabled": true,
