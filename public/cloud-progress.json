@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T12:42:23.265Z",
+  "exportedAt": "2026-10-30T12:42:32.165Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -36303,11 +36303,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "MHL:capital_to_country",
+      {
+        "id": "MHL:capital_to_country",
+        "countryId": "MHL",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T12:42:28.903Z",
+        "nextDueAt": "2026-10-30T12:57:28.903Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T12:42:28.903Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Marshall Islands",
+            "isCorrect": true,
+            "timeSpentMs": 2354,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2443,
-    "totalCorrect": 1797,
+    "totalReviews": 2444,
+    "totalCorrect": 1798,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -36345,7 +36375,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T12:42:20.040Z"
+    "updatedAt": "2026-10-30T12:42:28.908Z"
   },
   "settings": {
     "audioEnabled": true,
