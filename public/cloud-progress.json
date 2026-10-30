@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:25:13.765Z",
+  "exportedAt": "2026-10-30T14:25:25.046Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -37857,11 +37857,71 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "ARG:capital_to_country",
+      {
+        "id": "ARG:capital_to_country",
+        "countryId": "ARG",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:25:15.185Z",
+        "nextDueAt": "2026-10-30T14:40:15.185Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:25:15.185Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Argentina",
+            "isCorrect": true,
+            "timeSpentMs": 1388,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
+    ],
+    [
+      "MCO:country",
+      {
+        "id": "MCO:country",
+        "countryId": "MCO",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:25:21.808Z",
+        "nextDueAt": "2026-10-30T14:40:21.808Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:25:21.808Z",
+            "inputMode": "typing",
+            "userAnswer": "Monaco",
+            "isCorrect": true,
+            "timeSpentMs": 4662,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.68,
+        "stability": 1.1,
+        "confusedWith": [],
+        "lastLatencyGrade": 3
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2522,
-    "totalCorrect": 1868,
+    "totalReviews": 2524,
+    "totalCorrect": 1870,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37899,7 +37959,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:25:13.251Z"
+    "updatedAt": "2026-10-30T14:25:21.812Z"
   },
   "settings": {
     "audioEnabled": true,
