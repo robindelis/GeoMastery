@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:02:26.195Z",
+  "exportedAt": "2026-10-30T14:02:30.609Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -36869,11 +36869,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "PAK:country",
+      {
+        "id": "PAK:country",
+        "countryId": "PAK",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:02:26.318Z",
+        "nextDueAt": "2026-10-30T14:17:26.318Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:02:26.318Z",
+            "inputMode": "typing",
+            "userAnswer": "Pakistan",
+            "isCorrect": true,
+            "timeSpentMs": 3773,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2469,
-    "totalCorrect": 1820,
+    "totalReviews": 2470,
+    "totalCorrect": 1821,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -36911,7 +36941,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:02:22.238Z"
+    "updatedAt": "2026-10-30T14:02:26.322Z"
   },
   "settings": {
     "audioEnabled": true,
