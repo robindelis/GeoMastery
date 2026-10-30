@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:06:06.040Z",
+  "exportedAt": "2026-10-30T14:06:13.596Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30919,14 +30919,14 @@
         "id": "MKD:country",
         "countryId": "MKD",
         "attributeId": "country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.53,
-        "intervalDays": 3,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.58,
+        "intervalDays": 12,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-27T12:54:01.841Z",
-        "nextDueAt": "2026-10-30T12:54:01.841Z",
+        "lastReviewedAt": "2026-10-30T14:06:09.965Z",
+        "nextDueAt": "2026-11-11T14:06:09.965Z",
         "history": [
           {
             "timestamp": "2026-10-26T19:59:48.465Z",
@@ -30943,10 +30943,18 @@
             "isCorrect": true,
             "timeSpentMs": 5171,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:06:09.965Z",
+            "inputMode": "typing",
+            "userAnswer": "North Macedonia",
+            "isCorrect": true,
+            "timeSpentMs": 6658,
+            "grade": 3
           }
         ],
-        "difficulty": 4.86,
-        "stability": 3.29,
+        "difficulty": 4.55,
+        "stability": 12.05,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -37212,8 +37220,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2489,
-    "totalCorrect": 1838,
+    "totalReviews": 2490,
+    "totalCorrect": 1839,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37251,7 +37259,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:06:02.569Z"
+    "updatedAt": "2026-10-30T14:06:09.969Z"
   },
   "settings": {
     "audioEnabled": true,
