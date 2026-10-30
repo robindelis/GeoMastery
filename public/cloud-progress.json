@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:24:34.102Z",
+  "exportedAt": "2026-10-30T14:24:45.437Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -37831,11 +37831,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "YEM:capital_to_country",
+      {
+        "id": "YEM:capital_to_country",
+        "countryId": "YEM",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:24:39.197Z",
+        "nextDueAt": "2026-10-30T14:39:39.197Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:24:39.197Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Yemen",
+            "isCorrect": true,
+            "timeSpentMs": 1857,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2516,
-    "totalCorrect": 1862,
+    "totalReviews": 2519,
+    "totalCorrect": 1865,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37873,7 +37903,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:24:30.531Z"
+    "updatedAt": "2026-10-30T14:24:43.611Z"
   },
   "settings": {
     "audioEnabled": true,
