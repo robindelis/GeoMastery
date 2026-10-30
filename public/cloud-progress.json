@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:27:17.129Z",
+  "exportedAt": "2026-10-30T14:27:21.955Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -4267,13 +4267,13 @@
         "countryId": "MLT",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.4499999999999993,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.5,
+        "intervalDays": 48,
+        "reps": 4,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-08T20:30:56.661Z",
-        "nextDueAt": "2026-10-15T20:30:56.661Z",
+        "lastReviewedAt": "2026-10-30T14:27:19.120Z",
+        "nextDueAt": "2026-12-17T14:27:19.120Z",
         "history": [
           {
             "timestamp": "2026-10-04T17:02:55.699Z",
@@ -4302,11 +4302,21 @@
             "userAnswer": "Malta",
             "isCorrect": true,
             "timeSpentMs": 6095
+          },
+          {
+            "timestamp": "2026-10-30T14:27:19.120Z",
+            "inputMode": "map_click",
+            "userAnswer": "Malta",
+            "isCorrect": true,
+            "timeSpentMs": 3611,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 5.38
+        "stability": 48.26,
+        "difficulty": 5.03,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -38298,8 +38308,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2543,
-    "totalCorrect": 1888,
+    "totalReviews": 2544,
+    "totalCorrect": 1889,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38337,7 +38347,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:27:14.316Z"
+    "updatedAt": "2026-10-30T14:27:19.124Z"
   },
   "settings": {
     "audioEnabled": true,
