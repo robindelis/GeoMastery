@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:28:00.899Z",
+  "exportedAt": "2026-10-30T14:28:13.952Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -23295,14 +23295,14 @@
         "id": "BHS:country",
         "countryId": "BHS",
         "attributeId": "country",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 2.13,
-        "intervalDays": 0,
-        "reps": 2,
+        "stage": 2,
+        "step": 1,
+        "easeFactor": 2.18,
+        "intervalDays": 7,
+        "reps": 3,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-27T12:29:06.661Z",
-        "nextDueAt": "2026-10-27T12:39:06.661Z",
+        "lastReviewedAt": "2026-10-30T14:28:05.275Z",
+        "nextDueAt": "2026-11-06T14:28:05.275Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:15:03.599Z",
@@ -23335,11 +23335,19 @@
             "isCorrect": false,
             "timeSpentMs": 3215,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-30T14:28:05.275Z",
+            "inputMode": "typing",
+            "userAnswer": "Bahamas",
+            "isCorrect": true,
+            "timeSpentMs": 5960,
+            "grade": 3
           }
         ],
-        "difficulty": 6.72,
-        "stability": 0.85,
-        "lastLatencyGrade": 1,
+        "difficulty": 6.26,
+        "stability": 7.17,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "FJI"
         ]
@@ -32002,14 +32010,14 @@
         "id": "UGA:capital_to_country",
         "countryId": "UGA",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.66,
+        "intervalDays": 17,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-27T12:42:26.532Z",
-        "nextDueAt": "2026-10-27T12:57:26.532Z",
+        "lastReviewedAt": "2026-10-30T14:28:11.091Z",
+        "nextDueAt": "2026-11-16T14:28:11.091Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:42:26.532Z",
@@ -32018,10 +32026,18 @@
             "isCorrect": true,
             "timeSpentMs": 2017,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-30T14:28:11.091Z",
+            "inputMode": "typing",
+            "userAnswer": "Uganda",
+            "isCorrect": true,
+            "timeSpentMs": 2597,
+            "grade": 4
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
+        "difficulty": 2.46,
+        "stability": 17.38,
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
@@ -35734,14 +35750,14 @@
         "id": "PAN:capital_to_country",
         "countryId": "PAN",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.66,
+        "intervalDays": 8,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:24:05.332Z",
-        "nextDueAt": "2026-10-29T23:39:05.332Z",
+        "lastReviewedAt": "2026-10-30T14:28:08.237Z",
+        "nextDueAt": "2026-11-07T14:28:08.237Z",
         "history": [
           {
             "timestamp": "2026-10-29T23:24:05.332Z",
@@ -35750,10 +35766,18 @@
             "isCorrect": true,
             "timeSpentMs": 1891,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-30T14:28:08.237Z",
+            "inputMode": "typing",
+            "userAnswer": "Panama",
+            "isCorrect": true,
+            "timeSpentMs": 1655,
+            "grade": 4
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
+        "difficulty": 2.46,
+        "stability": 8,
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
@@ -38400,8 +38424,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2550,
-    "totalCorrect": 1895,
+    "totalReviews": 2553,
+    "totalCorrect": 1898,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38439,7 +38463,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:27:57.191Z"
+    "updatedAt": "2026-10-30T14:28:11.097Z"
   },
   "settings": {
     "audioEnabled": true,
