@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:06:55.609Z",
+  "exportedAt": "2026-10-30T14:07:03.179Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -36571,13 +36571,13 @@
         "countryId": "GIN",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.48,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 2,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T12:42:56.203Z",
-        "nextDueAt": "2026-10-30T12:57:56.203Z",
+        "lastReviewedAt": "2026-10-30T14:06:59.600Z",
+        "nextDueAt": "2026-11-01T14:06:59.600Z",
         "history": [
           {
             "timestamp": "2026-10-30T12:42:56.203Z",
@@ -36586,11 +36586,19 @@
             "isCorrect": true,
             "timeSpentMs": 6621,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-30T14:06:59.600Z",
+            "inputMode": "typing",
+            "userAnswer": "Guinea",
+            "isCorrect": true,
+            "timeSpentMs": 6165,
+            "grade": 3
           }
         ],
-        "difficulty": 5.2,
-        "stability": 0.85,
-        "lastLatencyGrade": 2,
+        "difficulty": 4.86,
+        "stability": 2.45,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -37418,8 +37426,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2498,
-    "totalCorrect": 1846,
+    "totalReviews": 2499,
+    "totalCorrect": 1847,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37457,7 +37465,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:06:51.948Z"
+    "updatedAt": "2026-10-30T14:06:59.604Z"
   },
   "settings": {
     "audioEnabled": true,
