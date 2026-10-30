@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:22:44.668Z",
+  "exportedAt": "2026-10-30T14:22:56.872Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26339,13 +26339,13 @@
         "countryId": "GTM",
         "attributeId": "country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
+        "step": 0,
+        "easeFactor": 2.35,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-23T11:41:06.792Z",
-        "nextDueAt": "2026-10-23T11:56:06.792Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-10-30T14:22:53.738Z",
+        "nextDueAt": "2026-10-30T14:32:53.738Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:41:06.792Z",
@@ -26354,12 +26354,22 @@
             "isCorrect": true,
             "timeSpentMs": 4033,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:22:53.738Z",
+            "inputMode": "typing",
+            "userAnswer": "Honduras",
+            "isCorrect": false,
+            "timeSpentMs": 5726,
+            "grade": 1
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
-        "confusedWith": []
+        "difficulty": 5.81,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "HND"
+        ]
       }
     ],
     [
@@ -37441,11 +37451,71 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "VEN:capital_to_country",
+      {
+        "id": "VEN:capital_to_country",
+        "countryId": "VEN",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:22:44.965Z",
+        "nextDueAt": "2026-10-30T14:37:44.965Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:22:44.965Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Venezuela",
+            "isCorrect": true,
+            "timeSpentMs": 2612,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "LCA:capital_to_country",
+      {
+        "id": "LCA:capital_to_country",
+        "countryId": "LCA",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:22:47.432Z",
+        "nextDueAt": "2026-10-30T14:37:47.432Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:22:47.432Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Saint Lucia",
+            "isCorrect": true,
+            "timeSpentMs": 1556,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2501,
-    "totalCorrect": 1849,
+    "totalReviews": 2504,
+    "totalCorrect": 1851,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37483,7 +37553,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:22:41.197Z"
+    "updatedAt": "2026-10-30T14:22:53.743Z"
   },
   "settings": {
     "audioEnabled": true,
