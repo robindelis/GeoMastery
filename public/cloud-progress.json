@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:41:34.767Z",
+  "exportedAt": "2026-10-30T14:41:38.302Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -32636,14 +32636,14 @@
         "id": "NRU:capital_to_country",
         "countryId": "NRU",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 15,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-27T12:44:43.445Z",
-        "nextDueAt": "2026-10-27T12:59:43.445Z",
+        "lastReviewedAt": "2026-10-30T14:41:35.408Z",
+        "nextDueAt": "2026-11-14T14:41:35.408Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:44:43.445Z",
@@ -32652,11 +32652,19 @@
             "isCorrect": true,
             "timeSpentMs": 4580,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:41:35.408Z",
+            "inputMode": "typing",
+            "userAnswer": "Nauru",
+            "isCorrect": true,
+            "timeSpentMs": 3196,
+            "grade": 4
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 3.3,
+        "stability": 15.33,
+        "lastLatencyGrade": 4,
         "confusedWith": []
       }
     ],
@@ -39196,8 +39204,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2610,
-    "totalCorrect": 1948,
+    "totalReviews": 2611,
+    "totalCorrect": 1949,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -39235,7 +39243,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:41:31.757Z"
+    "updatedAt": "2026-10-30T14:41:35.414Z"
   },
   "settings": {
     "audioEnabled": true,
