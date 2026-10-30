@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:41:07.663Z",
+  "exportedAt": "2026-10-30T14:41:30.318Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -28484,13 +28484,13 @@
         "countryId": "IRQ",
         "attributeId": "country",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.28,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2.26,
+        "intervalDays": 2,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-29T23:16:30.440Z",
-        "nextDueAt": "2026-10-29T23:26:30.440Z",
+        "lastReviewedAt": "2026-10-30T14:41:27.326Z",
+        "nextDueAt": "2026-11-01T14:41:27.326Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:42:15.282Z",
@@ -28507,11 +28507,19 @@
             "isCorrect": false,
             "timeSpentMs": 77571,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-30T14:41:27.326Z",
+            "inputMode": "typing",
+            "userAnswer": "Iraq",
+            "isCorrect": true,
+            "timeSpentMs": 20967,
+            "grade": 2
           }
         ],
-        "difficulty": 6.3,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 6.43,
+        "stability": 2.2,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -39180,8 +39188,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2608,
-    "totalCorrect": 1946,
+    "totalReviews": 2609,
+    "totalCorrect": 1947,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -39219,7 +39227,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:41:04.705Z"
+    "updatedAt": "2026-10-30T14:41:27.330Z"
   },
   "settings": {
     "audioEnabled": true,
