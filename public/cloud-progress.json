@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:41:59.028Z",
+  "exportedAt": "2026-10-30T14:42:03.131Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19846,13 +19846,13 @@
         "countryId": "WATER_OCEAN_ATLANTIC",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 54,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T13:46:12.470Z",
-        "nextDueAt": "2026-10-17T13:46:12.470Z",
+        "lastReviewedAt": "2026-10-30T14:42:03.095Z",
+        "nextDueAt": "2026-12-23T14:42:03.095Z",
         "history": [
           {
             "timestamp": "2026-10-06T13:17:49.325Z",
@@ -19874,11 +19874,21 @@
             "userAnswer": "Atlantic Ocean",
             "isCorrect": true,
             "timeSpentMs": 2508
+          },
+          {
+            "timestamp": "2026-10-30T14:42:03.095Z",
+            "inputMode": "map_click",
+            "userAnswer": "Atlantic Ocean",
+            "isCorrect": true,
+            "timeSpentMs": 2465,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 54,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -33904,14 +33914,14 @@
         "id": "NGA:capital_to_country",
         "countryId": "NGA",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.66,
+        "intervalDays": 8,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T13:31:45.516Z",
-        "nextDueAt": "2026-10-29T13:46:45.516Z",
+        "lastReviewedAt": "2026-10-30T14:42:00.220Z",
+        "nextDueAt": "2026-11-07T14:42:00.220Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:31:45.516Z",
@@ -33920,10 +33930,18 @@
             "isCorrect": true,
             "timeSpentMs": 1972,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-10-30T14:42:00.220Z",
+            "inputMode": "typing",
+            "userAnswer": "Nigeria",
+            "isCorrect": true,
+            "timeSpentMs": 3055,
+            "grade": 4
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
+        "difficulty": 2.46,
+        "stability": 8,
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
@@ -39236,8 +39254,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2615,
-    "totalCorrect": 1953,
+    "totalReviews": 2617,
+    "totalCorrect": 1955,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -39275,7 +39293,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:41:56.155Z"
+    "updatedAt": "2026-10-30T14:42:03.100Z"
   },
   "settings": {
     "audioEnabled": true,
