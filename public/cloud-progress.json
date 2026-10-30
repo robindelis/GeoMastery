@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:03:14.275Z",
+  "exportedAt": "2026-10-30T14:03:24.761Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15795,13 +15795,13 @@
         "countryId": "SWZ",
         "attributeId": "capital",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 1.8,
-        "intervalDays": 0,
-        "reps": 2,
+        "step": 1,
+        "easeFactor": 1.85,
+        "intervalDays": 3,
+        "reps": 3,
         "lapses": 4,
-        "lastReviewedAt": "2026-10-29T13:23:06.029Z",
-        "nextDueAt": "2026-10-29T13:33:06.029Z",
+        "lastReviewedAt": "2026-10-30T14:03:21.151Z",
+        "nextDueAt": "2026-11-02T14:03:21.151Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:15:28.405Z",
@@ -15848,12 +15848,20 @@
             "isCorrect": false,
             "timeSpentMs": 6206,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-30T14:03:21.151Z",
+            "inputMode": "typing",
+            "userAnswer": "Mbabane",
+            "isCorrect": true,
+            "timeSpentMs": 3409,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 0.6,
-        "difficulty": 7.37,
-        "lastLatencyGrade": 1,
+        "stability": 2.92,
+        "difficulty": 6.86,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "ZMB"
         ]
@@ -36988,8 +36996,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2475,
-    "totalCorrect": 1825,
+    "totalReviews": 2476,
+    "totalCorrect": 1826,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37027,7 +37035,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:03:10.658Z"
+    "updatedAt": "2026-10-30T14:03:21.155Z"
   },
   "settings": {
     "audioEnabled": true,
