@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:26:38.290Z",
+  "exportedAt": "2026-10-30T14:26:19.372Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -38220,8 +38220,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2539,
-    "totalCorrect": 1884,
+    "totalReviews": 2534,
+    "totalCorrect": 1879,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38259,7 +38259,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:26:37.790Z"
+    "updatedAt": "2026-10-30T14:26:15.650Z"
   },
   "settings": {
     "audioEnabled": true,
