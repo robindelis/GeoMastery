@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:25:41.244Z",
+  "exportedAt": "2026-10-30T14:25:49.053Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -38011,11 +38011,71 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "AND:capital_to_country",
+      {
+        "id": "AND:capital_to_country",
+        "countryId": "AND",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:25:44.586Z",
+        "nextDueAt": "2026-10-30T14:40:44.586Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:25:44.586Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Andorra",
+            "isCorrect": true,
+            "timeSpentMs": 2109,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
+    ],
+    [
+      "BHR:capital_to_country",
+      {
+        "id": "BHR:capital_to_country",
+        "countryId": "BHR",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:25:48.215Z",
+        "nextDueAt": "2026-10-30T14:40:48.215Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:25:48.215Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Bahrain",
+            "isCorrect": true,
+            "timeSpentMs": 2807,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2528,
-    "totalCorrect": 1874,
+    "totalReviews": 2531,
+    "totalCorrect": 1877,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38053,7 +38113,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:25:37.658Z"
+    "updatedAt": "2026-10-30T14:25:48.220Z"
   },
   "settings": {
     "audioEnabled": true,
