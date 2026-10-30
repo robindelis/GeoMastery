@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:06:26.580Z",
+  "exportedAt": "2026-10-30T14:03:58.932Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -37135,161 +37135,11 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
-    ],
-    [
-      "ROU:country",
-      {
-        "id": "ROU:country",
-        "countryId": "ROU",
-        "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:04:05.149Z",
-        "nextDueAt": "2026-10-30T14:19:05.149Z",
-        "history": [
-          {
-            "timestamp": "2026-10-30T14:04:05.149Z",
-            "inputMode": "typing",
-            "userAnswer": "Romania",
-            "isCorrect": true,
-            "timeSpentMs": 4541,
-            "grade": 3
-          }
-        ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
-        "confusedWith": []
-      }
-    ],
-    [
-      "CPV:capital_to_country",
-      {
-        "id": "CPV:capital_to_country",
-        "countryId": "CPV",
-        "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:04:09.534Z",
-        "nextDueAt": "2026-10-30T14:19:09.534Z",
-        "history": [
-          {
-            "timestamp": "2026-10-30T14:04:09.534Z",
-            "inputMode": "multiple_choice",
-            "userAnswer": "Cabo Verde",
-            "isCorrect": true,
-            "timeSpentMs": 3389,
-            "grade": 3
-          }
-        ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
-        "confusedWith": []
-      }
-    ],
-    [
-      "MLI:capital_to_country",
-      {
-        "id": "MLI:capital_to_country",
-        "countryId": "MLI",
-        "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.48,
-        "intervalDays": 0.0104,
-        "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:06:02.565Z",
-        "nextDueAt": "2026-10-30T14:21:02.565Z",
-        "history": [
-          {
-            "timestamp": "2026-10-30T14:06:02.565Z",
-            "inputMode": "multiple_choice",
-            "userAnswer": "Mali",
-            "isCorrect": true,
-            "timeSpentMs": 79050,
-            "grade": 2
-          }
-        ],
-        "difficulty": 5.2,
-        "stability": 0.85,
-        "lastLatencyGrade": 2,
-        "confusedWith": []
-      }
-    ],
-    [
-      "AUT:country",
-      {
-        "id": "AUT:country",
-        "countryId": "AUT",
-        "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:06:17.347Z",
-        "nextDueAt": "2026-10-30T14:21:17.347Z",
-        "history": [
-          {
-            "timestamp": "2026-10-30T14:06:17.347Z",
-            "inputMode": "typing",
-            "userAnswer": "Austria",
-            "isCorrect": true,
-            "timeSpentMs": 6320,
-            "grade": 3
-          }
-        ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
-        "confusedWith": []
-      }
-    ],
-    [
-      "SVN:capital_to_country",
-      {
-        "id": "SVN:capital_to_country",
-        "countryId": "SVN",
-        "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:06:26.035Z",
-        "nextDueAt": "2026-10-30T14:21:26.035Z",
-        "history": [
-          {
-            "timestamp": "2026-10-30T14:06:26.035Z",
-            "inputMode": "multiple_choice",
-            "userAnswer": "Slovenia",
-            "isCorrect": true,
-            "timeSpentMs": 2025,
-            "grade": 4
-          }
-        ],
-        "difficulty": 3.62,
-        "stability": 1.4,
-        "lastLatencyGrade": 4,
-        "confusedWith": []
-      }
     ]
   ],
   "stats": {
-    "totalReviews": 2493,
-    "totalCorrect": 1842,
+    "totalReviews": 2480,
+    "totalCorrect": 1830,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37306,8 +37156,8 @@
       },
       "Asia": {
         "total": 96,
-        "mastered": 83,
-        "learning": 13
+        "mastered": 82,
+        "learning": 14
       },
       "Europe": {
         "total": 90,
@@ -37327,7 +37177,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:06:26.040Z"
+    "updatedAt": "2026-10-30T14:03:52.451Z"
   },
   "settings": {
     "audioEnabled": true,
