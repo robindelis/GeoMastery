@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:03:03.579Z",
+  "exportedAt": "2026-10-30T14:03:14.275Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25908,14 +25908,14 @@
         "id": "VEN:country",
         "countryId": "VEN",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 18,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-23T11:34:53.723Z",
-        "nextDueAt": "2026-10-23T11:49:53.723Z",
+        "lastReviewedAt": "2026-10-30T14:03:10.654Z",
+        "nextDueAt": "2026-11-17T14:03:10.654Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:34:53.723Z",
@@ -25924,10 +25924,18 @@
             "isCorrect": true,
             "timeSpentMs": 3954,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:03:10.654Z",
+            "inputMode": "typing",
+            "userAnswer": "Venezuela",
+            "isCorrect": true,
+            "timeSpentMs": 7910,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 18,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -36980,8 +36988,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2474,
-    "totalCorrect": 1824,
+    "totalReviews": 2475,
+    "totalCorrect": 1825,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37019,7 +37027,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:03:00.272Z"
+    "updatedAt": "2026-10-30T14:03:10.658Z"
   },
   "settings": {
     "audioEnabled": true,
