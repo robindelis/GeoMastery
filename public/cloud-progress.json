@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T12:42:32.165Z",
+  "exportedAt": "2026-10-30T12:42:36.358Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -36333,11 +36333,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "HRV:capital_to_country",
+      {
+        "id": "HRV:capital_to_country",
+        "countryId": "HRV",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T12:42:32.521Z",
+        "nextDueAt": "2026-10-30T12:57:32.521Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T12:42:32.521Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Croatia",
+            "isCorrect": true,
+            "timeSpentMs": 1650,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2444,
-    "totalCorrect": 1798,
+    "totalReviews": 2445,
+    "totalCorrect": 1799,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -36375,7 +36405,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T12:42:28.908Z"
+    "updatedAt": "2026-10-30T12:42:32.525Z"
   },
   "settings": {
     "audioEnabled": true,
