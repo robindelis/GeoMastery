@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:29:47.737Z",
+  "exportedAt": "2026-10-30T14:29:54.602Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -38549,11 +38549,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "ZAF:country",
+      {
+        "id": "ZAF:country",
+        "countryId": "ZAF",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:29:51.710Z",
+        "nextDueAt": "2026-10-30T14:44:51.710Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:29:51.710Z",
+            "inputMode": "typing",
+            "userAnswer": "South Afrika",
+            "isCorrect": true,
+            "timeSpentMs": 3890,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2560,
-    "totalCorrect": 1902,
+    "totalReviews": 2561,
+    "totalCorrect": 1903,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38591,7 +38621,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:29:44.551Z"
+    "updatedAt": "2026-10-30T14:29:51.715Z"
   },
   "settings": {
     "audioEnabled": true,
