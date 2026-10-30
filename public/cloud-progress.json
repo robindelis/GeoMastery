@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:33:52.257Z",
+  "exportedAt": "2026-10-30T14:34:01.708Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -36497,13 +36497,13 @@
         "countryId": "IND",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 6,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:27:14.465Z",
-        "nextDueAt": "2026-10-29T23:42:14.465Z",
+        "lastReviewedAt": "2026-10-30T14:33:58.836Z",
+        "nextDueAt": "2026-11-05T14:33:58.836Z",
         "history": [
           {
             "timestamp": "2026-10-29T23:27:14.465Z",
@@ -36512,11 +36512,19 @@
             "isCorrect": true,
             "timeSpentMs": 2660,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-30T14:33:58.836Z",
+            "inputMode": "typing",
+            "userAnswer": "India",
+            "isCorrect": true,
+            "timeSpentMs": 1919,
+            "grade": 4
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 3.3,
+        "stability": 5.91,
+        "lastLatencyGrade": 4,
         "confusedWith": []
       }
     ],
@@ -38763,11 +38771,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "NER:capital_to_country",
+      {
+        "id": "NER:capital_to_country",
+        "countryId": "NER",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:33:56.367Z",
+        "nextDueAt": "2026-10-30T14:48:56.367Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:33:56.367Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Niger",
+            "isCorrect": true,
+            "timeSpentMs": 6298,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2575,
-    "totalCorrect": 1916,
+    "totalReviews": 2577,
+    "totalCorrect": 1918,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -38805,7 +38843,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:33:49.332Z"
+    "updatedAt": "2026-10-30T14:33:58.842Z"
   },
   "settings": {
     "audioEnabled": true,
