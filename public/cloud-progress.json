@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-30T14:24:27.158Z",
+  "exportedAt": "2026-10-30T14:24:39.359Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -492,13 +492,13 @@
         "countryId": "POL",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.7,
+        "intervalDays": 54,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-10T09:04:19.579Z",
-        "nextDueAt": "2026-10-17T09:04:19.579Z",
+        "lastReviewedAt": "2026-10-30T14:24:36.021Z",
+        "nextDueAt": "2026-12-23T14:24:36.021Z",
         "history": [
           {
             "timestamp": "2026-10-04T14:36:00.791Z",
@@ -520,11 +520,21 @@
             "userAnswer": "Poland",
             "isCorrect": true,
             "timeSpentMs": 3355
+          },
+          {
+            "timestamp": "2026-10-30T14:24:36.021Z",
+            "inputMode": "map_click",
+            "userAnswer": "Poland",
+            "isCorrect": true,
+            "timeSpentMs": 3543,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 54.15,
+        "difficulty": 3.8,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -37733,11 +37743,71 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "SVK:country",
+      {
+        "id": "SVK:country",
+        "countryId": "SVK",
+        "attributeId": "country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:24:30.526Z",
+        "nextDueAt": "2026-10-30T14:39:30.526Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:24:30.526Z",
+            "inputMode": "typing",
+            "userAnswer": "Slovakia",
+            "isCorrect": true,
+            "timeSpentMs": 6191,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
+    ],
+    [
+      "YEM:capital_to_country",
+      {
+        "id": "YEM:capital_to_country",
+        "countryId": "YEM",
+        "attributeId": "capital_to_country",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.58,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-30T14:24:39.197Z",
+        "nextDueAt": "2026-10-30T14:39:39.197Z",
+        "history": [
+          {
+            "timestamp": "2026-10-30T14:24:39.197Z",
+            "inputMode": "multiple_choice",
+            "userAnswer": "Yemen",
+            "isCorrect": true,
+            "timeSpentMs": 1857,
+            "grade": 4
+          }
+        ],
+        "difficulty": 3.62,
+        "stability": 1.4,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2515,
-    "totalCorrect": 1861,
+    "totalReviews": 2518,
+    "totalCorrect": 1864,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-30",
@@ -37775,7 +37845,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-30T14:24:23.697Z"
+    "updatedAt": "2026-10-30T14:24:39.203Z"
   },
   "settings": {
     "audioEnabled": true,
