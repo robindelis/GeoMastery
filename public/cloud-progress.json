@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-31T21:06:45.133Z",
+  "exportedAt": "2026-10-31T21:06:49.536Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -39499,11 +39499,41 @@
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
+    ],
+    [
+      "EST:flag",
+      {
+        "id": "EST:flag",
+        "countryId": "EST",
+        "attributeId": "flag",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-31T21:06:46.522Z",
+        "nextDueAt": "2026-10-31T21:21:46.522Z",
+        "history": [
+          {
+            "timestamp": "2026-10-31T21:06:46.522Z",
+            "inputMode": "typing",
+            "userAnswer": "Estonia",
+            "isCorrect": true,
+            "timeSpentMs": 3287,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2644,
-    "totalCorrect": 1981,
+    "totalReviews": 2645,
+    "totalCorrect": 1982,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-31",
@@ -39541,7 +39571,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-31T21:06:42.336Z"
+    "updatedAt": "2026-10-31T21:06:46.525Z"
   },
   "settings": {
     "audioEnabled": true,
