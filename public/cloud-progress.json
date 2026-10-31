@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-31T21:13:49.566Z",
+  "exportedAt": "2026-10-31T21:13:53.576Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25311,14 +25311,14 @@
         "id": "ALB:country",
         "countryId": "ALB",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.48,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 18,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-21T22:12:05.713Z",
-        "nextDueAt": "2026-10-22T22:12:05.713Z",
+        "lastReviewedAt": "2026-10-31T21:13:50.707Z",
+        "nextDueAt": "2026-11-18T21:13:50.707Z",
         "history": [
           {
             "timestamp": "2026-10-21T22:12:05.713Z",
@@ -25327,11 +25327,19 @@
             "isCorrect": true,
             "timeSpentMs": 39173,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-31T21:13:50.707Z",
+            "inputMode": "typing",
+            "userAnswer": "Albania",
+            "isCorrect": true,
+            "timeSpentMs": 3822,
+            "grade": 3
           }
         ],
-        "difficulty": 5.2,
-        "stability": 1,
-        "lastLatencyGrade": 2,
+        "difficulty": 4.86,
+        "stability": 18.31,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -39986,8 +39994,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2694,
-    "totalCorrect": 2021,
+    "totalReviews": 2695,
+    "totalCorrect": 2022,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-31",
@@ -40025,7 +40033,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-31T21:13:46.719Z"
+    "updatedAt": "2026-10-31T21:13:50.711Z"
   },
   "settings": {
     "audioEnabled": true,
