@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-31T21:09:11.369Z",
+  "exportedAt": "2026-10-31T21:09:14.748Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -18550,14 +18550,14 @@
         "id": "MAR:capital",
         "countryId": "MAR",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 48,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-06T12:33:00.021Z",
-        "nextDueAt": "2026-10-07T12:33:00.021Z",
+        "lastReviewedAt": "2026-10-31T21:09:11.782Z",
+        "nextDueAt": "2026-12-18T21:09:11.782Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:33:00.021Z",
@@ -18565,11 +18565,21 @@
             "userAnswer": "Rabat",
             "isCorrect": true,
             "timeSpentMs": 2440
+          },
+          {
+            "timestamp": "2026-10-31T21:09:11.782Z",
+            "inputMode": "typing",
+            "userAnswer": "Rabat",
+            "isCorrect": true,
+            "timeSpentMs": 2596,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 4.49
+        "stability": 48,
+        "difficulty": 3.39,
+        "lastLatencyGrade": 4,
+        "confusedWith": []
       }
     ],
     [
@@ -39759,16 +39769,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2667,
-    "totalCorrect": 2000,
+    "totalReviews": 2668,
+    "totalCorrect": 2001,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-31",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 85,
-        "learning": 23
+        "mastered": 86,
+        "learning": 22
       },
       "Americas": {
         "total": 70,
@@ -39798,7 +39808,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-31T21:09:08.458Z"
+    "updatedAt": "2026-10-31T21:09:11.785Z"
   },
   "settings": {
     "audioEnabled": true,
