@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-31T21:07:59.924Z",
+  "exportedAt": "2026-10-31T21:08:04.322Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -34602,14 +34602,14 @@
         "id": "DJI:country",
         "countryId": "DJI",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.35,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.4,
+        "intervalDays": 7,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-29T23:13:21.323Z",
-        "nextDueAt": "2026-10-29T23:28:21.323Z",
+        "lastReviewedAt": "2026-10-31T21:08:01.503Z",
+        "nextDueAt": "2026-11-07T21:08:01.503Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:39:17.440Z",
@@ -34626,10 +34626,18 @@
             "isCorrect": true,
             "timeSpentMs": 5194,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-10-31T21:08:01.503Z",
+            "inputMode": "typing",
+            "userAnswer": "Djibouti",
+            "isCorrect": true,
+            "timeSpentMs": 4194,
+            "grade": 3
           }
         ],
-        "difficulty": 5.59,
-        "stability": 1.1,
+        "difficulty": 5.22,
+        "stability": 7,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "BDI"
@@ -39650,8 +39658,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2654,
-    "totalCorrect": 1989,
+    "totalReviews": 2655,
+    "totalCorrect": 1990,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-31",
@@ -39689,7 +39697,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-31T21:07:57.098Z"
+    "updatedAt": "2026-10-31T21:08:01.507Z"
   },
   "settings": {
     "audioEnabled": true,
