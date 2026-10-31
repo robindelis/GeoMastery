@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-31T21:07:15.965Z",
+  "exportedAt": "2026-10-31T21:07:22.619Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -39593,11 +39593,41 @@
           "PAN"
         ]
       }
+    ],
+    [
+      "LVA:flag",
+      {
+        "id": "LVA:flag",
+        "countryId": "LVA",
+        "attributeId": "flag",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-10-31T21:07:19.753Z",
+        "nextDueAt": "2026-10-31T21:22:19.753Z",
+        "history": [
+          {
+            "timestamp": "2026-10-31T21:07:19.753Z",
+            "inputMode": "typing",
+            "userAnswer": "Latvia",
+            "isCorrect": true,
+            "timeSpentMs": 5692,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2650,
-    "totalCorrect": 1985,
+    "totalReviews": 2651,
+    "totalCorrect": 1986,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-31",
@@ -39635,7 +39665,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-31T21:07:13.126Z"
+    "updatedAt": "2026-10-31T21:07:19.757Z"
   },
   "settings": {
     "audioEnabled": true,
