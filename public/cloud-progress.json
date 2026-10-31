@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-31T21:12:36.138Z",
+  "exportedAt": "2026-10-31T21:12:42.422Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -34560,14 +34560,14 @@
         "id": "SLB:capital_to_country",
         "countryId": "SLB",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.48,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 7,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T13:36:34.830Z",
-        "nextDueAt": "2026-10-29T13:51:34.830Z",
+        "lastReviewedAt": "2026-10-31T21:12:39.609Z",
+        "nextDueAt": "2026-11-07T21:12:39.609Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:36:34.830Z",
@@ -34576,11 +34576,19 @@
             "isCorrect": true,
             "timeSpentMs": 7630,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-10-31T21:12:39.609Z",
+            "inputMode": "typing",
+            "userAnswer": "Salomon Islands",
+            "isCorrect": true,
+            "timeSpentMs": 5493,
+            "grade": 3
           }
         ],
-        "difficulty": 5.2,
-        "stability": 0.85,
-        "lastLatencyGrade": 2,
+        "difficulty": 4.86,
+        "stability": 7.49,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -39918,8 +39926,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2686,
-    "totalCorrect": 2015,
+    "totalReviews": 2687,
+    "totalCorrect": 2016,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-31",
@@ -39957,7 +39965,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-31T21:12:33.330Z"
+    "updatedAt": "2026-10-31T21:12:39.614Z"
   },
   "settings": {
     "audioEnabled": true,
