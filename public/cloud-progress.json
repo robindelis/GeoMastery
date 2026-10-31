@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-31T21:08:04.322Z",
+  "exportedAt": "2026-10-31T21:08:08.796Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -23610,13 +23610,13 @@
         "countryId": "GRD",
         "attributeId": "country",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.15,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2.2,
+        "intervalDays": 4,
+        "reps": 2,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-30T14:23:53.653Z",
-        "nextDueAt": "2026-10-30T14:33:53.653Z",
+        "lastReviewedAt": "2026-10-31T21:08:05.978Z",
+        "nextDueAt": "2026-11-04T21:08:05.978Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:15:09.483Z",
@@ -23641,11 +23641,19 @@
             "isCorrect": false,
             "timeSpentMs": 9868,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-10-31T21:08:05.978Z",
+            "inputMode": "typing",
+            "userAnswer": "Grenada",
+            "isCorrect": true,
+            "timeSpentMs": 4008,
+            "grade": 3
           }
         ],
-        "difficulty": 6.54,
-        "stability": 0.63,
-        "lastLatencyGrade": 1,
+        "difficulty": 6.1,
+        "stability": 3.91,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "DMA"
         ]
@@ -39658,8 +39666,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2655,
-    "totalCorrect": 1990,
+    "totalReviews": 2656,
+    "totalCorrect": 1991,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-10-31",
@@ -39697,7 +39705,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-10-31T21:08:01.507Z"
+    "updatedAt": "2026-10-31T21:08:05.981Z"
   },
   "settings": {
     "audioEnabled": true,
