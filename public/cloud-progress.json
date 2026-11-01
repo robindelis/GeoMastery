@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:00:04.253Z",
+  "exportedAt": "2026-11-01T17:00:15.188Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16515,13 +16515,13 @@
         "countryId": "BWA",
         "attributeId": "location",
         "stage": 1,
-        "step": 2,
-        "easeFactor": 1.91,
-        "intervalDays": 5,
+        "step": 0,
+        "easeFactor": 1.71,
+        "intervalDays": 0,
         "reps": 3,
-        "lapses": 3,
-        "lastReviewedAt": "2026-10-27T12:26:46.046Z",
-        "nextDueAt": "2026-11-01T12:26:46.046Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-11-01T17:00:11.877Z",
+        "nextDueAt": "2026-11-01T17:10:11.877Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:20:04.572Z",
@@ -16568,12 +16568,20 @@
             "isCorrect": true,
             "timeSpentMs": 15955,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-01T17:00:11.877Z",
+            "inputMode": "map_click",
+            "userAnswer": "Zimbabwe",
+            "isCorrect": false,
+            "timeSpentMs": 4395,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 5.23,
-        "difficulty": 7.21,
-        "lastLatencyGrade": 2,
+        "stability": 0.95,
+        "difficulty": 7.55,
+        "lastLatencyGrade": 1,
         "confusedWith": [
           "ZWE"
         ]
@@ -40522,7 +40530,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2759,
+    "totalReviews": 2760,
     "totalCorrect": 2078,
     "currentStreak": 4,
     "longestStreak": 7,
@@ -40561,7 +40569,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:00:01.389Z"
+    "updatedAt": "2026-11-01T17:00:11.881Z"
   },
   "settings": {
     "audioEnabled": true,
