@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T16:59:01.903Z",
+  "exportedAt": "2026-11-01T16:59:07.536Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -31158,14 +31158,14 @@
         "id": "TWN:capital_to_country",
         "countryId": "TWN",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 16,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-26T19:49:09.507Z",
-        "nextDueAt": "2026-10-26T20:04:09.507Z",
+        "lastReviewedAt": "2026-11-01T16:59:04.611Z",
+        "nextDueAt": "2026-11-17T16:59:04.611Z",
         "history": [
           {
             "timestamp": "2026-10-26T19:49:09.507Z",
@@ -31174,10 +31174,18 @@
             "isCorrect": true,
             "timeSpentMs": 2228,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T16:59:04.611Z",
+            "inputMode": "typing",
+            "userAnswer": "Taiwan",
+            "isCorrect": true,
+            "timeSpentMs": 5332,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 16,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -40456,8 +40464,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2751,
-    "totalCorrect": 2071,
+    "totalReviews": 2752,
+    "totalCorrect": 2072,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40495,7 +40503,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T16:58:58.714Z"
+    "updatedAt": "2026-11-01T16:59:04.615Z"
   },
   "settings": {
     "audioEnabled": true,
