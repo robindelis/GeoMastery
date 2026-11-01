@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:08:16.766Z",
+  "exportedAt": "2026-11-01T17:08:22.417Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -37228,14 +37228,14 @@
         "id": "SMR:country",
         "countryId": "SMR",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 10,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:23:17.977Z",
-        "nextDueAt": "2026-10-29T23:38:17.977Z",
+        "lastReviewedAt": "2026-11-01T17:08:19.515Z",
+        "nextDueAt": "2026-11-11T17:08:19.515Z",
         "history": [
           {
             "timestamp": "2026-10-29T23:23:17.977Z",
@@ -37244,10 +37244,18 @@
             "isCorrect": true,
             "timeSpentMs": 4215,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T17:08:19.515Z",
+            "inputMode": "typing",
+            "userAnswer": "San Marino",
+            "isCorrect": true,
+            "timeSpentMs": 3785,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 10,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -40900,8 +40908,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2806,
-    "totalCorrect": 2119,
+    "totalReviews": 2807,
+    "totalCorrect": 2120,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40939,7 +40947,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:08:13.922Z"
+    "updatedAt": "2026-11-01T17:08:19.518Z"
   },
   "settings": {
     "audioEnabled": true,
