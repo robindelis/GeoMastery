@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T16:50:36.611Z",
+  "exportedAt": "2026-11-01T16:50:42.239Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19615,14 +19615,14 @@
         "id": "SDN:capital",
         "countryId": "SDN",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 2.3499999999999996,
-        "intervalDays": 0,
-        "reps": 1,
+        "stage": 2,
+        "step": 1,
+        "easeFactor": 2.4,
+        "intervalDays": 21,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-14T21:18:58.742Z",
-        "nextDueAt": "2026-10-14T21:18:58.742Z",
+        "lastReviewedAt": "2026-11-01T16:50:39.430Z",
+        "nextDueAt": "2026-11-22T16:50:39.430Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:36:16.367Z",
@@ -19637,11 +19637,21 @@
             "userAnswer": "Juba",
             "isCorrect": false,
             "timeSpentMs": 12570
+          },
+          {
+            "timestamp": "2026-11-01T16:50:39.430Z",
+            "inputMode": "typing",
+            "userAnswer": "Kharthoum",
+            "isCorrect": true,
+            "timeSpentMs": 4742,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 1.2,
-        "difficulty": 6.42
+        "stability": 21,
+        "difficulty": 5.99,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -40078,16 +40088,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2705,
-    "totalCorrect": 2031,
+    "totalReviews": 2706,
+    "totalCorrect": 2032,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 87,
-        "learning": 21
+        "mastered": 88,
+        "learning": 20
       },
       "Americas": {
         "total": 70,
@@ -40117,7 +40127,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T16:50:33.788Z"
+    "updatedAt": "2026-11-01T16:50:39.435Z"
   },
   "settings": {
     "audioEnabled": true,
