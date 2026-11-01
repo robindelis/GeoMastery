@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T16:58:27.119Z",
+  "exportedAt": "2026-11-01T16:59:01.903Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -37001,13 +37001,13 @@
         "countryId": "TTO",
         "attributeId": "country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.48,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.46,
+        "intervalDays": 5,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:24:17.829Z",
-        "nextDueAt": "2026-10-29T23:39:17.829Z",
+        "lastReviewedAt": "2026-11-01T16:58:58.710Z",
+        "nextDueAt": "2026-11-06T16:58:58.710Z",
         "history": [
           {
             "timestamp": "2026-10-29T23:24:17.829Z",
@@ -37016,10 +37016,18 @@
             "isCorrect": true,
             "timeSpentMs": 10484,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-01T16:58:58.710Z",
+            "inputMode": "typing",
+            "userAnswer": "Trinidad and Tobago",
+            "isCorrect": true,
+            "timeSpentMs": 9821,
+            "grade": 2
           }
         ],
-        "difficulty": 5.43,
-        "stability": 0.85,
+        "difficulty": 5.76,
+        "stability": 4.7,
         "confusedWith": [],
         "lastLatencyGrade": 2
       }
@@ -40448,8 +40456,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2750,
-    "totalCorrect": 2070,
+    "totalReviews": 2751,
+    "totalCorrect": 2071,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40487,7 +40495,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T16:58:24.050Z"
+    "updatedAt": "2026-11-01T16:58:58.714Z"
   },
   "settings": {
     "audioEnabled": true,
