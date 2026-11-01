@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:04:49.465Z",
+  "exportedAt": "2026-11-01T17:04:55.523Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -38895,13 +38895,13 @@
         "countryId": "SUR",
         "attributeId": "country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.35,
-        "intervalDays": 0.0104,
+        "step": 0,
+        "easeFactor": 2.15,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-30T14:24:23.692Z",
-        "nextDueAt": "2026-10-30T14:39:23.692Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-11-01T17:04:52.632Z",
+        "nextDueAt": "2026-11-01T17:14:52.632Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:02:31.002Z",
@@ -38918,11 +38918,19 @@
             "isCorrect": true,
             "timeSpentMs": 4754,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T17:04:52.632Z",
+            "inputMode": "typing",
+            "userAnswer": "Guayana",
+            "isCorrect": false,
+            "timeSpentMs": 4778,
+            "grade": 1
           }
         ],
-        "difficulty": 5.59,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 6.54,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
         "confusedWith": [
           "GUY"
         ]
@@ -40716,7 +40724,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2783,
+    "totalReviews": 2784,
     "totalCorrect": 2099,
     "currentStreak": 4,
     "longestStreak": 7,
@@ -40755,7 +40763,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:04:46.587Z"
+    "updatedAt": "2026-11-01T17:04:52.636Z"
   },
   "settings": {
     "audioEnabled": true,
