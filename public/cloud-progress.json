@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:01:53.240Z",
+  "exportedAt": "2026-11-01T17:02:09.712Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8252,14 +8252,14 @@
         "id": "TUV:location",
         "countryId": "TUV",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 1.61,
-        "intervalDays": 2,
-        "reps": 5,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 1.66,
+        "intervalDays": 7,
+        "reps": 6,
         "lapses": 5,
-        "lastReviewedAt": "2026-10-30T12:38:55.453Z",
-        "nextDueAt": "2026-11-01T12:38:55.453Z",
+        "lastReviewedAt": "2026-11-01T17:02:06.839Z",
+        "nextDueAt": "2026-11-08T17:02:06.839Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:28:04.840Z",
@@ -8335,11 +8335,19 @@
             "isCorrect": true,
             "timeSpentMs": 4370,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T17:02:06.839Z",
+            "inputMode": "map_click",
+            "userAnswer": "Tuvalu",
+            "isCorrect": true,
+            "timeSpentMs": 5929,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 2.42,
-        "difficulty": 7.4,
+        "stability": 7,
+        "difficulty": 6.89,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "VUT",
@@ -40620,8 +40628,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2771,
-    "totalCorrect": 2087,
+    "totalReviews": 2772,
+    "totalCorrect": 2088,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40648,8 +40656,8 @@
       },
       "Oceania": {
         "total": 28,
-        "mastered": 22,
-        "learning": 6
+        "mastered": 23,
+        "learning": 5
       }
     },
     "timeAttackRecords": {
@@ -40659,7 +40667,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:01:49.978Z"
+    "updatedAt": "2026-11-01T17:02:06.847Z"
   },
   "settings": {
     "audioEnabled": true,
