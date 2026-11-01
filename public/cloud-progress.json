@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:04:55.523Z",
+  "exportedAt": "2026-11-01T17:05:07.328Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -39782,14 +39782,14 @@
         "id": "BOL:capital_to_country",
         "countryId": "BOL",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 9,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:25:27.647Z",
-        "nextDueAt": "2026-10-30T14:40:27.647Z",
+        "lastReviewedAt": "2026-11-01T17:05:04.014Z",
+        "nextDueAt": "2026-11-10T17:05:04.014Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:25:27.647Z",
@@ -39798,11 +39798,19 @@
             "isCorrect": true,
             "timeSpentMs": 1712,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-11-01T17:05:04.014Z",
+            "inputMode": "typing",
+            "userAnswer": "Bolivia",
+            "isCorrect": true,
+            "timeSpentMs": 4178,
+            "grade": 3
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
-        "lastLatencyGrade": 4,
+        "difficulty": 3.41,
+        "stability": 9.13,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -40724,8 +40732,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2784,
-    "totalCorrect": 2099,
+    "totalReviews": 2785,
+    "totalCorrect": 2100,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40763,7 +40771,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:04:52.636Z"
+    "updatedAt": "2026-11-01T17:05:04.019Z"
   },
   "settings": {
     "audioEnabled": true,
