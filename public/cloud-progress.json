@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:08:33.009Z",
+  "exportedAt": "2026-11-01T17:08:43.475Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -32601,13 +32601,13 @@
         "countryId": "PHL",
         "attributeId": "country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.35,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.33,
+        "intervalDays": 5,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-29T13:25:09.785Z",
-        "nextDueAt": "2026-10-29T13:40:09.785Z",
+        "lastReviewedAt": "2026-11-01T17:08:40.655Z",
+        "nextDueAt": "2026-11-06T17:08:40.655Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:35:24.858Z",
@@ -32624,11 +32624,19 @@
             "isCorrect": true,
             "timeSpentMs": 3217,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T17:08:40.655Z",
+            "inputMode": "typing",
+            "userAnswer": "Philipines",
+            "isCorrect": true,
+            "timeSpentMs": 9410,
+            "grade": 2
           }
         ],
-        "difficulty": 5.59,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 5.88,
+        "stability": 5.39,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -40924,8 +40932,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2809,
-    "totalCorrect": 2122,
+    "totalReviews": 2810,
+    "totalCorrect": 2123,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40963,7 +40971,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:08:30.160Z"
+    "updatedAt": "2026-11-01T17:08:40.659Z"
   },
   "settings": {
     "audioEnabled": true,
