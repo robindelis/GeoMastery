@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:08:26.404Z",
+  "exportedAt": "2026-11-01T17:08:33.009Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -33751,13 +33751,13 @@
         "countryId": "BWA",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.38,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2.43,
+        "intervalDays": 3,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-31T21:13:09.738Z",
-        "nextDueAt": "2026-10-31T21:23:09.738Z",
+        "lastReviewedAt": "2026-11-01T17:08:30.155Z",
+        "nextDueAt": "2026-11-04T17:08:30.155Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:46:48.012Z",
@@ -33774,11 +33774,19 @@
             "isCorrect": false,
             "timeSpentMs": 13460,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-11-01T17:08:30.155Z",
+            "inputMode": "typing",
+            "userAnswer": "Botswana",
+            "isCorrect": true,
+            "timeSpentMs": 6008,
+            "grade": 3
           }
         ],
-        "difficulty": 5.32,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 4.97,
+        "stability": 3.42,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "UGA"
         ]
@@ -40916,8 +40924,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2808,
-    "totalCorrect": 2121,
+    "totalReviews": 2809,
+    "totalCorrect": 2122,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40955,7 +40963,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:08:23.279Z"
+    "updatedAt": "2026-11-01T17:08:30.160Z"
   },
   "settings": {
     "audioEnabled": true,
