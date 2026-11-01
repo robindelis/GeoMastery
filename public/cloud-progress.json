@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T16:58:14.768Z",
+  "exportedAt": "2026-11-01T16:58:27.119Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -38327,13 +38327,13 @@
         "countryId": "KGZ",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 5,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T12:44:36.729Z",
-        "nextDueAt": "2026-10-30T12:59:36.729Z",
+        "lastReviewedAt": "2026-11-01T16:58:24.047Z",
+        "nextDueAt": "2026-11-06T16:58:24.047Z",
         "history": [
           {
             "timestamp": "2026-10-30T12:44:36.729Z",
@@ -38342,11 +38342,19 @@
             "isCorrect": true,
             "timeSpentMs": 3396,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T16:58:24.047Z",
+            "inputMode": "typing",
+            "userAnswer": "Kyrghystan",
+            "isCorrect": true,
+            "timeSpentMs": 13083,
+            "grade": 2
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.97,
+        "stability": 4.88,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -40440,8 +40448,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2749,
-    "totalCorrect": 2069,
+    "totalReviews": 2750,
+    "totalCorrect": 2070,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40479,7 +40487,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T16:58:10.191Z"
+    "updatedAt": "2026-11-01T16:58:24.050Z"
   },
   "settings": {
     "audioEnabled": true,
