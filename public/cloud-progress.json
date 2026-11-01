@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T16:51:52.000Z",
+  "exportedAt": "2026-11-01T16:51:57.231Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30581,14 +30581,14 @@
         "id": "LBR:capital_to_country",
         "countryId": "LBR",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.2,
-        "intervalDays": 2,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.25,
+        "intervalDays": 9,
+        "reps": 3,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-29T23:18:25.609Z",
-        "nextDueAt": "2026-10-31T23:18:25.609Z",
+        "lastReviewedAt": "2026-11-01T16:51:54.385Z",
+        "nextDueAt": "2026-11-10T16:51:54.385Z",
         "history": [
           {
             "timestamp": "2026-10-25T13:51:51.537Z",
@@ -30621,10 +30621,18 @@
             "isCorrect": true,
             "timeSpentMs": 5561,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T16:51:54.385Z",
+            "inputMode": "typing",
+            "userAnswer": "Liberia",
+            "isCorrect": true,
+            "timeSpentMs": 4573,
+            "grade": 3
           }
         ],
-        "difficulty": 6.23,
-        "stability": 2.2,
+        "difficulty": 5.81,
+        "stability": 9,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "LSO"
@@ -40178,8 +40186,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2717,
-    "totalCorrect": 2041,
+    "totalReviews": 2718,
+    "totalCorrect": 2042,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40217,7 +40225,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T16:51:49.187Z"
+    "updatedAt": "2026-11-01T16:51:54.389Z"
   },
   "settings": {
     "audioEnabled": true,
