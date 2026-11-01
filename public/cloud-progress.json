@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T16:54:22.296Z",
+  "exportedAt": "2026-11-01T16:54:28.048Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -38398,14 +38398,14 @@
         "id": "GBR:capital_to_country",
         "countryId": "GBR",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 8,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T13:53:47.699Z",
-        "nextDueAt": "2026-10-30T14:08:47.699Z",
+        "lastReviewedAt": "2026-11-01T16:54:25.061Z",
+        "nextDueAt": "2026-11-09T16:54:25.061Z",
         "history": [
           {
             "timestamp": "2026-10-30T13:53:47.699Z",
@@ -38414,10 +38414,18 @@
             "isCorrect": true,
             "timeSpentMs": 2207,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T16:54:25.061Z",
+            "inputMode": "typing",
+            "userAnswer": "United Kingdom",
+            "isCorrect": true,
+            "timeSpentMs": 4673,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 8.12,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -40300,8 +40308,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2732,
-    "totalCorrect": 2055,
+    "totalReviews": 2733,
+    "totalCorrect": 2056,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40339,7 +40347,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T16:54:19.453Z"
+    "updatedAt": "2026-11-01T16:54:25.064Z"
   },
   "settings": {
     "audioEnabled": true,
