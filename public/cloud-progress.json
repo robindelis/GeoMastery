@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:04:07.315Z",
+  "exportedAt": "2026-11-01T17:04:22.571Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -34815,14 +34815,14 @@
         "id": "SYR:capital_to_country",
         "countryId": "SYR",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 11,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T13:31:52.455Z",
-        "nextDueAt": "2026-10-29T13:46:52.455Z",
+        "lastReviewedAt": "2026-11-01T17:04:19.711Z",
+        "nextDueAt": "2026-11-12T17:04:19.711Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:31:52.455Z",
@@ -34831,10 +34831,18 @@
             "isCorrect": true,
             "timeSpentMs": 3094,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T17:04:19.711Z",
+            "inputMode": "typing",
+            "userAnswer": "Syria",
+            "isCorrect": true,
+            "timeSpentMs": 3235,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 11,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -40676,8 +40684,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2778,
-    "totalCorrect": 2094,
+    "totalReviews": 2779,
+    "totalCorrect": 2095,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40715,7 +40723,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:04:04.403Z"
+    "updatedAt": "2026-11-01T17:04:19.715Z"
   },
   "settings": {
     "audioEnabled": true,
