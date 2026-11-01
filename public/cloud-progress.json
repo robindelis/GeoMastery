@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T16:58:09.860Z",
+  "exportedAt": "2026-11-01T16:58:14.768Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -36698,14 +36698,14 @@
         "id": "CYP:capital_to_country",
         "countryId": "CYP",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 10,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:21:52.960Z",
-        "nextDueAt": "2026-10-29T23:36:52.960Z",
+        "lastReviewedAt": "2026-11-01T16:58:10.186Z",
+        "nextDueAt": "2026-11-11T16:58:10.186Z",
         "history": [
           {
             "timestamp": "2026-10-29T23:21:52.960Z",
@@ -36714,10 +36714,18 @@
             "isCorrect": true,
             "timeSpentMs": 2687,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T16:58:10.186Z",
+            "inputMode": "typing",
+            "userAnswer": "Cyprus",
+            "isCorrect": true,
+            "timeSpentMs": 4813,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 10,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -40432,8 +40440,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2748,
-    "totalCorrect": 2068,
+    "totalReviews": 2749,
+    "totalCorrect": 2069,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40471,7 +40479,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T16:58:04.976Z"
+    "updatedAt": "2026-11-01T16:58:10.191Z"
   },
   "settings": {
     "audioEnabled": true,
