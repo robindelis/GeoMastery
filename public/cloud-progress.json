@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:07:04.679Z",
+  "exportedAt": "2026-11-01T17:07:15.428Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -39507,13 +39507,13 @@
         "countryId": "TUR",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 5,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:23:08.591Z",
-        "nextDueAt": "2026-10-30T14:38:08.591Z",
+        "lastReviewedAt": "2026-11-01T17:07:12.592Z",
+        "nextDueAt": "2026-11-06T17:07:12.592Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:23:08.591Z",
@@ -39522,11 +39522,19 @@
             "isCorrect": true,
             "timeSpentMs": 2993,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T17:07:12.592Z",
+            "inputMode": "typing",
+            "userAnswer": "Turkey",
+            "isCorrect": true,
+            "timeSpentMs": 8779,
+            "grade": 2
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.97,
+        "stability": 4.79,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -40812,8 +40820,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2795,
-    "totalCorrect": 2108,
+    "totalReviews": 2796,
+    "totalCorrect": 2109,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40851,7 +40859,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:07:01.847Z"
+    "updatedAt": "2026-11-01T17:07:12.597Z"
   },
   "settings": {
     "audioEnabled": true,
