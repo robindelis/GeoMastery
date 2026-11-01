@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T16:50:48.709Z",
+  "exportedAt": "2026-11-01T16:50:59.000Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25763,14 +25763,14 @@
         "id": "UGA:country",
         "countryId": "UGA",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.2,
-        "intervalDays": 2,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.25,
+        "intervalDays": 8,
+        "reps": 3,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-30T14:44:50.436Z",
-        "nextDueAt": "2026-11-01T14:44:50.436Z",
+        "lastReviewedAt": "2026-11-01T16:50:56.169Z",
+        "nextDueAt": "2026-11-09T16:50:56.169Z",
         "history": [
           {
             "timestamp": "2026-10-22T10:02:22.821Z",
@@ -25803,10 +25803,18 @@
             "isCorrect": true,
             "timeSpentMs": 5787,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T16:50:56.169Z",
+            "inputMode": "typing",
+            "userAnswer": "uganda",
+            "isCorrect": true,
+            "timeSpentMs": 7959,
+            "grade": 3
           }
         ],
-        "difficulty": 6.23,
-        "stability": 2.39,
+        "difficulty": 5.81,
+        "stability": 8,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "CMR"
@@ -40096,8 +40104,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2707,
-    "totalCorrect": 2033,
+    "totalReviews": 2708,
+    "totalCorrect": 2034,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40135,7 +40143,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T16:50:45.908Z"
+    "updatedAt": "2026-11-01T16:50:56.174Z"
   },
   "settings": {
     "audioEnabled": true,
