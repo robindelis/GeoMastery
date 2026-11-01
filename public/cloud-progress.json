@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:08:43.475Z",
+  "exportedAt": "2026-11-01T17:08:47.422Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -39414,14 +39414,14 @@
         "id": "KEN:capital_to_country",
         "countryId": "KEN",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 12,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:06:40.515Z",
-        "nextDueAt": "2026-10-30T14:21:40.515Z",
+        "lastReviewedAt": "2026-11-01T17:08:44.271Z",
+        "nextDueAt": "2026-11-13T17:08:44.271Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:06:40.515Z",
@@ -39430,11 +39430,19 @@
             "isCorrect": true,
             "timeSpentMs": 2370,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T17:08:44.271Z",
+            "inputMode": "typing",
+            "userAnswer": "Kenia",
+            "isCorrect": true,
+            "timeSpentMs": 2467,
+            "grade": 4
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 3.3,
+        "stability": 12,
+        "lastLatencyGrade": 4,
         "confusedWith": []
       }
     ],
@@ -40932,8 +40940,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2810,
-    "totalCorrect": 2123,
+    "totalReviews": 2811,
+    "totalCorrect": 2124,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40971,7 +40979,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:08:40.659Z"
+    "updatedAt": "2026-11-01T17:08:44.277Z"
   },
   "settings": {
     "audioEnabled": true,
