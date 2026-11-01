@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:06:36.393Z",
+  "exportedAt": "2026-11-01T17:06:51.559Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -34471,14 +34471,14 @@
         "id": "TTO:capital_to_country",
         "countryId": "TTO",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 7,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T13:28:01.199Z",
-        "nextDueAt": "2026-10-29T13:43:01.199Z",
+        "lastReviewedAt": "2026-11-01T17:06:48.700Z",
+        "nextDueAt": "2026-11-08T17:06:48.700Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:28:01.199Z",
@@ -34487,11 +34487,19 @@
             "isCorrect": true,
             "timeSpentMs": 3261,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T17:06:48.700Z",
+            "inputMode": "typing",
+            "userAnswer": "Trinidad",
+            "isCorrect": true,
+            "timeSpentMs": 14128,
+            "grade": 2
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.97,
+        "stability": 7,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -40796,8 +40804,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2793,
-    "totalCorrect": 2106,
+    "totalReviews": 2794,
+    "totalCorrect": 2107,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40835,7 +40843,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:06:33.559Z"
+    "updatedAt": "2026-11-01T17:06:48.705Z"
   },
   "settings": {
     "audioEnabled": true,
