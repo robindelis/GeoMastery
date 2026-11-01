@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T16:56:04.296Z",
+  "exportedAt": "2026-11-01T16:56:11.347Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -2607,13 +2607,13 @@
         "countryId": "NAM",
         "attributeId": "location",
         "stage": 2,
-        "step": 4,
-        "easeFactor": 2.499999999999999,
-        "intervalDays": 17,
-        "reps": 4,
+        "step": 5,
+        "easeFactor": 2.55,
+        "intervalDays": 52,
+        "reps": 5,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-15T16:27:15.969Z",
-        "nextDueAt": "2026-11-01T16:27:15.969Z",
+        "lastReviewedAt": "2026-11-01T16:56:08.463Z",
+        "nextDueAt": "2026-12-23T16:56:08.463Z",
         "history": [
           {
             "timestamp": "2026-10-04T16:10:46.309Z",
@@ -2649,11 +2649,21 @@
             "userAnswer": "Namibia",
             "isCorrect": true,
             "timeSpentMs": 6575
+          },
+          {
+            "timestamp": "2026-11-01T16:56:08.463Z",
+            "inputMode": "map_click",
+            "userAnswer": "Namibia",
+            "isCorrect": true,
+            "timeSpentMs": 3485,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 3,
-        "stability": 17,
-        "difficulty": 5.16
+        "stability": 52.29,
+        "difficulty": 4.83,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
       }
     ],
     [
@@ -40324,8 +40334,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2735,
-    "totalCorrect": 2057,
+    "totalReviews": 2736,
+    "totalCorrect": 2058,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40363,7 +40373,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T16:56:01.414Z"
+    "updatedAt": "2026-11-01T16:56:08.467Z"
   },
   "settings": {
     "audioEnabled": true,
