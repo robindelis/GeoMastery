@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:02:09.712Z",
+  "exportedAt": "2026-11-01T17:02:14.248Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -39912,14 +39912,14 @@
         "id": "ISR:capital_to_country",
         "countryId": "ISR",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 9,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:26:37.784Z",
-        "nextDueAt": "2026-10-30T14:41:37.784Z",
+        "lastReviewedAt": "2026-11-01T17:02:11.370Z",
+        "nextDueAt": "2026-11-10T17:02:11.370Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:26:37.784Z",
@@ -39928,11 +39928,19 @@
             "isCorrect": true,
             "timeSpentMs": 1967,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-11-01T17:02:11.370Z",
+            "inputMode": "typing",
+            "userAnswer": "Israel",
+            "isCorrect": true,
+            "timeSpentMs": 3298,
+            "grade": 3
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
-        "lastLatencyGrade": 4,
+        "difficulty": 3.41,
+        "stability": 9.12,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -40628,8 +40636,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2772,
-    "totalCorrect": 2088,
+    "totalReviews": 2773,
+    "totalCorrect": 2089,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40667,7 +40675,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:02:06.847Z"
+    "updatedAt": "2026-11-01T17:02:11.375Z"
   },
   "settings": {
     "audioEnabled": true,
