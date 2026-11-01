@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T16:52:23.372Z",
+  "exportedAt": "2026-11-01T16:52:33.264Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -29018,14 +29018,14 @@
         "id": "MDV:country",
         "countryId": "MDV",
         "attributeId": "country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.33,
-        "intervalDays": 5,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.31,
+        "intervalDays": 11,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-27T12:30:27.268Z",
-        "nextDueAt": "2026-11-01T12:30:27.268Z",
+        "lastReviewedAt": "2026-11-01T16:52:30.420Z",
+        "nextDueAt": "2026-11-12T16:52:30.420Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:45:08.459Z",
@@ -29050,10 +29050,18 @@
             "isCorrect": true,
             "timeSpentMs": 12280,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-01T16:52:30.420Z",
+            "inputMode": "typing",
+            "userAnswer": "Maldives",
+            "isCorrect": true,
+            "timeSpentMs": 9334,
+            "grade": 2
           }
         ],
-        "difficulty": 5.88,
-        "stability": 5.09,
+        "difficulty": 6.1,
+        "stability": 11.35,
         "lastLatencyGrade": 2,
         "confusedWith": [
           "SYC"
@@ -40226,8 +40234,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2723,
-    "totalCorrect": 2047,
+    "totalReviews": 2724,
+    "totalCorrect": 2048,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40265,7 +40273,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T16:52:20.547Z"
+    "updatedAt": "2026-11-01T16:52:30.424Z"
   },
   "settings": {
     "audioEnabled": true,
