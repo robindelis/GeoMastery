@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:00:48.256Z",
+  "exportedAt": "2026-11-01T17:01:04.585Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -33526,13 +33526,13 @@
         "countryId": "DOM",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.15,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2.2,
+        "intervalDays": 3,
+        "reps": 2,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-31T21:08:51.801Z",
-        "nextDueAt": "2026-10-31T21:18:51.801Z",
+        "lastReviewedAt": "2026-11-01T17:01:01.702Z",
+        "nextDueAt": "2026-11-04T17:01:01.702Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:46:45.049Z",
@@ -33557,11 +33557,19 @@
             "isCorrect": false,
             "timeSpentMs": 5140,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-11-01T17:01:01.702Z",
+            "inputMode": "typing",
+            "userAnswer": "Dominican Republic",
+            "isCorrect": true,
+            "timeSpentMs": 6144,
+            "grade": 3
           }
         ],
-        "difficulty": 6.54,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 6.1,
+        "stability": 2.88,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "CRI",
           "PAN"
@@ -40571,8 +40579,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2765,
-    "totalCorrect": 2082,
+    "totalReviews": 2766,
+    "totalCorrect": 2083,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40610,7 +40618,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:00:45.127Z"
+    "updatedAt": "2026-11-01T17:01:01.708Z"
   },
   "settings": {
     "audioEnabled": true,
