@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T16:59:33.098Z",
+  "exportedAt": "2026-11-01T16:59:42.185Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -21112,13 +21112,13 @@
         "countryId": "LCA",
         "attributeId": "location",
         "stage": 2,
-        "step": 2,
-        "easeFactor": 1.98,
-        "intervalDays": 9,
-        "reps": 3,
+        "step": 3,
+        "easeFactor": 1.96,
+        "intervalDays": 16,
+        "reps": 4,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-23T11:55:38.403Z",
-        "nextDueAt": "2026-11-01T11:55:38.403Z",
+        "lastReviewedAt": "2026-11-01T16:59:38.610Z",
+        "nextDueAt": "2026-11-17T16:59:38.610Z",
         "history": [
           {
             "timestamp": "2026-10-06T15:47:37.837Z",
@@ -21162,11 +21162,19 @@
             "isCorrect": true,
             "timeSpentMs": 21758,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-01T16:59:38.610Z",
+            "inputMode": "map_click",
+            "userAnswer": "Saint Lucia",
+            "isCorrect": true,
+            "timeSpentMs": 7201,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 9.44,
-        "difficulty": 8.4,
+        "stability": 16,
+        "difficulty": 8.05,
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
@@ -40506,8 +40514,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2757,
-    "totalCorrect": 2077,
+    "totalReviews": 2758,
+    "totalCorrect": 2078,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40545,7 +40553,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T16:59:30.212Z"
+    "updatedAt": "2026-11-01T16:59:38.616Z"
   },
   "settings": {
     "audioEnabled": true,
