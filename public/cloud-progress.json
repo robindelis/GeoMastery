@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T16:59:19.028Z",
+  "exportedAt": "2026-11-01T16:59:23.261Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -18471,13 +18471,13 @@
         "countryId": "GHA",
         "attributeId": "location",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 1.45,
-        "intervalDays": 0,
-        "reps": 3,
+        "step": 1,
+        "easeFactor": 1.5,
+        "intervalDays": 3,
+        "reps": 4,
         "lapses": 6,
-        "lastReviewedAt": "2026-10-31T21:09:51.509Z",
-        "nextDueAt": "2026-10-31T21:19:51.509Z",
+        "lastReviewedAt": "2026-11-01T16:59:20.390Z",
+        "nextDueAt": "2026-11-04T16:59:20.390Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:32:03.058Z",
@@ -18545,12 +18545,20 @@
             "isCorrect": false,
             "timeSpentMs": 3483,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-11-01T16:59:20.390Z",
+            "inputMode": "map_click",
+            "userAnswer": "Ghana",
+            "isCorrect": true,
+            "timeSpentMs": 3758,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 0.92,
-        "difficulty": 7.91,
-        "lastLatencyGrade": 1,
+        "stability": 2.58,
+        "difficulty": 7.36,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "NGA",
           "GAB"
@@ -40480,8 +40488,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2754,
-    "totalCorrect": 2074,
+    "totalReviews": 2755,
+    "totalCorrect": 2075,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40519,7 +40527,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T16:59:15.923Z"
+    "updatedAt": "2026-11-01T16:59:20.394Z"
   },
   "settings": {
     "audioEnabled": true,
