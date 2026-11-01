@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:07:18.718Z",
+  "exportedAt": "2026-11-01T17:07:27.395Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -28351,14 +28351,14 @@
         "id": "USA:country",
         "countryId": "USA",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 28,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-24T14:25:02.656Z",
-        "nextDueAt": "2026-10-24T14:40:02.656Z",
+        "lastReviewedAt": "2026-11-01T17:07:24.119Z",
+        "nextDueAt": "2026-11-29T17:07:24.119Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:25:02.656Z",
@@ -28367,11 +28367,19 @@
             "isCorrect": true,
             "timeSpentMs": 3603,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T17:07:24.119Z",
+            "inputMode": "typing",
+            "userAnswer": "USA",
+            "isCorrect": true,
+            "timeSpentMs": 2316,
+            "grade": 4
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 3.3,
+        "stability": 28.12,
+        "lastLatencyGrade": 4,
         "confusedWith": []
       }
     ],
@@ -34070,14 +34078,14 @@
         "id": "STP:capital_to_country",
         "countryId": "STP",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.66,
+        "intervalDays": 18,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T13:21:43.483Z",
-        "nextDueAt": "2026-10-29T13:36:43.483Z",
+        "lastReviewedAt": "2026-11-01T17:07:27.048Z",
+        "nextDueAt": "2026-11-19T17:07:27.048Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:21:43.483Z",
@@ -34086,10 +34094,18 @@
             "isCorrect": true,
             "timeSpentMs": 1596,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-11-01T17:07:27.048Z",
+            "inputMode": "typing",
+            "userAnswer": "Sao Tome",
+            "isCorrect": true,
+            "timeSpentMs": 2152,
+            "grade": 4
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
+        "difficulty": 2.46,
+        "stability": 18,
         "lastLatencyGrade": 4,
         "confusedWith": []
       }
@@ -38056,14 +38072,14 @@
         "id": "SLV:capital_to_country",
         "countryId": "SLV",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 11,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:28:10.767Z",
-        "nextDueAt": "2026-10-29T23:43:10.767Z",
+        "lastReviewedAt": "2026-11-01T17:07:21.643Z",
+        "nextDueAt": "2026-11-12T17:07:21.643Z",
         "history": [
           {
             "timestamp": "2026-10-29T23:28:10.767Z",
@@ -38072,11 +38088,19 @@
             "isCorrect": true,
             "timeSpentMs": 2109,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-11-01T17:07:21.643Z",
+            "inputMode": "typing",
+            "userAnswer": "El salvador",
+            "isCorrect": true,
+            "timeSpentMs": 3228,
+            "grade": 3
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
-        "lastLatencyGrade": 4,
+        "difficulty": 3.41,
+        "stability": 11,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -40828,8 +40852,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2797,
-    "totalCorrect": 2110,
+    "totalReviews": 2800,
+    "totalCorrect": 2113,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40867,7 +40891,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:07:15.863Z"
+    "updatedAt": "2026-11-01T17:07:27.052Z"
   },
   "settings": {
     "audioEnabled": true,
