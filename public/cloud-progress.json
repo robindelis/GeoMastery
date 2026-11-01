@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T17:09:48.986Z",
+  "exportedAt": "2026-11-01T17:09:55.605Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -39290,14 +39290,14 @@
         "id": "CPV:capital_to_country",
         "countryId": "CPV",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 8,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:04:09.534Z",
-        "nextDueAt": "2026-10-30T14:19:09.534Z",
+        "lastReviewedAt": "2026-11-01T17:09:52.753Z",
+        "nextDueAt": "2026-11-09T17:09:52.753Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:04:09.534Z",
@@ -39306,10 +39306,18 @@
             "isCorrect": true,
             "timeSpentMs": 3389,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T17:09:52.753Z",
+            "inputMode": "typing",
+            "userAnswer": "Cabo Verde",
+            "isCorrect": true,
+            "timeSpentMs": 5198,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 8.13,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -41000,8 +41008,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2818,
-    "totalCorrect": 2129,
+    "totalReviews": 2819,
+    "totalCorrect": 2130,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -41039,7 +41047,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T17:09:46.165Z"
+    "updatedAt": "2026-11-01T17:09:52.757Z"
   },
   "settings": {
     "audioEnabled": true,
