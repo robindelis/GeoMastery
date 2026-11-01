@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-01T16:52:08.694Z",
+  "exportedAt": "2026-11-01T16:52:15.712Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -14340,13 +14340,13 @@
         "countryId": "MDG",
         "attributeId": "location",
         "stage": 2,
-        "step": 1,
-        "easeFactor": 2.4,
-        "intervalDays": 7,
-        "reps": 2,
+        "step": 2,
+        "easeFactor": 2.48,
+        "intervalDays": 33,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-24T14:22:54.262Z",
-        "nextDueAt": "2026-10-31T14:22:54.262Z",
+        "lastReviewedAt": "2026-11-01T16:52:12.721Z",
+        "nextDueAt": "2026-12-04T16:52:12.721Z",
         "history": [
           {
             "timestamp": "2026-10-06T10:43:42.936Z",
@@ -14370,12 +14370,20 @@
             "isCorrect": true,
             "timeSpentMs": 2486,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T16:52:12.721Z",
+            "inputMode": "map_click",
+            "userAnswer": "Madagascar",
+            "isCorrect": true,
+            "timeSpentMs": 2312,
+            "grade": 4
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 7.18,
-        "difficulty": 5.81,
-        "lastLatencyGrade": 3,
+        "stability": 33.13,
+        "difficulty": 4.8,
+        "lastLatencyGrade": 4,
         "confusedWith": [
           "BHS"
         ]
@@ -37930,14 +37938,14 @@
         "id": "GIN:capital_to_country",
         "countryId": "GIN",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.53,
-        "intervalDays": 2,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.61,
+        "intervalDays": 12,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:06:59.600Z",
-        "nextDueAt": "2026-11-01T14:06:59.600Z",
+        "lastReviewedAt": "2026-11-01T16:52:15.647Z",
+        "nextDueAt": "2026-11-13T16:52:15.647Z",
         "history": [
           {
             "timestamp": "2026-10-30T12:42:56.203Z",
@@ -37954,11 +37962,19 @@
             "isCorrect": true,
             "timeSpentMs": 6165,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-01T16:52:15.647Z",
+            "inputMode": "typing",
+            "userAnswer": "Guinea",
+            "isCorrect": true,
+            "timeSpentMs": 2122,
+            "grade": 4
           }
         ],
-        "difficulty": 4.86,
-        "stability": 2.45,
-        "lastLatencyGrade": 3,
+        "difficulty": 3.78,
+        "stability": 12.16,
+        "lastLatencyGrade": 4,
         "confusedWith": []
       }
     ],
@@ -40202,8 +40218,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2720,
-    "totalCorrect": 2044,
+    "totalReviews": 2722,
+    "totalCorrect": 2046,
     "currentStreak": 4,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-01",
@@ -40241,7 +40257,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-01T16:52:05.869Z"
+    "updatedAt": "2026-11-01T16:52:15.651Z"
   },
   "settings": {
     "audioEnabled": true,
