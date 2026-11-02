@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-02T22:27:11.419Z",
+  "exportedAt": "2026-11-02T22:27:24.814Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -32587,13 +32587,13 @@
         "countryId": "TUV",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
+        "step": 0,
+        "easeFactor": 2.35,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-27T12:32:20.748Z",
-        "nextDueAt": "2026-10-27T12:47:20.748Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-11-02T22:27:21.934Z",
+        "nextDueAt": "2026-11-02T22:37:21.934Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:32:20.748Z",
@@ -32602,12 +32602,22 @@
             "isCorrect": true,
             "timeSpentMs": 4142,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-02T22:27:21.934Z",
+            "inputMode": "typing",
+            "userAnswer": "Vanuatu",
+            "isCorrect": false,
+            "timeSpentMs": 12099,
+            "grade": 1
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
-        "confusedWith": []
+        "difficulty": 5.81,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "VUT"
+        ]
       }
     ],
     [
@@ -41162,7 +41172,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2838,
+    "totalReviews": 2839,
     "totalCorrect": 2148,
     "currentStreak": 5,
     "longestStreak": 7,
@@ -41201,7 +41211,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-02T22:27:08.611Z"
+    "updatedAt": "2026-11-02T22:27:21.937Z"
   },
   "settings": {
     "audioEnabled": true,
