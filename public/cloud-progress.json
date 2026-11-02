@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-02T22:27:33.975Z",
+  "exportedAt": "2026-11-02T22:27:41.523Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -37284,14 +37284,14 @@
         "id": "SLE:capital_to_country",
         "countryId": "SLE",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 12,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:22:02.209Z",
-        "nextDueAt": "2026-10-29T23:37:02.209Z",
+        "lastReviewedAt": "2026-11-02T22:27:38.676Z",
+        "nextDueAt": "2026-11-14T22:27:38.676Z",
         "history": [
           {
             "timestamp": "2026-10-29T23:22:02.209Z",
@@ -37300,10 +37300,18 @@
             "isCorrect": true,
             "timeSpentMs": 4579,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-02T22:27:38.676Z",
+            "inputMode": "typing",
+            "userAnswer": "Sierra Leone",
+            "isCorrect": true,
+            "timeSpentMs": 7335,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
+        "difficulty": 4.14,
+        "stability": 12.38,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -41188,8 +41196,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2841,
-    "totalCorrect": 2150,
+    "totalReviews": 2842,
+    "totalCorrect": 2151,
     "currentStreak": 5,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-02",
@@ -41227,7 +41235,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-02T22:27:31.112Z"
+    "updatedAt": "2026-11-02T22:27:38.680Z"
   },
   "settings": {
     "audioEnabled": true,
