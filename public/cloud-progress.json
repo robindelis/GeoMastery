@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-05T22:01:25.541Z",
+  "exportedAt": "2026-11-05T22:01:38.334Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -34834,14 +34834,14 @@
         "id": "SOM:capital_to_country",
         "countryId": "SOM",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.6,
-        "intervalDays": 4,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.58,
+        "intervalDays": 15,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:22:29.667Z",
-        "nextDueAt": "2026-11-02T23:22:29.667Z",
+        "lastReviewedAt": "2026-11-05T22:01:35.222Z",
+        "nextDueAt": "2026-11-20T22:01:35.222Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:29:09.376Z",
@@ -34858,11 +34858,19 @@
             "isCorrect": true,
             "timeSpentMs": 8459,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-05T22:01:35.222Z",
+            "inputMode": "typing",
+            "userAnswer": "somalia",
+            "isCorrect": true,
+            "timeSpentMs": 11708,
+            "grade": 2
           }
         ],
-        "difficulty": 4.14,
-        "stability": 4.28,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.76,
+        "stability": 15,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -41361,8 +41369,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2862,
-    "totalCorrect": 2169,
+    "totalReviews": 2863,
+    "totalCorrect": 2170,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-05",
@@ -41400,7 +41408,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-05T22:01:22.450Z"
+    "updatedAt": "2026-11-05T22:01:35.245Z"
   },
   "settings": {
     "audioEnabled": true,
