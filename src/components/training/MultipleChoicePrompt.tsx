@@ -80,18 +80,61 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
   }, [options, isSubmitted, isOverallCorrect, onNextQuestion, onOverrideCorrect]);
 
   return (
-    <div className="flex flex-col gap-2 sm:gap-4 w-full max-w-xl mx-auto">
-      {/* Question Header Card */}
-      <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-2.5 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col items-center text-center gap-1 sm:gap-2">
-        <div className="flex items-center gap-2">
+    <div className="flex flex-col gap-1.5 sm:gap-4 w-full max-w-xl mx-auto">
+      {/* MOBILE (<sm) COMPACT QUESTION BAR: Single row above 2x2 options */}
+      <div className="flex sm:hidden items-center justify-between gap-2 px-1">
+        <div className="flex items-center gap-2 min-w-0 flex-1">
           {isCapitalToCountry && !isSubmitted ? (
-            <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
-              <Building2 className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
+            <span className="w-6 h-6 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400 shrink-0">
+              <Building2 className="w-3.5 h-3.5" />
             </span>
           ) : (
-            <span className="text-xl sm:text-3xl">{country.flagEmoji}</span>
+            <span className="text-xl leading-none shrink-0">{country.flagEmoji}</span>
           )}
-          <span className="text-[10px] sm:text-xs uppercase tracking-widest px-2 sm:px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700 truncate max-w-[240px] sm:max-w-none">
+          <div className="min-w-0 flex-1">
+            <div className="text-[13px] font-bold text-white leading-tight truncate">
+              {promptText}
+            </div>
+            <div className="text-[10px] text-slate-400 font-semibold truncate">
+              {isWater ? `🌊 Oceans & Straits • ${country.subregion}` : `${country.continent} • ${country.subregion}`}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1.5 shrink-0">
+          {isCapitalToCountry && country.capital && (
+            <button
+              type="button"
+              onClick={() => speechEngine.speak(country.capital)}
+              title={`Pronounce ${country.capital}`}
+              className="p-1.5 rounded-lg bg-slate-800 border border-slate-700 text-amber-300"
+            >
+              <Volume2 className="w-3.5 h-3.5" />
+            </button>
+          )}
+          {!isSubmitted && onGiveUp && (
+            <button
+              type="button"
+              onClick={onGiveUp}
+              className="px-2.5 py-1 rounded-lg border border-rose-900/60 bg-rose-950/40 text-[11px] font-semibold text-rose-300 active:scale-95"
+            >
+              Skip
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* DESKTOP (sm+) Question Header Card */}
+      <div className="hidden sm:flex bg-slate-900/90 border border-slate-700/80 rounded-2xl p-5 shadow-2xl backdrop-blur-md flex-col items-center text-center gap-2">
+        <div className="flex items-center gap-2">
+          {isCapitalToCountry && !isSubmitted ? (
+            <span className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
+              <Building2 className="w-5 h-5" />
+            </span>
+          ) : (
+            <span className="text-3xl">{country.flagEmoji}</span>
+          )}
+          <span className="text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700">
             {isWater ? `🌊 Oceans & Straits • ${country.subregion}` : `${country.continent} • ${country.subregion}`}
           </span>
           {isCapitalToCountry && country.capital && (
@@ -105,10 +148,10 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
             </button>
           )}
         </div>
-        <h2 className="text-base sm:text-2xl font-bold text-white tracking-tight mt-0.5 sm:mt-1 leading-snug">
+        <h2 className="text-2xl font-bold text-white tracking-tight mt-1">
           {promptText}
         </h2>
-        <div className="hidden sm:block text-xs text-emerald-400/90 font-medium">
+        <div className="text-xs text-emerald-400/90 font-medium">
           {isCapitalToCountry
             ? 'Stage 0: Capital → Country Recognition '
             : 'Stage 0: Recognition Phase '}
@@ -141,9 +184,9 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
               key={`${option}-${idx}`}
               disabled={isSubmitted || hasSelectedRef.current}
               onClick={() => handleSelect(option)}
-              className={`flex items-center justify-between p-3 sm:p-4 rounded-xl border text-left transition-all duration-150 transform active:scale-[0.98] ${btnStyle}`}
+              className={`flex items-center justify-between px-3 py-2.5 sm:p-4 rounded-xl border text-left transition-all duration-150 transform active:scale-[0.98] ${btnStyle}`}
             >
-              <span className="text-sm sm:text-base font-semibold truncate pr-1.5">{option}</span>
+              <span className="text-xs sm:text-base font-semibold truncate pr-1.5">{option}</span>
               <span className="hidden sm:flex items-center justify-center w-6 h-6 rounded-md bg-slate-800/80 border border-slate-600/60 text-xs font-mono font-bold text-slate-300 shrink-0">
                 {idx + 1}
               </span>
@@ -152,9 +195,9 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
         })}
       </div>
 
-      {/* Bottom Actions: Don't Know button or Next Question Banner */}
+      {/* Desktop Bottom Actions: Don't Know button (mobile has it inline in the header row) */}
       {!isSubmitted && onGiveUp && (
-        <div className="flex justify-center pt-1">
+        <div className="hidden sm:flex justify-center pt-1">
           <button
             type="button"
             onClick={onGiveUp}

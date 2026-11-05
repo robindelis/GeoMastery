@@ -22,6 +22,7 @@ interface Globe3DProps {
   autoRotate?: boolean;
   disableAutoSpin?: boolean;
   hideHoverTooltip?: boolean;
+  showWaterBeacons?: boolean;
   onSelectCountry?: (country: Country) => void;
   className?: string;
 }
@@ -36,6 +37,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
   autoRotate = false,
   disableAutoSpin = false,
   hideHoverTooltip = false,
+  showWaterBeacons = false,
   onSelectCountry,
   className = ''
 }) => {
@@ -427,43 +429,46 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         ctx.stroke();
       }
 
-      // Draw Water Bodies on 3D Globe
-      for (const wb of WATER_BODIES) {
-        const isSelected = wb.id === selectedCountryId;
-        const isTarget = wb.id === targetCountryId;
-        const isStrait = wb.type === 'strait' || wb.type === 'channel';
+      // Draw Water Bodies on 3D Globe (only during maritime questions or when explicitly enabled)
+      const hasActiveWater = Boolean(selectedCountryId?.startsWith('WATER_') || targetCountryId?.startsWith('WATER_'));
+      if (showWaterBeacons || hasActiveWater) {
+        for (const wb of WATER_BODIES) {
+          const isSelected = wb.id === selectedCountryId;
+          const isTarget = wb.id === targetCountryId;
+          const isStrait = wb.type === 'strait' || wb.type === 'channel';
 
-        const dist = d3.geoDistance(wb.coordinates, centerCoords as any);
-        if (dist < Math.PI / 2) {
-          const projected = projection(wb.coordinates);
-          if (projected) {
-            const [px, py] = projected;
-            const isOcean = wb.type === 'ocean';
+          const dist = d3.geoDistance(wb.coordinates, centerCoords as any);
+          if (dist < Math.PI / 2) {
+            const projected = projection(wb.coordinates);
+            if (projected) {
+              const [px, py] = projected;
+              const isOcean = wb.type === 'ocean';
 
-            if (isSelected || isTarget) {
-              ctx.strokeStyle =
-                feedbackState === 'correct'
-                  ? '#10b981'
-                  : feedbackState === 'incorrect'
-                  ? '#e63946'
-                  : '#e9c46a';
-              ctx.lineWidth = 1.5;
+              if (isSelected || isTarget) {
+                ctx.strokeStyle =
+                  feedbackState === 'correct'
+                    ? '#10b981'
+                    : feedbackState === 'incorrect'
+                    ? '#e63946'
+                    : '#e9c46a';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(px, py, isOcean ? 14 : 9, 0, 2 * Math.PI);
+                ctx.stroke();
+              }
+
+              ctx.fillStyle = isStrait ? '#48cae4' : isOcean ? '#90e0ef' : '#00b4d8';
+              if (feedbackState === 'correct' && (isSelected || isTarget)) ctx.fillStyle = '#10b981';
+              else if (feedbackState === 'incorrect' && isSelected) ctx.fillStyle = '#e63946';
+              else if (feedbackState === 'incorrect' && isTarget) ctx.fillStyle = '#10b981';
+
+              ctx.strokeStyle = isSelected || isTarget ? '#fff8e7' : '#14293a';
+              ctx.lineWidth = 1.1;
               ctx.beginPath();
-              ctx.arc(px, py, isOcean ? 14 : 9, 0, 2 * Math.PI);
+              ctx.arc(px, py, isOcean ? 5.5 : isStrait ? 4 : 4.5, 0, 2 * Math.PI);
+              ctx.fill();
               ctx.stroke();
             }
-
-            ctx.fillStyle = isStrait ? '#48cae4' : isOcean ? '#90e0ef' : '#00b4d8';
-            if (feedbackState === 'correct' && (isSelected || isTarget)) ctx.fillStyle = '#10b981';
-            else if (feedbackState === 'incorrect' && isSelected) ctx.fillStyle = '#e63946';
-            else if (feedbackState === 'incorrect' && isTarget) ctx.fillStyle = '#10b981';
-
-            ctx.strokeStyle = isSelected || isTarget ? '#fff8e7' : '#14293a';
-            ctx.lineWidth = 1.1;
-            ctx.beginPath();
-            ctx.arc(px, py, isOcean ? 5.5 : isStrait ? 4 : 4.5, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.stroke();
           }
         }
       }

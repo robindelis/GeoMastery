@@ -15,6 +15,7 @@ interface MapContainerProps {
   showHeatmap?: boolean;
   disableAutoZoom?: boolean;
   hideHoverTooltip?: boolean;
+  showWaterBeacons?: boolean;
   onToggleHeatmap?: () => void;
   autoRotate?: boolean;
   onToggleAutoRotate?: () => void;
@@ -34,6 +35,7 @@ export const MapContainer: React.FC<MapContainerProps> = ({
   showHeatmap = false,
   disableAutoZoom = false,
   hideHoverTooltip = false,
+  showWaterBeacons = false,
   onToggleHeatmap,
   autoRotate = false,
   onToggleAutoRotate,
@@ -55,6 +57,7 @@ export const MapContainer: React.FC<MapContainerProps> = ({
             showHeatmap={showHeatmap}
             disableAutoZoom={disableAutoZoom}
             hideHoverTooltip={hideHoverTooltip}
+            showWaterBeacons={showWaterBeacons}
             onSelectCountry={onSelectCountry}
           />
         ) : (
@@ -68,6 +71,7 @@ export const MapContainer: React.FC<MapContainerProps> = ({
             autoRotate={autoRotate}
             disableAutoSpin={disableAutoZoom}
             hideHoverTooltip={hideHoverTooltip}
+            showWaterBeacons={showWaterBeacons}
             onSelectCountry={onSelectCountry}
           />
         )}

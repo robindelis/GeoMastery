@@ -157,6 +157,7 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
             highlightedCountryIds={highlightedCountryIds}
             srsItemsMap={srsItemsMap}
             showHeatmap={showHeatmap}
+            showWaterBeacons={true}
             onToggleHeatmap={() => setShowHeatmap((h) => !h)}
             autoRotate={autoRotate}
             onToggleAutoRotate={() => setAutoRotate((r) => !r)}

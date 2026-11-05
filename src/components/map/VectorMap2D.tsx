@@ -20,6 +20,7 @@ interface VectorMap2DProps {
   showHeatmap?: boolean;
   disableAutoZoom?: boolean;
   hideHoverTooltip?: boolean;
+  showWaterBeacons?: boolean;
   onSelectCountry?: (country: Country) => void;
   className?: string;
 }
@@ -86,6 +87,7 @@ interface FrameState {
   targetId?: string | null;
   feedbackState?: 'correct' | 'incorrect' | 'neutral' | null;
   hideHoverTooltip?: boolean;
+  showWaterBeacons?: boolean;
 }
 
 // Curated 12-tone sovereign vintage political atlas palette
@@ -283,33 +285,35 @@ function drawBase(ctx: CanvasRenderingContext2D, s: FrameState) {
   }
 
   // 5. Microstate beacons
-  ctx.lineWidth = 1.1 / k;
+  ctx.lineWidth = 1.0 / k;
   for (let i = 0; i < s.micro.length; i++) {
     const m = s.micro[i];
     if (m.cx < vx0 - 20 / k || m.cx > vx1 + 20 / k || m.cy < vy0 - 20 / k || m.cy > vy1 + 20 / k) continue;
     const active = m.country.id === s.selectedId || m.country.id === s.targetId;
     ctx.beginPath();
-    ctx.arc(m.cx, m.cy, 3.6 / k, 0, Math.PI * 2);
+    ctx.arc(m.cx, m.cy, (active ? 4.2 : 2.6) / k, 0, Math.PI * 2);
     ctx.fillStyle = s.microFills[i];
     ctx.strokeStyle = active ? '#fff8e7' : '#112433';
     ctx.fill();
     ctx.stroke();
   }
 
-  // 6. Maritime beacons
-  ctx.lineWidth = 1.2 / k;
-  for (let i = 0; i < s.waterBeacons.length; i++) {
-    const w = s.waterBeacons[i];
-    if (!w.wb) continue;
-    if (w.cx < vx0 - 20 / k || w.cx > vx1 + 20 / k || w.cy < vy0 - 20 / k || w.cy > vy1 + 20 / k) continue;
-    const { dot } = waterBeaconRadii(w.wb);
-    const { fill, stroke } = waterBeaconColors(w.wb, s);
-    ctx.beginPath();
-    ctx.arc(w.cx, w.cy, dot / k, 0, Math.PI * 2);
-    ctx.fillStyle = fill;
-    ctx.strokeStyle = stroke;
-    ctx.fill();
-    ctx.stroke();
+  // 6. Maritime beacons (only drawn during maritime questions or when explicitly enabled)
+  if (s.showWaterBeacons || hasActiveWater) {
+    ctx.lineWidth = 1.2 / k;
+    for (let i = 0; i < s.waterBeacons.length; i++) {
+      const w = s.waterBeacons[i];
+      if (!w.wb) continue;
+      if (w.cx < vx0 - 20 / k || w.cx > vx1 + 20 / k || w.cy < vy0 - 20 / k || w.cy > vy1 + 20 / k) continue;
+      const { dot } = waterBeaconRadii(w.wb);
+      const { fill, stroke } = waterBeaconColors(w.wb, s);
+      ctx.beginPath();
+      ctx.arc(w.cx, w.cy, dot / k, 0, Math.PI * 2);
+      ctx.fillStyle = fill;
+      ctx.strokeStyle = stroke;
+      ctx.fill();
+      ctx.stroke();
+    }
   }
 }
 
@@ -739,6 +743,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   showHeatmap = false,
   disableAutoZoom = false,
   hideHoverTooltip = false,
+  showWaterBeacons = false,
   onSelectCountry,
   className = '',
 }) => {
@@ -1047,6 +1052,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       targetId: targetCountryId,
       feedbackState,
       hideHoverTooltip,
+      showWaterBeacons,
     };
 
     const base = baseCanvasRef.current;
@@ -1073,6 +1079,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     targetCountryId,
     feedbackState,
     hideHoverTooltip,
+    showWaterBeacons,
     scheduleFrame,
   ]);
 
@@ -1090,62 +1097,70 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     []
   );
 
-  const hitTest = useCallback(
-    (px: number, py: number): HoverState | null => {
-      const t = zoomTransformRef.current;
-      const k = t.k;
-      const wx = (px - t.x) / k;
-      const wy = (py - t.y) / k;
+    const canHitWater = Boolean(
+      showWaterBeacons ||
+        targetCountryId?.startsWith('WATER_') ||
+        selectedCountryId?.startsWith('WATER_')
+    );
 
-      // 1. Microstates first (16px desktop / 24px coarse touch interactive beacons)
-      const microHitRadius = isCoarsePointer ? 24 : 16;
-      for (const m of microstateItems) {
-        if (Math.hypot((wx - m.cx) * k, (wy - m.cy) * k) <= microHitRadius) return { country: m.country };
-      }
+    const hitTest = useCallback(
+      (px: number, py: number): HoverState | null => {
+        const t = zoomTransformRef.current;
+        const k = t.k;
+        const wx = (px - t.x) / k;
+        const wy = (py - t.y) / k;
 
-      if (!hitCtxRef.current) {
-        hitCtxRef.current = document.createElement('canvas').getContext('2d');
-      }
-      const hctx = hitCtxRef.current;
-      if (!hctx) return null;
-
-      const test = (items: PolyItem[]): HoverState | null => {
-        for (let i = items.length - 1; i >= 0; i--) {
-          const it = items[i];
-          const b = it.bbox;
-          if (wx < b[0] || wx > b[2] || wy < b[1] || wy > b[3]) continue;
-          if (hctx.isPointInPath(it.full, wx, wy)) {
-            const country = it.country;
-            return country ? { country, poly: it } : null;
-          }
+        // 1. Microstates first (16px desktop / 24px coarse touch interactive beacons)
+        const microHitRadius = isCoarsePointer ? 24 : 16;
+        for (const m of microstateItems) {
+          if (Math.hypot((wx - m.cx) * k, (wy - m.cy) * k) <= microHitRadius) return { country: m.country };
         }
-        return null;
-      };
 
-      // 2. Land countries (exact land polygon boundaries)
-      const landHit = test(geometry.countries);
-      if (landHit) return landHit;
+        if (!hitCtxRef.current) {
+          hitCtxRef.current = document.createElement('canvas').getContext('2d');
+        }
+        const hctx = hitCtxRef.current;
+        if (!hctx) return null;
 
-      // 3. Straits and inland seas
-      const straitHit = test(geometry.straits);
-      if (straitHit) return straitHit;
+        const test = (items: PolyItem[]): HoverState | null => {
+          for (let i = items.length - 1; i >= 0; i--) {
+            const it = items[i];
+            const b = it.bbox;
+            if (wx < b[0] || wx > b[2] || wy < b[1] || wy > b[3]) continue;
+            if (hctx.isPointInPath(it.full, wx, wy)) {
+              const country = it.country;
+              return country ? { country, poly: it } : null;
+            }
+          }
+          return null;
+        };
 
-      const seaHit = test(geometry.seas);
-      if (seaHit) return seaHit;
+        // 2. Land countries (exact land polygon boundaries)
+        const landHit = test(geometry.countries);
+        if (landHit) return landHit;
 
-      // 4. Water body beacons (dots for straits/seas/oceans)
-      const waterHitScale = isCoarsePointer ? 1.35 : 1;
-      for (const w of waterBodyItems) {
-        if (!w.wb) continue;
-        const hit = waterBeaconRadii(w.wb).hit * waterHitScale;
-        if (Math.hypot((wx - w.cx) * k, (wy - w.cy) * k) <= hit) return { country: w.country };
-      }
+        if (!canHitWater) return null;
 
-      // 5. Broad ocean polygons
-      return test(geometry.oceans);
-    },
-    [geometry, microstateItems, waterBodyItems, isCoarsePointer]
-  );
+        // 3. Straits and inland seas
+        const straitHit = test(geometry.straits);
+        if (straitHit) return straitHit;
+
+        const seaHit = test(geometry.seas);
+        if (seaHit) return seaHit;
+
+        // 4. Water body beacons (dots for straits/seas/oceans)
+        const waterHitScale = isCoarsePointer ? 1.35 : 1;
+        for (const w of waterBodyItems) {
+          if (!w.wb) continue;
+          const hit = waterBeaconRadii(w.wb).hit * waterHitScale;
+          if (Math.hypot((wx - w.cx) * k, (wy - w.cy) * k) <= hit) return { country: w.country };
+        }
+
+        // 5. Broad ocean polygons
+        return test(geometry.oceans);
+      },
+      [geometry, microstateItems, waterBodyItems, isCoarsePointer, canHitWater]
+    );
 
   const updateHover = useCallback(() => {
     hoverRafRef.current = null;
@@ -1171,14 +1186,34 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   const requestHoverUpdateRef = useRef(requestHoverUpdate);
   requestHoverUpdateRef.current = requestHoverUpdate;
 
+  // Compute default resting camera transform (1.0x full world on desktop, zoomed vertical-fill on mobile)
+  const getDefaultTransform = useCallback(
+    (w: number, h: number): d3.ZoomTransform => {
+      if (w <= 0 || h <= 0 || w >= 640) {
+        return d3.zoomIdentity;
+      }
+      const sphereHeightPx = w * 0.51;
+      const mobileScale = Math.max(1.75, Math.min(2.35, (h * 0.9) / Math.max(1, sphereHeightPx)));
+      const centerPt = projection([14, 18]);
+      if (!centerPt) return d3.zoomIdentity;
+      return d3.zoomIdentity
+        .translate(w / 2, h / 2)
+        .scale(mobileScale)
+        .translate(-centerPt[0], -centerPt[1]);
+    },
+    [projection]
+  );
+
+  const lastMobileHeightRef = useRef(0);
+
   // --- Zoom behaviour ---------------------------------------------------------------------------
-  useEffect(() => {
+  useLayoutEffect(() => {
     const canvas = overlayCanvasRef.current;
     if (!canvas) return;
 
     const zoom = d3
       .zoom<HTMLCanvasElement, unknown>()
-      .scaleExtent([1, 24])
+      .scaleExtent([0.85, 24])
       .wheelDelta((event) => {
         return -event.deltaY * (event.deltaMode === 1 ? 0.03 : event.deltaMode ? 0.5 : 0.0015);
       })
@@ -1211,12 +1246,34 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     };
   }, [scheduleFrame, handleCountryLeave]);
 
+  // Apply and maintain mobile zoomed-in vertical-fill transform when map pane height changes (e.g. keyboard open/close)
+  useLayoutEffect(() => {
+    if (
+      dimensions.width > 0 &&
+      dimensions.width < 640 &&
+      dimensions.height > 0 &&
+      overlayCanvasRef.current &&
+      zoomBehaviorRef.current
+    ) {
+      const heightDelta = Math.abs(dimensions.height - lastMobileHeightRef.current);
+      if (heightDelta > 35 && !wasAutoZoomedRef.current) {
+        lastMobileHeightRef.current = dimensions.height;
+        const nextTransform = getDefaultTransform(dimensions.width, dimensions.height);
+        zoomTransformRef.current = nextTransform;
+        d3.select(overlayCanvasRef.current).call(zoomBehaviorRef.current.transform, nextTransform);
+        scheduleFrame(true);
+      }
+    }
+  }, [dimensions.width, dimensions.height, getDefaultTransform, scheduleFrame]);
+
   const wasAutoZoomedRef = useRef(false);
 
   // Programmatic camera focus (Smooth, cinematic auto-zoom when revealing answers / selecting locations)
   useEffect(() => {
     const canvas = overlayCanvasRef.current;
     if (!canvas || !zoomBehaviorRef.current) return;
+
+    const defaultTransform = getDefaultTransform(dimensions.width, dimensions.height);
 
     if (disableAutoZoom) {
       if (wasAutoZoomedRef.current) {
@@ -1225,7 +1282,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
           .transition()
           .duration(600)
           .ease(d3.easeCubicOut)
-          .call(zoomBehaviorRef.current.transform, d3.zoomIdentity);
+          .call(zoomBehaviorRef.current.transform, defaultTransform);
       }
       return;
     }
@@ -1238,7 +1295,7 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
           .transition()
           .duration(600)
           .ease(d3.easeCubicOut)
-          .call(zoomBehaviorRef.current.transform, d3.zoomIdentity);
+          .call(zoomBehaviorRef.current.transform, defaultTransform);
       }
       return;
     }
@@ -1333,6 +1390,8 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         handleCountrySelect(nearestCountry);
         return;
       }
+
+      if (!canHitWater) return;
 
       let minWaterDist = Infinity;
       let nearestWater: Country | null = null;
@@ -1432,12 +1491,19 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
   const handleResetView = useCallback(() => {
     const canvas = overlayCanvasRef.current;
     if (!canvas || !zoomBehaviorRef.current) return;
+    const defaultT = getDefaultTransform(dimensions.width, dimensions.height);
+    const curr = zoomTransformRef.current;
+    // If already near the default mobile zoom, toggle out to full-world overview (1.0x)
+    const isNearDefault =
+      Math.abs(curr.k - defaultT.k) < 0.15 &&
+      Math.hypot(curr.x - defaultT.x, curr.y - defaultT.y) < 30;
+    const nextTransform = isNearDefault && dimensions.width < 640 ? d3.zoomIdentity : defaultT;
     d3.select(canvas)
       .transition()
       .duration(400)
       .ease(d3.easeCubicOut)
-      .call(zoomBehaviorRef.current.transform, d3.zoomIdentity);
-  }, []);
+      .call(zoomBehaviorRef.current.transform, nextTransform);
+  }, [dimensions.width, dimensions.height, getDefaultTransform]);
 
   return (
     <div

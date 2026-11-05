@@ -51,17 +51,59 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
 
   return (
     <div className="flex flex-col gap-1.5 sm:gap-3 w-full max-w-xl mx-auto">
-      {/* Target Card */}
-      <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-2.5 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col items-center text-center gap-1 sm:gap-2">
+      {/* MOBILE (<sm) COMPACT MAP-CLICK BAR: Leaves ~88% of phone screen for the interactive map */}
+      <div className="flex sm:hidden items-center justify-between gap-2 px-1 py-0.5">
+        <div className="flex items-center gap-2.5 min-w-0 flex-1">
+          <span className="text-2xl leading-none shrink-0">{country.flagEmoji}</span>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[15px] font-extrabold text-white tracking-tight truncate">
+                {country.name}
+              </span>
+              {!isWater && country.capital && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    speechEngine.speakCountryAndCapital(country.name, country.capital);
+                  }}
+                  className="p-1 rounded bg-slate-800 text-sky-400 shrink-0 active:scale-95"
+                  title="Hear country and capital pronunciation"
+                >
+                  <Volume2 className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+            <div className="text-[11px] text-emerald-400 font-medium truncate">
+              {isWater
+                ? `Tap on map • ${country.subregion}`
+                : `Tap on map • Capital: ${country.capital}`}
+            </div>
+          </div>
+        </div>
+
+        {!isSubmitted && (onGiveUp || onSkip) && (
+          <button
+            type="button"
+            onClick={handleConcede}
+            className="px-3 py-1.5 rounded-xl border border-rose-900/60 bg-rose-950/40 text-xs font-bold text-rose-300 shrink-0 active:scale-95"
+          >
+            Show on Map
+          </button>
+        )}
+      </div>
+
+      {/* DESKTOP (sm+) Target Card */}
+      <div className="hidden sm:flex bg-slate-900/90 border border-slate-700/80 rounded-2xl p-5 shadow-2xl backdrop-blur-md flex-col items-center text-center gap-2">
         <div className="flex items-center gap-2">
-          <span className="text-xl sm:text-3xl">{country.flagEmoji}</span>
-          <span className="text-[10px] sm:text-xs uppercase tracking-widest px-2 sm:px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700 truncate max-w-[240px] sm:max-w-none">
+          <span className="text-3xl">{country.flagEmoji}</span>
+          <span className="text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700">
             {isWater ? `🌊 Oceans & Straits • ${country.subregion}` : `${country.continent} • ${country.subregion}`}
           </span>
         </div>
 
         <div className="flex items-baseline gap-2">
-          <h2 className="text-lg sm:text-3xl font-extrabold text-white tracking-tight">
+          <h2 className="text-3xl font-extrabold text-white tracking-tight">
             {country.name}
           </h2>
         </div>
@@ -90,7 +132,7 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
           </div>
         )}
 
-        <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-emerald-400 font-medium mt-0.5 sm:mt-1">
+        <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium mt-1">
           {isWater ? <Waves className="w-3.5 h-3.5 text-sky-400 shrink-0" /> : <MapPin className="w-3.5 h-3.5 shrink-0" />}
           <span>
             {isWater
@@ -102,8 +144,8 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
 
       {/* Action / Feedback row */}
       {isSubmitted ? (
-        <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-900/90 border border-slate-700 shadow-xl">
-          <div className="text-sm">
+        <div className="flex items-center justify-between px-3 py-2 sm:p-3.5 rounded-xl bg-slate-900/90 border border-slate-700 shadow-xl">
+          <div className="text-xs sm:text-sm truncate pr-2">
             {isCorrect ? (
               <span className="text-emerald-400 font-bold">
                 {selectedCountryName && selectedCountryName !== country.name
@@ -114,16 +156,16 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
               <span className="text-rose-400 font-bold">
                 {selectedCountryName
                   ? `You clicked: ${selectedCountryName}`
-                  : `Target: ${country.name} (shown on map)`}
+                  : `Target: ${country.name}`}
               </span>
             )}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {!isCorrect && onOverrideCorrect && (
               <button
                 type="button"
                 onClick={onOverrideCorrect}
-                className="px-3 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 text-amber-300 hover:text-amber-200 font-bold flex items-center gap-1.5 text-xs transition-all shadow-sm active:scale-95 cursor-pointer"
+                className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 text-amber-300 hover:text-amber-200 font-bold flex items-center gap-1 sm:gap-1.5 text-xs transition-all shadow-sm active:scale-95 cursor-pointer"
                 title="Miss-clicked? Count this answer as correct and update spaced repetition (Shortcut: W)"
               >
                 <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
@@ -136,16 +178,16 @@ export const MapClickPrompt: React.FC<MapClickPromptProps> = ({
             <span className="text-xs text-slate-400 hidden sm:inline">Press Enter or Space</span>
             <button
               onClick={onNextQuestion}
-              className="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold flex items-center gap-1 text-sm shadow-md transition-all active:scale-95 cursor-pointer"
+              className="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold flex items-center gap-1 text-xs sm:text-sm shadow-md transition-all active:scale-95 cursor-pointer"
             >
               <span>Next</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
           </div>
         </div>
       ) : (
         (onGiveUp || onSkip) && (
-          <div className="flex justify-center">
+          <div className="hidden sm:flex justify-center">
             <button
               onClick={handleConcede}
               className="text-xs text-rose-400/90 hover:text-rose-300 font-medium px-3.5 py-1.5 rounded-xl border border-rose-900/50 bg-rose-950/30 hover:bg-rose-950/60 transition-colors flex items-center gap-1.5 shadow-sm"

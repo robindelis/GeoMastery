@@ -1047,13 +1047,13 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#0f172a]">
       {/* Continuous Stream Top Telemetry Bar */}
-      <div className="h-12 sm:h-14 border-b border-slate-800/80 bg-slate-900/95 backdrop-blur-md px-3 sm:px-6 flex items-center justify-between gap-2 z-30 shrink-0">
+      <div className="h-10 sm:h-14 border-b border-slate-800/80 bg-slate-900/95 backdrop-blur-md px-2 sm:px-6 flex items-center justify-between gap-1.5 sm:gap-2 z-30 shrink-0">
         {/* Left Cluster: Direct Exit + Optional Recap + Region Scope */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           <button
             type="button"
             onClick={onFinishSession}
-            className="text-xs font-semibold text-slate-300 hover:text-white px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700/80 transition-colors cursor-pointer shrink-0"
+            className="text-[11px] sm:text-xs font-semibold text-slate-300 hover:text-white px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700/80 transition-colors cursor-pointer shrink-0"
             title="Exit directly to Dashboard"
           >
             ← Exit
@@ -1063,13 +1063,16 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
             <button
               type="button"
               onClick={handleOpenRecap}
-              className="flex items-center gap-1.5 text-xs font-bold text-emerald-300 hover:text-white px-2.5 py-1.5 rounded-lg bg-emerald-950/60 hover:bg-emerald-900/70 border border-emerald-700/60 transition-colors cursor-pointer shrink-0"
+              className="flex items-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs font-bold text-emerald-300 hover:text-white px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-emerald-950/60 hover:bg-emerald-900/70 border border-emerald-700/60 transition-colors cursor-pointer shrink-0"
               title="Open Training Run Recap"
             >
-              <BarChart3 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Recap</span>
-              <span className="font-mono text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-200">
+              <BarChart3 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400" />
+              <span className="hidden xs:inline sm:inline">Recap</span>
+              <span className="font-mono text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-200 tabular-nums">
                 {reviewedCount}
+              </span>
+              <span className="sm:hidden font-mono text-[10px] text-emerald-300 tabular-nums">
+                · {liveAccuracy}%
               </span>
             </button>
           )}
@@ -1086,22 +1089,24 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
           )}
         </div>
 
-        {/* Center Cluster: Live Sitting Telemetry Strip (Replaces fixed 1/15 bar) */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5">
-          {/* Cards Reviewed in Sitting */}
+        {/* Center Cluster: Live Sitting Telemetry Strip */}
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+          {/* Cards Reviewed in Sitting (shown on desktop or when 0 reviewed on mobile) */}
           <div
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-800/90 border border-slate-700/80 text-xs"
+            className={`${
+              reviewedCount > 0 ? 'hidden sm:flex' : 'flex'
+            } items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-full bg-slate-800/90 border border-slate-700/80 text-[11px] sm:text-xs`}
             title="Cards reviewed in this continuous sitting"
           >
-            <CheckCircle2 className="w-3.5 h-3.5 text-sky-400 shrink-0" />
+            <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-sky-400 shrink-0" />
             <span className="font-mono font-bold text-white tabular-nums">{reviewedCount}</span>
             <span className="text-[10px] text-slate-400 font-semibold hidden sm:inline">Reviewed</span>
           </div>
 
-          {/* Live Sitting Accuracy */}
+          {/* Live Sitting Accuracy (desktop pill; merged into Recap pill on mobile) */}
           {reviewedCount > 0 && (
             <div
-              className={`flex items-center gap-1 px-2.5 py-1 rounded-full border text-xs font-mono font-bold tabular-nums ${
+              className={`hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-full border text-xs font-mono font-bold tabular-nums ${
                 liveAccuracy >= 85
                   ? 'bg-emerald-950/60 border-emerald-700/60 text-emerald-300'
                   : liveAccuracy >= 65
@@ -1128,26 +1133,26 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
 
           {/* Active Streak Flame */}
           {streak > 1 && (
-            <div className="flex items-center gap-1 text-xs font-bold text-amber-400 bg-amber-950/60 border border-amber-800/60 px-2 sm:px-2.5 py-1 rounded-full animate-bounce">
-              <Flame className="w-3.5 h-3.5 fill-amber-400" />
+            <div className="flex items-center gap-1 text-[11px] sm:text-xs font-bold text-amber-400 bg-amber-950/60 border border-amber-800/60 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full sm:animate-bounce">
+              <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400" />
               <span className="font-mono tabular-nums">x{streak}</span>
             </div>
           )}
         </div>
 
         {/* Right Cluster: On-Demand Flag Study Button & Active Card Stage Badge */}
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           {canStudyFlags && (
             <button
               type="button"
               onClick={handleOpenFlagStudy}
-              className="flex items-center gap-1.5 text-xs font-bold text-amber-300 hover:text-slate-950 bg-amber-500/15 hover:bg-amber-400 border border-amber-400/40 px-2.5 py-1 rounded-full transition-all cursor-pointer"
+              className="flex items-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs font-bold text-amber-300 hover:text-slate-950 bg-amber-500/15 hover:bg-amber-400 border border-amber-400/40 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full transition-all cursor-pointer"
               title="Open this session's 50-Flag Study Cohort"
             >
-              <Flag className="w-3.5 h-3.5" />
+              <Flag className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               <span className="hidden sm:inline">Study Flags</span>
               {flagStudyCohort.length > 0 && (
-                <span className="font-mono text-[10px] px-1.5 py-0.2 rounded-full bg-amber-400/20 text-amber-200">
+                <span className="font-mono text-[10px] px-1 sm:px-1.5 py-0.2 rounded-full bg-amber-400/20 text-amber-200">
                   {flagStudyCohort.length}
                 </span>
               )}
@@ -1162,11 +1167,11 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
             if (isPracticeMode || isStillOnCooldown) {
               return (
                 <span
-                  className="text-[10px] font-bold tracking-wider px-2 sm:px-3 py-1 rounded-full border bg-violet-950/60 border-violet-700/60 text-violet-300 flex items-center gap-1 shadow-sm"
+                  className="text-[10px] font-bold tracking-wider px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border bg-violet-950/60 border-violet-700/60 text-violet-300 flex items-center gap-1 shadow-sm"
                   title="Reinforcement or practice card — does not alter your spaced repetition intervals"
                 >
                   <Zap className="w-3 h-3 fill-violet-400 text-violet-400" />
-                  <span className="hidden xs:inline">
+                  <span className="hidden sm:inline">
                     {isStillOnCooldown && !isPracticeMode ? 'REINFORCEMENT' : 'PRACTICE'}
                   </span>
                   <span className="text-[9px] text-violet-300/80 font-normal hidden sm:inline">(SRS Paused)</span>
@@ -1176,7 +1181,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
             const liveStage = item ? item.stage : currentQuestion.stage;
             if (liveStage === 0) {
               return (
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 sm:px-2.5 py-1 rounded-full border bg-amber-950/50 border-amber-700/50 text-amber-300">
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border bg-amber-950/50 border-amber-700/50 text-amber-300">
                   <span className="sm:hidden">L0</span>
                   <span className="hidden sm:inline">
                     {currentQuestion.expectedInputMode === 'map_click'
@@ -1190,7 +1195,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
             }
             if (liveStage === 2) {
               return (
-                <span className="text-[10px] font-bold tracking-wider px-2 sm:px-2.5 py-1 rounded-full border bg-emerald-950/50 border-emerald-700/50 text-emerald-300 flex items-center gap-1">
+                <span className="text-[10px] font-bold tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border bg-emerald-950/50 border-emerald-700/50 text-emerald-300 flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
                   <span className="hidden sm:inline">MASTERED</span>
                   <span className="sm:hidden">L2</span>
@@ -1199,7 +1204,7 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
             }
             const cardStability = inferStability(item);
             return (
-              <span className="text-[10px] font-bold tracking-wider px-2 sm:px-2.5 py-1 rounded-full border bg-sky-950/50 border-sky-700/50 text-sky-300 flex items-center gap-1">
+              <span className="text-[10px] font-bold tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border bg-sky-950/50 border-sky-700/50 text-sky-300 flex items-center gap-1">
                 <span className="hidden sm:inline">L1 Active Recall</span>
                 <span className="sm:hidden">L1</span>
                 <span className="text-emerald-400 font-mono">
@@ -1225,13 +1230,16 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
             feedbackState={feedbackState}
             disableAutoZoom={!(isSubmitted || currentQuestion.attributeId === 'country')}
             hideHoverTooltip={!isSubmitted}
+            showWaterBeacons={
+              continentFilter === 'Oceans' || Boolean(currentQuestion.country.id?.startsWith('WATER_'))
+            }
             srsItemsMap={srsItemsMap}
             onSelectCountry={handleMapCountrySelect}
           />
         </div>
 
-        {/* Question UI Panel (Docked bottom sheet on mobile, floating card on sm+ desktop) */}
-        <div className="relative z-40 w-full shrink-0 border-t border-slate-800/90 bg-[#0b1524] p-2.5 sm:p-0 sm:bg-transparent sm:border-t-0 sm:absolute sm:bottom-6 sm:inset-x-4 flex justify-center sm:pointer-events-none">
+        {/* Question UI Panel (Compact docked bottom bar on mobile, floating card on sm+ desktop) */}
+        <div className="relative z-40 w-full shrink-0 border-t border-slate-800/90 bg-[#0b1524] px-2.5 py-2 sm:p-0 sm:bg-transparent sm:border-t-0 sm:absolute sm:bottom-6 sm:inset-x-4 flex justify-center sm:pointer-events-none">
           <div className="pointer-events-auto w-full max-w-xl">
             {currentQuestion.expectedInputMode === 'multiple_choice' ? (
               <MultipleChoicePrompt

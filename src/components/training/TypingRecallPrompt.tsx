@@ -102,26 +102,109 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-2 sm:gap-4 w-full max-w-xl mx-auto">
-      {/* Header Card */}
-      <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-2.5 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col items-center text-center gap-1 sm:gap-2">
+    <div className="flex flex-col gap-1.5 sm:gap-4 w-full max-w-xl mx-auto">
+      {/* MOBILE (<sm) COMPACT QUESTION BAR: Single tight row above input to maximize map height */}
+      <div className="flex sm:hidden flex-col gap-1.5 px-1">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            {isFlagIdentify ? (
+              flagImgUrl && !flagImageError ? (
+                <img
+                  src={flagImgUrl}
+                  alt={isSubmitted ? `${country.name} flag` : 'Mystery national flag'}
+                  draggable={false}
+                  onError={() => setFlagImageError(true)}
+                  className="h-7 w-auto object-contain rounded border border-slate-600 shrink-0 select-none"
+                />
+              ) : (
+                <span className="text-2xl leading-none shrink-0">{country.flagEmoji}</span>
+              )
+            ) : isMapCountryIdentify && !isSubmitted ? (
+              <span className="w-6 h-6 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400 shrink-0">
+                <Compass className="w-3.5 h-3.5" />
+              </span>
+            ) : isCapitalToCountry && !isSubmitted ? (
+              <span className="w-6 h-6 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400 shrink-0">
+                <Building2 className="w-3.5 h-3.5" />
+              </span>
+            ) : (
+              <span className="text-xl leading-none shrink-0">{country.flagEmoji}</span>
+            )}
+
+            <div className="min-w-0 flex-1">
+              <div className="text-[13px] font-bold text-white leading-tight truncate">
+                {promptText}
+              </div>
+              <div className="text-[10px] text-cyan-300/90 font-semibold truncate">
+                {isSubmitted && isCountryNameTarget
+                  ? `${country.name} • Capital: ${country.capital}`
+                  : `${country.continent} • ${country.subregion}`}
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile inline Hint / Skip / Audio pills */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            {isCapitalToCountry && country.capital && !isSubmitted && (
+              <button
+                type="button"
+                onClick={() => speechEngine.speak(country.capital)}
+                className="p-1.5 rounded-lg bg-slate-800 border border-slate-700 text-amber-300"
+                title={`Pronounce ${country.capital}`}
+              >
+                <Volume2 className="w-3.5 h-3.5" />
+              </button>
+            )}
+            {!isSubmitted && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setHintCount((c) => Math.min(2, c + 1))}
+                  className="px-2 py-1 rounded-lg bg-slate-800/90 border border-slate-700 text-[11px] font-semibold text-slate-300 flex items-center gap-1 active:scale-95"
+                >
+                  <HelpCircle className="w-3 h-3 text-amber-400" />
+                  <span>Hint</span>
+                </button>
+                {onGiveUp && (
+                  <button
+                    type="button"
+                    onClick={onGiveUp}
+                    className="px-2 py-1 rounded-lg border border-rose-900/60 bg-rose-950/40 text-[11px] font-semibold text-rose-300 active:scale-95"
+                  >
+                    Skip
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+
+        {!isSubmitted && getHintText() && (
+          <div className="text-[11px] text-amber-300 font-mono bg-amber-950/60 px-2.5 py-0.5 rounded-lg border border-amber-800/50 self-start">
+            💡 {getHintText()}
+          </div>
+        )}
+      </div>
+
+      {/* DESKTOP (sm+) Header Card */}
+      <div className="hidden sm:flex bg-slate-900/90 border border-slate-700/80 rounded-2xl p-5 shadow-2xl backdrop-blur-md flex-col items-center text-center gap-2">
         <div className="flex items-center gap-2">
           {isMapCountryIdentify && !isSubmitted ? (
-            <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
-              <Compass className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
+            <span className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
+              <Compass className="w-5 h-5" />
             </span>
           ) : isFlagIdentify && !isSubmitted ? (
-            <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-sky-500/20 border border-sky-400/50 flex items-center justify-center text-sky-400">
-              <Flag className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
+            <span className="w-8 h-8 rounded-lg bg-sky-500/20 border border-sky-400/50 flex items-center justify-center text-sky-400">
+              <Flag className="w-5 h-5" />
             </span>
           ) : isCapitalToCountry && !isSubmitted ? (
-            <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
-              <Building2 className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
+            <span className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
+              <Building2 className="w-5 h-5" />
             </span>
           ) : (
-            <span className="text-xl sm:text-3xl">{country.flagEmoji}</span>
+            <span className="text-3xl">{country.flagEmoji}</span>
           )}
-          <span className="text-[10px] sm:text-xs uppercase tracking-widest px-2 sm:px-2.5 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 font-semibold border border-cyan-800/60 truncate max-w-[240px] sm:max-w-none">
+          <span className="text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 font-semibold border border-cyan-800/60">
             {country.continent} • {country.subregion}
           </span>
           {isCapitalToCountry && country.capital && (
@@ -138,7 +221,7 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
 
         {/* Prominent Flag Plate for Flag-to-Country questions */}
         {isFlagIdentify && (
-          <div className="my-1 sm:my-1.5 flex flex-col items-center justify-center">
+          <div className="my-1.5 flex flex-col items-center justify-center">
             {flagImgUrl && !flagImageError ? (
               <div className="rounded-xl overflow-hidden border-2 border-slate-600/80 bg-slate-950/80 shadow-xl p-1">
                 <img
@@ -146,18 +229,18 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
                   alt={isSubmitted ? `${country.name} flag` : 'Mystery national flag'}
                   draggable={false}
                   onError={() => setFlagImageError(true)}
-                  className="h-12 sm:h-24 w-auto object-contain rounded-lg select-none"
+                  className="h-24 w-auto object-contain rounded-lg select-none"
                 />
               </div>
             ) : (
-              <div className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-2xl bg-slate-800/80 border border-slate-700 text-4xl sm:text-6xl leading-none select-none shadow-inner">
+              <div className="px-5 py-2 rounded-2xl bg-slate-800/80 border border-slate-700 text-6xl leading-none select-none shadow-inner">
                 {country.flagEmoji}
               </div>
             )}
           </div>
         )}
 
-        <h2 className="text-base sm:text-2xl font-bold text-white tracking-tight mt-0.5 sm:mt-1 leading-snug">
+        <h2 className="text-2xl font-bold text-white tracking-tight mt-1">
           {promptText}
         </h2>
 
@@ -171,7 +254,7 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
             </span>
           </div>
         ) : (
-          <div className="hidden sm:flex items-center gap-1.5 text-xs text-sky-400 font-medium">
+          <div className="flex items-center gap-1.5 text-xs text-sky-400 font-medium">
             <span>
               {isMapCountryIdentify
                 ? 'Highlighted in gold on the map • Type the country name'
@@ -186,7 +269,7 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
       </div>
 
       {/* Typing Form */}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:gap-3">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-1.5 sm:gap-3">
         <div className="relative">
           <input
             ref={inputRef}
@@ -201,7 +284,7 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
                 ? 'Type country name...'
                 : 'Type answer here...'
             }
-            className={`w-full px-3.5 sm:px-5 py-2.5 sm:py-4 rounded-xl text-base sm:text-lg font-medium bg-slate-900/90 border transition-all outline-none shadow-xl ${
+            className={`w-full pl-3.5 pr-12 sm:px-5 py-2 sm:py-4 rounded-xl text-sm sm:text-lg font-medium bg-slate-900/90 border transition-all outline-none shadow-xl ${
               isSubmitted
                 ? isCorrect
                   ? 'border-emerald-500 text-emerald-300 bg-emerald-950/30'
@@ -214,24 +297,24 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
             <button
               type="submit"
               disabled={!inputValue.trim()}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 disabled:opacity-30 disabled:hover:bg-emerald-500 text-slate-950 font-bold transition-all shadow-md"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 sm:p-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 disabled:opacity-30 disabled:hover:bg-emerald-500 text-slate-950 font-bold transition-all shadow-md"
             >
-              <Send className="w-5 h-5" />
+              <Send className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           ) : (
             <button
               type="button"
               onClick={onNextQuestion}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold flex items-center gap-1 text-sm transition-all shadow-md"
+              className="absolute right-2 top-1/2 -translate-y-1/2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold flex items-center gap-1 text-xs sm:text-sm transition-all shadow-md"
             >
               <span>Next</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
           )}
         </div>
 
-        {/* Hints & Feedback Area */}
-        <div className="flex items-center justify-between text-xs px-1">
+        {/* Hints & Feedback Area (on mobile, only rendered when submitted since unsubmitted hints live in the header row) */}
+        <div className={`${!isSubmitted ? 'hidden sm:flex' : 'flex'} items-center justify-between text-xs px-1`}>
           {!isSubmitted ? (
             <>
               <div className="flex items-center gap-3">
