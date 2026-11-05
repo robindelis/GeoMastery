@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-05T22:01:17.181Z",
+  "exportedAt": "2026-11-05T22:01:25.541Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -15706,14 +15706,14 @@
         "id": "MRT:capital",
         "countryId": "MRT",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 1.8,
-        "intervalDays": 6,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 1.85,
+        "intervalDays": 20,
+        "reps": 3,
         "lapses": 4,
-        "lastReviewedAt": "2026-10-27T12:48:38.077Z",
-        "nextDueAt": "2026-11-02T12:48:38.077Z",
+        "lastReviewedAt": "2026-11-05T22:01:22.426Z",
+        "nextDueAt": "2026-11-25T22:01:22.426Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:09:26.196Z",
@@ -15759,11 +15759,19 @@
             "isCorrect": true,
             "timeSpentMs": 6210,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-05T22:01:22.426Z",
+            "inputMode": "typing",
+            "userAnswer": "nouakshot",
+            "isCorrect": true,
+            "timeSpentMs": 7176,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 5.96,
-        "difficulty": 7.4,
+        "stability": 20.48,
+        "difficulty": 6.89,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "MDV"
@@ -41353,16 +41361,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2861,
-    "totalCorrect": 2168,
+    "totalReviews": 2862,
+    "totalCorrect": 2169,
     "currentStreak": 1,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-05",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 93,
-        "learning": 15
+        "mastered": 94,
+        "learning": 14
       },
       "Americas": {
         "total": 70,
@@ -41392,7 +41400,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-05T22:01:14.010Z"
+    "updatedAt": "2026-11-05T22:01:22.450Z"
   },
   "settings": {
     "audioEnabled": true,
