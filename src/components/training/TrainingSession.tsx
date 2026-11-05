@@ -1211,25 +1211,27 @@ export const TrainingSession: React.FC<TrainingSessionProps> = ({
         </div>
       </div>
 
-      {/* Main Workspace (Map + Floating Prompt Overlay) */}
-      <div className="relative flex-1 w-full h-full overflow-hidden">
+      {/* Main Workspace (Mobile: Non-overlapping Split Pane | Desktop: Full-Bleed Map + Floating Prompt Overlay) */}
+      <div className="relative flex-1 w-full h-full overflow-hidden flex flex-col">
         {/* Interactive Map */}
-        <MapContainer
-          mapMode={mapMode}
-          onToggleMapMode={onToggleMapMode}
-          targetCountryId={
-            isSubmitted || currentQuestion.attributeId === 'country' ? currentQuestion.country.id : null
-          }
-          selectedCountryId={selectedMapCountry?.id || null}
-          feedbackState={feedbackState}
-          disableAutoZoom={!(isSubmitted || currentQuestion.attributeId === 'country')}
-          hideHoverTooltip={!isSubmitted}
-          srsItemsMap={srsItemsMap}
-          onSelectCountry={handleMapCountrySelect}
-        />
+        <div className="relative flex-1 min-h-[150px] w-full sm:h-full">
+          <MapContainer
+            mapMode={mapMode}
+            onToggleMapMode={onToggleMapMode}
+            targetCountryId={
+              isSubmitted || currentQuestion.attributeId === 'country' ? currentQuestion.country.id : null
+            }
+            selectedCountryId={selectedMapCountry?.id || null}
+            feedbackState={feedbackState}
+            disableAutoZoom={!(isSubmitted || currentQuestion.attributeId === 'country')}
+            hideHoverTooltip={!isSubmitted}
+            srsItemsMap={srsItemsMap}
+            onSelectCountry={handleMapCountrySelect}
+          />
+        </div>
 
-        {/* Floating Question UI Panel */}
-        <div className="absolute bottom-3 sm:bottom-6 inset-x-3 sm:inset-x-4 z-40 flex justify-center pointer-events-none">
+        {/* Question UI Panel (Docked bottom sheet on mobile, floating card on sm+ desktop) */}
+        <div className="relative z-40 w-full shrink-0 border-t border-slate-800/90 bg-[#0b1524] p-2.5 sm:p-0 sm:bg-transparent sm:border-t-0 sm:absolute sm:bottom-6 sm:inset-x-4 flex justify-center sm:pointer-events-none">
           <div className="pointer-events-auto w-full max-w-xl">
             {currentQuestion.expectedInputMode === 'multiple_choice' ? (
               <MultipleChoicePrompt

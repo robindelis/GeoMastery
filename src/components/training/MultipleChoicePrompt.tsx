@@ -80,18 +80,18 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
   }, [options, isSubmitted, isOverallCorrect, onNextQuestion, onOverrideCorrect]);
 
   return (
-    <div className="flex flex-col gap-2.5 sm:gap-4 w-full max-w-xl mx-auto">
+    <div className="flex flex-col gap-2 sm:gap-4 w-full max-w-xl mx-auto">
       {/* Question Header Card */}
-      <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-3.5 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col items-center text-center gap-1.5 sm:gap-2">
+      <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-2.5 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col items-center text-center gap-1 sm:gap-2">
         <div className="flex items-center gap-2">
           {isCapitalToCountry && !isSubmitted ? (
-            <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
-              <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
+              <Building2 className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
             </span>
           ) : (
-            <span className="text-2xl sm:text-3xl">{country.flagEmoji}</span>
+            <span className="text-xl sm:text-3xl">{country.flagEmoji}</span>
           )}
-          <span className="text-[11px] sm:text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700">
+          <span className="text-[10px] sm:text-xs uppercase tracking-widest px-2 sm:px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700 truncate max-w-[240px] sm:max-w-none">
             {isWater ? `🌊 Oceans & Straits • ${country.subregion}` : `${country.continent} • ${country.subregion}`}
           </span>
           {isCapitalToCountry && country.capital && (
@@ -105,19 +105,19 @@ export const MultipleChoicePrompt: React.FC<MultipleChoicePromptProps> = ({
             </button>
           )}
         </div>
-        <h2 className="text-lg sm:text-2xl font-bold text-white tracking-tight mt-0.5 sm:mt-1">
+        <h2 className="text-base sm:text-2xl font-bold text-white tracking-tight mt-0.5 sm:mt-1 leading-snug">
           {promptText}
         </h2>
-        <div className="text-[11px] sm:text-xs text-emerald-400/90 font-medium">
+        <div className="hidden sm:block text-xs text-emerald-400/90 font-medium">
           {isCapitalToCountry
             ? 'Stage 0: Capital → Country Recognition '
             : 'Stage 0: Recognition Phase '}
-          <span className="hidden sm:inline">(Keyboard: 1-4)</span>
+          <span>(Keyboard: 1-4)</span>
         </div>
       </div>
 
       {/* 4 Multiple Choice Option Grid */}
-      <div className="grid grid-cols-2 gap-2 sm:gap-3">
+      <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
         {options.map((option, idx) => {
           const isSelected = selectedOption === option;
           const isCorrect = option === correctAnswer;

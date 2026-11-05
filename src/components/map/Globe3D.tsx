@@ -233,6 +233,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
         const t = Math.min(1, elapsed / duration);
         const ease = d3.easeCubicOut(t);
         rotationRef.current = interpolator(ease);
+        scheduleRender();
 
         if (t < 1) {
           requestAnimationFrame(animateSpin);
@@ -241,7 +242,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
 
       requestAnimationFrame(animateSpin);
     },
-    []
+    [scheduleRender]
   );
 
   // Auto-focus when target or selected country changes
@@ -261,8 +262,8 @@ export const Globe3D: React.FC<Globe3DProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Handle high DPI displays
-    const dpr = window.devicePixelRatio || 1;
+    // Handle high DPI displays (cap at 2x to prevent 3x/3.5x mobile OLED fill-rate bottleneck)
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = dimensions.width * dpr;
     canvas.height = dimensions.height * dpr;
     ctx.scale(dpr, dpr);
@@ -503,8 +504,7 @@ export const Globe3D: React.FC<Globe3DProps> = ({
       ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
       ctx.stroke();
 
-      const isPulsing = Boolean(selectedCountryId || targetCountryId);
-      if (isMoving || isPulsing || prevMoving) {
+      if (isMoving || prevMoving) {
         animFrameRef.current = requestAnimationFrame(render);
       } else {
         animFrameRef.current = null;

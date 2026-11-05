@@ -91,8 +91,12 @@ export const App: React.FC = () => {
 
   return (
     <div className="flex flex-col h-dvh w-dvw overflow-hidden bg-[#0F2536] text-[#F6EFE2] font-sans select-none pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
-      {/* Top Application Navbar */}
-      <header className="h-14 border-b border-[#F6EFE2]/12 bg-[#0B1C2A]/95 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between z-50 shrink-0">
+      {/* Top Application Navbar (hidden on mobile during active training/arcade to maximize map & prompt space) */}
+      <header
+        className={`${
+          currentView === 'training' || currentView === 'arcade' ? 'hidden sm:flex' : 'flex'
+        } h-12 sm:h-14 border-b border-[#F6EFE2]/12 bg-[#0B1C2A]/95 backdrop-blur-md px-3 sm:px-6 items-center justify-between z-50 shrink-0`}
+      >
         <div className="flex items-center gap-6">
           {/* Logo */}
           <button

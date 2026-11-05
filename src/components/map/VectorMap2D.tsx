@@ -579,17 +579,21 @@ let cachedBundle: CachedProjectionBundle | null = null;
 let lastKnownDimensions: { width: number; height: number } | null = null;
 
 function getOrBuildProjectionBundle(width: number, height: number): CachedProjectionBundle {
-  const key = `${width}x${height}`;
+  // On mobile viewports (<640px), derive the projection's reference height from width so
+  // opening/closing the Android software keyboard never rebuilds the 470+ Path2D polygons.
+  const isMobileWidth = width > 0 && width < 640;
+  const effectiveHeight = isMobileWidth ? Math.round(width * 0.72) : height;
+  const key = `${width}x${effectiveHeight}`;
   if (cachedBundle && cachedBundle.key === key) {
     return cachedBundle;
   }
 
   const projection = d3
     .geoNaturalEarth1()
-    .scale(Math.max(1, width) / 5.8)
-    .translate([width / 2, height / 2 + 10]);
+    .scale(Math.max(1, width) / (isMobileWidth ? 5.4 : 5.8))
+    .translate([width / 2, effectiveHeight / 2 + (isMobileWidth ? 4 : 10)]);
 
-  if (width <= 0 || height <= 0 || typeof Path2D === 'undefined') {
+  if (width <= 0 || effectiveHeight <= 0 || typeof Path2D === 'undefined') {
     return {
       key,
       projection,
@@ -995,8 +999,9 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
       if (ctx) drawBase(ctx, s);
     }
 
-    // Idle pulse animations are capped at ~30fps; interaction runs at full rate
-    if (animating && !s.moving && now - lastOverlayRef.current < 32) {
+    // Idle pulse animations are capped at ~30fps on desktop (~15fps on mobile); interaction runs at full rate
+    const pulseFrameInterval = isCoarsePointer ? 64 : 32;
+    if (animating && !s.moving && now - lastOverlayRef.current < pulseFrameInterval) {
       frameRafRef.current = requestAnimationFrame((n) => frameRef.current(n));
       return;
     }
@@ -1250,13 +1255,14 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     const span = poly ? Math.hypot(poly.bbox[2] - poly.bbox[0], poly.bbox[3] - poly.bbox[1]) : 0;
     const adaptiveLandScale =
       span > 180 ? 2.4 : span > 80 ? 3.2 : span > 25 ? 4.2 : 5.5;
+    const isMobileView = dimensions.width > 0 && dimensions.width < 640;
     const targetScale = wb
       ? wb.type === 'strait' || wb.type === 'channel'
         ? 5.5
         : 3.0
       : adaptiveLandScale;
     const transform = d3.zoomIdentity
-      .translate(dimensions.width / 2, dimensions.height * 0.42)
+      .translate(dimensions.width / 2, dimensions.height * (isMobileView ? 0.48 : 0.42))
       .scale(targetScale)
       .translate(-cx, -cy);
 
@@ -1299,13 +1305,9 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     }
   }, [handleCountryLeave, scheduleFrame]);
 
-  // Click: direct hit first, then open-ocean proximity assist (snaps to nearest microstate or water body)
-  const handleCanvasClick = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const px = e.clientX - rect.left;
-      const py = e.clientY - rect.top;
-
+  // Select country at canvas coordinates (px, py): direct hit first, then proximity assist
+  const selectPointAt = useCallback(
+    (px: number, py: number) => {
       const direct = hitTest(px, py);
       if (direct) {
         handleCountrySelect(direct.country);
@@ -1371,6 +1373,72 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
     [hitTest, microstateItems, waterBodyItems, handleCountrySelect, targetCountryId, isCoarsePointer]
   );
 
+  // Reliable touch tap detection (Android WebView suppresses synthesized click when d3.zoom calls preventDefault)
+  const activePointersRef = useRef<Set<number>>(new Set());
+  const tapStartRef = useRef<{ id: number; x: number; y: number; t: number; hadMultiTouch: boolean } | null>(null);
+  const lastTouchTapTimeRef = useRef<number>(0);
+
+  const handleCanvasPointerDown = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (e.pointerType !== 'touch') return;
+    activePointersRef.current.add(e.pointerId);
+    if (activePointersRef.current.size === 1) {
+      tapStartRef.current = {
+        id: e.pointerId,
+        x: e.clientX,
+        y: e.clientY,
+        t: performance.now(),
+        hadMultiTouch: false
+      };
+    } else if (tapStartRef.current) {
+      tapStartRef.current.hadMultiTouch = true;
+    }
+  }, []);
+
+  const handleCanvasPointerUp = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (e.pointerType !== 'touch') return;
+      activePointersRef.current.delete(e.pointerId);
+      const start = tapStartRef.current;
+      if (start && start.id === e.pointerId && !start.hadMultiTouch && activePointersRef.current.size === 0) {
+        const dist = Math.hypot(e.clientX - start.x, e.clientY - start.y);
+        const elapsed = performance.now() - start.t;
+        tapStartRef.current = null;
+        if (dist <= 12 && elapsed <= 500) {
+          lastTouchTapTimeRef.current = performance.now();
+          const rect = e.currentTarget.getBoundingClientRect();
+          selectPointAt(e.clientX - rect.left, e.clientY - rect.top);
+        }
+      }
+    },
+    [selectPointAt]
+  );
+
+  const handleCanvasPointerCancel = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
+    activePointersRef.current.delete(e.pointerId);
+    if (tapStartRef.current?.id === e.pointerId) {
+      tapStartRef.current = null;
+    }
+  }, []);
+
+  const handleCanvasClick = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      if (performance.now() - lastTouchTapTimeRef.current < 450) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      selectPointAt(e.clientX - rect.left, e.clientY - rect.top);
+    },
+    [selectPointAt]
+  );
+
+  const handleResetView = useCallback(() => {
+    const canvas = overlayCanvasRef.current;
+    if (!canvas || !zoomBehaviorRef.current) return;
+    d3.select(canvas)
+      .transition()
+      .duration(400)
+      .ease(d3.easeCubicOut)
+      .call(zoomBehaviorRef.current.transform, d3.zoomIdentity);
+  }, []);
+
   return (
     <div
       ref={containerRef}
@@ -1391,9 +1459,21 @@ export const VectorMap2D: React.FC<VectorMap2DProps> = ({
         ref={overlayCanvasRef}
         onMouseMove={handleCanvasMouseMove}
         onMouseLeave={handleCanvasMouseLeave}
+        onPointerDown={handleCanvasPointerDown}
+        onPointerUp={handleCanvasPointerUp}
+        onPointerCancel={handleCanvasPointerCancel}
         onClick={handleCanvasClick}
         className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing block touch-none"
       />
+
+      {/* Mobile Quick Recenter Button */}
+      <button
+        type="button"
+        onClick={handleResetView}
+        className="sm:hidden absolute top-2.5 left-2.5 z-30 px-2.5 py-1 rounded-xl bg-[#162938]/90 border border-[#e9c46a]/30 text-[#f6efe2] text-[10px] font-bold shadow-lg active:scale-95"
+      >
+        Reset Map
+      </button>
 
       {/* High-Performance Direct Tooltip (Zero React re-renders during cursor movements) */}
       <div

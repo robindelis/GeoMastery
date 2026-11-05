@@ -39,7 +39,7 @@ export const MapContainer: React.FC<MapContainerProps> = ({
   onToggleAutoRotate,
   onSelectCountry,
   className = '',
-  controlsClassName = 'right-4'
+  controlsClassName = 'right-2.5 sm:right-4'
 }) => {
   return (
     <div className={`relative w-full h-full overflow-hidden flex flex-col ${className}`}>
@@ -73,32 +73,32 @@ export const MapContainer: React.FC<MapContainerProps> = ({
         )}
 
         {/* Floating Cartographic Controls Bar */}
-        <div className={`absolute top-4 z-40 flex items-center gap-2 bg-[#162938]/92 backdrop-blur-md border border-[#e9c46a]/30 p-1.5 rounded-2xl shadow-2xl transition-all duration-300 ${controlsClassName}`}>
+        <div className={`absolute top-2.5 sm:top-4 z-40 flex items-center gap-1.5 sm:gap-2 bg-[#162938]/92 backdrop-blur-md border border-[#e9c46a]/30 p-1 sm:p-1.5 rounded-xl sm:rounded-2xl shadow-2xl transition-all duration-300 ${controlsClassName}`}>
           {/* 2D / 3D Switcher */}
-          <div className="flex items-center bg-[#0f1e2a] p-0.5 rounded-xl border border-white/10">
+          <div className="flex items-center bg-[#0f1e2a] p-0.5 rounded-lg sm:rounded-xl border border-white/10">
             <button
               onClick={() => onToggleMapMode('2d')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg text-[10px] sm:text-xs font-bold transition-all ${
                 mapMode === '2d'
                   ? 'bg-[#f6efe2] text-[#162938] shadow-md'
                   : 'text-[#d8cfc0] hover:text-white'
               }`}
               title="Switch to 2D Flat Vector Map"
             >
-              <Map className="w-3.5 h-3.5" />
-              <span>2D Map</span>
+              <Map className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              <span>2D<span className="hidden sm:inline"> Map</span></span>
             </button>
             <button
               onClick={() => onToggleMapMode('3d')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg text-[10px] sm:text-xs font-bold transition-all ${
                 mapMode === '3d'
                   ? 'bg-[#f6efe2] text-[#162938] shadow-md'
                   : 'text-[#d8cfc0] hover:text-white'
               }`}
               title="Switch to 3D Rotating Globe"
             >
-              <Globe className="w-3.5 h-3.5" />
-              <span>3D Globe</span>
+              <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              <span>3D<span className="hidden sm:inline"> Globe</span></span>
             </button>
           </div>
 

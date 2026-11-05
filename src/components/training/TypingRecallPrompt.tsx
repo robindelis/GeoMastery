@@ -56,12 +56,14 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
     setFlagImageError(false);
   }, [country.id, promptText, attributeId]);
 
-  // Auto focus input when active
+  // Auto focus input when active (on mobile Map->Name questions, let the user view the map first before popping keyboard)
   useEffect(() => {
     if (!isSubmitted && inputRef.current) {
+      const isCoarse = typeof window !== 'undefined' && Boolean(window.matchMedia?.('(pointer: coarse)')?.matches);
+      if (isCoarse && isMapCountryIdentify) return;
       inputRef.current.focus();
     }
-  }, [isSubmitted]);
+  }, [isSubmitted, isMapCountryIdentify]);
 
   // Handle submit form
   const handleSubmit = (e: React.FormEvent) => {
@@ -100,26 +102,26 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-2.5 sm:gap-4 w-full max-w-xl mx-auto">
+    <div className="flex flex-col gap-2 sm:gap-4 w-full max-w-xl mx-auto">
       {/* Header Card */}
-      <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-3.5 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col items-center text-center gap-1.5 sm:gap-2">
+      <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-2.5 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col items-center text-center gap-1 sm:gap-2">
         <div className="flex items-center gap-2">
           {isMapCountryIdentify && !isSubmitted ? (
-            <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
-              <Compass className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
+              <Compass className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
             </span>
           ) : isFlagIdentify && !isSubmitted ? (
-            <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-sky-500/20 border border-sky-400/50 flex items-center justify-center text-sky-400">
-              <Flag className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-sky-500/20 border border-sky-400/50 flex items-center justify-center text-sky-400">
+              <Flag className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
             </span>
           ) : isCapitalToCountry && !isSubmitted ? (
-            <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
-              <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400">
+              <Building2 className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
             </span>
           ) : (
-            <span className="text-2xl sm:text-3xl">{country.flagEmoji}</span>
+            <span className="text-xl sm:text-3xl">{country.flagEmoji}</span>
           )}
-          <span className="text-[11px] sm:text-xs uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 font-semibold border border-cyan-800/60">
+          <span className="text-[10px] sm:text-xs uppercase tracking-widest px-2 sm:px-2.5 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 font-semibold border border-cyan-800/60 truncate max-w-[240px] sm:max-w-none">
             {country.continent} • {country.subregion}
           </span>
           {isCapitalToCountry && country.capital && (
@@ -136,7 +138,7 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
 
         {/* Prominent Flag Plate for Flag-to-Country questions */}
         {isFlagIdentify && (
-          <div className="my-1.5 flex flex-col items-center justify-center">
+          <div className="my-1 sm:my-1.5 flex flex-col items-center justify-center">
             {flagImgUrl && !flagImageError ? (
               <div className="rounded-xl overflow-hidden border-2 border-slate-600/80 bg-slate-950/80 shadow-xl p-1">
                 <img
@@ -144,18 +146,18 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
                   alt={isSubmitted ? `${country.name} flag` : 'Mystery national flag'}
                   draggable={false}
                   onError={() => setFlagImageError(true)}
-                  className="h-16 sm:h-24 w-auto object-contain rounded-lg select-none"
+                  className="h-12 sm:h-24 w-auto object-contain rounded-lg select-none"
                 />
               </div>
             ) : (
-              <div className="px-5 py-2 rounded-2xl bg-slate-800/80 border border-slate-700 text-5xl sm:text-6xl leading-none select-none shadow-inner">
+              <div className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-2xl bg-slate-800/80 border border-slate-700 text-4xl sm:text-6xl leading-none select-none shadow-inner">
                 {country.flagEmoji}
               </div>
             )}
           </div>
         )}
 
-        <h2 className="text-lg sm:text-2xl font-bold text-white tracking-tight mt-0.5 sm:mt-1">
+        <h2 className="text-base sm:text-2xl font-bold text-white tracking-tight mt-0.5 sm:mt-1 leading-snug">
           {promptText}
         </h2>
 
@@ -169,7 +171,7 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
             </span>
           </div>
         ) : (
-          <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-sky-400 font-medium">
+          <div className="hidden sm:flex items-center gap-1.5 text-xs text-sky-400 font-medium">
             <span>
               {isMapCountryIdentify
                 ? 'Highlighted in gold on the map • Type the country name'
@@ -184,7 +186,7 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
       </div>
 
       {/* Typing Form */}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2.5 sm:gap-3">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:gap-3">
         <div className="relative">
           <input
             ref={inputRef}
@@ -199,7 +201,7 @@ export const TypingRecallPrompt: React.FC<TypingRecallPromptProps> = ({
                 ? 'Type country name...'
                 : 'Type answer here...'
             }
-            className={`w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl text-base sm:text-lg font-medium bg-slate-900/90 border transition-all outline-none shadow-xl ${
+            className={`w-full px-3.5 sm:px-5 py-2.5 sm:py-4 rounded-xl text-base sm:text-lg font-medium bg-slate-900/90 border transition-all outline-none shadow-xl ${
               isSubmitted
                 ? isCorrect
                   ? 'border-emerald-500 text-emerald-300 bg-emerald-950/30'

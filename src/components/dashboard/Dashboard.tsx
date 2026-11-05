@@ -43,17 +43,22 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncStatusMessage, setSyncStatusMessage] = useState<string | null>(null);
 
-  // Subscribe to storage updates (disk rehydration on launch) & prewarm map geometry
+  // Subscribe to storage updates (disk rehydration on launch) & prewarm map geometry during idle time
   useEffect(() => {
     const unsubscribe = StorageService.subscribe(() => {
       setSrsItemsMap(StorageService.loadSRSItems());
       setStats(StorageService.loadStats());
       setSettings(StorageService.loadSettings());
     });
-    const idleTimer = setTimeout(() => prewarmVectorMap(), 50);
+    const ric = typeof window !== 'undefined' ? (window as any).requestIdleCallback : undefined;
+    const cancelRic = typeof window !== 'undefined' ? (window as any).cancelIdleCallback : undefined;
+    const handle = ric
+      ? ric(() => prewarmVectorMap(), { timeout: 1200 })
+      : setTimeout(() => prewarmVectorMap(), 500);
     return () => {
       unsubscribe();
-      clearTimeout(idleTimer);
+      if (ric && cancelRic) cancelRic(handle);
+      else clearTimeout(handle);
     };
   }, []);
 

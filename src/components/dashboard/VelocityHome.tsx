@@ -1272,7 +1272,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       subtitle: 'Pinpoint on map',
       detail: `${due.location} due`,
       glyph: '🧭',
-      spanCls: 'col-span-2',
+      spanCls: 'col-span-3 sm:col-span-2',
       ...attributeTelemetry.location
     },
     {
@@ -1281,7 +1281,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       subtitle: 'Name highlighted nation',
       detail: `${due.country} due`,
       glyph: '🗺️',
-      spanCls: 'col-span-2',
+      spanCls: 'col-span-3 sm:col-span-2',
       ...attributeTelemetry.country
     },
     {
@@ -1290,7 +1290,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
       subtitle: 'Name nation from flag',
       detail: `${due.flag} due`,
       glyph: '🏳️',
-      spanCls: 'col-span-2',
+      spanCls: 'col-span-6 sm:col-span-2',
       ...attributeTelemetry.flag
     }
   ];
@@ -1305,19 +1305,19 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
   };
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-[#0F2536] text-[#F6EFE2] selection:bg-[#D94E34]/30 selection:text-[#F6EFE2] flex flex-col">
+    <div className="relative h-full w-full overflow-y-auto lg:overflow-hidden bg-[#0F2536] text-[#F6EFE2] selection:bg-[#D94E34]/30 selection:text-[#F6EFE2] flex flex-col">
       {/* Pure CSS radial gradient lighting */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_20%_0%,#1D4763_0%,#112A3D_55%,#0B1C2A_100%)]"
+        className="pointer-events-none fixed lg:absolute inset-0 bg-[radial-gradient(120%_90%_at_20%_0%,#1D4763_0%,#112A3D_55%,#0B1C2A_100%)]"
       />
 
-      {/* ══ LOCKED VIEWPORT CONTAINER (Zero Vertical Scroll) ══════════════ */}
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1840px] flex-col justify-between gap-2.5 px-4 py-2.5 sm:px-6 overflow-hidden">
+      {/* ══ RESPONSIVE MOBILE SCROLL / DESKTOP VIEWPORT-LOCKED CONTAINER ══════════════ */}
+      <div className="relative z-10 mx-auto flex min-h-full lg:h-full w-full max-w-[1840px] flex-col justify-between gap-3 lg:gap-2.5 px-3 py-3 pb-6 sm:px-6 sm:py-2.5 lg:pb-2.5 lg:overflow-hidden">
         {/* ── 1. TOP ATELIER RIBBON (Shrink-0) ─────────────────────────── */}
-        <header className="relative shrink-0 flex items-center justify-between gap-3 rounded-2xl border border-[#F6EFE2]/15 bg-[#153348] px-4 py-2 shadow-md">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="flex items-center gap-2">
+        <header className="relative shrink-0 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-3 rounded-2xl border border-[#F6EFE2]/15 bg-[#153348] px-3 py-2 sm:px-4 shadow-md">
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+            <div className="hidden sm:flex items-center gap-2">
               <BookOpen className="h-4 w-4 text-[#E9C46A]" />
               <span className={`${serifDisplay} text-sm font-bold italic text-[#F6EFE2]`}>
                 L’Atelier Cartographique
@@ -1326,8 +1326,8 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
             <span className="hidden h-4 w-px bg-[#F6EFE2]/15 sm:block" />
 
-            <div className="flex items-center gap-3">
-              <span className="rounded-full bg-[#E9C46A]/20 border border-[#E9C46A]/45 px-2.5 py-0.5 text-[11px] font-bold text-[#F6EFE2]">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <span className="truncate rounded-full bg-[#E9C46A]/20 border border-[#E9C46A]/45 px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold text-[#F6EFE2]">
                 Rank {data.rank.level} · {data.rank.title}
               </span>
               <div className="hidden items-center gap-2 md:flex">
@@ -1344,24 +1344,24 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             </div>
 
             {syncStatusMessage && (
-              <span className="rounded-full bg-[#2A9D8F]/25 border border-[#2A9D8F]/50 px-3 py-0.5 text-[11px] font-bold text-[#A7F3D0]">
+              <span className="truncate rounded-full bg-[#2A9D8F]/25 border border-[#2A9D8F]/50 px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold text-[#A7F3D0]">
                 {syncStatusMessage}
               </span>
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 ml-auto">
             {/* Streak Pill */}
-            <div className="flex items-center gap-1.5 rounded-full bg-[#D94E34] px-3 py-1 text-xs font-extrabold text-[#FFF8E7] shadow-sm">
-              <Flame className="h-3.5 w-3.5 fill-current" />
-              <span>{stats.currentStreak}d Streak</span>
+            <div className="flex items-center gap-1 rounded-full bg-[#D94E34] px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-extrabold text-[#FFF8E7] shadow-sm">
+              <Flame className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-current" />
+              <span>{stats.currentStreak}d<span className="hidden sm:inline"> Streak</span></span>
             </div>
 
             {/* 2D / 3D Map Projection Switcher */}
             <div className="flex items-center rounded-full border border-[#F6EFE2]/15 bg-[#0E2231] p-0.5">
               <button
                 onClick={() => onToggleMapMode('2d')}
-                className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold transition-all ${
+                className={`flex items-center gap-1 rounded-full px-2 sm:px-2.5 py-1 text-[10px] sm:text-[11px] font-bold transition-all ${
                   mapMode === '2d'
                     ? 'bg-[#F6EFE2] text-[#142534] shadow-sm'
                     : 'text-[#D6CBB9] hover:text-white'
@@ -1369,11 +1369,11 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 title="Use 2D Flat Map Projection"
               >
                 <MapIcon className="h-3 w-3" />
-                <span>2D Map</span>
+                <span>2D<span className="hidden sm:inline"> Map</span></span>
               </button>
               <button
                 onClick={() => onToggleMapMode('3d')}
-                className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold transition-all ${
+                className={`flex items-center gap-1 rounded-full px-2 sm:px-2.5 py-1 text-[10px] sm:text-[11px] font-bold transition-all ${
                   mapMode === '3d'
                     ? 'bg-[#F6EFE2] text-[#142534] shadow-sm'
                     : 'text-[#D6CBB9] hover:text-white'
@@ -1381,7 +1381,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 title="Use 3D Rotating Globe"
               >
                 <Globe2 className="h-3 w-3" />
-                <span>3D Globe</span>
+                <span>3D<span className="hidden sm:inline"> Globe</span></span>
               </button>
             </div>
 
@@ -1437,7 +1437,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
 
           {/* Floating Popover for GitHub Token (Never shifts page height) */}
           {showToken && (
-            <div className="absolute right-4 top-12 z-50 w-96 rounded-2xl border-2 border-[#E9C46A] bg-[#153348] p-4 shadow-2xl">
+            <div className="absolute left-2 right-2 sm:left-auto sm:right-4 top-12 z-50 sm:w-96 rounded-2xl border-2 border-[#E9C46A] bg-[#153348] p-4 shadow-2xl">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-extrabold uppercase tracking-wider text-[#E9C46A]">
                   GitHub Two-Way Sync Token
@@ -1475,10 +1475,10 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
           )}
         </header>
 
-        {/* ── 2. MAIN 12-COLUMN BENTO GRID (Fits 100% in Remaining Height) ═ */}
-        <div className="flex-1 min-h-0 grid grid-cols-12 gap-3.5 overflow-hidden">
+        {/* ── 2. MAIN 12-COLUMN BENTO GRID (Scrollable on Mobile, Viewport-Locked on lg+ Desktop) ═ */}
+        <div className="flex-1 lg:min-h-0 flex flex-col lg:grid lg:grid-cols-12 gap-3.5 lg:overflow-hidden">
           {/* ══ LEFT COLUMN (5 Cols): 3 PURPOSEFUL STACKED SECTIONS ══ */}
-          <div className="col-span-12 lg:col-span-5 flex flex-col justify-between gap-2.5 min-h-0 overflow-hidden">
+          <div className="order-1 col-span-12 lg:col-span-5 flex flex-col justify-between gap-3 lg:gap-2.5 lg:min-h-0 lg:overflow-hidden">
             {/* Section 1: Expedition Launch Deck (Content-Sized, Zero Dead Space) */}
             <div className="relative flex shrink-0 flex-col gap-3 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
               {/* Top Header */}
@@ -1716,7 +1716,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 </div>
 
                 {/* 4 Interactive Category Mini-Tiles -> Click Opens Trophy Album Sub-Window */}
-                <div className="grid grid-cols-4 gap-1.5">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
                   {HORIZON_CATEGORY_ORDER.map((cat) => {
                     const meta = HORIZON_CATEGORY_META[cat];
                     const catCounts = cardTelemetry.byCategory[cat];
@@ -1801,7 +1801,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               {/* Card-Deck Peek: top edges of the next cards in each category drawer.
                   The stack is clipped by the drawer height, so it always fills the space;
                   empty drawers advertise the card next in line instead of reading as broken. */}
-              <div ref={deckStackRef} className="relative flex-1 min-h-0 grid grid-cols-4 gap-1.5">
+              <div ref={deckStackRef} className="hidden lg:grid relative flex-1 min-h-0 grid-cols-4 gap-1.5">
                 {horizonDeckPeek.map(({ category, cards, hasCards, nextInLine }) => {
                   const meta = HORIZON_CATEGORY_META[category];
                   const faceCard = hasCards ? cards[0] : nextInLine;
@@ -1978,7 +1978,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             </div>
 
             {/* Section 3: 4-Card Lifetime Telemetry Strip (Shrink-0) */}
-            <div className="shrink-0 grid grid-cols-4 gap-2.5">
+            <div className="shrink-0 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
               <div className="rounded-2xl border border-[#F6EFE2]/15 bg-[#143146] p-3 shadow-md">
                 <span className="flex items-center gap-1 text-[10px] font-bold text-[#D6CBB9]">
                   <Target className="h-3 w-3 text-[#48CAE4]" />
@@ -2027,9 +2027,9 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
           </div>
 
           {/* ══ CENTER COLUMN (3 Cols): 3D POLITICAL GLOBE + DARK DOSSIER ══════ */}
-          <div className="col-span-12 lg:col-span-3 flex flex-col justify-between gap-2.5 min-h-0 overflow-hidden">
+          <div className="order-3 lg:order-2 col-span-12 lg:col-span-3 flex flex-col justify-between gap-3 lg:gap-2.5 lg:min-h-0 lg:overflow-hidden">
             {/* Interactive 3D Political Globe Dome */}
-            <div className="relative flex-1 min-h-0 flex flex-col items-center justify-between overflow-hidden rounded-[1.4rem] border-2 border-[#E9C46A]/35 bg-gradient-to-b from-[#173A52] via-[#112C3F] to-[#0C202E] p-3 shadow-2xl">
+            <div className="relative flex-1 min-h-[260px] lg:min-h-0 flex flex-col items-center justify-between overflow-hidden rounded-[1.4rem] border-2 border-[#E9C46A]/35 bg-gradient-to-b from-[#173A52] via-[#112C3F] to-[#0C202E] p-3 shadow-2xl">
               <InteractiveAtelierGlobe
                 targetCoords={activeRegionLock ? activeRegionLock.coords : null}
                 targetLabel={activeRegionLock ? activeRegionLock.label : data.spotlight.name}
@@ -2222,7 +2222,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
           </div>
 
           {/* ══ RIGHT COLUMN (4 Cols): COMPACT 2×3 REGIONAL MATRIX + 4-STAGE REMEMBRANCE TIMELINE ══ */}
-          <div className="col-span-12 lg:col-span-4 flex flex-col justify-between gap-2.5 min-h-0 overflow-hidden">
+          <div className="order-2 lg:order-3 col-span-12 lg:col-span-4 flex flex-col justify-between gap-3 lg:gap-2.5 lg:min-h-0 lg:overflow-hidden">
             {/* Top Section: Compact 2×3 Regional Folios Matrix (Zero Dead Space) */}
             <div className="shrink-0 flex flex-col gap-1.5">
               <div className="flex items-center justify-between px-1">
@@ -2323,9 +2323,9 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             </div>
 
             {/* Bottom Section (Flex-1): Interactive 4-Stage Remembrance Progression Timeline */}
-            <div className="relative flex-1 min-h-0 flex flex-col justify-between gap-2.5 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-4 text-[#F6EFE2] shadow-xl">
+            <div className="relative flex-1 min-h-[300px] lg:min-h-0 flex flex-col justify-between gap-2.5 overflow-hidden rounded-[1.4rem] border border-[#F6EFE2]/15 bg-gradient-to-b from-[#132D42] to-[#0E2233] p-3.5 sm:p-4 text-[#F6EFE2] shadow-xl">
               {/* Row 1: Header + Scale & Horizon Controls */}
-              <div className="shrink-0 flex items-center justify-between gap-2">
+              <div className="shrink-0 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <TrendingUp className="h-3.5 w-3.5 shrink-0 text-[#10B981]" />
@@ -2387,7 +2387,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
               </div>
 
               {/* Row 2: Interactive Attribute Filter Tabs with Mini 4-Stage Progress Bar */}
-              <div className="shrink-0 grid grid-cols-6 gap-1 rounded-xl border border-[#F6EFE2]/10 bg-[#0A1824] p-1">
+              <div className="shrink-0 grid grid-cols-3 sm:grid-cols-6 gap-1 rounded-xl border border-[#F6EFE2]/10 bg-[#0A1824] p-1">
                 {(
                   [
                     {
@@ -2627,7 +2627,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                 return (
                   <div className="flex-1 min-h-0 flex flex-col justify-between gap-2">
                     {/* 4-Stage Interactive Readout Strip (Click any stage to open Trophy Album) */}
-                    <div className="shrink-0 grid grid-cols-4 gap-1.5">
+                    <div className="shrink-0 grid grid-cols-2 sm:grid-cols-4 gap-1.5">
                       {stageCards.map((st) => (
                         <button
                           key={st.id}
@@ -2707,7 +2707,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                         {/* 1:1 Pixel SVG Plot Container */}
                         <div
                           ref={timelinePlotRef}
-                          className="relative flex-1 min-h-0 overflow-hidden rounded-lg bg-[#050E17] border border-[#F6EFE2]/8 cursor-crosshair"
+                          className="relative flex-1 min-h-[110px] lg:min-h-0 overflow-hidden rounded-lg bg-[#050E17] border border-[#F6EFE2]/8 cursor-crosshair"
                           onMouseLeave={() => setHoveredTimelineIdx(null)}
                           onMouseMove={(e) => {
                             const rect = e.currentTarget.getBoundingClientRect();
@@ -2715,6 +2715,19 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                             const idx = Math.round(relX * (pts.length - 1));
                             if (idx !== hoveredTimelineIdx) {
                               setHoveredTimelineIdx(idx);
+                            }
+                          }}
+                          onTouchMove={(e) => {
+                            if (e.touches.length === 1) {
+                              const rect = e.currentTarget.getBoundingClientRect();
+                              const relX = Math.max(
+                                0,
+                                Math.min(1, (e.touches[0].clientX - rect.left) / Math.max(1, rect.width))
+                              );
+                              const idx = Math.round(relX * (pts.length - 1));
+                              if (idx !== hoveredTimelineIdx) {
+                                setHoveredTimelineIdx(idx);
+                              }
                             }
                           }}
                         >
@@ -2994,7 +3007,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
             {/* 2. Stage Category Tabs + Continent & Search Filter Bar */}
             <div className="relative z-10 shrink-0 my-2.5 flex flex-col gap-2">
               {/* 5 Stage Vault Selector Tabs */}
-              <div className="grid grid-cols-5 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 sm:gap-2">
                 <button
                   type="button"
                   onClick={() => {
@@ -3003,7 +3016,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                     setAlbumPage(1);
                     if (albumScrollRef.current) albumScrollRef.current.scrollTop = 0;
                   }}
-                  className={`rounded-xl border px-3 py-2 text-left transition-all cursor-pointer ${
+                  className={`col-span-2 sm:col-span-1 rounded-xl border px-3 py-1.5 sm:py-2 text-left transition-all cursor-pointer ${
                     selectedHorizonCategory === null
                       ? 'border-[#E9C46A] bg-[#E9C46A]/20 ring-1 ring-[#E9C46A]/50 shadow-md'
                       : 'border-[#F6EFE2]/15 bg-[#0C1D2B]/85 hover:border-[#F6EFE2]/40'
@@ -3086,8 +3099,8 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                   )}
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center rounded-full border border-[#F6EFE2]/15 bg-[#0C1D2B] p-0.5 text-[10px] font-bold">
+                <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full sm:w-auto">
+                  <div className="flex overflow-x-auto no-scrollbar items-center rounded-full border border-[#F6EFE2]/15 bg-[#0C1D2B] p-0.5 text-[10px] font-bold max-w-full">
                     {(['all', 'capital', 'capital_to_country', 'location', 'country', 'flag'] as const).map((attr) => (
                       <button
                         key={attr}
@@ -3098,7 +3111,7 @@ const VelocityHome: React.FC<HomeViewProps> = (props) => {
                           setAlbumPage(1);
                           if (albumScrollRef.current) albumScrollRef.current.scrollTop = 0;
                         }}
-                        className={`rounded-full px-2.5 py-0.5 transition-colors cursor-pointer ${
+                        className={`shrink-0 rounded-full px-2.5 py-0.5 transition-colors cursor-pointer ${
                           horizonAttrFilter === attr
                             ? 'bg-[#E9C46A] text-[#142534]'
                             : 'text-[#9FB3C4] hover:text-white'

@@ -20,7 +20,10 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedContinent, setSelectedContinent] = useState<'All' | Continent>('All');
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(() => COUNTRIES_BY_ID.get('FRA') || COUNTRIES[0]);
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 640) return null;
+    return COUNTRIES_BY_ID.get('FRA') || COUNTRIES[0];
+  });
   const [srsItemsMap, setSrsItemsMap] = useState<Map<string, SRSItem>>(() => StorageService.loadSRSItems());
   const [showHeatmap, setShowHeatmap] = useState(false);
   const [autoRotate, setAutoRotate] = useState(false);
@@ -164,7 +167,7 @@ export const ExplorerAtlas: React.FC<ExplorerAtlasProps> = ({
 
         {/* Slide-Over (Tablet/Desktop) & Bottom-Sheet (Mobile) Country Dossier */}
         {selectedCountry && (
-          <div className="absolute inset-x-0 bottom-0 top-auto w-full max-h-[55dvh] rounded-t-3xl border-t-2 sm:rounded-none sm:border-t-0 sm:inset-y-0 sm:right-0 sm:left-auto sm:w-96 sm:max-h-none bg-[#F6EFE2] text-[#142534] sm:border-l-2 border-[#D8CBB5] z-40 p-5 flex flex-col justify-between shadow-2xl overflow-hidden">
+          <div className="absolute inset-x-0 bottom-0 top-auto w-full max-h-[58dvh] rounded-t-3xl border-t-2 sm:rounded-none sm:border-t-0 sm:inset-y-0 sm:right-0 sm:left-auto sm:w-96 sm:max-h-none bg-[#F6EFE2] text-[#142534] sm:border-l-2 border-[#D8CBB5] z-40 p-4 sm:p-5 flex flex-col justify-between shadow-2xl overflow-y-auto">
             <div className="flex flex-col gap-3">
               {/* Header with Close */}
               <div className="flex items-start justify-between">

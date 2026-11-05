@@ -180,14 +180,16 @@ export const TimeAttack: React.FC<TimeAttackProps> = ({
       </div>
 
       {/* Main Play Area */}
-      <div className="relative flex-1 w-full h-full overflow-hidden">
+      <div className="relative flex-1 w-full h-full overflow-hidden flex flex-col">
         {/* Background Map */}
-        <MapContainer
-          mapMode={mapMode}
-          onToggleMapMode={onToggleMapMode}
-          targetCountryId={currentCountry?.id}
-          className="opacity-70"
-        />
+        <div className="relative flex-1 min-h-[160px] w-full sm:h-full">
+          <MapContainer
+            mapMode={mapMode}
+            onToggleMapMode={onToggleMapMode}
+            targetCountryId={currentCountry?.id}
+            className="opacity-70"
+          />
+        </div>
 
         {/* Start Game Modal */}
         {!isPlaying && !isGameOver && (
@@ -267,10 +269,10 @@ export const TimeAttack: React.FC<TimeAttackProps> = ({
           </div>
         )}
 
-        {/* Active Question Floating Card */}
+        {/* Active Question Card (Docked on Mobile, Floating on Desktop) */}
         {isPlaying && currentCountry && (
-          <div className="absolute bottom-3 sm:bottom-8 inset-x-3 sm:inset-x-4 z-40 flex justify-center pointer-events-none">
-            <div className="pointer-events-auto w-full max-w-lg bg-slate-900/95 border border-slate-700/90 rounded-2xl p-4 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col gap-3 sm:gap-4">
+          <div className="relative z-40 w-full shrink-0 border-t border-slate-800/90 bg-[#0b1524] p-2.5 sm:p-0 sm:bg-transparent sm:border-t-0 sm:absolute sm:bottom-8 sm:inset-x-4 flex justify-center sm:pointer-events-none">
+            <div className="pointer-events-auto w-full max-w-lg bg-slate-900/95 border border-slate-700/90 rounded-2xl p-3.5 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col gap-2.5 sm:gap-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-2xl sm:text-3xl">{currentCountry.flagEmoji}</span>

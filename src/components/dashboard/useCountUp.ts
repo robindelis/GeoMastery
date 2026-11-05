@@ -1,20 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
 
-const prefersReducedMotion = (): boolean => {
+const shouldSkipCountUp = (): boolean => {
   if (typeof window === 'undefined' || !window.matchMedia) return false;
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return (
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    window.matchMedia('(pointer: coarse)').matches
+  );
 };
 
 /**
  * Counts a number up to its target on mount / change.
- * Jumps straight to the value when the user prefers reduced motion.
+ * Jumps straight to the value on mobile (coarse pointer) or when the user prefers reduced motion.
  */
 export const useCountUp = (target: number, duration = 900): number => {
-  const [value, setValue] = useState(() => (prefersReducedMotion() ? target : 0));
-  const fromRef = useRef(prefersReducedMotion() ? target : 0);
+  const [value, setValue] = useState(() => (shouldSkipCountUp() ? target : 0));
+  const fromRef = useRef(shouldSkipCountUp() ? target : 0);
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
+    if (shouldSkipCountUp()) {
       setValue(target);
       fromRef.current = target;
       return;
@@ -24,13 +27,17 @@ export const useCountUp = (target: number, duration = 900): number => {
     if (delta === 0) return;
 
     let frame = 0;
+    let lastVal = from;
     const start = performance.now();
     const tick = (now: number) => {
       const t = Math.min(1, (now - start) / duration);
       // easeOutExpo
       const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
       const next = Math.round(from + delta * eased);
-      setValue(next);
+      if (next !== lastVal) {
+        lastVal = next;
+        setValue(next);
+      }
       if (t < 1) {
         frame = requestAnimationFrame(tick);
       } else {
