@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:49:16.343Z",
+  "exportedAt": "2026-11-06T22:49:33.174Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -23356,14 +23356,14 @@
         "id": "GRD:capital",
         "countryId": "GRD",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 1.53,
-        "intervalDays": 0,
-        "reps": 2,
-        "lapses": 5,
-        "lastReviewedAt": "2026-11-06T22:49:13.161Z",
-        "nextDueAt": "2026-11-06T22:59:13.161Z",
+        "stage": 2,
+        "step": 1,
+        "easeFactor": 1.78,
+        "intervalDays": 9,
+        "reps": 3,
+        "lapses": 4,
+        "lastReviewedAt": "2026-11-06T22:49:16.461Z",
+        "nextDueAt": "2026-11-15T22:49:16.461Z",
         "history": [
           {
             "timestamp": "2026-10-14T21:21:21.549Z",
@@ -23413,18 +23413,18 @@
             "grade": 1
           },
           {
-            "timestamp": "2026-11-06T22:49:13.161Z",
+            "timestamp": "2026-11-06T22:49:16.461Z",
             "inputMode": "typing",
-            "userAnswer": "saint george",
-            "isCorrect": false,
+            "userAnswer": "St. George's",
+            "isCorrect": true,
             "timeSpentMs": 7473,
-            "grade": 1
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 0.6,
-        "difficulty": 7.79,
-        "lastLatencyGrade": 1,
+        "stability": 9,
+        "difficulty": 7.08,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "GUY",
           "BRB"
@@ -38323,14 +38323,14 @@
         "id": "LUX:country",
         "countryId": "LUX",
         "attributeId": "country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.6,
-        "intervalDays": 4,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.58,
+        "intervalDays": 15,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:33:45.250Z",
-        "nextDueAt": "2026-11-03T14:33:45.250Z",
+        "lastReviewedAt": "2026-11-06T22:49:29.975Z",
+        "nextDueAt": "2026-11-21T22:49:29.975Z",
         "history": [
           {
             "timestamp": "2026-10-29T23:24:52.834Z",
@@ -38347,11 +38347,19 @@
             "isCorrect": true,
             "timeSpentMs": 4489,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T22:49:29.975Z",
+            "inputMode": "typing",
+            "userAnswer": "luxembourg",
+            "isCorrect": true,
+            "timeSpentMs": 12498,
+            "grade": 2
           }
         ],
-        "difficulty": 4.14,
-        "stability": 4.28,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.76,
+        "stability": 15.09,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -41971,8 +41979,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2932,
-    "totalCorrect": 2232,
+    "totalReviews": 2933,
+    "totalCorrect": 2234,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -41984,8 +41992,8 @@
       },
       "Americas": {
         "total": 70,
-        "mastered": 66,
-        "learning": 4
+        "mastered": 67,
+        "learning": 3
       },
       "Asia": {
         "total": 96,
@@ -42010,7 +42018,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:49:13.203Z"
+    "updatedAt": "2026-11-06T22:49:29.999Z"
   },
   "settings": {
     "audioEnabled": true,
