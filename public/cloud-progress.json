@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:49:51.430Z",
+  "exportedAt": "2026-11-06T22:51:17.605Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30085,13 +30085,13 @@
         "countryId": "UZB",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.33,
-        "intervalDays": 5,
+        "step": 0,
+        "easeFactor": 2.13,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 1,
-        "lastReviewedAt": "2026-10-29T23:22:52.640Z",
-        "nextDueAt": "2026-11-03T23:22:52.640Z",
+        "lapses": 2,
+        "lastReviewedAt": "2026-11-06T22:51:13.810Z",
+        "nextDueAt": "2026-11-06T23:01:13.810Z",
         "history": [
           {
             "timestamp": "2026-10-24T16:02:03.194Z",
@@ -30116,11 +30116,19 @@
             "isCorrect": true,
             "timeSpentMs": 9613,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-06T22:51:13.810Z",
+            "inputMode": "typing",
+            "userAnswer": "kyrgystan",
+            "isCorrect": false,
+            "timeSpentMs": 72813,
+            "grade": 1
           }
         ],
-        "difficulty": 6.05,
-        "stability": 5.25,
-        "lastLatencyGrade": 2,
+        "difficulty": 6.83,
+        "stability": 1.03,
+        "lastLatencyGrade": 1,
         "confusedWith": [
           "TKM"
         ]
@@ -41987,7 +41995,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2934,
+    "totalReviews": 2935,
     "totalCorrect": 2235,
     "currentStreak": 2,
     "longestStreak": 7,
@@ -42026,7 +42034,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:49:48.287Z"
+    "updatedAt": "2026-11-06T22:51:13.846Z"
   },
   "settings": {
     "audioEnabled": true,
