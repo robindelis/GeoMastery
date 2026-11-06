@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:39:41.909Z",
+  "exportedAt": "2026-11-06T23:39:47.127Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8492,14 +8492,14 @@
         "id": "TON:location",
         "countryId": "TON",
         "attributeId": "location",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 1.85,
-        "intervalDays": 0,
-        "reps": 3,
-        "lapses": 4,
-        "lastReviewedAt": "2026-11-06T23:39:38.656Z",
-        "nextDueAt": "2026-11-06T23:49:38.656Z",
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.03,
+        "intervalDays": 15,
+        "reps": 4,
+        "lapses": 3,
+        "lastReviewedAt": "2026-11-06T23:39:43.984Z",
+        "nextDueAt": "2026-11-21T23:39:43.984Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:55:38.545Z",
@@ -8547,18 +8547,18 @@
             "grade": 3
           },
           {
-            "timestamp": "2026-11-06T23:39:38.656Z",
+            "timestamp": "2026-11-06T23:39:43.984Z",
             "inputMode": "map_click",
-            "userAnswer": "Samoa",
-            "isCorrect": false,
+            "userAnswer": "TON",
+            "isCorrect": true,
             "timeSpentMs": 26391,
-            "grade": 1
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 1.15,
-        "difficulty": 7.2,
-        "lastLatencyGrade": 1,
+        "stability": 15,
+        "difficulty": 6.7,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "WSM",
           "FJI"
@@ -43359,7 +43359,7 @@
   ],
   "stats": {
     "totalReviews": 3051,
-    "totalCorrect": 2323,
+    "totalCorrect": 2324,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -43386,8 +43386,8 @@
       },
       "Oceania": {
         "total": 28,
-        "mastered": 24,
-        "learning": 4
+        "mastered": 25,
+        "learning": 3
       }
     },
     "timeAttackRecords": {
@@ -43397,7 +43397,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:39:38.712Z"
+    "updatedAt": "2026-11-06T23:39:44.017Z"
   },
   "settings": {
     "audioEnabled": true,
