@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:47:22.378Z",
+  "exportedAt": "2026-11-06T22:47:37.754Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -34757,14 +34757,14 @@
         "id": "ZMB:country",
         "countryId": "ZMB",
         "attributeId": "country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.6,
-        "intervalDays": 4,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.58,
+        "intervalDays": 16,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-29T23:27:48.606Z",
-        "nextDueAt": "2026-11-02T23:27:48.606Z",
+        "lastReviewedAt": "2026-11-06T22:47:34.579Z",
+        "nextDueAt": "2026-11-22T22:47:34.579Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:22:41.852Z",
@@ -34781,11 +34781,19 @@
             "isCorrect": true,
             "timeSpentMs": 7673,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T22:47:34.579Z",
+            "inputMode": "typing",
+            "userAnswer": "zambia",
+            "isCorrect": true,
+            "timeSpentMs": 14732,
+            "grade": 2
           }
         ],
-        "difficulty": 4.14,
-        "stability": 4.28,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.76,
+        "stability": 16,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -41905,8 +41913,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2924,
-    "totalCorrect": 2225,
+    "totalReviews": 2925,
+    "totalCorrect": 2226,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -41944,7 +41952,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:47:19.130Z"
+    "updatedAt": "2026-11-06T22:47:34.618Z"
   },
   "settings": {
     "audioEnabled": true,
