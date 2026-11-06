@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:46:32.304Z",
+  "exportedAt": "2026-11-06T22:46:46.622Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -41153,14 +41153,14 @@
         "id": "LKA:country",
         "countryId": "LKA",
         "attributeId": "country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.53,
-        "intervalDays": 4,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.58,
+        "intervalDays": 19,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-31T21:14:05.505Z",
-        "nextDueAt": "2026-11-04T21:14:05.505Z",
+        "lastReviewedAt": "2026-11-06T22:46:43.368Z",
+        "nextDueAt": "2026-11-25T22:46:43.368Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:27:51.320Z",
@@ -41177,11 +41177,19 @@
             "isCorrect": true,
             "timeSpentMs": 8612,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-06T22:46:43.368Z",
+            "inputMode": "typing",
+            "userAnswer": "sri lanka",
+            "isCorrect": true,
+            "timeSpentMs": 5824,
+            "grade": 3
           }
         ],
-        "difficulty": 4.97,
-        "stability": 3.52,
-        "lastLatencyGrade": 2,
+        "difficulty": 4.65,
+        "stability": 19.11,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -41881,8 +41889,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2921,
-    "totalCorrect": 2222,
+    "totalReviews": 2922,
+    "totalCorrect": 2223,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -41920,7 +41928,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:46:28.837Z"
+    "updatedAt": "2026-11-06T22:46:43.401Z"
   },
   "settings": {
     "audioEnabled": true,
