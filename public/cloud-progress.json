@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:39:25.588Z",
+  "exportedAt": "2026-11-06T22:39:42.310Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -37939,14 +37939,14 @@
         "id": "TTO:country",
         "countryId": "TTO",
         "attributeId": "country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.46,
-        "intervalDays": 5,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.44,
+        "intervalDays": 11,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-11-01T16:58:58.710Z",
-        "nextDueAt": "2026-11-06T16:58:58.710Z",
+        "lastReviewedAt": "2026-11-06T22:39:39.134Z",
+        "nextDueAt": "2026-11-17T22:39:39.134Z",
         "history": [
           {
             "timestamp": "2026-10-29T23:24:17.829Z",
@@ -37963,10 +37963,18 @@
             "isCorrect": true,
             "timeSpentMs": 9821,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-06T22:39:39.134Z",
+            "inputMode": "typing",
+            "userAnswer": "trinidad and tobago",
+            "isCorrect": true,
+            "timeSpentMs": 15681,
+            "grade": 2
           }
         ],
-        "difficulty": 5.76,
-        "stability": 4.7,
+        "difficulty": 6.01,
+        "stability": 11.16,
         "confusedWith": [],
         "lastLatencyGrade": 2
       }
@@ -41729,8 +41737,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2902,
-    "totalCorrect": 2204,
+    "totalReviews": 2903,
+    "totalCorrect": 2205,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -41768,7 +41776,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:39:22.360Z"
+    "updatedAt": "2026-11-06T22:39:39.155Z"
   },
   "settings": {
     "audioEnabled": true,
