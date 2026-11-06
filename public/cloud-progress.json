@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:12:50.262Z",
+  "exportedAt": "2026-11-06T23:12:57.844Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25210,14 +25210,14 @@
         "id": "COD:country",
         "countryId": "COD",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 29,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-21T12:19:18.120Z",
-        "nextDueAt": "2026-10-22T12:19:18.120Z",
+        "lastReviewedAt": "2026-11-06T23:12:54.631Z",
+        "nextDueAt": "2026-12-05T23:12:54.631Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:19:18.120Z",
@@ -25226,10 +25226,18 @@
             "isCorrect": true,
             "timeSpentMs": 7527,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T23:12:54.631Z",
+            "inputMode": "typing",
+            "userAnswer": "DR Congo",
+            "isCorrect": true,
+            "timeSpentMs": 3928,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.4,
+        "difficulty": 4.14,
+        "stability": 29.16,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -42479,8 +42487,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2974,
-    "totalCorrect": 2264,
+    "totalReviews": 2975,
+    "totalCorrect": 2265,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -42518,7 +42526,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:12:46.892Z"
+    "updatedAt": "2026-11-06T23:12:54.659Z"
   },
   "settings": {
     "audioEnabled": true,
