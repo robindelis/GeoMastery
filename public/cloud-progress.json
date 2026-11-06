@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:07:44.250Z",
+  "exportedAt": "2026-11-06T23:08:27.066Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25729,14 +25729,14 @@
         "id": "ATG:flag",
         "countryId": "ATG",
         "attributeId": "flag",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 1.85,
-        "intervalDays": 5,
-        "reps": 3,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 1.9,
+        "intervalDays": 21,
+        "reps": 4,
         "lapses": 4,
-        "lastReviewedAt": "2026-10-29T13:28:59.109Z",
-        "nextDueAt": "2026-11-03T13:28:59.109Z",
+        "lastReviewedAt": "2026-11-06T23:08:23.777Z",
+        "nextDueAt": "2026-11-27T23:08:23.777Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:21:22.198Z",
@@ -25793,10 +25793,18 @@
             "isCorrect": true,
             "timeSpentMs": 3897,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T23:08:23.777Z",
+            "inputMode": "typing",
+            "userAnswer": "antigua and barbuda",
+            "isCorrect": true,
+            "timeSpentMs": 6382,
+            "grade": 3
           }
         ],
-        "difficulty": 6.52,
-        "stability": 4.88,
+        "difficulty": 6.08,
+        "stability": 21,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "BHS"
@@ -42329,8 +42337,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2964,
-    "totalCorrect": 2256,
+    "totalReviews": 2965,
+    "totalCorrect": 2257,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -42368,7 +42376,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:07:40.657Z"
+    "updatedAt": "2026-11-06T23:08:23.792Z"
   },
   "settings": {
     "audioEnabled": true,
