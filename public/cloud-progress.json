@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:22:05.848Z",
+  "exportedAt": "2026-11-06T23:22:43.452Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -29659,13 +29659,13 @@
         "countryId": "LAO",
         "attributeId": "flag",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.15,
-        "intervalDays": 0.0104,
+        "step": 0,
+        "easeFactor": 1.95,
+        "intervalDays": 0,
         "reps": 1,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-27T12:34:44.783Z",
-        "nextDueAt": "2026-10-27T12:49:44.783Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-11-06T23:22:40.058Z",
+        "nextDueAt": "2026-11-06T23:32:40.058Z",
         "history": [
           {
             "timestamp": "2026-10-24T14:41:13.353Z",
@@ -29690,12 +29690,21 @@
             "isCorrect": true,
             "timeSpentMs": 4478,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T23:22:40.058Z",
+            "inputMode": "typing",
+            "userAnswer": "singapore",
+            "isCorrect": false,
+            "timeSpentMs": 30727,
+            "grade": 1
           }
         ],
-        "difficulty": 6.33,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 7,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
         "confusedWith": [
+          "SGP",
           "MNG"
         ]
       }
@@ -42825,7 +42834,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2997,
+    "totalReviews": 2998,
     "totalCorrect": 2281,
     "currentStreak": 3,
     "longestStreak": 7,
@@ -42864,7 +42873,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:22:02.704Z"
+    "updatedAt": "2026-11-06T23:22:40.092Z"
   },
   "settings": {
     "audioEnabled": true,
