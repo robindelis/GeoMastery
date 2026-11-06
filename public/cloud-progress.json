@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:41:01.835Z",
+  "exportedAt": "2026-11-06T22:41:39.816Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -33693,13 +33693,13 @@
         "countryId": "ATG",
         "attributeId": "country",
         "stage": 2,
-        "step": 2,
-        "easeFactor": 2.53,
-        "intervalDays": 7,
-        "reps": 2,
+        "step": 3,
+        "easeFactor": 2.51,
+        "intervalDays": 17,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:23:24.282Z",
-        "nextDueAt": "2026-11-06T14:23:24.282Z",
+        "lastReviewedAt": "2026-11-06T22:41:36.514Z",
+        "nextDueAt": "2026-11-23T22:41:36.514Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:43:39.880Z",
@@ -33716,10 +33716,18 @@
             "isCorrect": true,
             "timeSpentMs": 12317,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-06T22:41:36.514Z",
+            "inputMode": "typing",
+            "userAnswer": "antigua and barbuda",
+            "isCorrect": true,
+            "timeSpentMs": 34532,
+            "grade": 2
           }
         ],
-        "difficulty": 4.97,
-        "stability": 7,
+        "difficulty": 5.4,
+        "stability": 17,
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
@@ -41769,8 +41777,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2907,
-    "totalCorrect": 2209,
+    "totalReviews": 2908,
+    "totalCorrect": 2210,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -41808,7 +41816,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:40:58.686Z"
+    "updatedAt": "2026-11-06T22:41:36.538Z"
   },
   "settings": {
     "audioEnabled": true,
