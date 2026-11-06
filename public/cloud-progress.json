@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:44:54.662Z",
+  "exportedAt": "2026-11-06T23:45:12.486Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -28720,14 +28720,14 @@
         "id": "GEO:country",
         "countryId": "GEO",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 14,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-23T11:55:58.644Z",
-        "nextDueAt": "2026-10-23T12:10:58.644Z",
+        "lastReviewedAt": "2026-11-06T23:45:09.227Z",
+        "nextDueAt": "2026-11-20T23:45:09.227Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:55:58.644Z",
@@ -28736,11 +28736,19 @@
             "isCorrect": true,
             "timeSpentMs": 3332,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T23:45:09.227Z",
+            "inputMode": "typing",
+            "userAnswer": "georgia",
+            "isCorrect": true,
+            "timeSpentMs": 11209,
+            "grade": 2
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.97,
+        "stability": 14,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -43584,8 +43592,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3079,
-    "totalCorrect": 2350,
+    "totalReviews": 3080,
+    "totalCorrect": 2351,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -43623,7 +43631,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:44:51.531Z"
+    "updatedAt": "2026-11-06T23:45:09.253Z"
   },
   "settings": {
     "audioEnabled": true,
