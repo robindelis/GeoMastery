@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:42:06.865Z",
+  "exportedAt": "2026-11-06T23:42:20.528Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6631,13 +6631,13 @@
         "countryId": "SYR",
         "attributeId": "location",
         "stage": 2,
-        "step": 2,
-        "easeFactor": 2.38,
-        "intervalDays": 15,
-        "reps": 3,
+        "step": 3,
+        "easeFactor": 2.36,
+        "intervalDays": 30,
+        "reps": 4,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-21T11:58:00.620Z",
-        "nextDueAt": "2026-11-05T11:58:00.620Z",
+        "lastReviewedAt": "2026-11-06T23:42:17.332Z",
+        "nextDueAt": "2026-12-06T23:42:17.332Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:09:37.719Z",
@@ -6667,11 +6667,19 @@
             "isCorrect": true,
             "timeSpentMs": 28345,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-06T23:42:17.332Z",
+            "inputMode": "map_click",
+            "userAnswer": "Syria",
+            "isCorrect": true,
+            "timeSpentMs": 6752,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 15,
-        "difficulty": 6.35,
+        "stability": 30.25,
+        "difficulty": 6.47,
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
@@ -43472,8 +43480,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3065,
-    "totalCorrect": 2337,
+    "totalReviews": 3066,
+    "totalCorrect": 2338,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -43511,7 +43519,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:42:03.659Z"
+    "updatedAt": "2026-11-06T23:42:17.366Z"
   },
   "settings": {
     "audioEnabled": true,
