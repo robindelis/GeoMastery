@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:33:56.354Z",
+  "exportedAt": "2026-11-06T23:34:18.965Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30885,13 +30885,13 @@
         "countryId": "LVA",
         "attributeId": "country",
         "stage": 2,
-        "step": 2,
-        "easeFactor": 2.4,
-        "intervalDays": 8,
-        "reps": 2,
+        "step": 3,
+        "easeFactor": 2.45,
+        "intervalDays": 27,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-29T23:25:26.337Z",
-        "nextDueAt": "2026-11-06T23:25:26.337Z",
+        "lastReviewedAt": "2026-11-06T23:34:15.622Z",
+        "nextDueAt": "2026-12-03T23:34:15.622Z",
         "history": [
           {
             "timestamp": "2026-10-24T16:23:16.510Z",
@@ -30916,10 +30916,18 @@
             "isCorrect": true,
             "timeSpentMs": 5823,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T23:34:15.622Z",
+            "inputMode": "typing",
+            "userAnswer": "latvia",
+            "isCorrect": true,
+            "timeSpentMs": 7528,
+            "grade": 3
           }
         ],
-        "difficulty": 5.22,
-        "stability": 8,
+        "difficulty": 4.88,
+        "stability": 27,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "EST"
@@ -43171,8 +43179,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3031,
-    "totalCorrect": 2307,
+    "totalReviews": 3032,
+    "totalCorrect": 2308,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -43210,7 +43218,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:33:52.603Z"
+    "updatedAt": "2026-11-06T23:34:15.652Z"
   },
   "settings": {
     "audioEnabled": true,
