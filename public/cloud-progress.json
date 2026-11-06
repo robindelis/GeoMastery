@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:57:20.396Z",
+  "exportedAt": "2026-11-06T22:57:24.642Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -41511,14 +41511,14 @@
         "id": "CAF:capital_to_country",
         "countryId": "CAF",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 2.4,
-        "intervalDays": 0,
-        "reps": 2,
-        "lapses": 1,
-        "lastReviewedAt": "2026-11-06T22:57:17.257Z",
-        "nextDueAt": "2026-11-06T23:07:17.257Z",
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.58,
+        "intervalDays": 15,
+        "reps": 3,
+        "lapses": 0,
+        "lastReviewedAt": "2026-11-06T22:57:21.399Z",
+        "nextDueAt": "2026-11-21T22:57:21.399Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:29:44.546Z",
@@ -41537,17 +41537,17 @@
             "grade": 3
           },
           {
-            "timestamp": "2026-11-06T22:57:17.257Z",
+            "timestamp": "2026-11-06T22:57:21.399Z",
             "inputMode": "typing",
-            "userAnswer": "african central repunlic",
-            "isCorrect": false,
+            "userAnswer": "Central African Republic",
+            "isCorrect": true,
             "timeSpentMs": 25382,
-            "grade": 1
+            "grade": 2
           }
         ],
-        "difficulty": 5.64,
-        "stability": 1.03,
-        "lastLatencyGrade": 1,
+        "difficulty": 4.76,
+        "stability": 15,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -42110,7 +42110,7 @@
   ],
   "stats": {
     "totalReviews": 2949,
-    "totalCorrect": 2245,
+    "totalCorrect": 2246,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -42148,7 +42148,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:57:17.294Z"
+    "updatedAt": "2026-11-06T22:57:21.422Z"
   },
   "settings": {
     "audioEnabled": true,
