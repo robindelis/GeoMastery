@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:08:27.066Z",
+  "exportedAt": "2026-11-06T23:08:55.837Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -42334,11 +42334,41 @@
           "DMA"
         ]
       }
+    ],
+    [
+      "TZA:flag",
+      {
+        "id": "TZA:flag",
+        "countryId": "TZA",
+        "attributeId": "flag",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-11-06T23:08:52.690Z",
+        "nextDueAt": "2026-11-06T23:23:52.690Z",
+        "history": [
+          {
+            "timestamp": "2026-11-06T23:08:52.690Z",
+            "inputMode": "typing",
+            "userAnswer": "tanzania",
+            "isCorrect": true,
+            "timeSpentMs": 28008,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2965,
-    "totalCorrect": 2257,
+    "totalReviews": 2966,
+    "totalCorrect": 2258,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -42376,7 +42406,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:08:23.792Z"
+    "updatedAt": "2026-11-06T23:08:52.713Z"
   },
   "settings": {
     "audioEnabled": true,
