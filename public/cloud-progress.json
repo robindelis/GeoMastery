@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:18:48.600Z",
+  "exportedAt": "2026-11-06T23:18:56.316Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -17553,13 +17553,13 @@
         "countryId": "TGO",
         "attributeId": "location",
         "stage": 2,
-        "step": 1,
-        "easeFactor": 2.48,
-        "intervalDays": 12,
-        "reps": 3,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 43,
+        "reps": 4,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-24T14:35:20.956Z",
-        "nextDueAt": "2026-11-05T14:35:20.956Z",
+        "lastReviewedAt": "2026-11-06T23:18:53.186Z",
+        "nextDueAt": "2026-12-19T23:18:53.186Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:25:28.564Z",
@@ -17590,12 +17590,20 @@
             "isCorrect": true,
             "timeSpentMs": 2229,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-11-06T23:18:53.186Z",
+            "inputMode": "map_click",
+            "userAnswer": "Togo",
+            "isCorrect": true,
+            "timeSpentMs": 3424,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 12.48,
-        "difficulty": 4.69,
-        "lastLatencyGrade": 4,
+        "stability": 43.49,
+        "difficulty": 4.39,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "GHA"
         ]
@@ -42612,8 +42620,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2985,
-    "totalCorrect": 2273,
+    "totalReviews": 2986,
+    "totalCorrect": 2274,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -42651,7 +42659,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:18:45.347Z"
+    "updatedAt": "2026-11-06T23:18:53.217Z"
   },
   "settings": {
     "audioEnabled": true,
