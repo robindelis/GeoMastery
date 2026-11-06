@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:54:52.087Z",
+  "exportedAt": "2026-11-06T22:55:06.715Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35488,14 +35488,14 @@
         "id": "KAZ:capital_to_country",
         "countryId": "KAZ",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.6,
-        "intervalDays": 5,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.58,
+        "intervalDays": 16,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:23:04.849Z",
-        "nextDueAt": "2026-11-04T14:23:04.849Z",
+        "lastReviewedAt": "2026-11-06T22:55:03.424Z",
+        "nextDueAt": "2026-11-22T22:55:03.424Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:31:36.110Z",
@@ -35512,11 +35512,19 @@
             "isCorrect": true,
             "timeSpentMs": 3582,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T22:55:03.424Z",
+            "inputMode": "typing",
+            "userAnswer": "kazakstan",
+            "isCorrect": true,
+            "timeSpentMs": 10536,
+            "grade": 2
           }
         ],
-        "difficulty": 4.14,
-        "stability": 4.89,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.76,
+        "stability": 16,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -42061,8 +42069,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2943,
-    "totalCorrect": 2241,
+    "totalReviews": 2944,
+    "totalCorrect": 2242,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -42100,7 +42108,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:54:48.836Z"
+    "updatedAt": "2026-11-06T22:55:03.469Z"
   },
   "settings": {
     "audioEnabled": true,
