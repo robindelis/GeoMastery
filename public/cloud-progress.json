@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:12:30.483Z",
+  "exportedAt": "2026-11-06T23:12:50.262Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -40291,14 +40291,14 @@
         "id": "CHE:country",
         "countryId": "CHE",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 10,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:03:47.824Z",
-        "nextDueAt": "2026-10-30T14:18:47.824Z",
+        "lastReviewedAt": "2026-11-06T23:12:46.874Z",
+        "nextDueAt": "2026-11-16T23:12:46.874Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:03:47.824Z",
@@ -40307,11 +40307,19 @@
             "isCorrect": true,
             "timeSpentMs": 5897,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T23:12:46.874Z",
+            "inputMode": "typing",
+            "userAnswer": "switzerland",
+            "isCorrect": true,
+            "timeSpentMs": 12292,
+            "grade": 2
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.1,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.97,
+        "stability": 10.03,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -42471,8 +42479,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2973,
-    "totalCorrect": 2263,
+    "totalReviews": 2974,
+    "totalCorrect": 2264,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -42510,7 +42518,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:12:27.050Z"
+    "updatedAt": "2026-11-06T23:12:46.892Z"
   },
   "settings": {
     "audioEnabled": true,
