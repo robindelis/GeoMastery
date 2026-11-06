@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:44:48.414Z",
+  "exportedAt": "2026-11-06T23:44:54.662Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -24404,13 +24404,13 @@
         "countryId": "BHS",
         "attributeId": "country",
         "stage": 2,
-        "step": 1,
-        "easeFactor": 2.18,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 2,
+        "easeFactor": 2.23,
+        "intervalDays": 22,
+        "reps": 4,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-30T14:28:05.275Z",
-        "nextDueAt": "2026-11-06T14:28:05.275Z",
+        "lastReviewedAt": "2026-11-06T23:44:51.505Z",
+        "nextDueAt": "2026-11-28T23:44:51.505Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:15:03.599Z",
@@ -24451,10 +24451,18 @@
             "isCorrect": true,
             "timeSpentMs": 5960,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T23:44:51.505Z",
+            "inputMode": "typing",
+            "userAnswer": "bahamas",
+            "isCorrect": true,
+            "timeSpentMs": 4958,
+            "grade": 3
           }
         ],
-        "difficulty": 6.26,
-        "stability": 7.17,
+        "difficulty": 5.84,
+        "stability": 22,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "FJI"
@@ -43576,8 +43584,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3078,
-    "totalCorrect": 2349,
+    "totalReviews": 3079,
+    "totalCorrect": 2350,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -43615,7 +43623,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:44:45.216Z"
+    "updatedAt": "2026-11-06T23:44:51.531Z"
   },
   "settings": {
     "audioEnabled": true,
