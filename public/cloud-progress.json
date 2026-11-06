@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:00:54.356Z",
+  "exportedAt": "2026-11-06T23:01:37.220Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -42258,10 +42258,42 @@
           "YEM"
         ]
       }
+    ],
+    [
+      "BHS:flag",
+      {
+        "id": "BHS:flag",
+        "countryId": "BHS",
+        "attributeId": "flag",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-11-06T23:01:33.674Z",
+        "nextDueAt": "2026-11-06T23:11:33.674Z",
+        "history": [
+          {
+            "timestamp": "2026-11-06T23:01:33.674Z",
+            "inputMode": "typing",
+            "userAnswer": "dominica",
+            "isCorrect": false,
+            "timeSpentMs": 41744,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "DMA"
+        ]
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2959,
+    "totalReviews": 2960,
     "totalCorrect": 2254,
     "currentStreak": 3,
     "longestStreak": 7,
@@ -42300,7 +42332,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:00:51.252Z"
+    "updatedAt": "2026-11-06T23:01:33.700Z"
   },
   "settings": {
     "audioEnabled": true,
