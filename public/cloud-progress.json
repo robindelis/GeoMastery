@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:20:59.279Z",
+  "exportedAt": "2026-11-06T23:21:07.385Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -42757,10 +42757,42 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "BGR:flag",
+      {
+        "id": "BGR:flag",
+        "countryId": "BGR",
+        "attributeId": "flag",
+        "stage": 0,
+        "step": 0,
+        "easeFactor": 2.3,
+        "intervalDays": 0,
+        "reps": 0,
+        "lapses": 1,
+        "lastReviewedAt": "2026-11-06T23:21:04.267Z",
+        "nextDueAt": "2026-11-06T23:31:04.267Z",
+        "history": [
+          {
+            "timestamp": "2026-11-06T23:21:04.267Z",
+            "inputMode": "typing",
+            "userAnswer": "hungary",
+            "isCorrect": false,
+            "timeSpentMs": 7297,
+            "grade": 1
+          }
+        ],
+        "difficulty": 5.99,
+        "stability": 0.6,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "HUN"
+        ]
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2992,
+    "totalReviews": 2993,
     "totalCorrect": 2278,
     "currentStreak": 3,
     "longestStreak": 7,
@@ -42799,7 +42831,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:20:56.147Z"
+    "updatedAt": "2026-11-06T23:21:04.294Z"
   },
   "settings": {
     "audioEnabled": true,
