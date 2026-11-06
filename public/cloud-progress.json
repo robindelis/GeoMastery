@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:41:30.897Z",
+  "exportedAt": "2026-11-06T23:41:42.168Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35449,14 +35449,14 @@
         "id": "KHM:flag",
         "countryId": "KHM",
         "attributeId": "flag",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 1.9,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 1.88,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 3,
-        "lastReviewedAt": "2026-11-06T23:21:10.414Z",
-        "nextDueAt": "2026-11-06T23:31:10.414Z",
+        "lastReviewedAt": "2026-11-06T23:41:39.052Z",
+        "nextDueAt": "2026-11-06T23:56:39.052Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:23:25.364Z",
@@ -35481,11 +35481,19 @@
             "isCorrect": false,
             "timeSpentMs": 3890,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-11-06T23:41:39.052Z",
+            "inputMode": "typing",
+            "userAnswer": "cambofia",
+            "isCorrect": true,
+            "timeSpentMs": 10543,
+            "grade": 2
           }
         ],
-        "difficulty": 7.29,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 7.19,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "LAO",
           "MMR"
@@ -43440,8 +43448,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3061,
-    "totalCorrect": 2333,
+    "totalReviews": 3062,
+    "totalCorrect": 2334,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -43479,7 +43487,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:41:27.778Z"
+    "updatedAt": "2026-11-06T23:41:39.091Z"
   },
   "settings": {
     "audioEnabled": true,
