@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:36:16.125Z",
+  "exportedAt": "2026-11-06T23:36:33.838Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13494,14 +13494,14 @@
         "id": "WATER_SEA_CORAL:location",
         "countryId": "WATER_SEA_CORAL",
         "attributeId": "location",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 2.4,
-        "intervalDays": 0,
-        "reps": 2,
+        "stage": 2,
+        "step": 1,
+        "easeFactor": 2.45,
+        "intervalDays": 17,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-27T12:26:20.466Z",
-        "nextDueAt": "2026-10-27T12:36:20.466Z",
+        "lastReviewedAt": "2026-11-06T23:36:30.574Z",
+        "nextDueAt": "2026-11-23T23:36:30.574Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:51:59.485Z",
@@ -13524,12 +13524,20 @@
             "isCorrect": false,
             "timeSpentMs": 3379,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-11-06T23:36:30.574Z",
+            "inputMode": "map_click",
+            "userAnswer": "Coral Sea",
+            "isCorrect": true,
+            "timeSpentMs": 3707,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 1.08,
-        "difficulty": 6.09,
-        "lastLatencyGrade": 1,
+        "stability": 17,
+        "difficulty": 5.68,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "WATER_SEA_TASMAN"
         ]
@@ -43262,8 +43270,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3042,
-    "totalCorrect": 2317,
+    "totalReviews": 3043,
+    "totalCorrect": 2318,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -43301,7 +43309,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:36:12.901Z"
+    "updatedAt": "2026-11-06T23:36:30.624Z"
   },
   "settings": {
     "audioEnabled": true,
