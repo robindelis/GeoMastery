@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:42:32.945Z",
+  "exportedAt": "2026-11-06T22:42:37.475Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -32983,14 +32983,14 @@
         "id": "PHL:country",
         "countryId": "PHL",
         "attributeId": "country",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 2.13,
-        "intervalDays": 0,
-        "reps": 2,
-        "lapses": 2,
-        "lastReviewedAt": "2026-11-06T22:42:29.317Z",
-        "nextDueAt": "2026-11-06T22:52:29.317Z",
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.31,
+        "intervalDays": 12,
+        "reps": 3,
+        "lapses": 1,
+        "lastReviewedAt": "2026-11-06T22:42:34.349Z",
+        "nextDueAt": "2026-11-18T22:42:34.349Z",
         "history": [
           {
             "timestamp": "2026-10-27T12:35:24.858Z",
@@ -33017,17 +33017,17 @@
             "grade": 2
           },
           {
-            "timestamp": "2026-11-06T22:42:29.317Z",
+            "timestamp": "2026-11-06T22:42:34.349Z",
             "inputMode": "typing",
-            "userAnswer": "philipinned",
-            "isCorrect": false,
+            "userAnswer": "Philippines",
+            "isCorrect": true,
             "timeSpentMs": 51222,
-            "grade": 1
+            "grade": 2
           }
         ],
-        "difficulty": 6.72,
-        "stability": 0.97,
-        "lastLatencyGrade": 1,
+        "difficulty": 6.1,
+        "stability": 12,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -41786,7 +41786,7 @@
   ],
   "stats": {
     "totalReviews": 2909,
-    "totalCorrect": 2210,
+    "totalCorrect": 2211,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -41824,7 +41824,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:42:29.343Z"
+    "updatedAt": "2026-11-06T22:42:34.370Z"
   },
   "settings": {
     "audioEnabled": true,
