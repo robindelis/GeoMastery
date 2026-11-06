@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:44:04.959Z",
+  "exportedAt": "2026-11-06T22:44:23.008Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -36358,14 +36358,14 @@
         "id": "KIR:capital_to_country",
         "countryId": "KIR",
         "attributeId": "capital_to_country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.63,
-        "intervalDays": 6,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.61,
+        "intervalDays": 17,
+        "reps": 3,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-30T14:06:23.201Z",
-        "nextDueAt": "2026-11-05T14:06:23.201Z",
+        "lastReviewedAt": "2026-11-06T22:44:19.639Z",
+        "nextDueAt": "2026-11-23T22:44:19.639Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:41:52.005Z",
@@ -36382,11 +36382,19 @@
             "isCorrect": true,
             "timeSpentMs": 4399,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T22:44:19.639Z",
+            "inputMode": "typing",
+            "userAnswer": "kiribati",
+            "isCorrect": true,
+            "timeSpentMs": 17248,
+            "grade": 2
           }
         ],
-        "difficulty": 3.41,
-        "stability": 5.7,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.2,
+        "stability": 17.46,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -41833,8 +41841,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2915,
-    "totalCorrect": 2217,
+    "totalReviews": 2916,
+    "totalCorrect": 2218,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -41872,7 +41880,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:44:01.653Z"
+    "updatedAt": "2026-11-06T22:44:19.677Z"
   },
   "settings": {
     "audioEnabled": true,
