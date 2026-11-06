@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:57:24.642Z",
+  "exportedAt": "2026-11-06T22:58:10.268Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26413,14 +26413,14 @@
         "id": "ZWE:country",
         "countryId": "ZWE",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.53,
+        "intervalDays": 16,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-22T10:02:39.404Z",
-        "nextDueAt": "2026-10-23T10:02:39.404Z",
+        "lastReviewedAt": "2026-11-06T22:58:07.004Z",
+        "nextDueAt": "2026-11-22T22:58:07.004Z",
         "history": [
           {
             "timestamp": "2026-10-22T10:02:39.404Z",
@@ -26429,11 +26429,19 @@
             "isCorrect": true,
             "timeSpentMs": 5122,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T22:58:07.004Z",
+            "inputMode": "typing",
+            "userAnswer": "zimbabwe",
+            "isCorrect": true,
+            "timeSpentMs": 19798,
+            "grade": 2
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.4,
-        "lastLatencyGrade": 3,
+        "difficulty": 4.97,
+        "stability": 16,
+        "lastLatencyGrade": 2,
         "confusedWith": []
       }
     ],
@@ -42109,8 +42117,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2949,
-    "totalCorrect": 2246,
+    "totalReviews": 2950,
+    "totalCorrect": 2247,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -42148,7 +42156,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:57:21.422Z"
+    "updatedAt": "2026-11-06T22:58:07.030Z"
   },
   "settings": {
     "audioEnabled": true,
