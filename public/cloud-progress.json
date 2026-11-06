@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:21:07.385Z",
+  "exportedAt": "2026-11-06T23:21:38.388Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35175,12 +35175,12 @@
         "attributeId": "flag",
         "stage": 0,
         "step": 0,
-        "easeFactor": 2.1,
+        "easeFactor": 1.9,
         "intervalDays": 0,
         "reps": 0,
-        "lapses": 2,
-        "lastReviewedAt": "2026-10-30T12:39:32.172Z",
-        "nextDueAt": "2026-10-30T12:49:32.172Z",
+        "lapses": 3,
+        "lastReviewedAt": "2026-11-06T23:21:10.414Z",
+        "nextDueAt": "2026-11-06T23:31:10.414Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:23:25.364Z",
@@ -35197,12 +35197,21 @@
             "isCorrect": false,
             "timeSpentMs": 2899,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-11-06T23:21:10.414Z",
+            "inputMode": "typing",
+            "userAnswer": "laos",
+            "isCorrect": false,
+            "timeSpentMs": 3890,
+            "grade": 1
           }
         ],
-        "difficulty": 6.79,
+        "difficulty": 7.29,
         "stability": 0.6,
         "lastLatencyGrade": 1,
         "confusedWith": [
+          "LAO",
           "MMR"
         ]
       }
@@ -40609,13 +40618,13 @@
         "countryId": "NIC",
         "attributeId": "country",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.08,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2.06,
+        "intervalDays": 5,
+        "reps": 2,
         "lapses": 2,
-        "lastReviewedAt": "2026-11-01T17:00:01.385Z",
-        "nextDueAt": "2026-11-01T17:10:01.385Z",
+        "lastReviewedAt": "2026-11-06T23:21:34.998Z",
+        "nextDueAt": "2026-11-11T23:21:34.998Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:06:32.245Z",
@@ -40640,11 +40649,19 @@
             "isCorrect": false,
             "timeSpentMs": 17743,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-11-06T23:21:34.998Z",
+            "inputMode": "typing",
+            "userAnswer": "nicaragua",
+            "isCorrect": true,
+            "timeSpentMs": 10383,
+            "grade": 2
           }
         ],
-        "difficulty": 6.91,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 6.9,
+        "stability": 4.85,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "CRI"
         ]
@@ -42792,8 +42809,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2993,
-    "totalCorrect": 2278,
+    "totalReviews": 2995,
+    "totalCorrect": 2279,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -42831,7 +42848,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:21:04.294Z"
+    "updatedAt": "2026-11-06T23:21:35.019Z"
   },
   "settings": {
     "audioEnabled": true,
