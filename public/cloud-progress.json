@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:39:02.897Z",
+  "exportedAt": "2026-11-06T23:39:07.342Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -42957,13 +42957,13 @@
         "countryId": "RUS",
         "attributeId": "flag",
         "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 0.0104,
-        "reps": 1,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 2,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-11-06T23:09:12.217Z",
-        "nextDueAt": "2026-11-06T23:24:12.217Z",
+        "lastReviewedAt": "2026-11-06T23:39:04.173Z",
+        "nextDueAt": "2026-11-08T23:39:04.173Z",
         "history": [
           {
             "timestamp": "2026-11-06T23:09:12.217Z",
@@ -42972,11 +42972,19 @@
             "isCorrect": true,
             "timeSpentMs": 2670,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-11-06T23:39:04.173Z",
+            "inputMode": "typing",
+            "userAnswer": "russia",
+            "isCorrect": true,
+            "timeSpentMs": 3280,
+            "grade": 3
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.4,
-        "lastLatencyGrade": 4,
+        "difficulty": 3.41,
+        "stability": 2.45,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -43334,8 +43342,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3048,
-    "totalCorrect": 2321,
+    "totalReviews": 3049,
+    "totalCorrect": 2322,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -43373,7 +43381,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:38:59.524Z"
+    "updatedAt": "2026-11-06T23:39:04.208Z"
   },
   "settings": {
     "audioEnabled": true,
