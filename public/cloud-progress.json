@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:08:55.837Z",
+  "exportedAt": "2026-11-06T23:09:11.026Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -42364,11 +42364,41 @@
         "lastLatencyGrade": 2,
         "confusedWith": []
       }
+    ],
+    [
+      "GEO:flag",
+      {
+        "id": "GEO:flag",
+        "countryId": "GEO",
+        "attributeId": "flag",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-11-06T23:09:07.876Z",
+        "nextDueAt": "2026-11-06T23:24:07.876Z",
+        "history": [
+          {
+            "timestamp": "2026-11-06T23:09:07.876Z",
+            "inputMode": "typing",
+            "userAnswer": "georgia",
+            "isCorrect": true,
+            "timeSpentMs": 9488,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2966,
-    "totalCorrect": 2258,
+    "totalReviews": 2967,
+    "totalCorrect": 2259,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -42406,7 +42436,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:08:52.713Z"
+    "updatedAt": "2026-11-06T23:09:07.917Z"
   },
   "settings": {
     "audioEnabled": true,
