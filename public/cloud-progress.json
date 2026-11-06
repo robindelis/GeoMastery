@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:23:33.398Z",
+  "exportedAt": "2026-11-06T23:23:56.347Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -35333,14 +35333,14 @@
         "id": "COG:flag",
         "countryId": "COG",
         "attributeId": "flag",
-        "stage": 0,
-        "step": 0,
-        "easeFactor": 1.9,
-        "intervalDays": 0,
-        "reps": 0,
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 1.88,
+        "intervalDays": 0.0104,
+        "reps": 1,
         "lapses": 3,
-        "lastReviewedAt": "2026-11-06T23:02:11.376Z",
-        "nextDueAt": "2026-11-06T23:12:11.376Z",
+        "lastReviewedAt": "2026-11-06T23:23:53.071Z",
+        "nextDueAt": "2026-11-06T23:38:53.071Z",
         "history": [
           {
             "timestamp": "2026-10-29T13:25:01.775Z",
@@ -35365,11 +35365,19 @@
             "isCorrect": false,
             "timeSpentMs": 30687,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-11-06T23:23:53.071Z",
+            "inputMode": "typing",
+            "userAnswer": "republic of congo",
+            "isCorrect": true,
+            "timeSpentMs": 21950,
+            "grade": 2
           }
         ],
-        "difficulty": 7.29,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 7.19,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "GIN"
         ]
@@ -42880,8 +42888,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3001,
-    "totalCorrect": 2284,
+    "totalReviews": 3002,
+    "totalCorrect": 2285,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -42919,7 +42927,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:23:30.276Z"
+    "updatedAt": "2026-11-06T23:23:53.101Z"
   },
   "settings": {
     "audioEnabled": true,
