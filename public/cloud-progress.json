@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:24:47.159Z",
+  "exportedAt": "2026-11-06T23:25:12.798Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -42901,11 +42901,41 @@
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
+    ],
+    [
+      "TUR:flag",
+      {
+        "id": "TUR:flag",
+        "countryId": "TUR",
+        "attributeId": "flag",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-11-06T23:25:09.598Z",
+        "nextDueAt": "2026-11-06T23:40:09.598Z",
+        "history": [
+          {
+            "timestamp": "2026-11-06T23:25:09.598Z",
+            "inputMode": "typing",
+            "userAnswer": "turkey",
+            "isCorrect": true,
+            "timeSpentMs": 11770,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 3004,
-    "totalCorrect": 2287,
+    "totalReviews": 3005,
+    "totalCorrect": 2288,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -42943,7 +42973,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:24:43.996Z"
+    "updatedAt": "2026-11-06T23:25:09.632Z"
   },
   "settings": {
     "audioEnabled": true,
