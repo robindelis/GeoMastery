@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:58:49.370Z",
+  "exportedAt": "2026-11-06T22:59:12.936Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -42140,11 +42140,41 @@
           "IRN"
         ]
       }
+    ],
+    [
+      "TWN:flag",
+      {
+        "id": "TWN:flag",
+        "countryId": "TWN",
+        "attributeId": "flag",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.48,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-11-06T22:59:09.639Z",
+        "nextDueAt": "2026-11-06T23:14:09.639Z",
+        "history": [
+          {
+            "timestamp": "2026-11-06T22:59:09.639Z",
+            "inputMode": "typing",
+            "userAnswer": "taiwan",
+            "isCorrect": true,
+            "timeSpentMs": 19753,
+            "grade": 2
+          }
+        ],
+        "difficulty": 5.2,
+        "stability": 0.85,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2953,
-    "totalCorrect": 2250,
+    "totalReviews": 2954,
+    "totalCorrect": 2251,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -42182,7 +42212,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:58:46.221Z"
+    "updatedAt": "2026-11-06T22:59:09.681Z"
   },
   "settings": {
     "audioEnabled": true,
