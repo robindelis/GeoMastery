@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:32:47.614Z",
+  "exportedAt": "2026-11-06T22:33:23.024Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -19333,14 +19333,14 @@
         "id": "KEN:capital",
         "countryId": "KEN",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 1.93,
-        "intervalDays": 5,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 1.91,
+        "intervalDays": 10,
+        "reps": 3,
         "lapses": 3,
-        "lastReviewedAt": "2026-11-01T17:00:27.058Z",
-        "nextDueAt": "2026-11-06T17:00:27.058Z",
+        "lastReviewedAt": "2026-11-06T22:33:19.575Z",
+        "nextDueAt": "2026-11-16T22:33:19.575Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:35:23.363Z",
@@ -19379,11 +19379,19 @@
             "isCorrect": true,
             "timeSpentMs": 12512,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-06T22:33:19.575Z",
+            "inputMode": "typing",
+            "userAnswer": "nairobi",
+            "isCorrect": true,
+            "timeSpentMs": 28137,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 0,
-        "stability": 5.32,
-        "difficulty": 7.31,
+        "stability": 10.19,
+        "difficulty": 7.21,
         "lastLatencyGrade": 2,
         "confusedWith": [
           "EGY"
@@ -41609,16 +41617,16 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2887,
-    "totalCorrect": 2189,
+    "totalReviews": 2888,
+    "totalCorrect": 2190,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 95,
-        "learning": 13
+        "mastered": 96,
+        "learning": 12
       },
       "Americas": {
         "total": 70,
@@ -41648,7 +41656,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:32:43.717Z"
+    "updatedAt": "2026-11-06T22:33:19.602Z"
   },
   "settings": {
     "audioEnabled": true,
