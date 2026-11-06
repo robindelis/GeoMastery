@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:42:47.047Z",
+  "exportedAt": "2026-11-06T23:42:52.310Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -42895,13 +42895,13 @@
         "countryId": "TWN",
         "attributeId": "flag",
         "stage": 1,
-        "step": 0,
-        "easeFactor": 2.28,
-        "intervalDays": 0,
-        "reps": 1,
+        "step": 1,
+        "easeFactor": 2.33,
+        "intervalDays": 2,
+        "reps": 2,
         "lapses": 1,
-        "lastReviewedAt": "2026-11-06T23:28:13.399Z",
-        "nextDueAt": "2026-11-06T23:38:13.399Z",
+        "lastReviewedAt": "2026-11-06T23:42:49.108Z",
+        "nextDueAt": "2026-11-08T23:42:49.108Z",
         "history": [
           {
             "timestamp": "2026-11-06T22:59:09.639Z",
@@ -42918,11 +42918,19 @@
             "isCorrect": false,
             "timeSpentMs": 11636,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-11-06T23:42:49.108Z",
+            "inputMode": "typing",
+            "userAnswer": "taiwan",
+            "isCorrect": true,
+            "timeSpentMs": 4874,
+            "grade": 3
           }
         ],
-        "difficulty": 6.3,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 5.88,
+        "stability": 2.45,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -43512,8 +43520,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3070,
-    "totalCorrect": 2342,
+    "totalReviews": 3071,
+    "totalCorrect": 2343,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -43551,7 +43559,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:42:43.702Z"
+    "updatedAt": "2026-11-06T23:42:49.150Z"
   },
   "settings": {
     "audioEnabled": true,
