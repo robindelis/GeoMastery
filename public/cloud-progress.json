@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:56:49.824Z",
+  "exportedAt": "2026-11-06T22:57:20.396Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -41512,13 +41512,13 @@
         "countryId": "CAF",
         "attributeId": "capital_to_country",
         "stage": 1,
-        "step": 2,
-        "easeFactor": 2.6,
-        "intervalDays": 6,
+        "step": 0,
+        "easeFactor": 2.4,
+        "intervalDays": 0,
         "reps": 2,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-31T21:10:01.898Z",
-        "nextDueAt": "2026-11-06T21:10:01.898Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-11-06T22:57:17.257Z",
+        "nextDueAt": "2026-11-06T23:07:17.257Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:29:44.546Z",
@@ -41535,11 +41535,19 @@
             "isCorrect": true,
             "timeSpentMs": 5570,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T22:57:17.257Z",
+            "inputMode": "typing",
+            "userAnswer": "african central repunlic",
+            "isCorrect": false,
+            "timeSpentMs": 25382,
+            "grade": 1
           }
         ],
-        "difficulty": 4.14,
-        "stability": 5.67,
-        "lastLatencyGrade": 3,
+        "difficulty": 5.64,
+        "stability": 1.03,
+        "lastLatencyGrade": 1,
         "confusedWith": []
       }
     ],
@@ -42101,7 +42109,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2948,
+    "totalReviews": 2949,
     "totalCorrect": 2245,
     "currentStreak": 2,
     "longestStreak": 7,
@@ -42140,7 +42148,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:56:46.630Z"
+    "updatedAt": "2026-11-06T22:57:17.294Z"
   },
   "settings": {
     "audioEnabled": true,
