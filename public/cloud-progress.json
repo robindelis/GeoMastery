@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:48:54.526Z",
+  "exportedAt": "2026-11-06T22:49:07.601Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8720,14 +8720,14 @@
         "id": "FSM:location",
         "countryId": "FSM",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.18,
-        "intervalDays": 6,
-        "reps": 3,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.16,
+        "intervalDays": 14,
+        "reps": 4,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-29T23:25:59.399Z",
-        "nextDueAt": "2026-11-04T23:25:59.399Z",
+        "lastReviewedAt": "2026-11-06T22:49:04.312Z",
+        "nextDueAt": "2026-11-20T22:49:04.312Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:55:52.962Z",
@@ -8766,11 +8766,19 @@
             "isCorrect": true,
             "timeSpentMs": 10038,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-06T22:49:04.312Z",
+            "inputMode": "map_click",
+            "userAnswer": "Micronesia",
+            "isCorrect": true,
+            "timeSpentMs": 9599,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 5.6,
-        "difficulty": 6.67,
+        "stability": 14,
+        "difficulty": 6.71,
         "lastLatencyGrade": 2,
         "confusedWith": [
           "PLW",
@@ -41955,8 +41963,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2930,
-    "totalCorrect": 2231,
+    "totalReviews": 2931,
+    "totalCorrect": 2232,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -41983,8 +41991,8 @@
       },
       "Oceania": {
         "total": 28,
-        "mastered": 24,
-        "learning": 4
+        "mastered": 25,
+        "learning": 3
       }
     },
     "timeAttackRecords": {
@@ -41994,7 +42002,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:48:51.382Z"
+    "updatedAt": "2026-11-06T22:49:04.364Z"
   },
   "settings": {
     "audioEnabled": true,
