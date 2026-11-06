@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:41:53.030Z",
+  "exportedAt": "2026-11-06T23:41:58.123Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -6100,13 +6100,13 @@
         "countryId": "MMR",
         "attributeId": "location",
         "stage": 2,
-        "step": 1,
-        "easeFactor": 2.05,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 2,
+        "easeFactor": 2.1,
+        "intervalDays": 29,
+        "reps": 4,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-24T14:24:57.103Z",
-        "nextDueAt": "2026-10-31T14:24:57.103Z",
+        "lastReviewedAt": "2026-11-06T23:41:54.985Z",
+        "nextDueAt": "2026-12-05T23:41:54.985Z",
         "history": [
           {
             "timestamp": "2026-10-04T18:42:29.244Z",
@@ -6151,11 +6151,19 @@
             "isCorrect": true,
             "timeSpentMs": 5585,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T23:41:54.985Z",
+            "inputMode": "map_click",
+            "userAnswer": "Myanmar",
+            "isCorrect": true,
+            "timeSpentMs": 3536,
+            "grade": 3
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 7,
-        "difficulty": 6.86,
+        "stability": 29,
+        "difficulty": 6.39,
         "lastLatencyGrade": 3,
         "confusedWith": [
           "VNM"
@@ -43456,8 +43464,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3063,
-    "totalCorrect": 2335,
+    "totalReviews": 3064,
+    "totalCorrect": 2336,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -43495,7 +43503,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:41:49.925Z"
+    "updatedAt": "2026-11-06T23:41:55.021Z"
   },
   "settings": {
     "audioEnabled": true,
