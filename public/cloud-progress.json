@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:35:37.793Z",
+  "exportedAt": "2026-11-06T23:35:44.451Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -25526,14 +25526,14 @@
         "id": "PAK:flag",
         "countryId": "PAK",
         "attributeId": "flag",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.58,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.63,
+        "intervalDays": 36,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-21T12:20:44.293Z",
-        "nextDueAt": "2026-10-22T12:20:44.293Z",
+        "lastReviewedAt": "2026-11-06T23:35:41.305Z",
+        "nextDueAt": "2026-12-12T23:35:41.305Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:20:44.293Z",
@@ -25542,11 +25542,19 @@
             "isCorrect": true,
             "timeSpentMs": 1973,
             "grade": 4
+          },
+          {
+            "timestamp": "2026-11-06T23:35:41.305Z",
+            "inputMode": "typing",
+            "userAnswer": "Pakistan",
+            "isCorrect": true,
+            "timeSpentMs": 4334,
+            "grade": 3
           }
         ],
-        "difficulty": 3.62,
-        "stability": 1.9,
-        "lastLatencyGrade": 4,
+        "difficulty": 3.41,
+        "stability": 36,
+        "lastLatencyGrade": 3,
         "confusedWith": []
       }
     ],
@@ -43220,8 +43228,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3037,
-    "totalCorrect": 2312,
+    "totalReviews": 3038,
+    "totalCorrect": 2313,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -43259,7 +43267,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:35:34.687Z"
+    "updatedAt": "2026-11-06T23:35:41.333Z"
   },
   "settings": {
     "audioEnabled": true,
