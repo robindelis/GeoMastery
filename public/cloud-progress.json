@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:56:30.367Z",
+  "exportedAt": "2026-11-06T22:56:49.824Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -8144,14 +8144,14 @@
         "id": "TON:capital",
         "countryId": "TON",
         "attributeId": "capital",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 1.55,
-        "intervalDays": 4,
-        "reps": 5,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 1.53,
+        "intervalDays": 12,
+        "reps": 6,
         "lapses": 6,
-        "lastReviewedAt": "2026-10-29T13:28:06.415Z",
-        "nextDueAt": "2026-11-02T13:28:06.415Z",
+        "lastReviewedAt": "2026-11-06T22:56:46.595Z",
+        "nextDueAt": "2026-11-18T22:56:46.595Z",
         "history": [
           {
             "timestamp": "2026-10-04T19:27:15.359Z",
@@ -8235,12 +8235,20 @@
             "isCorrect": true,
             "timeSpentMs": 4262,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T22:56:46.595Z",
+            "inputMode": "typing",
+            "userAnswer": "nukualofa",
+            "isCorrect": true,
+            "timeSpentMs": 13547,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 4.26,
-        "difficulty": 7.15,
-        "lastLatencyGrade": 3,
+        "stability": 12,
+        "difficulty": 7.08,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "FJI"
         ]
@@ -42093,8 +42101,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2947,
-    "totalCorrect": 2244,
+    "totalReviews": 2948,
+    "totalCorrect": 2245,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -42121,8 +42129,8 @@
       },
       "Oceania": {
         "total": 28,
-        "mastered": 25,
-        "learning": 3
+        "mastered": 26,
+        "learning": 2
       }
     },
     "timeAttackRecords": {
@@ -42132,7 +42140,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:56:27.259Z"
+    "updatedAt": "2026-11-06T22:56:46.630Z"
   },
   "settings": {
     "audioEnabled": true,
