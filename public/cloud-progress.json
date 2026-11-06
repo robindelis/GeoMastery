@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:59:24.140Z",
+  "exportedAt": "2026-11-06T22:59:47.022Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -14119,13 +14119,13 @@
         "countryId": "WATER_GULF_ADEN",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.4499999999999993,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.43,
+        "intervalDays": 27,
+        "reps": 4,
         "lapses": 1,
-        "lastReviewedAt": "2026-10-15T16:28:18.251Z",
-        "nextDueAt": "2026-10-22T16:28:18.251Z",
+        "lastReviewedAt": "2026-11-06T22:59:43.902Z",
+        "nextDueAt": "2026-12-03T22:59:43.902Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:24:19.489Z",
@@ -14154,11 +14154,21 @@
             "userAnswer": "Gulf of Aden",
             "isCorrect": true,
             "timeSpentMs": 13206
+          },
+          {
+            "timestamp": "2026-11-06T22:59:43.902Z",
+            "inputMode": "map_click",
+            "userAnswer": "Gulf of Aden",
+            "isCorrect": true,
+            "timeSpentMs": 20856,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 5.98
+        "stability": 27.39,
+        "difficulty": 6.18,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
       }
     ],
     [
@@ -42203,8 +42213,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2955,
-    "totalCorrect": 2252,
+    "totalReviews": 2956,
+    "totalCorrect": 2253,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -42242,7 +42252,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:59:20.982Z"
+    "updatedAt": "2026-11-06T22:59:43.927Z"
   },
   "settings": {
     "audioEnabled": true,
