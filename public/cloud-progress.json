@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:19:27.101Z",
+  "exportedAt": "2026-11-06T23:19:34.982Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -42649,11 +42649,41 @@
           "SRB"
         ]
       }
+    ],
+    [
+      "UKR:flag",
+      {
+        "id": "UKR:flag",
+        "countryId": "UKR",
+        "attributeId": "flag",
+        "stage": 1,
+        "step": 1,
+        "easeFactor": 2.55,
+        "intervalDays": 0.0104,
+        "reps": 1,
+        "lapses": 0,
+        "lastReviewedAt": "2026-11-06T23:19:31.776Z",
+        "nextDueAt": "2026-11-06T23:34:31.776Z",
+        "history": [
+          {
+            "timestamp": "2026-11-06T23:19:31.776Z",
+            "inputMode": "typing",
+            "userAnswer": "ukraine",
+            "isCorrect": true,
+            "timeSpentMs": 4821,
+            "grade": 3
+          }
+        ],
+        "difficulty": 4.41,
+        "stability": 1.1,
+        "lastLatencyGrade": 3,
+        "confusedWith": []
+      }
     ]
   ],
   "stats": {
-    "totalReviews": 2987,
-    "totalCorrect": 2274,
+    "totalReviews": 2988,
+    "totalCorrect": 2275,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -42691,7 +42721,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:19:23.901Z"
+    "updatedAt": "2026-11-06T23:19:31.822Z"
   },
   "settings": {
     "audioEnabled": true,
