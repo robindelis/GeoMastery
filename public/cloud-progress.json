@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:20:43.625Z",
+  "exportedAt": "2026-11-06T22:20:58.056Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -30480,14 +30480,14 @@
         "id": "TUV:country",
         "countryId": "TUV",
         "attributeId": "country",
-        "stage": 1,
-        "step": 2,
-        "easeFactor": 2.13,
-        "intervalDays": 5,
-        "reps": 2,
+        "stage": 2,
+        "step": 3,
+        "easeFactor": 2.11,
+        "intervalDays": 14,
+        "reps": 3,
         "lapses": 2,
-        "lastReviewedAt": "2026-10-29T13:22:17.457Z",
-        "nextDueAt": "2026-11-03T13:22:17.457Z",
+        "lastReviewedAt": "2026-11-06T22:20:54.854Z",
+        "nextDueAt": "2026-11-20T22:20:54.854Z",
         "history": [
           {
             "timestamp": "2026-10-25T13:46:35.376Z",
@@ -30520,11 +30520,19 @@
             "isCorrect": true,
             "timeSpentMs": 5974,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T22:20:54.854Z",
+            "inputMode": "typing",
+            "userAnswer": "tuvalu",
+            "isCorrect": true,
+            "timeSpentMs": 10334,
+            "grade": 2
           }
         ],
-        "difficulty": 6.35,
-        "stability": 5.38,
-        "lastLatencyGrade": 3,
+        "difficulty": 6.47,
+        "stability": 14.13,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "NRU"
         ]
@@ -41455,8 +41463,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2871,
-    "totalCorrect": 2177,
+    "totalReviews": 2872,
+    "totalCorrect": 2178,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -41494,7 +41502,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:20:40.496Z"
+    "updatedAt": "2026-11-06T22:20:54.885Z"
   },
   "settings": {
     "audioEnabled": true,
