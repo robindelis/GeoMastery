@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:39:42.310Z",
+  "exportedAt": "2026-11-06T22:39:57.878Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13887,12 +13887,12 @@
         "attributeId": "location",
         "stage": 1,
         "step": 0,
-        "easeFactor": 2,
+        "easeFactor": 1.8,
         "intervalDays": 0,
         "reps": 2,
-        "lapses": 3,
-        "lastReviewedAt": "2026-11-01T17:09:02.655Z",
-        "nextDueAt": "2026-11-01T17:19:02.655Z",
+        "lapses": 4,
+        "lastReviewedAt": "2026-11-06T22:39:54.264Z",
+        "nextDueAt": "2026-11-06T22:49:54.264Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:17:35.638Z",
@@ -13929,13 +13929,22 @@
             "isCorrect": false,
             "timeSpentMs": 7415,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-11-06T22:39:54.264Z",
+            "inputMode": "map_click",
+            "userAnswer": "Black Sea",
+            "isCorrect": false,
+            "timeSpentMs": 14161,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 0,
         "stability": 0.6,
-        "difficulty": 7.75,
+        "difficulty": 7.88,
         "lastLatencyGrade": 1,
         "confusedWith": [
+          "WATER_SEA_BLACK",
           "WATER_STRAIT_DARDANELLES"
         ]
       }
@@ -41737,7 +41746,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2903,
+    "totalReviews": 2904,
     "totalCorrect": 2205,
     "currentStreak": 2,
     "longestStreak": 7,
@@ -41776,7 +41785,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:39:39.155Z"
+    "updatedAt": "2026-11-06T22:39:54.301Z"
   },
   "settings": {
     "audioEnabled": true,
