@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:46:46.622Z",
+  "exportedAt": "2026-11-06T22:47:09.670Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -27455,14 +27455,14 @@
         "id": "GTM:country",
         "countryId": "GTM",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.33,
-        "intervalDays": 4,
-        "reps": 2,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.31,
+        "intervalDays": 10,
+        "reps": 3,
         "lapses": 1,
-        "lastReviewedAt": "2026-11-01T17:12:19.759Z",
-        "nextDueAt": "2026-11-05T17:12:19.759Z",
+        "lastReviewedAt": "2026-11-06T22:47:06.462Z",
+        "nextDueAt": "2026-11-16T22:47:06.462Z",
         "history": [
           {
             "timestamp": "2026-10-23T11:41:06.792Z",
@@ -27487,10 +27487,18 @@
             "isCorrect": true,
             "timeSpentMs": 31469,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-06T22:47:06.462Z",
+            "inputMode": "typing",
+            "userAnswer": "guatemala",
+            "isCorrect": true,
+            "timeSpentMs": 22333,
+            "grade": 2
           }
         ],
-        "difficulty": 6.05,
-        "stability": 3.51,
+        "difficulty": 6.24,
+        "stability": 10,
         "lastLatencyGrade": 2,
         "confusedWith": [
           "HND"
@@ -41889,8 +41897,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2922,
-    "totalCorrect": 2223,
+    "totalReviews": 2923,
+    "totalCorrect": 2224,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -41928,7 +41936,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:46:43.401Z"
+    "updatedAt": "2026-11-06T22:47:06.494Z"
   },
   "settings": {
     "audioEnabled": true,
