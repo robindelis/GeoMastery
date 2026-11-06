@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:35:11.113Z",
+  "exportedAt": "2026-11-06T22:35:23.287Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -26027,14 +26027,14 @@
         "id": "AND:country",
         "countryId": "AND",
         "attributeId": "country",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 2.55,
-        "intervalDays": 1,
-        "reps": 1,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 2.6,
+        "intervalDays": 28,
+        "reps": 2,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-22T10:00:08.613Z",
-        "nextDueAt": "2026-10-23T10:00:08.613Z",
+        "lastReviewedAt": "2026-11-06T22:35:20.198Z",
+        "nextDueAt": "2026-12-04T22:35:20.198Z",
         "history": [
           {
             "timestamp": "2026-10-22T10:00:08.613Z",
@@ -26043,10 +26043,18 @@
             "isCorrect": true,
             "timeSpentMs": 4235,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T22:35:20.198Z",
+            "inputMode": "typing",
+            "userAnswer": "andorra",
+            "isCorrect": true,
+            "timeSpentMs": 7296,
+            "grade": 3
           }
         ],
-        "difficulty": 4.41,
-        "stability": 1.4,
+        "difficulty": 4.14,
+        "stability": 28.4,
         "lastLatencyGrade": 3,
         "confusedWith": []
       }
@@ -41665,8 +41673,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2894,
-    "totalCorrect": 2196,
+    "totalReviews": 2895,
+    "totalCorrect": 2197,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -41704,7 +41712,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:35:07.829Z"
+    "updatedAt": "2026-11-06T22:35:20.218Z"
   },
   "settings": {
     "audioEnabled": true,
