@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:41:58.123Z",
+  "exportedAt": "2026-11-06T23:42:06.865Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13576,13 +13576,13 @@
         "countryId": "WATER_SEA_RED",
         "attributeId": "location",
         "stage": 2,
-        "step": 1,
-        "easeFactor": 2.1,
-        "intervalDays": 8,
-        "reps": 4,
+        "step": 2,
+        "easeFactor": 2.08,
+        "intervalDays": 16,
+        "reps": 5,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-29T13:28:18.611Z",
-        "nextDueAt": "2026-11-06T13:28:18.611Z",
+        "lastReviewedAt": "2026-11-06T23:42:03.624Z",
+        "nextDueAt": "2026-11-22T23:42:03.624Z",
         "history": [
           {
             "timestamp": "2026-10-05T10:53:00.335Z",
@@ -13634,12 +13634,20 @@
             "isCorrect": true,
             "timeSpentMs": 2758,
             "grade": 3
+          },
+          {
+            "timestamp": "2026-11-06T23:42:03.624Z",
+            "inputMode": "map_click",
+            "userAnswer": "Red Sea",
+            "isCorrect": true,
+            "timeSpentMs": 7935,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 8.29,
-        "difficulty": 7.08,
-        "lastLatencyGrade": 3,
+        "stability": 16,
+        "difficulty": 7.03,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "WATER_SEA_CASPIAN"
         ]
@@ -43464,8 +43472,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3064,
-    "totalCorrect": 2336,
+    "totalReviews": 3065,
+    "totalCorrect": 2337,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -43503,7 +43511,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:41:55.021Z"
+    "updatedAt": "2026-11-06T23:42:03.659Z"
   },
   "settings": {
     "audioEnabled": true,
