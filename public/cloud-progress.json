@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:09:15.322Z",
+  "exportedAt": "2026-11-06T23:10:28.016Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -13879,14 +13879,14 @@
         "id": "WATER_STRAIT_MALACCA:location",
         "countryId": "WATER_STRAIT_MALACCA",
         "attributeId": "location",
-        "stage": 1,
-        "step": 1,
-        "easeFactor": 1.78,
-        "intervalDays": 5,
-        "reps": 3,
+        "stage": 2,
+        "step": 2,
+        "easeFactor": 1.76,
+        "intervalDays": 11,
+        "reps": 4,
         "lapses": 4,
-        "lastReviewedAt": "2026-10-29T23:28:05.969Z",
-        "nextDueAt": "2026-11-03T23:28:05.969Z",
+        "lastReviewedAt": "2026-11-06T23:10:24.610Z",
+        "nextDueAt": "2026-11-17T23:10:24.610Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:17:12.671Z",
@@ -13938,11 +13938,19 @@
             "isCorrect": true,
             "timeSpentMs": 14773,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-06T23:10:24.610Z",
+            "inputMode": "map_click",
+            "userAnswer": "Strait of Malacca",
+            "isCorrect": true,
+            "timeSpentMs": 45561,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 4.74,
-        "difficulty": 8.18,
+        "stability": 11,
+        "difficulty": 7.88,
         "lastLatencyGrade": 2,
         "confusedWith": [
           "MEX"
@@ -25865,14 +25873,14 @@
         "id": "LBY:flag",
         "countryId": "LBY",
         "attributeId": "flag",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 1.98,
-        "intervalDays": 0,
-        "reps": 1,
+        "stage": 2,
+        "step": 1,
+        "easeFactor": 1.96,
+        "intervalDays": 7,
+        "reps": 2,
         "lapses": 3,
-        "lastReviewedAt": "2026-10-27T12:46:05.376Z",
-        "nextDueAt": "2026-10-27T12:56:05.376Z",
+        "lastReviewedAt": "2026-11-06T23:09:38.208Z",
+        "nextDueAt": "2026-11-13T23:09:38.208Z",
         "history": [
           {
             "timestamp": "2026-10-21T12:22:05.732Z",
@@ -25905,11 +25913,19 @@
             "isCorrect": false,
             "timeSpentMs": 10534,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-11-06T23:09:38.208Z",
+            "inputMode": "typing",
+            "userAnswer": "Libya",
+            "isCorrect": true,
+            "timeSpentMs": 11175,
+            "grade": 2
           }
         ],
-        "difficulty": 6.7,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 6.74,
+        "stability": 7,
+        "lastLatencyGrade": 2,
         "confusedWith": [
           "TUN"
         ]
@@ -42427,8 +42443,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2968,
-    "totalCorrect": 2260,
+    "totalReviews": 2970,
+    "totalCorrect": 2262,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -42466,7 +42482,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:09:12.245Z"
+    "updatedAt": "2026-11-06T23:10:24.653Z"
   },
   "settings": {
     "audioEnabled": true,
