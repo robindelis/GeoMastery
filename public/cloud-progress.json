@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:29:25.498Z",
+  "exportedAt": "2026-11-06T23:29:38.480Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -16867,14 +16867,14 @@
         "id": "COD:location",
         "countryId": "COD",
         "attributeId": "location",
-        "stage": 2,
-        "step": 3,
-        "easeFactor": 2.58,
-        "intervalDays": 15,
+        "stage": 1,
+        "step": 0,
+        "easeFactor": 2.38,
+        "intervalDays": 0,
         "reps": 3,
-        "lapses": 0,
-        "lastReviewedAt": "2026-10-17T14:00:56.243Z",
-        "nextDueAt": "2026-11-01T14:00:56.243Z",
+        "lapses": 1,
+        "lastReviewedAt": "2026-11-06T23:29:35.340Z",
+        "nextDueAt": "2026-11-06T23:39:35.340Z",
         "history": [
           {
             "timestamp": "2026-10-06T12:20:12.072Z",
@@ -16897,13 +16897,23 @@
             "isCorrect": true,
             "timeSpentMs": 12875,
             "grade": 2
+          },
+          {
+            "timestamp": "2026-11-06T23:29:35.340Z",
+            "inputMode": "map_click",
+            "userAnswer": "Republic of the Congo",
+            "isCorrect": false,
+            "timeSpentMs": 7696,
+            "grade": 1
           }
         ],
         "consecutiveRecallCorrect": 1,
-        "stability": 15,
-        "difficulty": 4.86,
-        "lastLatencyGrade": 2,
-        "confusedWith": []
+        "stability": 1.76,
+        "difficulty": 6.09,
+        "lastLatencyGrade": 1,
+        "confusedWith": [
+          "COG"
+        ]
       }
     ],
     [
@@ -43056,7 +43066,7 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3017,
+    "totalReviews": 3018,
     "totalCorrect": 2296,
     "currentStreak": 3,
     "longestStreak": 7,
@@ -43064,8 +43074,8 @@
     "continentMastery": {
       "Africa": {
         "total": 108,
-        "mastered": 103,
-        "learning": 5
+        "mastered": 102,
+        "learning": 6
       },
       "Americas": {
         "total": 70,
@@ -43095,7 +43105,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:29:22.315Z"
+    "updatedAt": "2026-11-06T23:29:35.386Z"
   },
   "settings": {
     "audioEnabled": true,
