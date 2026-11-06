@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T23:40:29.406Z",
+  "exportedAt": "2026-11-06T23:40:35.325Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -40653,14 +40653,14 @@
         "id": "SUR:country",
         "countryId": "SUR",
         "attributeId": "country",
-        "stage": 1,
-        "step": 0,
-        "easeFactor": 2.15,
-        "intervalDays": 0,
-        "reps": 1,
+        "stage": 2,
+        "step": 1,
+        "easeFactor": 2.2,
+        "intervalDays": 9,
+        "reps": 2,
         "lapses": 2,
-        "lastReviewedAt": "2026-11-01T17:04:52.632Z",
-        "nextDueAt": "2026-11-01T17:14:52.632Z",
+        "lastReviewedAt": "2026-11-06T23:40:32.100Z",
+        "nextDueAt": "2026-11-15T23:40:32.100Z",
         "history": [
           {
             "timestamp": "2026-10-30T14:02:31.002Z",
@@ -40685,11 +40685,19 @@
             "isCorrect": false,
             "timeSpentMs": 4778,
             "grade": 1
+          },
+          {
+            "timestamp": "2026-11-06T23:40:32.100Z",
+            "inputMode": "typing",
+            "userAnswer": "surinam3",
+            "isCorrect": true,
+            "timeSpentMs": 5228,
+            "grade": 3
           }
         ],
-        "difficulty": 6.54,
-        "stability": 0.6,
-        "lastLatencyGrade": 1,
+        "difficulty": 6.1,
+        "stability": 9.06,
+        "lastLatencyGrade": 3,
         "confusedWith": [
           "GUY"
         ]
@@ -43392,8 +43400,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 3055,
-    "totalCorrect": 2328,
+    "totalReviews": 3056,
+    "totalCorrect": 2329,
     "currentStreak": 3,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-07",
@@ -43431,7 +43439,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T23:40:26.288Z"
+    "updatedAt": "2026-11-06T23:40:32.123Z"
   },
   "settings": {
     "audioEnabled": true,
