@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-06T22:48:22.987Z",
+  "exportedAt": "2026-11-06T22:48:33.867Z",
   "srsItems": [
     [
       "LIE:capital",
@@ -14274,13 +14274,13 @@
         "countryId": "WATER_OCEAN_ARCTIC",
         "attributeId": "location",
         "stage": 2,
-        "step": 3,
-        "easeFactor": 2.6499999999999995,
-        "intervalDays": 7,
-        "reps": 3,
+        "step": 4,
+        "easeFactor": 2.63,
+        "intervalDays": 39,
+        "reps": 4,
         "lapses": 0,
-        "lastReviewedAt": "2026-10-08T20:18:59.604Z",
-        "nextDueAt": "2026-10-15T20:18:59.604Z",
+        "lastReviewedAt": "2026-11-06T22:48:30.655Z",
+        "nextDueAt": "2026-12-15T22:48:30.655Z",
         "history": [
           {
             "timestamp": "2026-10-05T11:25:09.189Z",
@@ -14302,11 +14302,21 @@
             "userAnswer": "Arctic Ocean",
             "isCorrect": true,
             "timeSpentMs": 4032
+          },
+          {
+            "timestamp": "2026-11-06T22:48:30.655Z",
+            "inputMode": "map_click",
+            "userAnswer": "Arctic Ocean",
+            "isCorrect": true,
+            "timeSpentMs": 8065,
+            "grade": 2
           }
         ],
         "consecutiveRecallCorrect": 2,
-        "stability": 7,
-        "difficulty": 4.04
+        "stability": 39.24,
+        "difficulty": 4.69,
+        "lastLatencyGrade": 2,
+        "confusedWith": []
       }
     ],
     [
@@ -41937,8 +41947,8 @@
     ]
   ],
   "stats": {
-    "totalReviews": 2928,
-    "totalCorrect": 2229,
+    "totalReviews": 2929,
+    "totalCorrect": 2230,
     "currentStreak": 2,
     "longestStreak": 7,
     "lastReviewDate": "2026-11-06",
@@ -41976,7 +41986,7 @@
         "date": "2026-10-21T12:03:01.279Z"
       }
     },
-    "updatedAt": "2026-11-06T22:48:19.774Z"
+    "updatedAt": "2026-11-06T22:48:30.703Z"
   },
   "settings": {
     "audioEnabled": true,
